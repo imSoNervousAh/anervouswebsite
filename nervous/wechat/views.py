@@ -9,9 +9,6 @@ def index(request):
 
 def login(request):
 	print 'login/'
-	if (request.method=='POST'):
-		return HttpResponseRedirect('/student')		
-
 	return render(request,'login.html')
 
 def student(request):
