@@ -4,8 +4,8 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 
-def home(request):
-	return render(request,'home.html')
+def index(request):
+	return render(request,'login.html')
 
 def login(request):
 	print 'login/'
@@ -21,12 +21,7 @@ def manager(request):
 	return render(request,'manager.html')
 
 def supermanager(request):
-	#now = datetime.datetime.now()
-	t = get_template('supermanager/index.html')
-	#html = t.render(Context({'current_date': now}))
-	html=t.render(request)
-	return HttpResponse(html)
-	#return render(request,'supermanager/index.html')
+	return render(request,'supermanager.html')
 
 def notfound(request):
 	print '[in] notfound'
