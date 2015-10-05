@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.http import HttpResponsePermanentRedirect
 
 def home(request):
 	return render(request,'home.html')
@@ -8,7 +7,7 @@ def home(request):
 def login(request):
 	print 'login/'
 	if (request.method=='POST'):
-		return render(request,'student.html')
+		return HttpResponseRedirect('/student')		
 
 	return render(request,'login.html')
 
