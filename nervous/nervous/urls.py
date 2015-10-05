@@ -17,12 +17,20 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    #wechat part
 	url(r'^login','wechat.views.login',name='login'),
     url(r'^student','wechat.views.student',name='student'),
     url(r'^manager','wechat.views.manager',name='manager'),
     url(r'^supermanager','wechat.views.supermanager',name='supermanager'),
     url(r'^admin/', include(admin.site.urls)),
+    
+    #api part
+    url(r'^api/login','api.views.login',name='login'),
+
+    #not found part
     url(r'^notfound','wechat.views.notfound',name='notfound'),
     url(r'^$','wechat.views.index',name='index'),
     url(r'^[\s\S]*','wechat.views.to_notfound',name='to_notfound'),
+
+
 ]
