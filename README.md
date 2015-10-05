@@ -12,4 +12,4 @@ Python 2.7.10
 Django 1.8.4
 
 ![image](http://www.baidu.com/img/bd_logo1.png)
-![image](http://stash.secoder.net/users/ytl/repos/nervous/browse/imgs/wechat.jpg)
+![image](http://stash.secoder.net/ytl/nervous/raw/master/imgs/wechat.jpg)
