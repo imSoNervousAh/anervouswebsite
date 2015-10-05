@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^supermanager','wechat.views.supermanager',name='supermanager'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^notfound','wechat.views.notfound',name='notfound'),
-    url(r'^[\s\S]*','wechat.views.notfound',name='to_notfound'),
+    url(r'^[\s\S]*','wechat.views.to_notfound',name='to_notfound'),
 ]
