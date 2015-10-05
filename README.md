@@ -11,4 +11,4 @@ Python 2.7.10
 
 Django 1.8.4
 
-![image](http://ytl@stash.secoder.net/scm/~ytl/nervous.git/imgs/wechat.jpg)
+![image](http://www.baidu.com/img/bd_logo1.png)
