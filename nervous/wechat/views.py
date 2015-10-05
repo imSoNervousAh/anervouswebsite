@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.template.loader import get_template
+from django.template import Context
+from django.http import HttpResponse
 
 def home(request):
 	return render(request,'home.html')
@@ -18,7 +21,12 @@ def manager(request):
 	return render(request,'manager.html')
 
 def supermanager(request):
-	return render(request,'supermanager.html')
+	#now = datetime.datetime.now()
+	t = get_template('supermanager/index.html')
+	#html = t.render(Context({'current_date': now}))
+	html=t.render(request)
+	return HttpResponse(html)
+	#return render(request,'supermanager/index.html')
 
 def notfound(request):
 	print '[in] notfound'

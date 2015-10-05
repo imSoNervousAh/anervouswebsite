@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+</html>
+<head>
+	<title>Lock Demo</title>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<style type="text/css">
+* {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+body{
+	overflow-y:hidden;
+}
+#wrapper {
+	position:absolute;
+    background-image: -moz-linear-gradient(top,#77D1F6, #2F368F);  
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #77D1F6),color-stop(1, #2F368F)); 
+    font-family: "lucida Grande",Tahoma,Arial;
+    font-size: 12px;
+    overflow: hidden;
+    height:100%;
+    width:100%;
+}
+#slide{
+	position:relative;
+	top:78%;
+	left:23%;
+	width:54%;
+	height:100px;
+	border-radius:16px;
+	background-image: -moz-linear-gradient(top,#2F368F,#77D1F6);  
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #2F368F),color-stop(1, #77D1F6)); 
+	opacity:0.5;
+	padding: 6px;
+    overflow: hidden; 
+    -webkit-user-select: none;
+}
+
+#slide h2 {
+  background: -moz-linear-gradient(left, #4d4d4d 20%, white 30%, #4d4d4d 40%); 
+  background: -webkit-gradient(linear,left top,right top,color-stop(0, #4d4d4d),color-stop(0.4, #4d4d4d),color-stop(0.5, white),color-stop(0.6, #4d4d4d),color-stop(1, #4d4d4d)); 
+  -moz-background-clip: text;
+  -webkit-background-clip: text;
+  -moz-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-size: 80px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  padding: 0;
+  width: 200%;
+  -webkit-animation: slidetounlock 4s infinite;
+  -moz-animation: slidetounlock2 4s infinite;
+  -webkit-text-size-adjust: none;
+}
+
+#slider {
+	position: relative; 
+    background: url(images/arrow.png) no-repeat;
+    width: 146px;
+    height: 98px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+@-webkit-keyframes slidetounlock {
+  0% {
+    background-position: -720px 0;
+  }
+  100%{
+    background-position: 720px 0;
+  }
+}
+@-moz-keyframes slidetounlock2 {
+  0% {
+    background-position: -720px 0;
+  }
+  100%{
+    background-position: 720px 0;
+  }
+}
+</style>
+<script>
+$(function() {
+    $("#slider").draggable({
+        axis: 'x',
+        containment: 'parent',
+        drag: function(event, ui) {
+            if (ui.position.left > 550) {
+                $("#slide").fadeOut();
+            } else {
+                // Apparently Safari isn't allowing partial opacity on text with background clip? Not sure.
+                //$("h2 span").css("opacity", 100 - (ui.position.left / 5))
+            }
+        },
+        stop: function(event, ui) {
+            if (ui.position.left < 551) {
+                $(this).animate({
+                    left: 0
+                })
+            }
+        }
+    });
+
+});
+</script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="slide">
+		<h2>
+			<strong id="slider"></strong>
+			<span>滑动解除锁定</span>
+		</h2>
+	</div>
+</div>
+</body>
+</html>
