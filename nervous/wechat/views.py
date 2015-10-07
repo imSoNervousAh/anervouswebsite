@@ -45,10 +45,10 @@ def manager(request):
 	return render(request,'manager.html')
 
 def supermanager(request):
-	str=postToApi("api/managerList","")
+	#str=postToApi("api/managerList","")
 	#print str
-	#return render(request,'supermanager.html')
-	return HttpResponse(str)
+	return render(request,'supermanager.html')
+	#return HttpResponse(str)
 
 def notfound(request):
 	print '[in] notfound'

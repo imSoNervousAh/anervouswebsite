@@ -1,7 +1,10 @@
-﻿<!DOCTYPE html>
+﻿<!--<!DOCTYPE html>
 <html>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/default.css" />
+
+-->
+{% block main %}
 <style type="text/css">
 * {
     background: none repeat scroll 0 0 transparent;
@@ -70,7 +73,7 @@
 	font-size:12px;
 }
 </style>
-<body>
+<!--<body>-->
 <div id="navi">
 	<div id='naviDiv'>
 		<!--<span><img src="images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;用户管理<span>&nbsp;-->
@@ -107,5 +110,9 @@
 	</tr>
 </table>
 </div>
+
+{% endblock %}
+<!--
 </body>
 </html>
+-->
