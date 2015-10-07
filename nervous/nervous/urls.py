@@ -26,6 +26,7 @@ urlpatterns = [
     
     #api part
     url(r'^api/login','api.views.login',name='login'),
+    url(r'^api/managerList','api.views.managerList',name='managerList'),
 
     #not found part
     url(r'^notfound','wechat.views.notfound',name='notfound'),
