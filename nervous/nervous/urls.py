@@ -20,12 +20,13 @@ urlpatterns = [
     #wechat part
 	url(r'^login','wechat.views.login',name='login'),
     url(r'^student','wechat.views.student',name='student'),
-    url(r'^manager','wechat.views.manager',name='manager'),
+    url(r'^administrator','wechat.views.administrator',name='administrator'),
     url(r'^supermanager','wechat.views.supermanager',name='supermanager'),
     url(r'^admin/', include(admin.site.urls)),
     
     #api part
     url(r'^api/login','api.views.login',name='login'),
+    url(r'^api/managerList','api.views.managerList',name='managerList'),
 
     #not found part
     url(r'^notfound','wechat.views.notfound',name='notfound'),
