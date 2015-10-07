@@ -1,9 +1,12 @@
+#-*-coding:utf-8
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 import json
 
 def login(request):
+	print 'account: ',request.POST['account'],' password: ',request.POST['password']
 	if (request.POST['account']=='manager') and (request.POST['password']=='123456'):
 		return HttpResponseRedirect('/manager')
 

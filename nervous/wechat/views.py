@@ -45,7 +45,7 @@ def manager(request):
 	return render(request,'manager.html')
 
 def supermanager(request):
-	str=postToApi("127.0.0.1:8000/api/managerList","")
+	str=postToApi("api/managerList","")
 	#print str
 	#return render(request,'supermanager.html')
 	return HttpResponse(str)
