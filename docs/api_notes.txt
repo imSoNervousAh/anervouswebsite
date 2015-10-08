@@ -1,5 +1,11 @@
 /backend
-/backend/submit_application
+
+action=add_admin
+...
+
+action=del_admin
+...
+
 action=submit_application
 name
 description
@@ -31,6 +37,7 @@ manager_email
 status
 operator_admin_id
 
+==================================
 
 database.py
 
@@ -44,11 +51,10 @@ get_official_accounts
 
 get_admins
 
-get_articles
-
-
+==================================
 
 database:
+
 application:
 id
 name
@@ -62,7 +68,8 @@ manager_email
 status
 operator_admin_id
 
-user:
+admin:
 id
 username
 password // md5?
+
