@@ -18,7 +18,7 @@ def login(request):
 	
 	return HttpResponseRedirect('/login')
 
-def managerList(requesr):
+def managerList(request):
 	list=[]
 	user1={} 
 	user1['account']='huangdada'
@@ -27,4 +27,7 @@ def managerList(requesr):
 	user2['password']='123455'
 	list.append(user1)
 	list.append(user2)
-	return HttpResponse(json.dumps(list))	
+	return HttpResponse(json.dumps(list, sort_keys=True,  indent=4, separators=(',', ': ')))
+
+def submit_application(request):
+	return HttpResponse(json.dumps(request.POST, sort_keys=True, indent=4, separators=(',', ': ')))
