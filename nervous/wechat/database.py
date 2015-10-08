@@ -13,6 +13,30 @@ def get_pending_applications():
 	return [item1, item2]
 
 
+def get_applications():
+	item1 = {'name': '计四五微信平台',
+			 'description': '计45班的班级微信公众号平台。',
+			 'status': 'pending',
+			 'operator_admin_name': ''
+			 }
+	item2 = {'name': '通过示范',
+			 'description': '一个申请通过的微信公众号平台。',
+			 'status': 'approved',
+			 'operator_admin_name': 'admin1'
+			 }
+	item3 = {'name': '尚未提交示范',
+			 'description': '一个这边还没有提交上去的申请',
+			 'status': 'not_submitted',
+			 'operator_admin_name': ''
+			 }
+	item4 = {'name': '拒绝示范',
+			 'description': '一个申请被拒的微信公众号平台。',
+			 'status': 'rejected',
+			 'operator_admin_name': 'admin3'
+			 }
+	return [item1, item2, item3, item4]
+
+
 def get_official_accounts():
 	item1 = {'name': '中老年生活',
 			 'subscribers': 128984,
@@ -23,6 +47,7 @@ def get_official_accounts():
 			 'description': '绝不说假话。'
 			 }
 	return sorted([item1, item2], key=itemgetter('subscribers'), reverse=True)
+
 
 def get_articles():
 	item1 = {'title': '100个实用的生活小窍门！快转发给你的朋友！',

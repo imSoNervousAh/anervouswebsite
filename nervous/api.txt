@@ -1,5 +1,5 @@
 /backend
-
+/backend/submit_application
 action=submit_application
 name
 description

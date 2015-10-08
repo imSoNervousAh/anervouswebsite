@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.template.loader import get_template
@@ -41,7 +42,23 @@ def login(request):
 	return render(request,'login.html')
 
 def student(request):
-	return render(request,'student.html')
+	glyphicons = {'approved': 'glyphicon-ok-sign',
+				  'rejected': 'glyphicon-remove-sign',
+				  'pending': 'glyphicon-question-sign',
+				  'not_submitted': 'glyphicon-info-sign'
+				  }
+	status_name = {'approved': '已通过审批',
+				   'rejected': '审批被拒绝',
+				   'pending': '待审批',
+				   'not_submitted': '尚未提交'
+				   }
+	
+	applications = database.get_applications()
+	for app in applications:
+		app['status_glyphicon'] = glyphicons[app['status']]
+		app['status_name'] = status_name[app['status']]
+	return render(request,'student/index.html', {'applications': applications,
+												 'app_count': len(applications)})
 
 def administrator(request):
 	pending_applications = database.get_pending_applications()
