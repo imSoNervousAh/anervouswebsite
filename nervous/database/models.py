@@ -9,8 +9,9 @@ class Admin(models.Model):
 
 class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
+    description = models.CharField(max_length=300)
     def __unicode__(self):
-        return self.name
+        return "%s: %s" % (self.name, self.description)
 
 
 class Application(models.Model):
@@ -29,3 +30,11 @@ class Application(models.Model):
             self.user_submit,
             self.status
         )
+    
+class Article(models.Model):
+    title = models.CharField(max_length=50)
+    official_account = models.ForeignKey(OfficialAccount)
+    description = models.CharField(max_length=300, default='')
+    def __unicode__(self):
+        return self.title
+
