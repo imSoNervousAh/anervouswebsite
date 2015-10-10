@@ -21,7 +21,7 @@ urlpatterns = [
 	url(r'^login','wechat.views.login',name='login'),
     url(r'^student','wechat.views.student',name='student'),
     url(r'^administrator','wechat.views.administrator',name='administrator'),
-    url(r'^supermanager','wechat.views.supermanager',name='supermanager'),
+    url(r'^superuser','wechat.views.superuser',name='superuser'),
     url(r'^admin/', include(admin.site.urls)),
     
     #api part
