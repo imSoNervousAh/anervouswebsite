@@ -1,6 +1,10 @@
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
+import setup_db
+
+setup_db.setup()
+
 # Applications
 
 def get_applications():
