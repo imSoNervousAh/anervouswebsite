@@ -7,14 +7,14 @@ import json
 
 def login(request):
 	print 'account: ',request.POST['account'],' password: ',request.POST['password']
-	if (request.POST['account']=='manager') and (request.POST['password']=='123456'):
-		return HttpResponseRedirect('/manager')
+	if (request.POST['account']=='administrator'):
+		return HttpResponseRedirect('/administrator')
 
 	if request.POST['account']=='student':
 		return HttpResponseRedirect('/student')
 	
-	if request.POST['account']=='supermanager':
-		return HttpResponseRedirect('/supermanager')
+	if request.POST['account']=='superuser':
+		return HttpResponseRedirect('/superuser')
 	
 	return HttpResponseRedirect('/login')
 

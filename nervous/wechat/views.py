@@ -13,7 +13,7 @@ import codecs
 import json
 
 #from .. import database
-import _database as backend
+from database import backend
 
 def postToApi(myurl,mydata):
 	# connect={'sid','s%3AuGZU_VeCrixsynOBkdFSyRbmGSNckCs5.%2F%2BvP0uWNiMTeKdpg22YvEvPc5vXY2o80yMkuLbU7gFQ'}
@@ -64,15 +64,15 @@ def student(request):
 def administrator(request):
 	pending_applications = backend.get_pending_applications()
 	official_accounts = backend.get_official_accounts()
-	articles = backend.get_articles()
+	#articles = backend.get_articles()
 	return render(request,'administrator/index.html', {'pending_applications': pending_applications,
 													   'pending_count': len(pending_applications),
 													   'official_accounts': official_accounts,
-													   'account_count': len(official_accounts),
-													   'articles': articles,
-													   'article_count': len(articles)})
+													   'account_count': len(official_accounts)})
+													   # 'articles': articles,
+													   # 'article_count': len(articles)})
 
-def supermanager(request):
+def superuser(request):
 	#str=postToApi("api/managerList","")
 	#print str
 	return render(request,'supermanager.html')
