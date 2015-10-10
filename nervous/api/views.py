@@ -3,6 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from database import backend, utils
 import json
 
 def login(request):
@@ -30,4 +31,17 @@ def managerList(request):
 	return HttpResponse(json.dumps(list, sort_keys=True,  indent=4, separators=(',', ': ')))
 
 def submit_application(request):
-	return HttpResponse(json.dumps(request.POST, sort_keys=True, indent=4, separators=(',', ': ')))
+	backend.submit_application(request.POST)
+	return HttpResponseRedirect('/student')
+
+def modify_application(request):
+	backend.modify_application(request.POST)
+	return HttpResponseRedirect('/student')
+
+def add_admin(request):
+	backend.add_admin(request.POST)
+	return HttpResponseRedirect('/superuser')
+
+def del_admin(request):
+	backend.del_admin(request.POST)
+	return HttpResponseRedirect('/superuser') 
