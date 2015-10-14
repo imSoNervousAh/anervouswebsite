@@ -1,0 +1,14 @@
+登陆界面分为学生，管理员，超级管理员三个部分，共用一个templates/login/index.html
+url=
+/login/student
+/login/administrator
+/login/superuser
+
+另外
+url=
+/ 
+/home
+会默认返回学生登录界面
+
+
+有问题请@杨天龙
