@@ -20,10 +20,6 @@ def index(request):
     return render(request, 'login/index.html', {'identity': 'student'})
 
 
-def login_default(request):
-    return render(request, 'login/index.html', {'identity': 'student'})
-
-
 def login(request, identity='student'):
     print 'login/'
     if identity == 'student':
