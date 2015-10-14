@@ -71,6 +71,13 @@ def del_admin(username):
 def get_admins():
     return Admin.all()
 
+def check_admin(username, password):
+    try:
+        admin = Admin.get(username=username)
+        return admin.password == password
+    except ObjectDoesNotExist:
+        return False
+
 
 # Articles
 
