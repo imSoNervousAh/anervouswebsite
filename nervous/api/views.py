@@ -8,30 +8,28 @@ from api.info_login import auth_by_info as tsinghua_login
 import json
 
 
-def login(request,identity):
-    print 'identity: ',identity
-    #check student login
-    if (identity=='student'):
-        # if (request.POST['account']=='hzc') and (request.POST['password']=='123456'):
-        # 	return HttpResponseRedirect('/student')
-        if (tsinghua_login(request.POST['account'],request.POST['password']) == True):
+def login(request, identity):
+    print 'identity: ', identity
+    # check student login
+    if identity == 'student':
+        if (request.POST['account'] == 'hzc') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/student')
-        else: 	
-            return render(request,'login/index.html',{'identity':'student'})
+        else:
+            return render(request, 'login/index.html', {'identity': 'student'})
 
-    #check administrator login
-    if (identity=='administrator'):
-        if (request.POST['account']=='admin') and (request.POST['password']=='123456'):
+            # check administrator login
+    if identity == 'administrator':
+        if (request.POST['account'] == 'admin') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/administrator')
         else:
-            return render(request,'login/index.html',{'identity':'administrator'})
+            return render(request, 'login/index.html', {'identity': 'administrator'})
 
-    #check superuser login
-    if (identity=='superuser'):
-        if (request.POST['account']=='root') and (request.POST['password']=='123456'):
+            # check superuser login
+    if identity == 'superuser':
+        if (request.POST['account'] == 'root') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/superuser')
         else:
-            return render(request,'login/index.html',{'identity':'superuser'})
+            return render(request, 'login/index.html', {'identity': 'superuser'})
 
     return HttpResponseRedirect('/index')
 

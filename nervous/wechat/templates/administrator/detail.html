@@ -13,6 +13,10 @@
             <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <link href="{% static 'administrator/css/styles.css' %}" rel="stylesheet">
+    <!-- script references -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'administrator/js/scripts.js' %}"></script>
 </head>
 
 <body>
@@ -27,7 +31,7 @@
             </button>
             <a class="navbar-brand">清华大学微信公众号备案平台</a>
             <a class="navbar-brand">&gt;</a>
-            <a class="navbar-brand">管理员后台</a>
+            <a class="navbar-brand" href="{% url 'administrator' %}">管理员后台</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -69,10 +73,10 @@
             <hr>
             <ul class="nav nav-stacked collapse in" id="analyse-menu">
                 <ul class="nav nav-stacked collapse in" id="userMenu">
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-list"></i>　公众号列表</a></li>
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-list"></i>　公众号列表</a></li>
                     <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
                     </li>
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-alert"></i>　数据预警</a></li>
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a></li>
                 </ul>
                 </li>
                 <hr>
@@ -95,62 +99,63 @@
                 <li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span
                         class="glyphicon glyphicon-plus-sign"></span> Add Widget</a></li>
             </ul>
-            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
+            <a href="#"><strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
             <hr>
             <div class="row">
                 <!-- center left-->
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>待审批申请<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+                            <h4>基本信息<span class="badge pull-right">{{ pending_count }}</span></h4></div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>公众号名称</th>
-                                        <th>公众号负责人</th>
-                                        <th>公众号简介</th>
-                                        <th>
-                                            <div style="width: 30px"/>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for app in pending_applications %}
-                                        <tr>
-                                            <td>{{ app.name }}</td>
-                                            <td>{{ app.manager_name }}</td>
-                                            <td>{{ app.description|linebreaks }}</td>
-                                            <td><a href="#">审批</a></td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="pull-left" style="width: 90px; height: 90px;
+                                            background: url(http://open.weixin.qq.com/qr/code/?username={{ account.wechat_id }})
+                                            -170px -170px no-repeat;"></div>
+                                    <div class="pull-left" style="padding-left: 10px;
+                                        vertical-align: middle; line-height: 160%;">
+                                        <b>公众号名称：</b>{{ account.name }}<br/>
+                                        <b>微信ID：</b>{{ account.wechat_id }}<br/>
+                                        <b>订阅人数：</b>{{ account.subscribers }}<br/>
+                                        <b>公众号描述：</b>{{ account.description }}<br/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div style="line-height: 160%;">
+                                        <b>隶属组织：</b>{{ account.association }}<br/>
+                                        <b>负责人姓名：</b>{{ account.manager_name }}<br/>
+                                        <b>负责人学号：</b>{{ account.manager_stu_id }}<br/>
+                                        <b>负责人院系：</b>{{ account.manager_dept }}<br/>
+                                        <b>负责人电话：</b>{{ account.manager_tel }}<br/>
+                                        <b>负责人电子邮件：</b><a
+                                            href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>最近一周的热门文章</h4></div>
+                            <h4>最近文章</h4></div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>公众号名称</th>
+                                        <th></th>
                                         <th>文章标题</th>
                                         <th>文章简介</th>
-                                        <th>阅览数</th>
-                                        <th>点赞数</th>
+                                        <th><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                                        <th><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for article in articles %}
                                         <tr>
-                                            <td><a href="#">{{ article.official_account_name }}</a></td>
-                                            <td>{{ article.title }}</td>
+                                            <td><img src="{{ article.avatar_url }}" alt="{{ article.title }}"/></td>
+                                            <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a></td>
                                             <td>{{ article.description|linebreaks }}</td>
                                             <td>{{ article.views }}</td>
                                             <td>{{ article.likes }}</td>
@@ -162,81 +167,10 @@
                         </div>
                     </div>
                 </div>
-                <!--/col-->
-                <div class="col-md-3">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>公告</h4></div>
-                        <div class="panel-body">
-                            <div class="alert alert-info" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                                一些<strong>不那么重要</strong>的通知
-                            </div>
-                            <p>站长给管理员的通知</p>
-
-                            <p>真的有这种东西吗</p>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>公众号关注排行</h4></div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>名称</th>
-                                        <th>关注人数</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for account in official_accounts %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td>{{ account.name }}</td>
-                                            <td>{{ account.subscribers }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--/col-span-6-->
             </div>
             <!--/row-->
-            <hr>
-            <a href="#"><strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong></a>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(3 mins ago)</small>
-                            The 3rd page reports don't contain any links. Does anyone know why..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(1 hour ago)</small>
-                            Hi all, I've just post a report that show the relationship betwe..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
-                            <small>(2 hrs ago)</small>
-                            Paul. That document you posted yesterday doesn't seem to contain the over..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>
-                            <small>(4 hrs ago)</small>
-                            The map service on c243 is down today. I will be fixing the..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
-                            <small>(yesterday)</small>
-                            I posted a new document that shows how to install the services layer..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(yesterday)</small>
-                            ..</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
-        <!--/col-span-9-->
+        <!--/col-span-12-->
     </div>
 </div>
 <!-- /Main -->
@@ -261,10 +195,6 @@
     <!-- /.modal-dalog -->
 </div>
 <!-- /.modal -->
-<!-- script references -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'administrator/js/scripts.js' %}"></script>
 </body>
 
 </html>
