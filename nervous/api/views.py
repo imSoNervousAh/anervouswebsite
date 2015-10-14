@@ -32,6 +32,21 @@ def login(request,identity):
 	
 	return HttpResponseRedirect('/index')
 
+    # check administrator login
+    if (identity == 'administrator'):
+        if (request.POST['account'] == 'admin') and (request.POST['password'] == '123456'):
+            return HttpResponseRedirect('/student')
+        else:
+            return render(request, 'login/index.html', {'identity': 'administrator'})
+
+    # check superuser login
+    if (identity == 'superuser'):
+        if (request.POST['account'] == 'root') and (request.POST['password'] == '123456'):
+            return HttpResponseRedirect('/superuser')
+        else:
+            return render(request, 'login/index.html', {'identity': 'superuser'})
+
+    return HttpResponseRedirect('/index')
 
 
 def administrator_list(request):
@@ -46,6 +61,7 @@ def administrator_list(request):
     list.append(user2)
     return HttpResponse(json.dumps(list, sort_keys=True, indent=4, separators=(',', ': ')))
 
+
 def submit_application(request):
     backend.add_application(request.POST)
     return HttpResponse(request.POST)
@@ -54,7 +70,7 @@ def submit_application(request):
 
 def modify_application(request):
     backend.modify_application(request.POST)
-    return HttpResponseRedirect('/student')
+    return HttpResponseRedirect('/administrator')
 
 
 def add_admin(request):

@@ -53,87 +53,85 @@
 <!-- Main -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-            <div class="col-sm-2">
-                <!-- Left column -->
-                <a href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
-                        class="glyphicon glyphicon-wrench"></i>　管理员账户</strong></a>
+        <div class="col-sm-2">
+            <!-- Left column -->
+            <a href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
+                    class="glyphicon glyphicon-wrench"></i>　管理员账户</strong></a>
+            <hr>
+            <ul class="nav nav-stacked collapse in" id="application-menu">
+                <ul class="nav nav-stacked collapse in" id="userMenu">
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-user"></i>　管理员账户列表</a></li>
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bullhorn"></i>　修改管理员公告</a></li>
+                </ul>
+                </li>
                 <hr>
-                <ul class="nav nav-stacked collapse in" id="application-menu">
-                    <ul class="nav nav-stacked collapse in" id="userMenu">
-                        <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-user"></i>　管理员账户列表</a></li>
-                        <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bullhorn"></i>　修改管理员公告</a></li>
+            </ul>
+            <a href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
+                    class="glyphicon glyphicon-stats"></i>　数据库管理</strong></a>
+            <hr>
+            <ul class="nav nav-stacked collapse in" id="analyse-menu">
+                <ul class="nav nav-stacked collapse in" id="userMenu">
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-large"></i>　数据库信息概览</a></li>
+                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-cloud-download"></i>　数据更新</a>
+                    </li>
+                </ul>
+                </li>
+                <hr>
+            </ul>
+        </div>
+        <!-- /col-3 -->
+        <div class="col-sm-10">
+            <!-- column 2 -->
+            <ul class="list-inline pull-right">
+                <li><a href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        class="glyphicon glyphicon-comment"></i><span class="count"> 3</span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">1. Is there a way..</a></li>
+                        <li><a href="#">2. Hello, admin. I would..</a></li>
+                        <li><a href="#"><strong>All messages</strong></a></li>
                     </ul>
-                    </li>
-                    <hr>
-                </ul>
-                <a href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
-                        class="glyphicon glyphicon-stats"></i>　数据库管理</strong></a>
-                <hr>
-                <ul class="nav nav-stacked collapse in" id="analyse-menu">
-                    <ul class="nav nav-stacked collapse in" id="userMenu">
-                        <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-large"></i>　数据库信息概览</a></li>
-                        <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-cloud-download"></i>　数据更新</a>
-                        </li>
-                    </ul>
-                    </li>
-                    <hr>
-                </ul>
-            </div>
-            <!-- /col-3 -->
-            <div class="col-sm-10">
-                <!-- column 2 -->
-                <ul class="list-inline pull-right">
-                    <li><a href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                            class="glyphicon glyphicon-comment"></i><span class="count"> 3</span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">1. Is there a way..</a></li>
-                            <li><a href="#">2. Hello, admin. I would..</a></li>
-                            <li><a href="#"><strong>All messages</strong></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
-                    <li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span
-                            class="glyphicon glyphicon-plus-sign"></span> Add Widget</a></li>
-                </ul>
-                <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
-                <hr>
-                <div class="row">
-                    <!-- center left-->
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4>管理员账号列表<span class="badge pull-right">{{ pending_count }}</span></h4></div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>用户名</th>
-                                            <th>账号说明</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <script>
-                                            $(function () {
-                                                $('body').popover({
-                                                    'html': true,
-                                                    'selector': '.delete-admin-link',
-                                                    'title': "确认删除账号？",
-                                                    'trigger': 'focus'
-                                                });
+                </li>
+                <li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span
+                        class="glyphicon glyphicon-plus-sign"></span> Add Widget</a></li>
+            </ul>
+            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
+            <hr>
+            <div class="row">
+                <!-- center left-->
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>管理员账号列表<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>用户名</th>
+                                        <th>账号说明</th>
+                                        <th style="width:220px">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <script>
+                                        $(function () {
+                                            $('body').popover({
+                                                'html': true,
+                                                'selector': '.delete-admin-link',
+                                                'title': "确认删除账号？",
+                                                'trigger': 'focus',
+                                                'viewport': {selector: 'body', padding: 0}
                                             });
-                                        </script>
-                                        {% for admin in administrators %}
-                                            <tr>
-                                                <td>{{ admin.username }}</td>
-                                                <td>{{ admin.description }}</td>
-                                                <td>
-                                                    <a href="#" class="delete-admin-link" data-toggle="popover"
-                                                       data-content="
+                                        });
+                                    </script>
+                                    {% for admin in administrators %}
+                                        <tr>
+                                            <td>{{ admin.username }}</td>
+                                            <td>{{ admin.description }}</td>
+                                            <td><a href="#" class="delete-admin-link" data-toggle="popover"
+                                                   data-content="
                                                         <form method='post' action='{% url 'del_admin' %}'>
                                                             {% csrf_token %}
                                                             <div class='btn btn-default'>取消</div>
@@ -141,56 +139,55 @@
                                                             <span>　</span>
                                                             <input type='submit' value='删除' class='btn btn-danger'>
                                                         </form>">
-                                                        <span class="glyphicon glyphicon-minus-sign"></span> 删除</a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <ul class="list-inline pull-right">
-                                    <li><a title="Add Widget" data-toggle="modal" href="#add-admin-modal"><span
-                                            class="glyphicon glyphicon-plus-sign"></span> 添加管理员</a></li>
-                                </ul>
+                                                <span class="glyphicon glyphicon-minus-sign"></span> 删除</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
+                            <ul class="list-inline pull-right">
+                                <li><a title="Add Widget" data-toggle="modal" href="#add-admin-modal"><span
+                                        class="glyphicon glyphicon-plus-sign"></span> 添加管理员</a></li>
+                            </ul>
                         </div>
                     </div>
-                    <!--/col-span-6-->
                 </div>
+                <!--/col-span-6-->
             </div>
-            <!--/col-span-10-->
         </div>
+        <!--/col-span-10-->
     </div>
-    <div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="{% url 'add_admin' %}" method="post">
-                    {% csrf_token %}
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">添加管理员</h4>
+</div>
+<div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{% url 'add_admin' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加管理员</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username-input" class="control-label">用户名：</label>
+                        <input type="text" class="form-control" id="username-input" name="username">
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="username-input" class="control-label">用户名：</label>
-                            <input type="text" class="form-control" id="username-input" name="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="password-input" class="control-label">密码：</label>
-                            <input type="password" class="form-control" id="password-input" name="password">
-                        </div>
-                        <div class="form-group">
-                            <label for="description-text" class="control-label">账号说明：</label>
-                            <textarea class="form-control" id="description-text" name="description"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="password-input" class="control-label">密码：</label>
+                        <input type="password" class="form-control" id="password-input" name="password">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-primary">添加</button>
+                    <div class="form-group">
+                        <label for="description-text" class="control-label">账号说明：</label>
+                        <textarea class="form-control" id="description-text" name="description"></textarea>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
