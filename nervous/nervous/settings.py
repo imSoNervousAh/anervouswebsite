@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-#coding:utf-8
+# coding:utf-8
 
 import os
 
@@ -107,7 +107,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
- 
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "wechat.templates"),
     '/path/to/others/static/',
