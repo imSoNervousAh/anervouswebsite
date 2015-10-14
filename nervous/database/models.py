@@ -24,10 +24,11 @@ class Application(models.Model):
     operator_admin = models.CharField(max_length=32)
     status = models.CharField(max_length=10)
     manager_name = models.CharField(max_length=30)
-    manager_student_id = models.IntegerField
+    manager_student_id = models.CharField(max_length=15)
     manager_dept = models.CharField(max_length=40)
     manager_tel = models.CharField(max_length=20)
     manager_email = models.CharField(max_length=254)
+    association = models.CharField(max_length=30)
 
     def __unicode__(self):
         return "Application for %s from user %s, status: %s" % (
@@ -39,7 +40,7 @@ class Application(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=50)
-    official_account = models.ForeignKey(OfficialAccount)
+    official_account_id = models.IntegerField()
     description = models.CharField(max_length=300, default='')
 
     def __unicode__(self):

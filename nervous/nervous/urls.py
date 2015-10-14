@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^login/([^/]+)/?$', 'wechat.views.login', name='login'),
     url(r'^login', 'wechat.views.login'),
     url(r'^student', 'wechat.views.student', name='student'),
-    url(r'^administrator/detail/(\d+)$', 'wechat.views.detail', name='detail'),
+    url(r'^administrator/detail/([0-9]+)/$', 'wechat.views.detail', name='detail'),
     url(r'^administrator', 'wechat.views.administrator', name='administrator'),
     url(r'^superuser', 'wechat.views.superuser', name='superuser'),
     url(r'^admin/', include(admin.site.urls)),
