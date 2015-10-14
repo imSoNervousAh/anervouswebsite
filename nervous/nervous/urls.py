@@ -17,22 +17,21 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    #wechat part
-	url(r'^login','wechat.views.login',name='login'),
-    url(r'^student','wechat.views.student',name='student'),
-    url(r'^administrator','wechat.views.administrator',name='administrator'),
-    url(r'^superuser','wechat.views.superuser',name='superuser'),
+    # wechat part
+    url(r'^login', 'wechat.views.login', name='login'),
+    url(r'^student', 'wechat.views.student', name='student'),
+    url(r'^administrator', 'wechat.views.administrator', name='administrator'),
+    url(r'^superuser', 'wechat.views.superuser', name='superuser'),
     url(r'^admin/', include(admin.site.urls)),
     
-    #api part
-    url(r'^api/login','api.views.login',name='login'),
-    url(r'^api/managerList','api.views.managerList',name='managerList'),
+    # api part
+    url(r'^api/login', 'api.views.login', name='login'),
+    url(r'^api/managerList', 'api.views.managerList', name='managerList'),
     url(r'^api/submit_application', 'api.views.submit_application', name='submit_application'),
 
-    #not found part
-    url(r'^notfound','wechat.views.notfound',name='notfound'),
-    url(r'^$','wechat.views.index',name='index'),
-    url(r'^[\s\S]*','wechat.views.to_notfound',name='to_notfound'),
-
+    # not found part
+    url(r'^notfound', 'wechat.views.notfound', name='notfound'),
+    url(r'^$', 'wechat.views.index', name='index'),
+    url(r'^[\s\S]*', 'wechat.views.to_notfound', name='to_notfound'),
 
 ]

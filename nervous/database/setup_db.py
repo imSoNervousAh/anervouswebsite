@@ -2,6 +2,7 @@ import sys, os
 import django
 import __builtin__
 
+
 def setup():
     sys.path.append('.')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nervous.settings')
@@ -11,6 +12,7 @@ def setup():
     __builtin__.OfficialAccount = OfficialAccount.objects
     __builtin__.Application = Application.objects
     __builtin__.Article = Article.objects
+
 
 if (__name__ == '__main__'):
     setup()
