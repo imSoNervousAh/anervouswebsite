@@ -3,10 +3,11 @@ from django.db import models
 
 class Admin(models.Model):
     username = models.CharField(max_length=20, primary_key=True)
+    description = models.CharField(max_length=100, null=True)
     password = models.CharField(max_length=32)
 
     def __unicode__(self):
-        return self.username
+        return "%s: %s" % (self.username, self.description)
 
 
 class OfficialAccount(models.Model):

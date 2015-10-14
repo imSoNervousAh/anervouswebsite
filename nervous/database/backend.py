@@ -40,14 +40,15 @@ def trans_account(a):
 
 
 def get_official_accounts():
-    return trans_account(OfficialAccount.all())
+    # return trans_account(OfficialAccount.all())
+    return OfficialAccount.all()
 
 
 # Admins
 
-def add_admin(username, md5_password):
+def add_admin(username, md5_password, description):
     try:
-        Admin.create(username=username, password=md5_password)
+        Admin.create(username=username, password=md5_password, description=description)
         return True
     except IntegrityError:
         return False

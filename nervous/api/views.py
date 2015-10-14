@@ -46,10 +46,11 @@ def modify_application(request):
 
 
 def add_admin(request):
-    backend.add_admin(request.POST)
+    backend.add_admin(request.POST['username'], request.POST['password'], request.POST['description'])
     return HttpResponseRedirect('/superuser')
 
 
 def del_admin(request):
-    backend.del_admin(request.POST)
+    print "del %s" % request.POST['username']
+    backend.del_admin(request.POST['username'])
     return HttpResponseRedirect('/superuser')

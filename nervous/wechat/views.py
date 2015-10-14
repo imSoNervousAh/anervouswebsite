@@ -49,12 +49,12 @@ def student(request):
     glyphicons = {'approved': 'glyphicon-ok-sign',
                   'rejected': 'glyphicon-remove-sign',
                   'pending': 'glyphicon-question-sign',
-                  'not_submitted': 'glyphicon-info-sign'
+                  'not_submitted': 'glyphicon-info-sign',
                   }
     status_name = {'approved': '已通过审批',
                    'rejected': '审批被拒绝',
                    'pending': '待审批',
-                   'not_submitted': '尚未提交'
+                   'not_submitted': '尚未提交',
                    }
 
     applications = backend.get_applications()
@@ -62,7 +62,8 @@ def student(request):
         app['status_glyphicon'] = glyphicons[app['status']]
         app['status_name'] = status_name[app['status']]
     return render(request, 'student/index.html', {'applications': applications,
-                                                  'app_count': len(applications)})
+                                                  'app_count': len(applications),
+                                                  })
 
 
 def administrator(request):
@@ -72,15 +73,16 @@ def administrator(request):
     return render(request, 'administrator/index.html', {'pending_applications': pending_applications,
                                                         'pending_count': len(pending_applications),
                                                         'official_accounts': official_accounts,
-                                                        'account_count': len(official_accounts)})
-    # 'articles': articles,
-    # 'article_count': len(articles)})
+                                                        'account_count': len(official_accounts),
+    #                                                     'articles': articles,
+    #                                                     'article_count': len(articles),
+                                                        })
 
 
 def superuser(request):
-    # str=postToApi("api/managerList","")
-    # print str
-    return render(request, 'superuser/index.html')
+    administrators = backend.get_admins()
+    return render(request, 'superuser/index.html', {'administrators': administrators,
+                                                    })
 
 
 # return HttpResponse(str)
@@ -91,7 +93,7 @@ def notfound(request):
 
 
 def to_notfound(request):
-    print '%s redirectto notfound' % request.path
+    print '%s redirect_to notfound' % request.path
     # return HttpResponsesRedirect('http://www.baidu.com')
     # return redirect('/notfound/', permanent=True)
     return HttpResponseRedirect('/notfound')

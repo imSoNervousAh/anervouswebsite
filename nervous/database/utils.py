@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 from backend import *
 
 
 def build_test_db():
-    Admin.create(username='wyl8899', password='xxxxxxxx')
+    Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
+    Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
+
     account = OfficialAccount.create(name='Lab Mu')
     Application.create(official_account=account, user_submit='FANG KUAI', status='not_submitted')
     account = OfficialAccount.create(name='Lab Mu\'s')
