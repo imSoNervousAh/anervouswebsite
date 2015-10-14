@@ -34,13 +34,20 @@ def postToApi(myurl,mydata):
    	response = urllib2.urlopen(request)
    	return response.read()          
         
-
 def index(request):
-	return render(request,'login.html')
-
-def login(request):
+	#默认返回学生登录界面
+	return render(request,'login/index.html',{'identity':'student'})
+	
+def login(request,identity):
 	print 'login/'
-	return render(request,'login.html')
+	if (identity=='student'):
+		return render(request,'login/index.html',{'identity':'student'})
+	if (identity=='administrator'):
+		return render(request,'login/index.html',{'identity':'administrator'})
+	if (identity=='superuser'):
+		return render(request,'login/index.html',{'identity':'superuser'})
+	return to_notfound(request)
+
 
 def student(request):
 	glyphicons = {'approved': 'glyphicon-ok-sign',
