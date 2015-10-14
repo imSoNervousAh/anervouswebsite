@@ -12,14 +12,14 @@ def login(request,identity):
 	#check student login
 	if (identity=='student'):
 		if (request.POST['account']=='hzc') and (request.POST['password']=='123456'):
-			return HttpResponseRedirect('/administrator')
+			return HttpResponseRedirect('/student')
 		else: 	
 			return render(request,'login/index.html',{'identity':'student'})
 	
 	#check administrator login
 	if (identity=='administrator'):
 		if (request.POST['account']=='admin') and (request.POST['password']=='123456'):
-			return HttpResponseRedirect('/student')
+			return HttpResponseRedirect('/administrator')
 		else:
 			return render(request,'login/index.html',{'identity':'administrator'})
 
