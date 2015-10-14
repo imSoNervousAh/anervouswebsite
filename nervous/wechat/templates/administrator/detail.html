@@ -13,10 +13,6 @@
             <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <link href="{% static 'administrator/css/styles.css' %}" rel="stylesheet">
-    <!-- script references -->
-    <script src="{% static 'jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'administrator/js/scripts.js' %}"></script>
 </head>
 
 <body>
@@ -121,40 +117,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <script>
-                                        $(function () {
-                                            $('body').popover({
-                                                'html': true,
-                                                'selector': '.change-app-status-link',
-                                                'title': "请选择审批结果",
-                                                'trigger': 'focus',
-                                                'viewport': {selector: 'body', padding: 0}
-                                            });
-                                        });
-                                    </script>
                                     {% for app in pending_applications %}
                                         <tr>
                                             <td>{{ app.name }}</td>
                                             <td>{{ app.manager_name }}</td>
                                             <td>{{ app.description|linebreaks }}</td>
-                                            <td>
-                                                <a href="#" class="change-app-status-link" data-toggle="popover"
-                                                   data-content="
-                                                        <form method='post' action='{% url 'modify_application' %}'>
-                                                            {% csrf_token %}
-                                                            <button type='submit' name='status' value='rejected'
-                                                                class='btn btn-danger'>
-                                                                <span class='glyphicon glyphicon-remove-sign'></span> 拒绝
-                                                            </button>
-                                                            <input style='display:none' name='username' value='{{ admin.username }}'>
-                                                            <span>　</span>
-                                                            <button type='submit' name='status' value='approved'
-                                                                class='btn btn-success'>
-                                                                <span class='glyphicon glyphicon-ok-sign'></span> 通过
-                                                            </button>
-                                                        </form>">
-                                                    <span class="glyphicon glyphicon-check"></span> 审批</a>
-                                            </td>
+                                            <td><a href="#">审批</a></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -293,6 +261,10 @@
     <!-- /.modal-dalog -->
 </div>
 <!-- /.modal -->
+<!-- script references -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'administrator/js/scripts.js' %}"></script>
 </body>
 
 </html>
