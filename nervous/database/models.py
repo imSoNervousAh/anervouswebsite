@@ -24,10 +24,11 @@ class Application(models.Model):
     operator_admin = models.CharField(max_length=32)
     status = models.CharField(max_length=10)
     manager_name = models.CharField(max_length=30)
-    manager_student_id = models.IntegerField
+    manager_student_id = models.CharField(max_length=15)
     manager_dept = models.CharField(max_length=40)
     manager_tel = models.CharField(max_length=20)
     manager_email = models.CharField(max_length=254)
+    association = models.CharField(max_length=30)
 
     def __unicode__(self):
         return "Application for %s from user %s, status: %s" % (

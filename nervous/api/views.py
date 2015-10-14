@@ -29,20 +29,8 @@ def login(request,identity):
         return HttpResponseRedirect('/index')
 
 
-def administrator_list(request):
-    list = []
-    user1 = {}
-    user2 = {}
-    user1['account'] = 'huangdada'
-    user1['password'] = 'keke'
-    user2['account'] = 'hucongcong'
-    user2['password'] = '123455'
-    list.append(user1)
-    list.append(user2)
-    return HttpResponse(json.dumps(list, sort_keys=True, indent=4, separators=(',', ': ')))
-
-
 def submit_application(request):
+    print request.POST
     backend.add_application(request.POST)
     return HttpResponse(request.POST)
     # return HttpResponseRedirect('/student')

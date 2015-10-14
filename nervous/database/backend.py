@@ -30,12 +30,34 @@ def get_applications_by_user(username):
 
 
 def add_application(app):
-    pass
+    app = app.dict()
+    name, description = app['name'], app['description']
+    for k in ['name', 'description', 'csrfmiddlewaretoken']:
+        del app[k]
+    try:
+        OfficialAccount.get(name__exact=name)
+        print "Error: account already exists."
+    except ObjectDoesNotExist:
+        account = OfficialAccount.create(name=name, description=description)
+        app['official_account'] = account
+        app['status'] = 'pending'
+        Application.create(**app)
+        return True
 
 
 def modify_application(app):
+    app = app.dict()
     print app
-    pass
+    try:
+        print app['account_name']
+        account = OfficialAccount.get(name__exact=app['account_name'])
+        print account
+        application = Application.get(pk=account)
+        print application
+        application.status = app['status']
+        application.save()
+    except ObjectDoesNotExist:
+        return False
 
 
 # Official Accounts
