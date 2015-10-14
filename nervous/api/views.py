@@ -10,21 +10,21 @@ import json
 def login(request, identity):
     print 'identity: ', identity
     # check student login
-    if (identity == 'student'):
+    if identity == 'student':
         if (request.POST['account'] == 'hzc') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/student')
         else:
             return render(request, 'login/index.html', {'identity': 'student'})
 
     # check administrator login
-    if (identity == 'administrator'):
+    if identity == 'administrator':
         if (request.POST['account'] == 'admin') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/administrator')
         else:
             return render(request, 'login/index.html', {'identity': 'administrator'})
 
     # check superuser login
-    if (identity == 'superuser'):
+    if identity == 'superuser':
         if (request.POST['account'] == 'root') and (request.POST['password'] == '123456'):
             return HttpResponseRedirect('/superuser')
         else:
