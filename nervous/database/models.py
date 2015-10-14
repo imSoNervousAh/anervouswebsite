@@ -40,7 +40,7 @@ class Application(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=50)
-    official_account = models.ForeignKey(OfficialAccount)
+    official_account_id = models.IntegerField()
     description = models.CharField(max_length=300, default='')
 
     def __unicode__(self):

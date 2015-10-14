@@ -9,11 +9,12 @@ def application_to_dict(app):
 
 
 def article_to_dict(article):
-    account = article.offcial_account
+    id = article.official_account_id
+    account = OfficialAccount.get(pk=id)
     return {
         'title': article.title,
         'offcial_account_name': account.name,
-        'offcial_account_id': account._id,
+        'offcial_account_id': id,
         'description': article.description
     }
 
