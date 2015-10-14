@@ -17,15 +17,16 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    # wechat part
-    url(r'^login', 'wechat.views.login', name='login'),
-    url(r'^student', 'wechat.views.student', name='student'),
-    url(r'^administrator', 'wechat.views.administrator', name='administrator'),
-    url(r'^superuser', 'wechat.views.superuser', name='superuser'),
+    #wechat part
+    url(r'^index/?$','wechat.views.index',name='index'),
+    url(r'^login/([^/]+)/?$','wechat.views.login',name='login'),
+    url(r'^student','wechat.views.student',name='student'),
+    url(r'^administrator','wechat.views.administrator',name='administrator'),
+    url(r'^superuser','wechat.views.superuser',name='superuser'),
     url(r'^admin/', include(admin.site.urls)),
     
-    # api part
-    url(r'^api/login', 'api.views.login', name='login'),
+    #api part
+    url(r'^api/login/([^/]+)/?$','api.views.login',name='login'),
     url(r'^api/submit_application', 'api.views.submit_application', name='submit_application'),
     url(r'^api/add_admin', 'api.views.add_admin', name='add_admin'),
     url(r'^api/del_admin', 'api.views.del_admin', name='del_admin'),

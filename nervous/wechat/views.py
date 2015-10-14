@@ -14,35 +14,39 @@ import json
 
 from database import backend
 
-
-def post_to_api(myurl, mydata):
-    # connect = {'sid', 's%3AuGZU_VeCrixsynOBkdFSyRbmGSNckCs5.%2F%2BvP0uWNiMTeKdpg22YvEvPc5vXY2o80yMkuLbU7gFQ'}
-    # #loginparams = {'connect': connect}
-    # headers = {
-    #     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'
-    #                   ' Chrome/43.0.2357.125 Safari/537.36',
-    #     'Cookie': 'connect.sid=s%3AuGZU_VeCrixsynOBkdFSyRbmGSNckCs5.%2F%2BvP0uWNiMTeKdpg22YvEvPc5vXY2o80yMkuLbU7gFQ',
-    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    #     'Referer': 'https://a.n9.vc/group/class20142',
-    # }
-    # data = {
-    #     'account': 'manager',
-    #     'password': '123456'
-    # }
-    data = urllib.urlencode(mydata)
-    # request = urllib2.Request(myurl, headers=headers,data=data)
-    request = urllib2.Request(myurl)
-    response = urllib2.urlopen(request)
-    return response.read()
-
-
+def postToApi(myurl,mydata):
+	# connect={'sid','s%3AuGZU_VeCrixsynOBkdFSyRbmGSNckCs5.%2F%2BvP0uWNiMTeKdpg22YvEvPc5vXY2o80yMkuLbU7gFQ'}
+	# #loginparams = {'connect':connect}  
+ #    headers={
+ #    	'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.125 Safari/537.36',
+ #    	'Cookie':'connect.sid=s%3AuGZU_VeCrixsynOBkdFSyRbmGSNckCs5.%2F%2BvP0uWNiMTeKdpg22YvEvPc5vXY2o80yMkuLbU7gFQ',
+ #    	'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+ #    	'Referer':'https://a.n9.vc/group/class20142',
+ #    }
+ #    data={
+ #    	'account':'manager',
+ #    	'password':'123456'
+ #   	}
+   	data=urllib.urlencode(mydata)
+   	#request = urllib2.Request(myurl, headers=headers,data=data)    
+   	request = urllib2.Request(myurl)    
+   	response = urllib2.urlopen(request)
+   	return response.read()          
+        
 def index(request):
-    return render(request, 'login.html')
+	#默认返回学生登录界面
+	return render(request,'login/index.html',{'identity':'student'})
+	
+def login(request,identity):
+	print 'login/'
+	if (identity=='student'):
+		return render(request,'login/index.html',{'identity':'student'})
+	if (identity=='administrator'):
+		return render(request,'login/index.html',{'identity':'administrator'})
+	if (identity=='superuser'):
+		return render(request,'login/index.html',{'identity':'superuser'})
+	return to_notfound(request)
 
-
-def login(request):
-    print 'login/'
-    return render(request, 'login.html')
 
 
 def student(request):

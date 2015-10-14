@@ -7,18 +7,31 @@ from database import backend, utils
 import json
 
 
-def login(request):
-    print 'account: ', request.POST['account'], ' password: ', request.POST['password']
-    if request.POST['account'] == 'administrator':
-        return HttpResponseRedirect('/administrator')
+def login(request,identity):
+	print 'identity: ',identity
+	#check student login
+	if (identity=='student'):
+		if (request.POST['account']=='hzc') and (request.POST['password']=='123456'):
+			return HttpResponseRedirect('/administrator')
+		else: 	
+			return render(request,'login/index.html',{'identity':'student'})
+	
+	#check administrator login
+	if (identity=='administrator'):
+		if (request.POST['account']=='admin') and (request.POST['password']=='123456'):
+			return HttpResponseRedirect('/student')
+		else:
+			return render(request,'login/index.html',{'identity':'administrator'})
 
-    if request.POST['account'] == 'student':
-        return HttpResponseRedirect('/student')
+	#check superuser login
+	if (identity=='superuser'):
+		if (request.POST['account']=='root') and (request.POST['password']=='123456'):
+			return HttpResponseRedirect('/superuser')
+		else:
+			return render(request,'login/index.html',{'identity':'superuser'})
+	
+	return HttpResponseRedirect('/index')
 
-    if request.POST['account'] == 'superuser':
-        return HttpResponseRedirect('/superuser')
-
-    return HttpResponseRedirect('/login')
 
 
 def administrator_list(request):
@@ -32,7 +45,6 @@ def administrator_list(request):
     list.append(user1)
     list.append(user2)
     return HttpResponse(json.dumps(list, sort_keys=True, indent=4, separators=(',', ': ')))
-
 
 def submit_application(request):
     backend.add_application(request.POST)
