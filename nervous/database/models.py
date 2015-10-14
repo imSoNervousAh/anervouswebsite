@@ -1,15 +1,19 @@
 from django.db import models
 
+
 class Admin(models.Model):
     username = models.CharField(max_length=20, primary_key=True)
+    description = models.CharField(max_length=100, null=True)
     password = models.CharField(max_length=32)
+
     def __unicode__(self):
-        return self.username
+        return "%s: %s" % (self.username, self.description)
 
 
 class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
+
     def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
 
@@ -24,17 +28,19 @@ class Application(models.Model):
     manager_dept = models.CharField(max_length=40)
     manager_tel = models.CharField(max_length=20)
     manager_email = models.CharField(max_length=254)
+
     def __unicode__(self):
         return "Application for %s from user %s, status: %s" % (
             self.official_account,
             self.user_submit,
             self.status
         )
-    
+
+
 class Article(models.Model):
     title = models.CharField(max_length=50)
     official_account = models.ForeignKey(OfficialAccount)
     description = models.CharField(max_length=300, default='')
+
     def __unicode__(self):
         return self.title
-
