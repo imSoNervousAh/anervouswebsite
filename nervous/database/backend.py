@@ -33,6 +33,11 @@ def add_application(app):
     pass
 
 
+def modify_application(app):
+    print app
+    pass
+
+
 # Official Accounts
 
 def trans_account(a):
