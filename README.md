@@ -2,7 +2,11 @@
 
 A website used to manage WeChat official accounts in Tsinghua University.
 
-Team members:hhs,hzc,wyl,ytl
+Team members:
+黄豪硕 
+胡泽聪
+韦毅龙
+杨天龙 yangtianlong111@gmail.com
 
 
 #Project Environment:
