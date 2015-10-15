@@ -115,7 +115,16 @@ def get_articles():
 
 
 def add_article(dic):
-    pass
+    acc_name = dic['name']
+    try:
+        acc = OfficialAccount.get(name__exact=acc_name)
+    except ObjectDoesNotExist:
+        acc = OfficialAccount.create(name=acc_name, description=acc_name)
+    art = Article.model()
+    art.official_account_id = acc.id
+    for attr in ['title', 'description', 'likes', 'views']:
+        setattr(art, attr, dic[attr])
+    art.save()
 
 
 def get_articles_by_official_account_id(id):
