@@ -109,3 +109,6 @@ def trans_article(a):
 
 def get_articles():
     return trans_article(Article.all())
+
+def add_article(dic):
+    pass

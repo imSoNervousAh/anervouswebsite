@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from backend import *
-
+from api import getdata
 
 def build_test_db():
     Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
@@ -14,7 +14,7 @@ def build_test_db():
         temp['official_account_name'] = temp['name']
         temp['description'] = temp['content']
         temp['views'] = temp['readnum']
-        temp['likes'] = temp['likes']
+        temp['likes'] = temp['likenum']
         backend.add_article(temp)
     
 
