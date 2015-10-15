@@ -5,18 +5,16 @@
 <head>
 	
     <meta charset="utf-8">
-
-		
-      <!--[if lt IE 9]>
+	
+    <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="/static/uikit.css">
-    <script src="/static/uikit/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/uikit/css/uikit.min.css">
+    <link rel="stylesheet" href="/static/uikit/css/uikit.gradient.min.css">
     <script src="/static/uikit/js/uikit.min.js"></script>
-   
+    
 
-	
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'login/css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'login/css/supersized.css' %}">
@@ -33,6 +31,7 @@
     <script src="{% static 'login/js/supersized-init.js' %}"></script>
     <script src="{% static 'login/js/scripts.js' %}"></script>
 
+    <script type="text/javascript" src="{% static 'md5.js' %}"></script>
     <script type="text/javascript">
         function submitform() {
             document.forms["login_form"].submit();
@@ -45,39 +44,17 @@
 
 	<title>请登录</title>
 
-	
-	
 </head>
 
 
 <body>
-
 	<nav class="uk-navbar">
-		<ul class="uk-navbar-nav">
-			<li class="
-			{% if identity == 'student' %}
-			uk-active
-			{% else %}
-			uk-parent
-			{% endif %}
-			"><a href="/login/student">Student</a></li>
-			<li class="
-			{% if identity == 'administrator' %}
-			uk-active
-			{% else %}
-			uk-parent
-			{% endif %}
-			"><a href="/login/administrator">Admin</a></li>
-			<li class="
-			{% if identity == 'superuser' %}
-			uk-active
-			{% else %}
-			uk-parent
-			{% endif %}
-			"><a href="/login/superuser">Superuser</a></li>
+		<ul class="uk-navbar">
+			<li class="uk-parent"><a href="#">Student</a></li>
+			<li class="uk-parent"><a href="#">Admin</a></li>
+			<li class="uk-parent"><a href="#">Superuser</a></li>
 		</ul>
 	</nav>
-</nav>
 
 <div class="page-container">
 	<h1>
