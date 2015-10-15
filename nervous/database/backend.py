@@ -70,6 +70,9 @@ def get_official_accounts():
     # return trans_account(OfficialAccount.all())
     return OfficialAccount.all()
 
+def get_official_account_by_id(id):
+    return OfficialAccount.get(pk=id)
+
 
 # Admins
 
@@ -110,5 +113,11 @@ def trans_article(a):
 def get_articles():
     return trans_article(Article.all())
 
+
 def add_article(dic):
     pass
+
+
+def get_articles_by_official_account_id(id):
+    return trans_article(Article.filter(official_account_id__exact=id))
+
