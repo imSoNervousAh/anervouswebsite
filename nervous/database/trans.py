@@ -15,7 +15,11 @@ def article_to_dict(article):
         'title': article.title,
         'official_account_name': account.name,
         'official_account_id': id,
-        'description': article.description
+        'description': article.description,
+        'views': article.views,
+        'likes': article.likes,
+        'avatar_url': article.avatar_url,
+        'url': article.url
     }
 
 

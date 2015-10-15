@@ -44,6 +44,8 @@ class Article(models.Model):
     description = models.CharField(max_length=300, default='')
     views = models.IntegerField()
     likes = models.IntegerField()
+    avatar_url = models.CharField(max_length=300, default='')
+    url = models.CharField(max_length=300)
 
     def __unicode__(self):
         return self.title

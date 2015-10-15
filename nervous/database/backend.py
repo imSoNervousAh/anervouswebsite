@@ -122,7 +122,7 @@ def add_article(dic):
         acc = OfficialAccount.create(name=acc_name, description=acc_name)
     art = Article.model()
     art.official_account_id = acc.id
-    for attr in ['title', 'description', 'likes', 'views']:
+    for attr in ['title', 'description', 'likes', 'views', 'avatar_url', 'url']:
         setattr(art, attr, dic[attr])
     art.save()
 
