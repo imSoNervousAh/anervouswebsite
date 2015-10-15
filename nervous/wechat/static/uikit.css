@@ -1333,16 +1333,16 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover {
 .uk-navbar-nav > li:hover > a,
 .uk-navbar-nav > li > a:focus,
 .uk-navbar-nav > li.uk-open > a {
-  background-color: rgba(245, 245, 245, 0.7);
+  background-color: rgba(245, 245, 245, 0.4);
   color: #ffffff;
   outline: none;
 }
 .uk-navbar-nav > li > a:active {
-  background-color: rgba(221, 221, 221, 0.8);
+  background-color: rgba(221, 221, 221, 0.5);
   color: #ffffff;
 }
 .uk-navbar-nav > li.uk-active > a {
-  background-color: #f5f5f5;
+  background-color: rgba(245, 245, 245, 0.4);
   color: #ffffff;
 }
 .uk-navbar-nav .uk-navbar-nav-subtitle {
