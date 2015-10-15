@@ -2,6 +2,7 @@
 from backend import *
 from api import getdata
 
+
 def test_add_article():
     paras = {}
     paras['wx_name'] = 'jiujingzixun'
@@ -12,9 +13,10 @@ def test_add_article():
         temp['description'] = temp['content']
         temp['views'] = temp['readnum']
         temp['likes'] = temp['likenum']
+        temp['avatar_url'] = temp['picurl']
         print temp
         add_article(temp)
-    
+
 
 def build_test_db():
     Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
