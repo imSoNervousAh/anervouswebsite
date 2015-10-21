@@ -1,6 +1,7 @@
 def application_to_dict(app):
     account = app.official_account
     return {
+        'id': account.id,
         'name': account.name,
         'description': account.description,
         'status': app.status,
