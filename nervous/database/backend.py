@@ -49,11 +49,8 @@ def modify_application(app):
     app = app.dict()
     print app
     try:
-        print app['account_name']
-        account = OfficialAccount.get(name__exact=app['account_name'])
-        print account
+        account = OfficialAccount.get(pk=app['account_id'])
         application = Application.get(pk=account)
-        print application
         application.status = app['status']
         application.save()
     except ObjectDoesNotExist:
