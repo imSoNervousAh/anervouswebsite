@@ -4,6 +4,7 @@ def application_to_dict(app):
         'id': account.id,
         'name': account.name,
         'description': account.description,
+        'manager_name': app.manager_name,
         'status': app.status,
         'operator_admin_name': app.operator_admin,
     }
