@@ -14,6 +14,9 @@ class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
 
+    def subscriber(self):
+        return 0
+
     def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
 
@@ -29,6 +32,15 @@ class Application(models.Model):
     manager_tel = models.CharField(max_length=20)
     manager_email = models.CharField(max_length=254)
     association = models.CharField(max_length=30)
+
+    def id(self):
+        return self.official_account.id
+
+    def name(self):
+        return self.official_account.name
+
+    def operator_admin_name(self):
+        return operator_admin
 
     def __unicode__(self):
         return "Application for %s from user %s, status: %s" % (
@@ -46,6 +58,9 @@ class Article(models.Model):
     likes = models.IntegerField()
     avatar_url = models.CharField(max_length=300, default='')
     url = models.CharField(max_length=300)
+
+    def official_account_name(self):
+        return OfficialAccount.objects.get(pk=self.official_account_id).name
 
     def __unicode__(self):
         return self.title
