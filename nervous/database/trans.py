@@ -13,9 +13,13 @@ def article_to_dict(article):
     account = OfficialAccount.get(pk=id)
     return {
         'title': article.title,
-        'offcial_account_name': account.name,
-        'offcial_account_id': id,
-        'description': article.description
+        'official_account_name': account.name,
+        'official_account_id': id,
+        'description': article.description,
+        'views': article.views,
+        'likes': article.likes,
+        'avatar_url': article.avatar_url,
+        'url': article.url
     }
 
 

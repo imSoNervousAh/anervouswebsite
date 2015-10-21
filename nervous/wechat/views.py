@@ -66,42 +66,45 @@ def administrator(request):
 
 
 def detail(request, id):
-    # official_account = backend.get_official_account(id)
-    official_account = {'id': 1234,
-                        'name': '中老年生活',
-                        'wechat_id': 'gh_8b162c65a210',
-                        'subscribers': 128984,
-                        'description': '让你的中老年生活充满精彩。',
-                        'association': '离退休办',
-                        'manager_name': '杨基龙',
-                        'manager_stu_id': '2014011xxx',
-                        'manager_dept': '计算基系',
-                        'manager_tel': '15252520000',
-                        'manager_email': 'ytl14@mails.tsinghua.edu.cn',
-                        }
-    # articles = backend.get_articles(account_id=id)
-    articles = [{'title': '100个实用的生活小窍门！快转发给你的朋友！',
-                 'description': '假装这里有一段看上去还比较长的文章概要。。。。。。。。。。。。。。。。。。。',
-                 'avatar_url': r'http://mmsns.qpic.cn/mmsns/Q5vXibYbc6KhPTeuiawvxIibuGVDibmETpBg7GRm5BTZLnlMicNWSlhk2JA/0',
-                 'url': r'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MzA1MDM2MA%3D%3D&appmsgid=10002980&itemidx=2'
-                        r'&sign=d3b27498589148de49cce5e58313801c&scene=2&from=timeline&isappinstalled=0&uin=MjgzNzgwMzU'
-                        r'0MQ%3D%3D&key=a45a7c15a542fe6f2ca198c1c45816cce907bfeaa03a6bf0f79c9f8e7713ff0f81fedc195433d44'
-                        r'475cb136a0227de84&devicetype=android-16&version=25000105&lang=en',
-                 'likes': 1234567,
-                 'views': 21378218
-                 },
-                {'title': '太吃惊了！手机还可以这么用！',
-                 'description': '你每天都在用手机，但你知道你的手机有什么隐藏功能吗？\n不看不知道！为了你的家人朋友，赶快转发到朋友圈！',
-                 'avatar_url': r'http://mmbiz.qpic.cn/mmbiz/yZPTcMGWibvspeDf9GMv6QIicRDqdiaXuLRiaiaSKUcy9dKHwSeMpbx1s8p'
-                               r'QlTP9XMu092OmcahIVnI3Z9jQlyXfXyA/0?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1',
-                 'url': r'http://mp.weixin.qq.com/s?__biz=MzA5NDc1NzQ4MA==&mid=208839858&idx=1&sn=9a210da2c8b8bb212444b'
-                        r'ea4b5b0abea&scene=0&key=2877d24f51fa53848ef8f13923804fb53f0edc80a6f01604b73bca8bace5ddc716d49'
-                        r'04ffe614ffb8080126af0fbeeb8&ascene=0&uin=MTQ3MDQ0NDI4MA%3D%3D&devicetype=iMac+MacBookPro11%2C'
-                        r'5+OSX+OSX+10.11+build(15A284)&version=11020201&pass_ticket=TvE7gBRGa%2BQcXPTLSif4hyr8p2u7x46t'
-                        r'%2BqXjZYNIxgrf0ItimaEdEDtJR0dHNt57',
-                 'likes': 12734,
-                 'views': 973272
-                 }]
+    try:
+        official_account = backend.get_official_account_by_id(id)
+    except:
+        return to_notfound(request)
+    # official_account = {'id': 1234,
+    #                     'name': '中老年生活',
+    #                     'wechat_id': 'gh_8b162c65a210',
+    #                     'subscribers': 128984,
+    #                     'description': '让你的中老年生活充满精彩。',
+    #                     'association': '离退休办',
+    #                     'manager_name': '杨基龙',
+    #                     'manager_stu_id': '2014011xxx',
+    #                     'manager_dept': '计算基系',
+    #                     'manager_tel': '15252520000',
+    #                     'manager_email': 'ytl14@mails.tsinghua.edu.cn',
+    #                     }
+    articles = backend.get_articles_by_official_account_id(id)
+    # articles = [{'title': '100个实用的生活小窍门！快转发给你的朋友！',
+    #              'description': '假装这里有一段看上去还比较长的文章概要。。。。。。。。。。。。。。。。。。。',
+    #              'avatar_url': r'http://mmsns.qpic.cn/mmsns/Q5vXibYbc6KhPTeuiawvxIibuGVDibmETpBg7GRm5BTZLnlMicNWSlhk2JA/0',
+    #              'url': r'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MzA1MDM2MA%3D%3D&appmsgid=10002980&itemidx=2'
+    #                     r'&sign=d3b27498589148de49cce5e58313801c&scene=2&from=timeline&isappinstalled=0&uin=MjgzNzgwMzU'
+    #                     r'0MQ%3D%3D&key=a45a7c15a542fe6f2ca198c1c45816cce907bfeaa03a6bf0f79c9f8e7713ff0f81fedc195433d44'
+    #                     r'475cb136a0227de84&devicetype=android-16&version=25000105&lang=en',
+    #              'likes': 1234567,
+    #              'views': 21378218
+    #              },
+    #             {'title': '太吃惊了！手机还可以这么用！',
+    #              'description': '你每天都在用手机，但你知道你的手机有什么隐藏功能吗？\n不看不知道！为了你的家人朋友，赶快转发到朋友圈！',
+    #              'avatar_url': r'http://mmbiz.qpic.cn/mmbiz/yZPTcMGWibvspeDf9GMv6QIicRDqdiaXuLRiaiaSKUcy9dKHwSeMpbx1s8p'
+    #                            r'QlTP9XMu092OmcahIVnI3Z9jQlyXfXyA/0?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1',
+    #              'url': r'http://mp.weixin.qq.com/s?__biz=MzA5NDc1NzQ4MA==&mid=208839858&idx=1&sn=9a210da2c8b8bb212444b'
+    #                     r'ea4b5b0abea&scene=0&key=2877d24f51fa53848ef8f13923804fb53f0edc80a6f01604b73bca8bace5ddc716d49'
+    #                     r'04ffe614ffb8080126af0fbeeb8&ascene=0&uin=MTQ3MDQ0NDI4MA%3D%3D&devicetype=iMac+MacBookPro11%2C'
+    #                     r'5+OSX+OSX+10.11+build(15A284)&version=11020201&pass_ticket=TvE7gBRGa%2BQcXPTLSif4hyr8p2u7x46t'
+    #                     r'%2BqXjZYNIxgrf0ItimaEdEDtJR0dHNt57',
+    #              'likes': 12734,
+    #              'views': 973272
+    #              }]
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
                                                          'article_count': len(articles),

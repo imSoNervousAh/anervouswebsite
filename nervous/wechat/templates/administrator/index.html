@@ -185,7 +185,7 @@
                                             <td><a href="{% url 'detail' article.official_account_id %}">
                                                 {{ article.official_account_name }}
                                             </a></td>
-                                            <td><a href="{{ article.url }}">{{ article.title }}</a></td>
+                                            <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a></td>
                                             <td>{{ article.description|linebreaks }}</td>
                                             <td>{{ article.views }}</td>
                                             <td>{{ article.likes }}</td>
