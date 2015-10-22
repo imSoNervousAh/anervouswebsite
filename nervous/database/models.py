@@ -13,13 +13,9 @@ class Admin(models.Model):
 class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
-
-    def subscriber(self):
-        return 0
-
+    
     def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
-
 
 class Application(models.Model):
     official_account = models.OneToOneField(OfficialAccount, primary_key=True)
@@ -32,15 +28,6 @@ class Application(models.Model):
     manager_tel = models.CharField(max_length=20)
     manager_email = models.CharField(max_length=254)
     association = models.CharField(max_length=30)
-
-    def id(self):
-        return self.official_account.id
-
-    def name(self):
-        return self.official_account.name
-
-    def operator_admin_name(self):
-        return operator_admin
 
     def __unicode__(self):
         return "Application for %s from user %s, status: %s" % (
@@ -64,3 +51,17 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.title
+
+# Add delegating attributes 
+
+def add_delegate(cls, dest, key):
+    def inner_delegate(self):
+        return getattr(getattr(self, dest), key)
+    setattr(cls, key, inner_delegate)
+
+for attr in ['manager_name', 'manager_student_id', 'manager_dept', 'manager_tel', 'manager_email', 'association']:
+    add_delegate(OfficialAccount, 'application', attr)
+
+for attr in ['id', 'name', 'description']:
+    add_delegate(Application, 'official_account', attr)
+

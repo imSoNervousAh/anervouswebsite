@@ -45,8 +45,8 @@ def student(request):
 
     applications = backend.get_applications()
     for app in applications:
-        app['status_glyphicon'] = glyphicons[app['status']]
-        app['status_name'] = status_name[app['status']]
+        app.status_glyphicon = glyphicons[app.status]
+        app.status_name = status_name[app.status]
     return render(request, 'student/index.html', {'applications': applications,
                                                   'app_count': len(applications),
                                                   })
