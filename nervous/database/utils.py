@@ -14,7 +14,7 @@ def test_add_article():
         temp['views'] = temp['readnum']
         temp['likes'] = temp['likenum']
         temp['avatar_url'] = temp['picurl']
-        print temp
+        print temp['title']
         add_article(temp)
 
 
@@ -31,5 +31,5 @@ def build_test_db():
 
 
 def clean_test_db():
-    for model in [Admin, OfficialAccount, Application, Article]:
+    for model in [Admin, OfficialAccount, Application, Article, ArticleDailyRecord]:
         model.all().delete()

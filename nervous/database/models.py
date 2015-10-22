@@ -41,8 +41,6 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     official_account_id = models.IntegerField()
     description = models.CharField(max_length=300, default='')
-    views = models.IntegerField()
-    likes = models.IntegerField()
     avatar_url = models.CharField(max_length=300, default='')
     url = models.CharField(max_length=300)
 
@@ -51,6 +49,21 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class ArticleDailyRecord(models.Model):
+    article = models.ForeignKey(Article)
+    update_time = models.DateTimeField()
+    likes = models.IntegerField()
+    views = models.IntegerField()
+
+    def __unicode__(self):
+        return "likes = %s & views = %s at %s" % (
+            self.likes,
+            self.views,
+            self.update_time
+        )
+
 
 # Add delegating attributes 
 
