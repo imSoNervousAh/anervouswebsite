@@ -38,10 +38,13 @@ def login(request,identity):
 
 
 def submit_application(request):
-    print request.POST
-    backend.add_application(request.POST)
+    dic = request.POST.dict()
+    print dic
+    username = session.get_username(request)
+    print "submit_application", username
+    dic['user_submit'] = username
+    backend.add_application(dic)
     return HttpResponse(request.POST)
-    # return HttpResponseRedirect('/student')
 
 
 def modify_application(request):

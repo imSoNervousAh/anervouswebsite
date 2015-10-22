@@ -25,7 +25,7 @@ def get_applications_by_user(username):
 
 
 def add_application(app):
-    app = app.dict()
+    print app
     name, description = app['name'], app['description']
     for k in ['name', 'description', 'csrfmiddlewaretoken']:
         del app[k]

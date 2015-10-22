@@ -60,8 +60,8 @@ def student(request):
                    'not_submitted': '尚未提交',
                    }
 
-    applications = backend.get_applications()
-    #applications  = backend.get_applications_by_user(session.get_username(request))
+    username = session.get_username(request)
+    applications  = backend.get_applications_by_user(username)
     for app in applications:
         app.status_glyphicon = glyphicons[app.status]
         app.status_name = status_name[app.status]
