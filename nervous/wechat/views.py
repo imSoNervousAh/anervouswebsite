@@ -15,8 +15,7 @@ import codecs
 import json
 
 from database import backend
-from wechat import cookies
-
+from wechat import session
 
 
 def index(request):
@@ -27,30 +26,28 @@ def login(request, identity='student'):
     print 'login/'
     if identity == 'student':
         response=render(request, 'login/index.html', {'identity': 'student'})
-        #response.set_cookie('identity','student',3600)
         return response
     if identity == 'administrator':
         response=  render(request, 'login/index.html', {'identity': 'administrator'})
-        #response.set_cookie('identity','administrator',3600)
         return response
     if identity == 'superuser':
         response = render(request, 'login/index.html', {'identity': 'superuser'})
-        #response.set_cookie('identity','superuser',3600)
         return response
     return to_notfound(request)
 
 def logout(request):
-    identity=cookies.get_identity_from_request(request)
+    identity=session.get_identity(request)
     if identity!='none':
-        response = login(request,identity)
-        cookies.delete_cookies_from_response(response)
         print 'logout success!'
+        session.del_session(request)
+        response = login(request,identity)
         return response
     print 'no cookies & logout success!'
     return login(request,'student')
 
 def student(request):
-    if not cookies.check_cookies_from_request(request,'student'):
+    print 'student identity: ',session.get_identity(request)
+    if session.get_identity(request)!='student':
         return login(request,'student')
     glyphicons = {'approved': 'glyphicon-ok-sign',
                   'rejected': 'glyphicon-remove-sign',
@@ -64,19 +61,21 @@ def student(request):
                    }
 
     #applications = backend.get_applications()
-    applications  = backend.get_applications_by_user(cookies.get_username_from_request(request))
+    applications  = backend.get_applications_by_user(session.get_username(request))
     for app in applications:
         app['status_glyphicon'] = glyphicons[app['status']]
         app['status_name'] = status_name[app['status']]
     response = render(request, 'student/index.html', {'applications': applications,
                                                     'app_count': len(applications),
-                                                    'username':cookies.get_username_from_request(request),
+                                                    'username':session.get_username(request),
                                                   })
     return response
 
 def administrator(request):
-    if not cookies.check_cookies_from_request(request,'administrator'):
+    print 'admin identity: ',session.get_identity(request)
+    if session.get_identity(request)!=u'administrator':
         return login(request,'administrator')
+        
     pending_applications = backend.get_pending_applications()
     #pending_applications = backend.get_pending_applications_by_user()
     official_accounts = backend.get_official_accounts()  
@@ -87,7 +86,7 @@ def administrator(request):
                                                         'account_count': len(official_accounts),
                                                         'articles': articles,
                                                         'article_count': len(articles),
-                                                        'username':cookies.get_username_from_request(request),
+                                                        'username':session.get_username(request)
                                                         })
 
 
@@ -137,7 +136,7 @@ def detail(request, id):
                                                          })
 
 def superuser(request):
-    if not cookies.check_cookies_from_request(request,'superuser'):
+    if session.get_identity(request)!='superuser':
         return login(request,'superuser')
     administrators = backend.get_admins()
     return render(request, 'superuser/index.html', {'administrators': administrators,
