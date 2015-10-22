@@ -110,7 +110,7 @@
                                             <td>
                                                 <span class="glyphicon {{ app.status_glyphicon }}"></span> {{ app.status_name }}
                                             </td>
-                                            <td>{{ app.operator_admin_name }}</td>
+                                            <td>{{ app.operator_admin }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -224,7 +224,8 @@
                                         url: url,
                                         data: $("#application_form").serialize(),
                                         success: function (data) {
-                                            alert(data);
+                                            alert('提交成功!');
+                                            location.reload();
                                         }
                                     });
                                 });
