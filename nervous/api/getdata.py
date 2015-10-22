@@ -19,7 +19,7 @@ def json_encode(input):
         result_string += '"'
         result_string += keys[0]
         result_string += '":"'
-        result_string += keys[1]
+        result_string += str(keys[1])
         result_string += '"'
         flag = 1
     result_string += '}'
