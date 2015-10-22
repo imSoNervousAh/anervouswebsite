@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
+from  django.shortcuts import render_to_response
+
 
 import re
 import urllib2
@@ -13,25 +15,40 @@ import codecs
 import json
 
 from database import backend
+from wechat import session
 
 
 def index(request):
     # 默认返回学生登录界面
     return render(request, 'login/index.html', {'identity': 'student'})
 
-
 def login(request, identity='student'):
     print 'login/'
     if identity == 'student':
-        return render(request, 'login/index.html', {'identity': 'student'})
+        response=render(request, 'login/index.html', {'identity': 'student'})
+        return response
     if identity == 'administrator':
-        return render(request, 'login/index.html', {'identity': 'administrator'})
+        response=  render(request, 'login/index.html', {'identity': 'administrator'})
+        return response
     if identity == 'superuser':
-        return render(request, 'login/index.html', {'identity': 'superuser'})
+        response = render(request, 'login/index.html', {'identity': 'superuser'})
+        return response
     return to_notfound(request)
 
+def logout(request):
+    identity=session.get_identity(request)
+    if identity!='none':
+        print 'logout success!'
+        session.del_session(request)
+        response = login(request,identity)
+        return response
+    print 'no cookies & logout success!'
+    return login(request,'student')
 
 def student(request):
+    print 'student identity: ',session.get_identity(request)
+    if session.get_identity(request)!='student':
+        return login(request,'student')
     glyphicons = {'approved': 'glyphicon-ok-sign',
                   'rejected': 'glyphicon-remove-sign',
                   'pending': 'glyphicon-question-sign',
@@ -43,18 +60,25 @@ def student(request):
                    'not_submitted': '尚未提交',
                    }
 
-    applications = backend.get_applications()
+    #applications = backend.get_applications()
+    applications  = backend.get_applications_by_user(session.get_username(request))
     for app in applications:
         app['status_glyphicon'] = glyphicons[app['status']]
         app['status_name'] = status_name[app['status']]
-    return render(request, 'student/index.html', {'applications': applications,
-                                                  'app_count': len(applications),
+    response = render(request, 'student/index.html', {'applications': applications,
+                                                    'app_count': len(applications),
+                                                    'username':session.get_username(request),
                                                   })
-
+    return response
 
 def administrator(request):
+    print 'admin identity: ',session.get_identity(request)
+    if session.get_identity(request)!=u'administrator':
+        return login(request,'administrator')
+        
     pending_applications = backend.get_pending_applications()
-    official_accounts = backend.get_official_accounts()
+    #pending_applications = backend.get_pending_applications_by_user()
+    official_accounts = backend.get_official_accounts()  
     articles = backend.get_articles()
     return render(request, 'administrator/index.html', {'pending_applications': pending_applications,
                                                         'pending_count': len(pending_applications),
@@ -62,6 +86,7 @@ def administrator(request):
                                                         'account_count': len(official_accounts),
                                                         'articles': articles,
                                                         'article_count': len(articles),
+                                                        'username':session.get_username(request)
                                                         })
 
 
@@ -110,8 +135,9 @@ def detail(request, id):
                                                          'article_count': len(articles),
                                                          })
 
-
 def superuser(request):
+    if session.get_identity(request)!='superuser':
+        return login(request,'superuser')
     administrators = backend.get_admins()
     return render(request, 'superuser/index.html', {'administrators': administrators,
                                                     })
