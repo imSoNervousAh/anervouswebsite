@@ -44,6 +44,12 @@ class Article(models.Model):
     avatar_url = models.CharField(max_length=300, default='')
     url = models.CharField(max_length=300)
 
+    def likes(self):
+        return self.articledailyrecord_set.last().likes
+
+    def views(self):
+        return self.articledailyrecord_set.last().views
+
     def official_account_name(self):
         return OfficialAccount.objects.get(pk=self.official_account_id).name
 

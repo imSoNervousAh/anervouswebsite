@@ -36,8 +36,8 @@ def update_official_account(account):
         cnt += 10
 
 def update_all():
-    lists = backend.get_official_accounts_wx_name()
-    #need wx_name
+    # TODO: backend should return a list of wx_id
+    # lists = backend.get_official_accounts_wx_name()
     lists = ['jiujingzixun']
     for i in lists:
         update_official_account(i)

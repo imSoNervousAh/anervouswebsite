@@ -113,7 +113,7 @@ def add_article(dic):
             setattr(art, attr, dic[attr])
         art.save()
     ArticleDailyRecord.create(
-        article = article,
+        article = art,
         likes = dic['likes'],
         views = dic['views'],
         update_time = dic['update_time']

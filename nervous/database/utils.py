@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from backend import *
-from api import getdata
+from api import getdata, update
 
 
 def test_add_article():
@@ -17,6 +17,9 @@ def test_add_article():
         print temp['title']
         add_article(temp)
 
+def test_update():
+    update.update_all()
+
 
 def build_test_db():
     Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
@@ -27,7 +30,7 @@ def build_test_db():
     mus = OfficialAccount.create(name='Lab Mu\'s')
     Application.create(official_account=mus, user_submit='GayLou', status='pending')
 
-    test_add_article()
+    test_update()
 
 
 def clean_test_db():
