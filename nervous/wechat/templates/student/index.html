@@ -224,7 +224,8 @@
                                         url: url,
                                         data: $("#application_form").serialize(),
                                         success: function (data) {
-                                            alert(data);
+                                            alert('提交成功!');
+                                            location.reload();
                                         }
                                     });
                                 });
