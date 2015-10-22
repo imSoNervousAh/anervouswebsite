@@ -1,146 +1,85 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>管理员后台 - 清华大学微信公众号备案平台</title>
-    <meta name="generator" content="Bootply"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'bootstrap/css/bootswartch-paper.css' %}" rel="stylesheet">
-    <!--[if lt IE 9]>
-            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    <link href="{% static 'administrator/css/styles.css' %}" rel="stylesheet">
-    <!-- script references -->
-    <script src="{% static 'jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'administrator/js/scripts.js' %}"></script>
-</head>
+{% block title %}管理员后台 - 清华大学微信公众号备案平台{% endblock %}
 
-<body>
-<!-- header -->
-<div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand">清华大学微信公众号备案平台</a>
-            <a class="navbar-brand">&gt;</a>
-            <a class="navbar-brand" href="{% url 'administrator' %}">管理员后台</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" href="#"><i
-                            class="glyphicon glyphicon-user"></i> {{ username }} <span class="caret"></span></a>
-                    <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                        <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /container -->
-</div>
-<!-- /Header -->
-<!-- Main -->
-<div class="container-fluid">
+{% block subtitle %}
+    <a class="navbar-brand">&gt;</a>
+    <a class="navbar-brand" href="{% url 'administrator' %}">管理员后台</a>
+{% endblock subtitle %}
+
+{% block left-column %}
+    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
+            class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
+    <ul class="nav nav-stacked collapse in" id="application-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in" id="userMenu">
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
+                    class="badge badge-info">{{ pending_count }}</span></a></li>
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a></li>
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-list-alt"></i>　所有申请</a></li>
+        </ul>
+        </li>
+    </ul>
+    <hr>
+    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
+            class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
+    <ul class="nav nav-stacked collapse in" id="analyse-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in" id="userMenu">
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-list"></i>　公众号列表</a></li>
+            <li class="nav-header"><a href="#"><i
+                    class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
+            </li>
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a></li>
+        </ul>
+        </li>
+    </ul>
+    <hr>
+{% endblock left-column %}
+
+{% block main-page %}
+    <a style="text-decoration: none;" href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
+    <hr>
     <div class="row">
-        <div class="col-sm-2">
-            <!-- Left column -->
-            <a href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
-                    class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
-            <hr>
-            <ul class="nav nav-stacked collapse in" id="application-menu">
-                <ul class="nav nav-stacked collapse in" id="userMenu">
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
-                            class="badge badge-info">{{ pending_count }}</span></a></li>
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a></li>
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-list-alt"></i>　所有申请</a></li>
-                </ul>
-                </li>
-                <hr>
-            </ul>
-            <a href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
-                    class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
-            <hr>
-            <ul class="nav nav-stacked collapse in" id="analyse-menu">
-                <ul class="nav nav-stacked collapse in" id="userMenu">
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-list"></i>　公众号列表</a></li>
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
-                    </li>
-                    <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a></li>
-                </ul>
-                </li>
-                <hr>
-            </ul>
-        </div>
-        <!-- /col-3 -->
-        <div class="col-sm-10">
-            <!-- column 2 -->
-            <ul class="list-inline pull-right">
-                <li><a href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                        class="glyphicon glyphicon-comment"></i><span class="count"> 3</span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">1. Is there a way..</a></li>
-                        <li><a href="#">2. Hello, admin. I would..</a></li>
-                        <li><a href="#"><strong>All messages</strong></a></li>
-                    </ul>
-                </li>
-                <li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
-                <li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span
-                        class="glyphicon glyphicon-plus-sign"></span> Add Widget</a></li>
-            </ul>
-            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
-            <hr>
-            <div class="row">
-                <!-- center left-->
-                <div class="col-md-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>待审批申请<span class="badge pull-right">{{ pending_count }}</span></h4></div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>公众号名称</th>
-                                        <th>公众号负责人</th>
-                                        <th>公众号简介</th>
-                                        <th>
-                                            <div style="width: 30px"/>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <script>
-                                        $(function () {
-                                            $('body').popover({
-                                                'html': true,
-                                                'selector': '.change-app-status-link',
-                                                'title': "请选择审批结果",
-                                                'trigger': 'focus',
-                                                'viewport': {selector: 'body', padding: 0}
-                                            });
-                                        });
-                                    </script>
-                                    {% for app in pending_applications %}
-                                        <tr>
-                                            <td>{{ app.name }}</td>
-                                            <td>{{ app.manager_name }}</td>
-                                            <td>{{ app.description|linebreaks }}</td>
-                                            <td>
-                                                <a href="#" class="change-app-status-link" data-toggle="popover"
-                                                   data-content="
+        <!-- center left-->
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>待审批申请<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>公众号名称</th>
+                                <th>公众号负责人</th>
+                                <th>公众号简介</th>
+                                <th>
+                                    <div style="width: 30px">
+                                        <div/>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <script>
+                                $(function () {
+                                    $('body').popover({
+                                        'html': true,
+                                        'selector': '.change-app-status-link',
+                                        'title': "请选择审批结果",
+                                        'trigger': 'focus',
+                                        'viewport': {selector: 'body', padding: 0}
+                                    });
+                                });
+                            </script>
+                            {% for app in pending_applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.manager_name }}</td>
+                                    <td>{{ app.description|linebreaks }}</td>
+                                    <td>
+                                        <a href="#" class="change-app-status-link" data-toggle="popover"
+                                           data-content="
                                                         <form method='post' action='{% url 'modify_application' %}'>
                                                             {% csrf_token %}
                                                             <button type='submit' name='status' value='rejected'
@@ -155,148 +94,121 @@
                                                                 <span class='glyphicon glyphicon-ok-sign'></span> 通过
                                                             </button>
                                                         </form>">
-                                                    <span class="glyphicon glyphicon-check"></span> 审批</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>最近一周的热门文章</h4></div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>公众号名称</th>
-                                        <th>文章标题</th>
-                                        <th>文章简介</th>
-                                        <th><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                                        <th><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for article in articles %}
-                                        <tr>
-                                            <td><a href="{% url 'detail' article.official_account_id %}">
-                                                {{ article.official_account_name }}
-                                            </a></td>
-                                            <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a></td>
-                                            <td>{{ article.description|linebreaks }}</td>
-                                            <td>{{ article.views }}</td>
-                                            <td>{{ article.likes }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                            <span class="glyphicon glyphicon-check"></span> 审批</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <!--/col-->
-                <div class="col-md-3">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>公告</h4></div>
-                        <div class="panel-body">
-                            <div class="alert alert-info" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                                一些<strong>不那么重要</strong>的通知
-                            </div>
-                            <p>站长给管理员的通知</p>
-
-                            <p>真的有这种东西吗</p>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>公众号关注排行</h4></div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>名称</th>
-                                        <th>关注人数</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for account in official_accounts %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td>{{ account.name }}</td>
-                                            <td>{{ account.subscribers }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--/col-span-6-->
             </div>
-            <!--/row-->
             <hr>
-            <a href="#"><strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong></a>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(3 mins ago)</small>
-                            The 3rd page reports don't contain any links. Does anyone know why..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(1 hour ago)</small>
-                            Hi all, I've just post a report that show the relationship betwe..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
-                            <small>(2 hrs ago)</small>
-                            Paul. That document you posted yesterday doesn't seem to contain the over..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>
-                            <small>(4 hrs ago)</small>
-                            The map service on c243 is down today. I will be fixing the..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
-                            <small>(yesterday)</small>
-                            I posted a new document that shows how to install the services layer..</a></li>
-                        <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
-                            <small>(yesterday)</small>
-                            ..</a></li>
-                    </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>最近一周的热门文章</h4></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>公众号名称</th>
+                                <th>文章标题</th>
+                                <th>文章简介</th>
+                                <th><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                                <th><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for article in articles %}
+                                <tr>
+                                    <td><a href="{% url 'detail' article.official_account_id %}">
+                                        {{ article.official_account_name }}
+                                    </a></td>
+                                    <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a>
+                                    </td>
+                                    <td>{{ article.description|linebreaks }}</td>
+                                    <td>{{ article.views }}</td>
+                                    <td>{{ article.likes }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <!--/col-span-9-->
-    </div>
-</div>
-<!-- /Main -->
-<footer class="text-center">清华大学公众号管理系统</footer>
-<div class="modal" id="addWidgetModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add Widget</h4>
+        <!--/col-->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公告</h4></div>
+                <div class="panel-body">
+                    <div class="alert alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        一些<strong>不那么重要</strong>的通知
+                    </div>
+                    <p>站长给管理员的通知</p>
+
+                    <p>真的有这种东西吗</p>
+                </div>
             </div>
-            <div class="modal-body">
-                <p>Add a widget stuff here..</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#" data-dismiss="modal" class="btn">Close</a>
-                <a href="#" class="btn btn-primary">Save changes</a>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公众号关注排行</h4></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>名称</th>
+                                <th>关注人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for account in official_accounts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ account.name }}</td>
+                                    <td>{{ account.subscribers }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- /.modal-content -->
+        <!--/col-span-6-->
     </div>
-    <!-- /.modal-dalog -->
-</div>
-<!-- /.modal -->
-</body>
-
-</html>
+    <!--/row-->
+    <hr>
+    <a style="text-decoration: none;" href="#"><strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong></a>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
+                    <small>(3 mins ago)</small>
+                    The 3rd page reports don't contain any links. Does anyone know why..</a></li>
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
+                    <small>(1 hour ago)</small>
+                    Hi all, I've just post a report that show the relationship betwe..</a></li>
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
+                    <small>(2 hrs ago)</small>
+                    Paul. That document you posted yesterday doesn't seem to contain the over..</a></li>
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart-empty"></i>
+                    <small>(4 hrs ago)</small>
+                    The map service on c243 is down today. I will be fixing the..</a></li>
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-heart"></i>
+                    <small>(yesterday)</small>
+                    I posted a new document that shows how to install the services layer..</a></li>
+                <li class="list-group-item"><a href="#"><i class="glyphicon glyphicon-flash"></i>
+                    <small>(yesterday)</small>
+                    ..</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock main-page %}

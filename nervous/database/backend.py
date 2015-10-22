@@ -57,6 +57,7 @@ def modify_application(app):
 def get_official_accounts():
     return OfficialAccount.all()
 
+
 def get_official_account_by_id(id):
     return OfficialAccount.get(pk=id)
 
@@ -82,6 +83,7 @@ def del_admin(username):
 
 def get_admins():
     return Admin.all()
+
 
 def check_admin(username, password):
     try:
@@ -122,4 +124,3 @@ def add_article(dic):
 
 def get_articles_by_official_account_id(id):
     return Article.filter(official_account_id__exact=id)
-
