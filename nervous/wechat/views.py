@@ -67,6 +67,7 @@ def student(request):
         app.status_name = status_name[app.status]
     return render(request, 'student/index.html', {'applications': applications,
                                                   'app_count': len(applications),
+                                                  'username':session.get_username(request),
                                                   })
     return response
 
@@ -85,7 +86,7 @@ def administrator(request):
                                                         'account_count': len(official_accounts),
                                                         'articles': articles,
                                                         'article_count': len(articles),
-                                                        'username':session.get_username(request)
+                                                        'username':session.get_username(request),
                                                         })
 
 
