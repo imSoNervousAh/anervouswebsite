@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from backend import *
-from api import getdata
+from api import getdata, update
 
 
 def test_add_article():
@@ -14,8 +14,11 @@ def test_add_article():
         temp['views'] = temp['readnum']
         temp['likes'] = temp['likenum']
         temp['avatar_url'] = temp['picurl']
-        print temp
+        print temp['title']
         add_article(temp)
+
+def test_update():
+    update.update_all()
 
 
 def build_test_db():
@@ -27,9 +30,9 @@ def build_test_db():
     mus = OfficialAccount.create(name='Lab Mu\'s')
     Application.create(official_account=mus, user_submit='GayLou', status='pending')
 
-    test_add_article()
+    test_update()
 
 
 def clean_test_db():
-    for model in [Admin, OfficialAccount, Application, Article]:
+    for model in [Admin, OfficialAccount, Application, Article, ArticleDailyRecord]:
         model.all().delete()

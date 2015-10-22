@@ -7,11 +7,12 @@ def setup():
     sys.path.append('.')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nervous.settings')
     django.setup()
-    from database.models import Admin, OfficialAccount, Application, Article
+    from database.models import Admin, OfficialAccount, Application, Article, ArticleDailyRecord
     __builtin__.Admin = Admin.objects
     __builtin__.OfficialAccount = OfficialAccount.objects
     __builtin__.Application = Application.objects
     __builtin__.Article = Article.objects
+    __builtin__.ArticleDailyRecord = ArticleDailyRecord.objects
 
 
 if (__name__ == '__main__'):

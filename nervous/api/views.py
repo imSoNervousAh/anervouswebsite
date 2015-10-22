@@ -9,23 +9,26 @@ import json
 
 from wechat import session
 
+
 def check_student(username, password):
     return tsinghua_login(username, password)
 
+
 def check_administrator(username, password):
     return backend.check_admin(username, password)
+
 
 def check_superuser(username, password):
     return (username == 'root') and (password == '123456')
 
 
-def login(request,identity):
-    print 'identity: ',identity
+def login(request, identity):
+    print 'identity: ', identity
     username, password = request.POST['account'], request.POST['password']
-    if (identity in ['student', 'administrator', 'superuser']):
-        if (globals()['check_%s' % identity](username, password)):
-            session.add_session(request,identity=identity,username=username)
-            response= HttpResponseRedirect('/%s' % identity)
+    if identity in ['student', 'administrator', 'superuser']:
+        if globals()['check_%s' % identity](username, password):
+            session.add_session(request, identity=identity, username=username)
+            response = HttpResponseRedirect('/%s' % identity)
             return response
         else:
             response = render(request, 'login/index.html', {'identity': identity})
@@ -38,10 +41,13 @@ def login(request,identity):
 
 
 def submit_application(request):
-    print request.POST
-    backend.add_application(request.POST)
+    dic = request.POST.dict()
+    print dic
+    username = session.get_username(request)
+    print "submit_application", username
+    dic['user_submit'] = username
+    backend.add_application(dic)
     return HttpResponse(request.POST)
-    # return HttpResponseRedirect('/student')
 
 
 def modify_application(request):
@@ -58,4 +64,3 @@ def del_admin(request):
     print "del %s" % request.POST['username']
     backend.del_admin(request.POST['username'])
     return HttpResponseRedirect('/superuser')
-
