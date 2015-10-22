@@ -2,23 +2,18 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 import setup_db
-from trans import *
 
 setup_db.setup()
 
 
 # Applications
 
-def trans_application(a):
-    return map(application_to_dict, a)
-
-
 def get_applications():
-    return trans_application(Application.all())
+    return Application.all()
 
 
 def get_applications_by_status(status):
-    return trans_application(Application.filter(status__exact=status))
+    return Application.filter(status__exact=status)
 
 
 def get_pending_applications():
@@ -26,7 +21,7 @@ def get_pending_applications():
 
 
 def get_applications_by_user(username):
-    return trans_application(Application.filter(user_submit__exact=username))
+    return Application.filter(user_submit__exact=username)
 
 
 def add_application(app):
@@ -59,12 +54,7 @@ def modify_application(app):
 
 # Official Accounts
 
-def trans_account(a):
-    return map(official_account_to_dict, a)
-
-
 def get_official_accounts():
-    # return trans_account(OfficialAccount.all())
     return OfficialAccount.all()
 
 def get_official_account_by_id(id):
@@ -103,12 +93,8 @@ def check_admin(username, password):
 
 # Articles
 
-def trans_article(a):
-    return map(article_to_dict, a)
-
-
 def get_articles():
-    return trans_article(Article.all())
+    return Article.all()
 
 
 def add_article(dic):
@@ -125,5 +111,5 @@ def add_article(dic):
 
 
 def get_articles_by_official_account_id(id):
-    return trans_article(Article.filter(official_account_id__exact=id))
+    return Article.filter(official_account_id__exact=id)
 

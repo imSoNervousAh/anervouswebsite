@@ -13,10 +13,9 @@ class Admin(models.Model):
 class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
-
+    
     def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
-
 
 class Application(models.Model):
     official_account = models.OneToOneField(OfficialAccount, primary_key=True)
@@ -47,5 +46,22 @@ class Article(models.Model):
     avatar_url = models.CharField(max_length=300, default='')
     url = models.CharField(max_length=300)
 
+    def official_account_name(self):
+        return OfficialAccount.objects.get(pk=self.official_account_id).name
+
     def __unicode__(self):
         return self.title
+
+# Add delegating attributes 
+
+def add_delegate(cls, dest, key):
+    def inner_delegate(self):
+        return getattr(getattr(self, dest), key)
+    setattr(cls, key, inner_delegate)
+
+for attr in ['manager_name', 'manager_student_id', 'manager_dept', 'manager_tel', 'manager_email', 'association']:
+    add_delegate(OfficialAccount, 'application', attr)
+
+for attr in ['id', 'name', 'description']:
+    add_delegate(Application, 'official_account', attr)
+

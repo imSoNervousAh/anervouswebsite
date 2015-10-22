@@ -63,11 +63,11 @@ def student(request):
     applications = backend.get_applications()
     #applications  = backend.get_applications_by_user(session.get_username(request))
     for app in applications:
-        app['status_glyphicon'] = glyphicons[app['status']]
-        app['status_name'] = status_name[app['status']]
-    response = render(request, 'student/index.html', {'applications': applications,
-                                                    'app_count': len(applications),
-                                                    'username':session.get_username(request),
+        app.status_glyphicon = glyphicons[app.status]
+        app.status_name = status_name[app.status]
+    return render(request, 'student/index.html', {'applications': applications,
+                                                  'app_count': len(applications),
+                                                  'username':session.get_username(request),
                                                   })
     return response
 
@@ -86,7 +86,7 @@ def administrator(request):
                                                         'account_count': len(official_accounts),
                                                         'articles': articles,
                                                         'article_count': len(articles),
-                                                        'username':session.get_username(request)
+                                                        'username':session.get_username(request),
                                                         })
 
 
