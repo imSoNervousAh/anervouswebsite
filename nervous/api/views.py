@@ -7,6 +7,8 @@ from database import backend, utils
 from api.info_login import auth_by_info as tsinghua_login
 import json
 
+from wechat import cookies
+
 def check_student(username, password):
     return tsinghua_login(username, password)
 
@@ -22,11 +24,17 @@ def login(request,identity):
     username, password = request.POST['account'], request.POST['password']
     if (identity in ['student', 'administrator', 'superuser']):
         if (globals()['check_%s' % identity](username, password)):
-            return HttpResponseRedirect('/%s' % identity)
+            response= HttpResponseRedirect('/%s' % identity)
+            cookies.make_cookies_from_response(response,identity,username)
+            return response
         else:
-            return render(request, 'login/index.html', {'identity': identity})
+            response = render(request, 'login/index.html', {'identity': identity})
+            cookies.delete_cookies_from_response(response)
+            return response
     else:
-        return HttpResponseRedirect('/index')
+        response = HttpResponseRedirect('/index')
+        cookies.delete_cookies_from_response(response)
+        return response
 
 
 def submit_application(request):
@@ -50,3 +58,4 @@ def del_admin(request):
     print "del %s" % request.POST['username']
     backend.del_admin(request.POST['username'])
     return HttpResponseRedirect('/superuser')
+

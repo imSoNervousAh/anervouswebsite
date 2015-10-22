@@ -68,8 +68,9 @@ manager_email
 status
 operator_admin_id
 
-admin:
-id
-username
-password // md5?
+identity:
+	student
+	administrator
+	superuser
+
 
