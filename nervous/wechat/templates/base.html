@@ -14,36 +14,38 @@
     <!-- stylesheets -->
     <link href="{% static 'base/css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/eden.css' %}" rel="stylesheet">
     {% block css %}
     {% endblock css %}
     <!-- script references -->
     <script src="{% static 'jquery/jquery.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'base/js/scripts.js' %}"></script>
+    <script src="{% static 'base/js/referrer-killer.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}
 </head>
 
 <body>
 <!-- header -->
-<div id="top-nav" class="navbar navbar-inverse navbar-static-top affix">
+<div id="top-nav" class="navbar navbar-default navbar-static-top affix">
     <div class="container-fluid">
         <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand">清华大学微信公众号备案平台</a>
+            <a href="#" class="navbar-brand">清华大学微信公众号备案平台</a>
             {% block subtitle %}
                 <a class="navbar-brand">&gt;</a>
-                <a class="navbar-brand" href="{% url 'administrator' %}">管理员后台</a>
+                <a href="#" class="navbar-brand">管理员后台</a>
             {% endblock subtitle %}
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" href="#"><i
+                <a class="fake-link dropdown-toggle" role="button" data-toggle="dropdown" data-target="#""><i
                         class="glyphicon glyphicon-user"></i> {{ username }} <span class="caret"></span></a>
                 <ul id="g-account-menu" class="dropdown-menu" role="menu">
                     {% block user-menu %}
                         <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
+                        <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
                     {% endblock user-menu %}
                 </ul>
             </li>
@@ -59,7 +61,7 @@
             <div class="left-column affix">
                 <!-- Left column -->
                 {% block left-column %}
-                    <a style="text-decoration: none;" href="#" data-toggle="collapse"
+                    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
                        data-target="#application-menu"><strong><i
                             class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
                     <ul class="nav nav-stacked collapse in" id="application-menu">
@@ -74,7 +76,7 @@
                         </li>
                     </ul>
                     <hr>
-                    <a style="text-decoration: none;" href="#" data-toggle="collapse"
+                    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
                        data-target="#analyse-menu"><strong><i
                             class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
                     <ul class="nav nav-stacked collapse in" id="analyse-menu">
