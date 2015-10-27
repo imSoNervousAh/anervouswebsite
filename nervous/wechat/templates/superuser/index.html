@@ -8,7 +8,7 @@
 {% endblock subtitle %}
 
 {% block left-column %}
-    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
+    <a class="fake-link" data-toggle="collapse" data-target="#application-menu"><strong><i
             class="glyphicon glyphicon-wrench"></i>　管理员账户</strong></a>
     <hr>
     <ul class="nav nav-stacked collapse in" id="application-menu">
@@ -19,7 +19,7 @@
         </li>
         <hr>
     </ul>
-    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
+    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse" data-target="#analyse-menu"><strong><i
             class="glyphicon glyphicon-stats"></i>　数据库管理</strong></a>
     <hr>
     <ul class="nav nav-stacked collapse in" id="analyse-menu">
@@ -34,7 +34,7 @@
 {% endblock left-column %}
 
 {% block main-page %}
-    <a style="text-decoration: none;" href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
+    <a style="text-decoration: none;" class="fake-link"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
     <hr>
     <div class="row">
         <!-- center left-->
@@ -68,11 +68,11 @@
                                 <tr>
                                     <td>{{ admin.username }}</td>
                                     <td>{{ admin.description }}</td>
-                                    <td><a href="#" class="delete-admin-link" data-toggle="popover"
+                                    <td><a class="fake-link delete-admin-link" data-toggle="popover"
                                            data-content="
                                                         <form method='post' action='{% url 'del_admin' %}'>
                                                             {% csrf_token %}
-                                                            <div class='btn btn-default'>取消</div>
+                                                            <div class='btn btn-info'>取消</div>
                                                             <input style='display:none' name='username' value='{{ admin.username }}'>
                                                             <span>　</span>
                                                             <input type='submit' value='删除' class='btn btn-danger'>

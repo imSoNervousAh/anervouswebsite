@@ -4,24 +4,24 @@
 
 {% block subtitle %}
     <a class="navbar-brand">&gt;</a>
-    <a class="navbar-brand" href="{% url 'administrator' %}">管理员后台</a>
+    <a href="#" class="navbar-brand">管理员后台</a>
 {% endblock subtitle %}
 
 {% block left-column %}
-    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#application-menu"><strong><i
+    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse" data-target="#application-menu"><strong><i
             class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
     <ul class="nav nav-stacked collapse in" id="application-menu">
         <hr>
         <ul class="nav nav-stacked collapse in" id="userMenu">
-            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
-                    class="badge badge-info">{{ pending_count }}</span></a></li>
+            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-tasks"></i>　待审批申请　<span
+                    class="badge badge-info">{{ pending_applications|length }}</span></a></li>
             <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a></li>
             <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-list-alt"></i>　所有申请</a></li>
         </ul>
         </li>
     </ul>
     <hr>
-    <a style="text-decoration: none;" href="#" data-toggle="collapse" data-target="#analyse-menu"><strong><i
+    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse" data-target="#analyse-menu"><strong><i
             class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
     <ul class="nav nav-stacked collapse in" id="analyse-menu">
         <hr>
@@ -38,24 +38,24 @@
 {% endblock left-column %}
 
 {% block main-page %}
-    <a style="text-decoration: none;" href="#"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
+    <a style="text-decoration: none;" class="fake-link"><strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong></a>
     <hr>
     <div class="row">
         <!-- center left-->
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>待审批申请<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+                    <h4>待审批申请<span class="badge pull-right">{{ pending_applications|length }}</span></h4></div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>公众号名称</th>
-                                <th>公众号负责人</th>
-                                <th>公众号简介</th>
+                                <th style="width: 15%; min-width: 100px">公众号名称</th>
+                                <th style="width: 15%; min-width: 110px">公众号负责人</th>
+                                <th style="width: 10000px">公众号简介</th>
                                 <th>
-                                    <div style="width: 30px">
+                                    <div style="width: 50px">
                                         <div/>
                                 </th>
                             </tr>
@@ -65,10 +65,11 @@
                                 $(function () {
                                     $('body').popover({
                                         'html': true,
+                                        'placement': 'auto right',
                                         'selector': '.change-app-status-link',
                                         'title': "请选择审批结果",
                                         'trigger': 'focus',
-                                        'viewport': {selector: 'body', padding: 0}
+                                        'container': 'body'
                                     });
                                 });
                             </script>
@@ -78,7 +79,7 @@
                                     <td>{{ app.manager_name }}</td>
                                     <td>{{ app.description|linebreaks }}</td>
                                     <td>
-                                        <a href="#" class="change-app-status-link" data-toggle="popover"
+                                        <a class="fake-link change-app-status-link" data-toggle="popover"
                                            data-content="
                                                         <form method='post' action='{% url 'modify_application' %}'>
                                                             {% csrf_token %}
@@ -112,11 +113,11 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>公众号名称</th>
-                                <th>文章标题</th>
+                                <th style="width: 15%; min-width: 100px">公众号名称</th>
+                                <th style="width: 25%; min-width: 100px">文章标题</th>
                                 <th>文章简介</th>
-                                <th><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                                <th><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                                <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                                <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -125,11 +126,11 @@
                                     <td><a href="{% url 'detail' article.official_account_id %}">
                                         {{ article.official_account_name }}
                                     </a></td>
-                                    <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a>
+                                    <td><a target="_blank" href="{{ article.url }}"><div>{{ article.title }}</div></a>
                                     </td>
                                     <td>{{ article.description|linebreaks }}</td>
-                                    <td>{{ article.views }}</td>
-                                    <td>{{ article.likes }}</td>
+                                    <td align="right">{{ article.views }}</td>
+                                    <td align="right">{{ article.likes }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -185,7 +186,7 @@
     </div>
     <!--/row-->
     <hr>
-    <a style="text-decoration: none;" href="#"><strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong></a>
+    <a style="text-decoration: none;" class="fake-link"><strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong></a>
     <hr>
     <div class="row">
         <div class="col-md-12">

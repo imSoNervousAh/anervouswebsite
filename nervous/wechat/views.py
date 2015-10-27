@@ -73,7 +73,7 @@ def student(request):
 
     return render(request, 'student/index.html', {'applications': applications,
                                                   'pending_count': pending_count,
-                                                  'username': session.get_username(request)
+                                                  'username': session.get_username(request),
                                                   })
 
 
@@ -86,10 +86,11 @@ def administrator(request):
     # pending_applications = backend.get_pending_applications_by_user()
     official_accounts = backend.get_official_accounts()
     articles = backend.get_articles()
+
     return render(request, 'administrator/index.html', {'pending_applications': pending_applications,
                                                         'official_accounts': official_accounts,
                                                         'articles': articles,
-                                                        'username': session.get_username(request)
+                                                        'username': session.get_username(request),
                                                         })
 
 
@@ -99,9 +100,11 @@ def detail(request, id):
     except:
         return to_notfound(request)
     articles = backend.get_articles_by_official_account_id(id)
+
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
                                                          'article_count': len(articles),
+                                                         'username': session.get_username(request),
                                                          })
 
 
@@ -110,7 +113,7 @@ def superuser(request):
         return login(request, 'superuser')
     administrators = backend.get_admins()
     return render(request, 'superuser/index.html', {'administrators': administrators,
-                                                    'username': u'超级管理员'
+                                                    'username': u'超级管理员',
                                                     })
 
 

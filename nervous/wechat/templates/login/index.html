@@ -3,19 +3,18 @@
 <html lang="en" class="no-js">
 
 <head>
-	
+
     <meta charset="utf-8">
 
-	<!-- Uikit for navbar -->
+    <!-- Uikit for navbar -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="/static/uikit/uikit.css">
     <script src="/static/uikit/js/uikit.min.js"></script>
-   
 
-	
+
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'login/css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'login/css/supersized.css' %}">
@@ -42,44 +41,43 @@
         }
     </script>
 
-	<title>请登录</title>
+    <title>请登录</title>
 
-	
-	
+
 </head>
 
 
 <body>
 
-	<nav class="uk-navbar">
-		<ul class="uk-navbar-nav">
-			<li class="
+<nav class="uk-navbar">
+    <ul class="uk-navbar-nav">
+        <li class="
 			{% if identity == 'student' %}
 			uk-active
 			{% else %}
 			uk-parent
 			{% endif %}
 			"><a href="/login/student">Student</a></li>
-			<li class="
+        <li class="
 			{% if identity == 'administrator' %}
 			uk-active
 			{% else %}
 			uk-parent
 			{% endif %}
 			"><a href="/login/administrator">Admin</a></li>
-			<li class="
+        <li class="
 			{% if identity == 'superuser' %}
 			uk-active
 			{% else %}
 			uk-parent
 			{% endif %}
 			"><a href="/login/superuser">Superuser</a></li>
-		</ul>
-	</nav>
+    </ul>
+</nav>
 </nav>
 
 <div class="page-container">
-	<h1>
+    <h1>
         {% if identity == 'student' %}
             请登录
         {% elif identity == 'administrator' %}
@@ -98,13 +96,6 @@
         <button type="submit">提交</button>
         <div class="error"><span>+</span></div>
     </form>
-    <div class="connect">
-        <p>Or connect with:</p>
-        <p>
-            <a class="facebook" href=""></a>
-            <a class="twitter" href=""></a>
-        </p>
-    </div>
 </div>
 
 

@@ -1,7 +1,7 @@
 {% extends 'administrator/index.html' %}
 
 {% block main-page %}
-    <a href="#"><strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
+    <a style="text-decoration: none;" class="fake-link"><strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
     <hr>
     <div class="row">
         <!-- center left-->
@@ -47,22 +47,37 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>文章标题</th>
+                                <th style="width: 25%; min-width: 100px">文章标题</th>
                                 <th>文章简介</th>
-                                <th><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                                <th><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                                <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                                <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for article in articles %}
                                 <tr>
-                                    <td><img src="{{ article.avatar_url }}" alt="{{ article.title }}"/></td>
-                                    <td><a target="_blank" href="{{ article.url }}">{{ article.title }}</a></td>
+                                    <td>
+                                        <div class="article-avatar" data-src="{{ article.avatar_url }}"
+                                             data-alt="{{ article.title }}"></div>
+                                    </td>
+                                    <td><a target="_blank" href="{{ article.url }}">
+                                        <div>{{ article.title }}</div>
+                                    </a></td>
                                     <td>{{ article.description|linebreaks }}</td>
-                                    <td>{{ article.views }}</td>
-                                    <td>{{ article.likes }}</td>
+                                    <td align="right">{{ article.views }}</td>
+                                    <td align="right">{{ article.likes }}</td>
                                 </tr>
                             {% endfor %}
+                            <script>
+                                $(".article-avatar").each(function(index) {
+                                    var obj = $(this);
+                                    setTimeout(function() {
+                                        obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
+                                            "alt": obj.data("alt"),
+                                        }));
+                                    }, index * 100);
+                                });
+                            </script>
                             </tbody>
                         </table>
                     </div>
