@@ -39,7 +39,7 @@ operator_admin_id
 
 ==================================
 
-database.py
+database.backend
 
 get_pending_applications
 
@@ -51,26 +51,64 @@ get_official_accounts
 
 get_admins
 
+Enum:
+	SortOrder.Ascending
+	SortOrder.Descending
+	SortBy.Likes
+	SortBy.Views
+
+Articles:
+	get_articles(
+		sortby = SortBy.?,
+		order = SortOrder.?,
+		start_from = ?,
+		count = ?,
+		filter = dict: {
+			official_account_id = ?,
+			article_title_keyword = ?,
+		}
+	)
+
+Enum:
+	MessageCategory.All # used when query
+	MessageCategory.ToStudent
+	MessageCategory.ToAdmin
+
+
+Messages:
+	get_messages(
+		category = MessageCategory.?,
+		official_account_id = ?,
+		only_unprocessed = True / False,
+	)
+
+	add_message(
+		category = MessageCategory.?,
+		official_account_id = ?,
+		title,
+		content
+	)
+
 ==================================
 
 database:
 
-application:
-id
-name
-description
-association
-manager_name
-manager_student_id
-manager_dept
-manager_tel
-manager_email
-status
-operator_admin_id
+Application:
+	id
+	name
+	description
+	association
+	manager_name
+	manager_student_id
+	manager_dept
+	manager_tel
+	manager_email
+	status
+	operator_admin_id
 
-identity:
-	student
-	administrator
-	superuser
-
-
+Message:
+	official_account
+	category = MessageCategory.?
+	title
+	content
+	processed
