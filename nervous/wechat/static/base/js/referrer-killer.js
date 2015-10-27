@@ -1,5 +1,4 @@
 /**
- * @Project: ReferrerKiller.
  * @Licence: The MIT License.
  * @Author: Juan Pablo Guereca.
  * @Description: Crossbrowser referrer killing solution.
