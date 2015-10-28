@@ -1,5 +1,3 @@
-@import url(fonts.css);
-
 /*!
  * Eden v1.0.0
  * Homepage: http://scripteden.com
@@ -8,7 +6,7 @@
 */
 
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", sans-serif;
     font-size: 15px;
     line-height: 1.42857143;
     color: #2c3e50;

@@ -28,15 +28,8 @@ def index(request):
 
 def login(request, identity='student'):
     print 'login/'
-    if identity == 'student':
-        response = render(request, 'login/index.html', {'identity': 'student'})
-        return response
-    if identity == 'administrator':
-        response = render(request, 'login/index.html', {'identity': 'administrator'})
-        return response
-    if identity == 'superuser':
-        response = render(request, 'login/index.html', {'identity': 'superuser'})
-        return response
+    if identity in ['student', 'administrator', 'superuser']:
+        return HttpResponseRedirect('/login/' + identity)
     return to_notfound(request)
 
 
@@ -116,9 +109,11 @@ def admin(request):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
+    pending_applications_count = len(backend.get_pending_applications())
     username = session.get_username(request)
 
-    return render(request, 'administrator/index.html', {'username': username})
+    return render(request, 'administrator/index.html', {'username': username,
+                                                        'pending_applications_count': pending_applications_count})
 
 
 def admin_dashboard(request):
@@ -190,9 +185,9 @@ def admin_show_official_account_detail(request, id):
                                                          })
 
 
-
 def admin_message(request, id):
     print 'show admin_message'
+    messages = backend.get_messages(official_account_id=id)
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -203,13 +198,15 @@ def admin_message(request, id):
                                                           'articles': articles,
                                                           'article_count': len(articles),
                                                           'username': session.get_username(request),
+                                                          'messages': messages,
+                                                          'MessageCategory': MessageCategory,
                                                           'official_account_id': id,
                                                           })
 
-#message
 
+# message
 
-def message_detail_admin(request, id,category=MessageCategory.ToStudent):
+def message_detail_admin(request, id, category=MessageCategory.ToStudent):
     messages = backend.get_messages(official_account_id=id)
     try:
         official_account = backend.get_official_account_by_id(id)
@@ -220,12 +217,12 @@ def message_detail_admin(request, id,category=MessageCategory.ToStudent):
                                                     'messages': messages,
                                                     'category': category,
                                                     'official_account_id': id,
-                                                    'MessageCategory':MessageCategory
+                                                    'MessageCategory': MessageCategory
                                                     })
 
 
 def message_detail_student(request, id):
-    return message_detail_admin(request,id,MessageCategory.ToAdmin)
+    return message_detail_admin(request, id, MessageCategory.ToAdmin)
 
 
 # superuser

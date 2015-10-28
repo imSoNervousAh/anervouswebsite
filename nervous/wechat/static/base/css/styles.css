@@ -60,7 +60,7 @@ footer {
 
 /* align badges with left-column items */
 a > span.badge-info {
-    vertical-align: text-top;
+    vertical-align: top;
 }
 
 /* align glyphicons with text */
@@ -106,6 +106,6 @@ a > span.badge-info {
 
 /* add hand-shaped cursors for links without href */
 .fake-link {
-    text-decoration: none;
+    text-decoration: none !important;
     cursor: pointer;
 }

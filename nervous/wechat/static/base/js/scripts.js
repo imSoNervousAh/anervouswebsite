@@ -55,6 +55,9 @@ function loadContent(url, params, item, callback) {
                 new_height += $(this).outerHeight(true);
             });
             // console.log(new_height);
+            $("html, body").delay(60).animate({
+                "scroll-top": 0
+            });
             main.delay(50).animate({
                 opacity: 1.0,
                 height: new_height
