@@ -80,7 +80,7 @@ Messages:
 		category = MessageCategory.?,
 		official_account_id = ?,
 		only_unprocessed = True / False,
-	)
+    )
 
 	add_message(
 		category = MessageCategory.?,
@@ -107,6 +107,8 @@ Application:
 	operator_admin_id
 
 Message:
+    realname
+    datetime
 	official_account
 	category = MessageCategory.?
 	title

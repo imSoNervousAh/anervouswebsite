@@ -1,0 +1,70 @@
+			/* Layout */
+			body{
+				font-size:14px;
+				font-family:arial;
+				background: #CCC;
+			}
+			
+			#container{
+				margin: 0 auto;
+				width: 600px;
+				padding-top: 10px;
+			}
+			
+			h1{
+				font-size: 28px;
+				margin: 50px;
+			}
+			
+			/* bubble */
+			.tip-bubble {
+			  position: relative;
+			  background-color: #202020;
+			  width: 100px;
+			  padding: 20px;
+			  color: #CCC;
+			  text-align: center;
+			  border-radius: 10px;
+			  margin: 50px;
+			  border: 1px solid #111;
+			  box-shadow: 1px 1px 2px #202020;
+			  -moz-box-shadow: 1px 1px 2px #202020;
+			  -webkit-border-shadow: 1px 1px 2px #202020;
+			  text-shadow: 0px 0px 15px #fff;
+			}
+			 
+			.tip-bubble:after {
+			  content: '';
+			  position: absolute;
+			  width: 0;
+			  height: 0;
+			  border: 15px solid;
+			}
+			 
+			/* Position the Arrow */
+			.tip-bubble-top:after {
+			  border-bottom-color: #202020;
+			  left: 50%;
+			  bottom: 100%;
+			  margin-left: -15px;
+			}
+			.tip-bubble-right:after {
+			  border-left-color: #202020;
+			  left: 100%;
+			  top: 50%;
+			  margin-top: -15px;
+			}
+			 
+			.tip-bubble-bottom:after {
+			  border-top-color: #202020;
+			  top: 100%;
+			  left: 50%;
+			  margin-left: -15px;
+			}
+			 
+			.tip-bubble-left:after {
+			  border-right-color: #202020;
+			  top: 50%;
+			  right: 100%;
+			  margin-top: -15px;
+			}

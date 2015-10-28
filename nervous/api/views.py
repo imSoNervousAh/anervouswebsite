@@ -64,3 +64,10 @@ def del_admin(request):
     print "del %s" % request.POST['username']
     backend.del_admin(request.POST['username'])
     return HttpResponseRedirect('/superuser')
+
+def add_message(request):
+    category=request.POST['category']
+    official_account_id=request.POST['official_account_id']
+    title=request.POST['title']
+    content=request.POST['content']
+    backend.add_message(category=category,official_account_id=official_account_id,title=title,content=content)

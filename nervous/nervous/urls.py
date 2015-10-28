@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^administrator/official_accounts/$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
     url(r'^administrator/articles/$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^administrator/dashboard/$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
+    url(r'^administrator/message/([0-9]+)/$', 'wechat.views.message', name='message'),
     url(r'^administrator', 'wechat.views.admin', name='administrator'),
 
     #  superuser
@@ -46,10 +47,12 @@ urlpatterns = [
     
     # api part
     url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),
+
     url(r'^api/submit_application', 'api.views.submit_application', name='api/submit_application'),
     url(r'^api/modify_application', 'api.views.modify_application', name='api/modify_application'),
     url(r'^api/add_admin', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin', 'api.views.del_admin', name='api/del_admin'),
+    url(r'^api/add_message', 'api.views.add_message', name='add_message'),
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),
