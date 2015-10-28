@@ -80,20 +80,29 @@
 
                             <script type="text/javascript">
                                 function submitform() {
-                                    document.forms["reply_message_form"].submit();
+{#                                    alert(document.forms["reply_message_form"]['title'].value);#}
+{#                                    if (document.forms["reply_message_form"]['title'].value = '标题') {#}
+{#                                        alert('您还没有填写标题');#}
+{#                                    } else {#}
+{#                                        document.forms["reply_message_form"].submit();#}
+{#                                    }#}
                                 }
                             </script>
 
-                            <form id="reply_message_form" action="/api/add_message" method="post" onsubmit="submitform();">
+                            <form id="reply_message_form" action="/api/add_message" method="post"
+                                  onsubmit="submitform();">
                                 {% csrf_token %}
                                 <div class="row" style="margin-top: 30px">
                                     <div class="col-md-7  col-md-offset-4">
                                         <div class="input-group" style="margin-top: 20px;">
-                                            <input name="category" style="display:none" placeholder="{{ MessageCategory.ToAdmin }}">
-                                            <input name="official_account_id" style="display:none" placeholder="{{ articles.official_account_id }}">
+                                            <input name="category" style="display:none"
+                                                   placeholder="{{ MessageCategory.ToAdmin }}">
+                                            <input name="official_account_id" style="display:none"
+                                                   placeholder="{{ official_account_id }}">
                                             <input name="title" tyep="text" class="form-control" placeholder="标题">
-                                            <input name="content" tyep="text" class="form-control" placeholder="正文">
-                                            <button class="input-group-addon">Send</button>
+                                            <textarea name="content" tyep="text" class="form-control"
+                                                      style="height:80px" placeholder="正文"></textarea>
+                                            <button class="button pull-right">Send</button>
                                         </div>
                                     </div>
                                 </div>

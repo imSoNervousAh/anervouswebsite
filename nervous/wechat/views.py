@@ -107,6 +107,7 @@ def student_add_applications(request):
 # administrator
 
 def admin(request):
+    print 'show admin'
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
@@ -180,32 +181,36 @@ def admin_show_official_account_detail(request, id):
 
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
+                                                         'official_account_id':id,
                                                          })
 
+
 class MessageCategory:
-    All,ToStudent,ToAdmin=range(3)
+    All, ToStudent, ToAdmin = range(3)
+
 
 def message(request, id):
-    message1={
-        'realname':'ytl',
-        'category':'student',
-        'datetime':'2015.10.28',
-        'content':'学生申请怎么做?',
+    print 'show message'
+    message1 = {
+        'realname': 'ytl',
+        'category': 'student',
+        'datetime': '2015.10.28',
+        'content': '学生申请怎么做?',
     }
-    message2={
-        'realname':'haungdada',
-        'category':'admin',
-        'datetime':'2015.10.28',
-        'content':'不知道,董文飞凤凰网阿胶分哦覅 风味访问欧美佛问哦房氛围好奇偶访问欧非分雄风呢间哦'
-                  '你自己试试看吧',
+    message2 = {
+        'realname': 'haungdada',
+        'category': 'admin',
+        'datetime': '2015.10.28',
+        'content': '不知道,董文飞凤凰网阿胶分哦覅 风味访问欧美佛问哦房氛围好奇偶访问欧非分雄风呢间哦'
+                   '你自己试试看吧',
     }
-    message3={
-        'realname':'ytl',
-        'category':'student',
-        'datetime':'2015.10.28',
-        'content':'请问老师申请人联系方式怎么填？',
+    message3 = {
+        'realname': 'ytl',
+        'category': 'student',
+        'datetime': '2015.10.28',
+        'content': '请问老师申请人联系方式怎么填？',
     }
-    messages=[message1,message2,message3]
+    messages = [message1, message2, message3]
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -213,12 +218,13 @@ def message(request, id):
     articles = backend.get_articles_by_official_account_id(id)
 
     return render(request, 'administrator/message.html', {'account': official_account,
-                                                         'articles': articles,
-                                                         'article_count': len(articles),
-                                                         'username': session.get_username(request),
-                                                         'messages':messages,
-                                                         'MessageCategory':MessageCategory,
-                                                         })
+                                                          'articles': articles,
+                                                          'article_count': len(articles),
+                                                          'username': session.get_username(request),
+                                                          'messages': messages,
+                                                          'MessageCategory': MessageCategory,
+                                                          'official_account_id':id,
+                                                          })
 
 
 # superuser
@@ -228,6 +234,7 @@ def superuser(request):
         return login(request, 'superuser')
 
     return render(request, 'superuser/index.html', {'username': u'超级管理员'})
+
 
 def superuser_show_admins(request):
     if not check_identity(request, 'superuser'):

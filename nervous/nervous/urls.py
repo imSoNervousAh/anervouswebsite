@@ -30,12 +30,12 @@ urlpatterns = [
     url(r'^student', 'wechat.views.student', name='student'),
 
     #  administrator
+    url(r'^administrator/message/([0-9]+)/?', 'wechat.views.message', name='admin/message'),
     url(r'^administrator/detail/([0-9]+)/$', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^administrator/applications/(\w+)/$', 'wechat.views.admin_show_applications', name='admin/applications'),
     url(r'^administrator/official_accounts/$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
     url(r'^administrator/articles/$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^administrator/dashboard/$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
-    url(r'^administrator/message/([0-9]+)/$', 'wechat.views.message', name='message'),
     url(r'^administrator', 'wechat.views.admin', name='administrator'),
 
     #  superuser
