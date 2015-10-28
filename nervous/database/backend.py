@@ -100,7 +100,6 @@ def get_articles():
 
 
 def add_article(dic):
-    
     acc_wx_name = dic['wx_name']
     try:
         acc = OfficialAccount.get(wx_id__exact=acc_wx_name)
@@ -124,3 +123,30 @@ def add_article(dic):
 
 def get_articles_by_official_account_id(id):
     return Article.filter(official_account_id__exact=id)
+
+
+# Messages
+
+def get_messages(category = None, official_account_id = None, only_unprocessed = None):
+    messages = Message.all()
+    if official_account_id:
+        messages = messages.filter(official_account__id__exact = official_account_id)
+    if category and category != MessageCategory.All:
+        messages = messages.filter(category__exact = category)
+    if only_unprocessed:
+        messages = messages.filter(processed__exact = True)
+    return messages
+
+
+def add_message(category, official_account_id, title, content):
+    try:
+        message = Message.model()
+        message.category = category
+        message.official_account = OfficialAccount.get(pk=official_account_id)
+        message.title = title
+        message.content = content
+        message.processed = False
+        message.save()
+        return True
+    except ObjectDoesNotExist:
+        return False

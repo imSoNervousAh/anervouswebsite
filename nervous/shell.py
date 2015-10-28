@@ -1,9 +1,6 @@
 #!/usr/bin/ipython -i
 
-from database import backend, utils
-from database.backend import *
-from database.utils import *
-from database.setup_db import *
+from database import backend, utils, setup_db
 
 if (__name__ == '__main__'):
-    setup()
+    setup_db.setup()
