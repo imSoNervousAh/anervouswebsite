@@ -100,12 +100,17 @@ def get_articles():
 
 
 def add_article(dic):
-    # TODO: use wx_id instead of name
-    acc_name = dic['name']
+    
+    acc_wx_name = dic['wx_name']
     try:
-        acc = OfficialAccount.get(name__exact=acc_name)
+        acc = OfficialAccount.get(wx_id__exact=acc_wx_name)
     except ObjectDoesNotExist:
-        acc = OfficialAccount.create(name=acc_name, description=acc_name)
+        acc_name = dic['name']
+        acc = OfficialAccount.create(
+            wx_id=acc_wx_name,
+            name=acc_name,
+            description=acc_name
+        )
     art = Article.model()
     art.official_account_id = acc.id
     for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
