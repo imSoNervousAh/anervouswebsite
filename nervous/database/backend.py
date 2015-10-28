@@ -24,20 +24,30 @@ def get_applications_by_user(username):
     return Application.filter(user_submit__exact=username)
 
 
+# TODO: add wx_id
+# TODO: unique wx_id validation
 def add_application(app):
-    print app
-    name, description = app['name'], app['description']
-    for k in ['name', 'description', 'csrfmiddlewaretoken']:
-        del app[k]
+    name = app['name']
+    description = app.get('description', name)
     try:
         OfficialAccount.get(name__exact=name)
-        print "Error: account already exists."
+        return False
     except ObjectDoesNotExist:
+        application = Application.model()
         account = OfficialAccount.create(name=name, description=description)
-        app['official_account'] = account
-        app['status'] = 'pending'
-        Application.create(**app)
-        return True
+        application.official_account = account
+        application.status = 'pending'
+        for attr in [
+            'manager_name', 'manager_student_id',
+            'manager_dept', 'manager_tel', 'manager_email',
+            'user_submit']:
+            val = app.get(attr, '')
+            setattr(application, attr, val)
+        try:
+            application.save()
+            return True
+        except:
+            return False
 
 
 def modify_application(app):

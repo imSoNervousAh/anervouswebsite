@@ -39,3 +39,46 @@ class AdminTestCase(TestCase):
         backend.add_admin(username, password, 'description')
         self.assertTrue(backend.check_admin(username, password))
         self.assertFalse(backend.check_admin(username, 'wrong'))
+
+
+class ApplicationTestCase(TestCase):
+    def test_add_application_with_same_account_name(self):
+        name = 'test_name'
+        app = {
+            'name': name,
+            'description': 'description',
+        }
+        another_app = {
+            'name': name,
+            'description': 'another description',
+        }
+        self.assertTrue(backend.add_application(app))
+        self.assertFalse(backend.add_application(another_app))
+
+
+    def test_get_application_by_user_submit(self):
+        username = 'hdd'
+        acc_name = 'acc_name'
+        app = {
+            'name': acc_name,
+            'description': '',
+            'user_submit': username,
+        }
+        another_app = {
+            'name': 'another account name',
+            'description': 'by another user',
+            'user_submit': 'not equal to hdd',
+        }
+        self.assertTrue(backend.add_application(app))
+        self.assertTrue(backend.add_application(another_app))
+        res = backend.get_applications_by_user(username)
+        self.assertEqual(res.count(), 1)
+        self.assertEqual(res.first().name(), acc_name)
+
+    def test_get_pending_applications(self):
+        acc_name = 'acc_name'
+        pending_acc_name = 'pending_acc_name'
+        backend.add_application({'name': acc_name})
+        backend.add_application({'name': pending_acc_name})
+        
+
