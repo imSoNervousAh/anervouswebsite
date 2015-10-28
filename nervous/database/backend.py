@@ -100,26 +100,21 @@ def get_articles():
 
 
 def add_article(dic):
+    # TODO: use wx_id instead of name
+    acc_name = dic['name']
     try:
-        art = Article.get(url__exact=dic['url'])
+        acc = OfficialAccount.get(name__exact=acc_name)
     except ObjectDoesNotExist:
-        # TODO: use wx_id instead of name
-        acc_name = dic['name']
-        try:
-            acc = OfficialAccount.get(name__exact=acc_name)
-        except ObjectDoesNotExist:
-            acc = OfficialAccount.create(name=acc_name, description=acc_name)
-        art = Article.model()
-        art.official_account_id = acc.id
-        for attr in ['title', 'description', 'avatar_url', 'url']:
-            setattr(art, attr, dic[attr])
+        acc = OfficialAccount.create(name=acc_name, description=acc_name)
+    art = Article.model()
+    art.official_account_id = acc.id
+    for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
+        setattr(art, attr, dic[attr])
+    try:
         art.save()
-    ArticleDailyRecord.create(
-        article = art,
-        likes = dic['likes'],
-        views = dic['views'],
-        update_time = dic['update_time']
-    )
+        return True
+    except IntegrityError:
+        return False
 
 
 def get_articles_by_official_account_id(id):

@@ -26,7 +26,7 @@ class Admin(models.Model):
 class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
-    
+
     def __unicode__(self):
         return "%s: %s" % (self.name, self.description)
 
@@ -55,13 +55,9 @@ class Article(models.Model):
     official_account_id = models.IntegerField()
     description = models.CharField(max_length=300, default='')
     avatar_url = models.CharField(max_length=300, default='')
-    url = models.CharField(max_length=300)
-
-    def likes(self):
-        return self.articledailyrecord_set.last().likes
-
-    def views(self):
-        return self.articledailyrecord_set.last().views
+    url = models.CharField(max_length=300, unique=True)
+    likes = models.IntegerField()
+    views = models.IntegerField()
 
     def official_account_name(self):
         return OfficialAccount.objects.get(pk=self.official_account_id).name
@@ -70,21 +66,7 @@ class Article(models.Model):
         return self.title
 
 
-class ArticleDailyRecord(models.Model):
-    article = models.ForeignKey(Article)
-    update_time = models.DateTimeField()
-    likes = models.IntegerField()
-    views = models.IntegerField()
-
-    def __unicode__(self):
-        return "likes = %s & views = %s at %s" % (
-            self.likes,
-            self.views,
-            self.update_time
-        )
-
-
-# Add delegating attributes 
+# Add delegating attributes
 
 def add_delegate(cls, dest, key):
     def inner_delegate(self):

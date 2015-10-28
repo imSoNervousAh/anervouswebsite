@@ -2,20 +2,7 @@
 from backend import *
 from api import getdata, update
 
-
-def test_add_article():
-    paras = {}
-    paras['wx_name'] = 'jiujingzixun'
-    d = getdata.get_dict('wx/opensearchapi/content_list', paras)
-    ind = (d['returnData'])['items']
-    for temp in ind:
-        temp['official_account_name'] = temp['name']
-        temp['description'] = temp['content']
-        temp['views'] = temp['readnum']
-        temp['likes'] = temp['likenum']
-        temp['avatar_url'] = temp['picurl']
-        print temp['title']
-        add_article(temp)
+setup_db.setup()
 
 def test_update():
     update.update_all()
@@ -34,5 +21,5 @@ def build_test_db():
 
 
 def clean_test_db():
-    for model in [Admin, OfficialAccount, Application, Article, ArticleDailyRecord]:
+    for model in [Admin, OfficialAccount, Application, Article]:
         model.all().delete()
