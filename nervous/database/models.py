@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Enums
 
 class SortOrder:
@@ -83,7 +84,7 @@ class Article(models.Model):
 
 class Message(models.Model):
     official_account = models.ForeignKey(OfficialAccount)
-    category = models.IntegerField() # value should come from MessageCategory
+    category = models.IntegerField()  # value should come from MessageCategory
     title = models.CharField(max_length=30)
     content = models.CharField(max_length=140)
     processed = models.BooleanField()
@@ -120,7 +121,9 @@ class Message(models.Model):
 def add_delegate(cls, dest, key):
     def inner_delegate(self):
         return getattr(getattr(self, dest), key)
+
     setattr(cls, key, inner_delegate)
+
 
 for attr in [
     'manager_name',
@@ -129,9 +132,9 @@ for attr in [
     'manager_tel',
     'manager_email',
     'association',
-    'user_submit']:
+    'user_submit',
+]:
     add_delegate(OfficialAccount, 'application', attr)
 
 for attr in ['id', 'name', 'description']:
     add_delegate(Application, 'official_account', attr)
-
