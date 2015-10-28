@@ -1,5 +1,18 @@
 from django.db import models
 
+# Enums
+
+class SortOrder:
+    Ascending, Descending = xrange(2)
+
+
+class SortBy:
+    Time, Likes, Views = xrange(3)
+
+
+class MessageCategory:
+    All, ToStudent, ToAdmin = xrange(3)
+
 
 class Admin(models.Model):
     username = models.CharField(max_length=20, primary_key=True)
