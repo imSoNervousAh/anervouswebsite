@@ -8,20 +8,28 @@ import setup_db
 
 setup_db.setup()
 
-def test_update():
-    update.update_all()
-
-
 def clean_test_db():
     call(["python", "manage.py", "flush", "--noinput"])
     call(["python", "manage.py", "sqlsequencereset", "database"])
 
+# test add database models
+
+def test_add_admins():
+    Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
+    Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
+
+def test_add_students():
+    backend.set_student_information(2014011434, 'wyl')
+
+# test gsdata
+
+def test_update():
+    update.update_all()
+
+# build a db for testing
 
 def build_test_db():
     clean_test_db()
-
-    Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
-    Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
 
     mu = OfficialAccount.create(name='Lab Mu')
     Application.create(official_account=mu, user_submit='FANG KUAI', status='not_submitted')
@@ -41,5 +49,6 @@ def build_test_db():
         'yet_another_title', 'yet_another_content'
     ))
 
+    test_add_admins()
+    test_add_students()
     test_update()
-

@@ -93,6 +93,25 @@ def check_admin(username, password):
         return False
 
 
+# Students
+
+def set_student_information(student_id, real_name):
+    try:
+        student = Student.create(student_id = student_id)
+    except IntegrityError:
+        student = Student.get(pk = student_id)
+    student.real_name = real_name
+    student.save()
+
+
+def check_student_information_filled(student_id):
+    try:
+        student = Student.get(pk = student_id)
+    except ObjectDoesNotExist:
+        student = Student.create(student_id = student_id)
+    return student.information_filled()
+
+
 # Articles
 
 def get_articles():

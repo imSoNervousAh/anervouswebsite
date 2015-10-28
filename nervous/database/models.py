@@ -25,6 +25,17 @@ class Admin(models.Model):
         return "%s: %s" % (self.username, self.description)
 
 
+class Student(models.Model):
+    student_id = models.IntegerField(primary_key=True)
+    real_name = models.CharField(max_length=20)
+
+    def information_filled(self):
+        return self.real_name != ""
+
+    def __unicode__(self):
+        return "%s(%s)" % (self.student_id, self.real_name)
+
+
 class OfficialAccount(models.Model):
     wx_id = models.CharField(max_length=50)
     name = models.CharField(max_length=40)
