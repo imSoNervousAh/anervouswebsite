@@ -10,32 +10,6 @@
     <a style="text-decoration: none;" class="fake-link"><strong><i
             class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
     <hr>
-    <!-- bubble-triangle-border style
-    <div class="triangle-border left">
-        <div align="left">
-        <code>HuaangDada 于 2015.10.28</code>
-        <p>学生申请怎么做?</p></code></p>
-        </div>
-    </div>
-    <div class="triangle-border right">
-        <div align="right">
-            <code>ytl 于 2015.10.28</code>
-            <p>老司机求带飞</p>
-        </div>
-    </div>
-    -->
-
-    <!-- bubble-twitter style
-    <blockquote class="example-twitter" cite="kkkkk">
-        <p>Takes me longer to write up blog posts on experiments or projects than to create them in the first place.</p>
-    </blockquote>
-    <blockquote class="example-twitter" cite="kkkkk">
-        <p>老司机带我飞</p>
-    </blockquote>
-    <blockquote class="example-twitter" cite="kkkkk">
-        <p>Takes me longer to write up blog posts on experiments or projects than to create them in the first place.</p>
-    </blockquote>
-    -->
 
     <!-- comment style -->
 
@@ -51,6 +25,7 @@
                         <div class="col-md-offset-1">
                             <!-- comment -->
                             {% for message in messages %}
+
                                 {% if message.category == MessageCategory.ToAdmin %}
 
                                     <div class="row" style="margin-top: 30px">
