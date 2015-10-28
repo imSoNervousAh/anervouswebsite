@@ -138,6 +138,16 @@ def get_messages(category = None, official_account_id = None, only_unprocessed =
     return messages
 
 
+def process_message(message_id):
+    try:
+        message = Message.get(pk = message_id)
+        message.processed = True
+        message.save()
+        return True
+    except ObjectDoesNotExist:
+        return False
+
+
 def add_message(category, official_account_id, title, content):
     try:
         message = Message.model()
