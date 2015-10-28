@@ -14,14 +14,14 @@
     <!-- stylesheets -->
     <link href="{% static 'base/css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'base/css/eden.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/eden.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet">
     {% block css %}
     {% endblock css %}
     <!-- script references -->
     <script src="{% static 'jquery/jquery.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'base/js/scripts.js' %}"></script>
-    <script src="{% static 'base/js/referrer-killer.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}
 </head>
@@ -39,8 +39,9 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="fake-link dropdown-toggle" role="button" data-toggle="dropdown" data-target="#""><i
-                        class="glyphicon glyphicon-user"></i> {{ username }} <span class="caret"></span></a>
+                <a class="fake-link dropdown-toggle" role="button" data-toggle="dropdown" data-target="#">
+                    <i class="glyphicon glyphicon-user"></i> {{ username }} <span class="caret"></span>
+                </a>
                 <ul id="g-account-menu" class="dropdown-menu" role="menu">
                     {% block user-menu %}
                         <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a></li>
@@ -58,7 +59,7 @@
 <div class="container-fluid main">
     <div class="row">
         <div class="col-sm-2 hidden-xs">
-            <div class="left-column affix">
+            <div class="affix" id="left-column">
                 <!-- Left column -->
                 {% block left-column %}
                     <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
@@ -67,10 +68,13 @@
                     <ul class="nav nav-stacked collapse in" id="application-menu">
                         <hr>
                         <ul class="nav nav-stacked collapse in" id="userMenu">
-                            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
+                            <li class="nav-header left-column-item"><a href="#"><i
+                                    class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
                                     class="badge badge-info">{{ pending_count }}</span></a></li>
-                            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a></li>
-                            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
+                            <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
+                            </li>
+                            <li class="nav-header left-column-item"><a href="#"><i
+                                    class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
                             </li>
                         </ul>
                         </li>
@@ -82,12 +86,14 @@
                     <ul class="nav nav-stacked collapse in" id="analyse-menu">
                         <hr>
                         <ul class="nav nav-stacked collapse in" id="userMenu">
-                            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
+                            <li class="nav-header left-column-item"><a href="#"><i
+                                    class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
                             </li>
-                            <li class="nav-header"><a href="#"><i
+                            <li class="nav-header left-column-item"><a href="#"><i
                                     class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
                             </li>
-                            <li class="nav-header"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a></li>
+                            <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
+                            </li>
                         </ul>
                         </li>
                     </ul>
@@ -96,7 +102,7 @@
             </div>
         </div>
         <!-- /col-2 -->
-        <div class="col-sm-10 container-fluid">
+        <div class="col-sm-10 container-fluid" id="main-page">
             <!-- column 2 -->
             {% block main-page %}
             {% endblock main-page %}
@@ -109,27 +115,8 @@
 <footer class="text-center">清华大学公众号管理系统</footer>
 
 {% block modals %}
-    <div class="modal" id="addWidgetModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Add Widget</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Add a widget stuff here..</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="#" data-dismiss="modal" class="btn">Close</a>
-                    <a href="#" class="btn btn-primary">Save changes</a>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 {% endblock modals %}
+
 </body>
 
 </html>

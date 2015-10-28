@@ -46,7 +46,7 @@ footer {
     padding-top: 70px;
 }
 
-.left-column {
+#left-column {
     width: 200 !important;
 }
 
@@ -106,5 +106,6 @@ a > span.badge-info {
 
 /* add hand-shaped cursors for links without href */
 .fake-link {
+    text-decoration: none;
     cursor: pointer;
 }

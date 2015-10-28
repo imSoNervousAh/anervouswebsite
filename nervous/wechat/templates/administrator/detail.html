@@ -1,89 +1,92 @@
-{% extends 'administrator/index.html' %}
+{% load staticfiles %}
 
-{% block main-page %}
-    <a style="text-decoration: none;" class="fake-link"><strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
-    <hr>
-    <div class="row">
-        <!-- center left-->
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>基本信息<span class="badge pull-right">{{ pending_count }}</span></h4></div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="pull-left" style="width: 90px; height: 90px;
-                                    background: url(http://open.weixin.qq.com/qr/code/?username={{ account.wechat_id }})
-                                    -170px -170px no-repeat;"></div>
-                            <div class="pull-left" style="padding-left: 10px;
+<script src="{% static 'base/js/referrer-killer.js' %}"></script>
+
+<a class="fake-link pull-right"><i class="glyphicon glyphicon-comment"></i>　消息一览</a>
+<a class="fake-link">
+    <strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong>
+</a>
+<hr>
+<div class="row">
+    <!-- center left-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>基本信息<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="pull-left" style="width: 90px; height: 90px;
+                                background: url(http://open.weixin.qq.com/qr/code/?username={{ account.wechat_id }})
+                                -170px -170px no-repeat;"></div>
+                        <div class="pull-left" style="padding-left: 10px;
                                         vertical-align: middle; line-height: 160%;">
-                                <b>公众号名称：</b>{{ account.name }}<br/>
-                                <b>微信ID：</b>{{ account.wechat_id }}<br/>
-                                <b>订阅人数：</b>{{ account.subscribers }}<br/>
-                                <b>公众号描述：</b>{{ account.description }}<br/>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div style="line-height: 160%;">
-                                <b>隶属组织：</b>{{ account.association }}<br/>
-                                <b>负责人姓名：</b>{{ account.manager_name }}<br/>
-                                <b>负责人学号：</b>{{ account.manager_student_id }}<br/>
-                                <b>负责人院系：</b>{{ account.manager_dept }}<br/>
-                                <b>负责人电话：</b>{{ account.manager_tel }}<br/>
-                                <b>负责人电子邮件：</b><a
-                                    href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
-                            </div>
+                            <b>公众号名称：</b>{{ account.name }}<br/>
+                            <b>微信ID：</b>{{ account.wechat_id }}<br/>
+                            <b>订阅人数：</b>{{ account.subscribers }}<br/>
+                            <b>公众号描述：</b>{{ account.description }}<br/>
                         </div>
                     </div>
-                </div>
-            </div>
-            <hr>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>最近文章</h4></div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th style="width: 25%; min-width: 100px">文章标题</th>
-                                <th>文章简介</th>
-                                <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                                <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for article in articles %}
-                                <tr>
-                                    <td>
-                                        <div class="article-avatar" data-src="{{ article.avatar_url }}"
-                                             data-alt="{{ article.title }}"></div>
-                                    </td>
-                                    <td><a target="_blank" href="{{ article.url }}">
-                                        <div>{{ article.title }}</div>
-                                    </a></td>
-                                    <td>{{ article.description|linebreaks }}</td>
-                                    <td align="right">{{ article.views }}</td>
-                                    <td align="right">{{ article.likes }}</td>
-                                </tr>
-                            {% endfor %}
-                            <script>
-                                $(".article-avatar").each(function(index) {
-                                    var obj = $(this);
-                                    setTimeout(function() {
-                                        obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
-                                            "alt": obj.data("alt"),
-                                        }));
-                                    }, index * 100);
-                                });
-                            </script>
-                            </tbody>
-                        </table>
+                    <div class="col-sm-6">
+                        <div style="line-height: 160%;">
+                            <b>隶属组织：</b>{{ account.association }}<br/>
+                            <b>负责人姓名：</b>{{ account.manager_name }}<br/>
+                            <b>负责人学号：</b>{{ account.manager_student_id }}<br/>
+                            <b>负责人院系：</b>{{ account.manager_dept }}<br/>
+                            <b>负责人电话：</b>{{ account.manager_tel }}<br/>
+                            <b>负责人电子邮件：</b><a
+                                href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>最近文章</h4></div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th style="width: 25%; min-width: 100px">文章标题</th>
+                            <th>文章简介</th>
+                            <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                            <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for article in articles %}
+                            <tr>
+                                <td>
+                                    <div class="article-avatar" data-src="{{ article.avatar_url }}"
+                                         data-alt="{{ article.title }}"></div>
+                                </td>
+                                <td><a target="_blank" href="{{ article.url }}">
+                                    <div>{{ article.title }}</div>
+                                </a></td>
+                                <td>{{ article.description|linebreaks }}</td>
+                                <td align="right">{{ article.views }}</td>
+                                <td align="right">{{ article.likes }}</td>
+                            </tr>
+                        {% endfor %}
+                        <script>
+                            $(".article-avatar").each(function (index) {
+                                var obj = $(this);
+                                setTimeout(function () {
+                                    obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
+                                        "alt": obj.data("alt"),
+                                    }));
+                                }, index * 100);
+                            });
+                        </script>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <!--/row-->
-{% endblock main-page %}
+</div>
+<!--/row-->

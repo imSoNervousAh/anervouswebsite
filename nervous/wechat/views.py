@@ -17,10 +17,14 @@ from database import backend
 from wechat import session
 
 
+# index
+
 def index(request):
     # 默认返回学生登录界面
     return render(request, 'login/index.html', {'identity': 'student'})
 
+
+# login/logout
 
 def login(request, identity='student'):
     print 'login/'
@@ -47,10 +51,28 @@ def logout(request):
     return login(request, 'student')
 
 
+def check_identity(request, identity):
+    print identity, 'identity: ', session.get_identity(request)
+    return session.get_identity(request) == identity
+
+
+# student
+
 def student(request):
-    print 'student identity: ', session.get_identity(request)
-    if session.get_identity(request) != 'student':
+    if not check_identity(request, 'student'):
         return login(request, 'student')
+
+    username = session.get_username(request)
+
+    return render(request, 'student/index.html', {'username': username})
+
+
+def student_show_applications(request):
+    if not check_identity(request, 'student'):
+        return login(request, 'student')
+
+    username = session.get_username(request)
+
     glyphicons = {'approved': 'glyphicon-ok-sign',
                   'rejected': 'glyphicon-remove-sign',
                   'pending': 'glyphicon-question-sign',
@@ -62,8 +84,7 @@ def student(request):
                    'not_submitted': '尚未提交',
                    }
 
-    username = session.get_username(request)
-    applications  = backend.get_applications_by_user(username)
+    applications = backend.get_applications_by_user(username)
     pending_count = 0
     for app in applications:
         app.status_glyphicon = glyphicons[app.status]
@@ -71,30 +92,87 @@ def student(request):
         if app.status == 'pending':
             pending_count += 1
 
-    return render(request, 'student/index.html', {'applications': applications,
-                                                  'pending_count': pending_count,
-                                                  'username': session.get_username(request),
-                                                  })
+    return render(request, 'student/show_applications.html', {'applications': applications,
+                                                              'pending_count': pending_count,
+                                                              })
 
 
-def administrator(request):
-    print 'admin identity: ', session.get_identity(request)
-    if session.get_identity(request) != u'administrator':
+def student_add_applications(request):
+    if not check_identity(request, 'student'):
+        return login(request, 'student')
+
+    return render(request, 'student/add_applications.html', {})
+
+
+# administrator
+
+def admin(request):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
+    username = session.get_username(request)
+
+    return render(request, 'administrator/index.html', {'username': username})
+
+
+def admin_dashboard(request):
+    if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
     pending_applications = backend.get_pending_applications()
-    # pending_applications = backend.get_pending_applications_by_user()
     official_accounts = backend.get_official_accounts()
     articles = backend.get_articles()
 
-    return render(request, 'administrator/index.html', {'pending_applications': pending_applications,
-                                                        'official_accounts': official_accounts,
-                                                        'articles': articles,
-                                                        'username': session.get_username(request),
-                                                        })
+    return render(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
+                                                            'official_accounts': official_accounts,
+                                                            'articles': articles,
+                                                            })
 
 
-def detail(request, id):
+def admin_show_official_accounts(request):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
+    official_accounts = backend.get_official_accounts()
+
+    return render(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
+
+
+def admin_show_articles(request):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
+    articles = backend.get_articles()
+
+    return render(request, 'administrator/articles.html', {'articles': articles})
+
+
+def admin_show_applications(request, type):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
+    if type == 'pending':
+        applications = backend.get_pending_applications()
+        type_name = u'待审批申请'
+    elif type == 'processed':
+        applications = backend.get_pending_applications()
+        type_name = u'我处理的申请'
+    elif type == 'all':
+        applications = backend.get_pending_applications()
+        type_name = u'所有申请'
+    else:
+        applications = []
+        type_name = ''
+
+    return render(request, 'administrator/applications.html', {'applications': applications,
+                                                               'application_type': type_name,
+                                                               })
+
+
+def admin_show_official_account_detail(request, id):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -103,19 +181,27 @@ def detail(request, id):
 
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
-                                                         'article_count': len(articles),
-                                                         'username': session.get_username(request),
                                                          })
 
 
-def superuser(request):
-    if session.get_identity(request) != 'superuser':
-        return login(request, 'superuser')
-    administrators = backend.get_admins()
-    return render(request, 'superuser/index.html', {'administrators': administrators,
-                                                    'username': u'超级管理员',
-                                                    })
+# superuser
 
+def superuser(request):
+    if not check_identity(request, 'superuser'):
+        return login(request, 'superuser')
+
+    return render(request, 'superuser/index.html', {'username': u'超级管理员'})
+
+def superuser_show_admins(request):
+    if not check_identity(request, 'superuser'):
+        return login(request, 'superuser')
+
+    administrators = backend.get_admins()
+
+    return render(request, 'superuser/admins.html', {'administrators': administrators})
+
+
+# misc
 
 def notfound(request):
     print '[in] notfound'
