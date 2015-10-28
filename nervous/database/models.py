@@ -98,7 +98,6 @@ class Message(models.Model):
                 return self.admin.description
             except:
                 return "unknown admin"
-        
 
     def datetime(self):
         return self.time

@@ -124,8 +124,27 @@ def check_student_information_filled(student_id):
 
 # Articles
 
-def get_articles():
-    return Article.all()
+def get_articles(sortby = SortBy.Time, order = SortOrder.Descending, start_from = 0, count = 10, filter = None):
+    articles = Article.all()
+    filter = filter or {}
+    official_account_id = filter.get('official_account_id', None)
+    article_title_keyword = filter.get('article_title_keyword', None)
+    if official_account_id:
+        articles = articles.filter(official_account_id__exact = official_account_id)
+    if article_title_keyword:
+        articles = articles.filter(title__contains = article_title_keyword)
+    sort_param_key = {
+        SortBy.Time: 'likes', # we don't have TIME information yet
+        SortBy.Likes: 'likes',
+        SortBy.Views: 'views',
+    }[sortby]
+    sort_param_order = {
+        SortOrder.Ascending: '',
+        SortOrder.Descending: '-',
+    }[order]
+    sort_param = sort_param_order + sort_param_key
+    articles = articles.order_by(sort_param)
+    return articles[start_from:(start_from + count)]
 
 
 def add_article(dic):
