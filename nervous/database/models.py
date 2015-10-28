@@ -31,7 +31,7 @@ class OfficialAccount(models.Model):
     description = models.CharField(max_length=300)
 
     def __unicode__(self):
-        return "%s: %s" % (self.name, self.description)
+        return self.name
 
 
 class Application(models.Model):
@@ -76,6 +76,18 @@ class Message(models.Model):
     title = models.CharField(max_length=30)
     content = models.CharField(max_length=140)
     processed = models.BooleanField()
+
+    def __unicode__(self):
+        if self.category == MessageCategory.ToAdmin:
+            direction = 'from'
+        else:
+            direction = 'to'
+        return "%s under account %s %s %s" % (
+            self.title,
+            self.official_account.name,
+            direction,
+            self.official_account.application.user_submit
+        )
 
 
 # Add delegating attributes
