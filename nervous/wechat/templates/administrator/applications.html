@@ -34,7 +34,7 @@
                         <td>{{ app.description|linebreaks }}</td>
                         <td>
                             {% if app.status == 'pending' %}
-                                <a style="cursor:pointer;" class="change-app-status-link" data-toggle="popover"
+                                <a style="cursor:pointer;" href="#/" class="change-app-status-link" data-toggle="popover"
                                    data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
                                             {% csrf_token %}

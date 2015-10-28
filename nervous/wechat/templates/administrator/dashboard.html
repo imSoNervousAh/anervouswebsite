@@ -40,7 +40,7 @@
                                 <td>{{ app.manager_name }}</td>
                                 <td>{{ app.description|linebreaks }}</td>
                                 <td>
-                                    <a style="cursor:pointer;" class="change-app-status-link" data-toggle="popover"
+                                    <a style="cursor:pointer;" href="#/" class="change-app-status-link" data-toggle="popover"
                                        data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
                                             {% csrf_token %}
@@ -110,6 +110,15 @@
     </div>
     <!--/col-->
     <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>站内信</h4></div>
+            <div class="panel-body">
+                {% for message in messages %}
+                    <p><a href="/administrator/message/{{ message.official_account_id }}/">{{ message.title }}</a></p>
+                {% endfor %}
+            </div>
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>公告</h4>

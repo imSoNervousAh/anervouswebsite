@@ -1,4 +1,4 @@
-#!/usr/bin/ipython -i
+#!/usr/bin/python -i
 
 from database import backend, utils, setup_db
 
