@@ -182,9 +182,7 @@ def add_message(category, official_account_id, title, content, admin_name = None
         message = Message.model()
         message.category = category
         if category == MessageCategory.ToStudent:
-            print "HERE"
             admin = Admin.get(pk=admin_name)
-            print admin.username
             message.admin = admin
         message.official_account = OfficialAccount.get(pk=official_account_id)
         message.title = title

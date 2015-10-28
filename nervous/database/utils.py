@@ -27,20 +27,20 @@ def build_offline_test_db():
 
     mu = OfficialAccount.create(name='Lab Mu')
     Application.create(official_account=mu, user_submit='FANG KUAI', status='not_submitted')
-    mus = OfficialAccount.create(name='Lab Mu\'s')
-    Application.create(official_account=mus, user_submit='GayLou', status='pending')
+    zx = OfficialAccount.create(name='酒井资讯', wx_id='jiujingzixun')
+    Application.create(official_account=zx, user_submit='Huang Da Da', status='pending')
 
     assert(backend.add_message(
-        MessageCategory.ToAdmin, mu.id,
+        MessageCategory.ToAdmin, zx.id,
         'to_admin_title', 'to_admin_content'
     ))
     assert(backend.add_message(
-        MessageCategory.ToStudent, mu.id,
+        MessageCategory.ToStudent, zx.id,
         'to_student_title', 'to_student_content',
         'wyl8899'
     ))
     assert(backend.add_message(
-        MessageCategory.ToAdmin, mus.id,
+        MessageCategory.ToAdmin, zx.id,
         'yet_another_title', 'yet_another_content'
     ))
 
