@@ -25,6 +25,10 @@
                 data-url="{% url 'student/add-application' %}">
                 <a class="fake-link"><i class="glyphicon glyphicon-plus-sign"></i>　添加备案申请</a>
             </li>
+            <li id="message_detail_student" class="left-column-item"
+                data-url="/message/student/{{ official_account_id }}">
+                <a class="fake-link"><i class="glyphicon glyphicon-plus-sign"></i>　站内信</a>
+            </li>
         </ul>
     </ul>
 {% endblock left-column %}

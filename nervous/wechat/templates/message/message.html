@@ -1,0 +1,131 @@
+<a class="fake-link">
+    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
+</a>
+<hr>
+<!-- comment style -->
+
+<head>
+    <link href="/static/bubble/bubble-twitter.css" rel="stylesheet">
+    <link href="/static/bubble/bubble-triangle-border.css" rel="stylesheet">
+    <link href="/static/bubble/comment.css" rel="stylesheet">
+
+</head>
+
+    <div class="row">
+        <!-- center left-->
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>站内信息<span class="badge pull-right">{{ pending_count }}</span></h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-offset-1">
+                            <!-- comment -->
+                            {% for message in messages %}
+
+                                {% if message.category == MessageCategory.ToAdmin %}
+
+                                    <div class="row" style="margin-top: 30px">
+                                        <div class="col-md-7 ">
+                                            <div class="ds-comment-body">
+                                                <p class="user-name">{{ message.from_real_name }} 于 {{ message.datetime }}</p>
+
+                                                <p>{{ message.content }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if message.category == MessageCategory.ToStudent %}
+                                    <div class="row" style="margin-top: 30px">
+                                        <div class="col-md-7  col-md-offset-4">
+                                            <div class="ds-comment-body">
+                                                <p class="user-name">  于 {{ message.datetime }}</p>
+
+                                                <p>{{ message.content }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- send message-->
+
+                            <script type="text/javascript">
+                                function submitform() {
+                                    document.forms["reply_message_form"].submit();
+                                }
+                            </script>
+
+                            <form id="reply_message_form" action="/api/add_message" method="post" onsubmit="submitform();">
+                                {% csrf_token %}
+                                <div class="row" style="margin-top: 30px">
+                                    <div class="col-md-7  col-md-offset-4">
+                                        <div class="input-group" style="margin-top: 20px;">
+                                            <input name="category" style="display:none" value="{{ MessageCategory.ToStudent }}">
+                                            <input name="official_account_id" style="display:none" value="{{ account.id }}">
+                                            <input name="title" tyep="text" class="form-control" placeholder="标题">
+                                            <textarea name="content" tyep="text" class="form-control" style="height:90px" placeholder="正文"></textarea>
+                                            <button class="button">Send</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- right column-->
+        <!--/col-->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公告</h4></div>
+                <div class="panel-body">
+                    <div class="alert alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        一些<strong>不那么重要</strong>的通知
+                    </div>
+                    <p>站长给管理员的通知</p>
+
+                    <p>真的有这种东西吗</p>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公众号关注排行</h4></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>名称</th>
+                                <th>关注人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for account in official_accounts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ account.name }}</td>
+                                    <td>{{ account.subscribers }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/col-span-6-->
+        <!-- end right column-->
+
+
+    </div>
+    <!--/row-->
