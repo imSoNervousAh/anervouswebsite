@@ -177,10 +177,15 @@ def process_message(message_id):
         return False
 
 
-def add_message(category, official_account_id, title, content):
+def add_message(category, official_account_id, title, content, admin_name = None):
     try:
         message = Message.model()
         message.category = category
+        if category == MessageCategory.ToStudent:
+            print "HERE"
+            admin = Admin.get(pk=admin_name)
+            print admin.username
+            message.admin = admin
         message.official_account = OfficialAccount.get(pk=official_account_id)
         message.title = title
         message.content = content

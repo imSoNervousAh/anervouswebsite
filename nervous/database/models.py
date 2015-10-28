@@ -87,18 +87,18 @@ class Message(models.Model):
     title = models.CharField(max_length=30)
     content = models.CharField(max_length=140)
     processed = models.BooleanField()
+    admin = models.ForeignKey(Admin, null=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     def from_real_name(self):
-        return 'from_real_name'
-
-    def category_string(self):
-        if category == MessageCategory.ToAdmin:
-            return 'student'
+        if self.category == MessageCategory.ToAdmin:
+            return self.official_account.user_submit()
         else:
-            return 'admin'
+            return self.admin.description
+        
 
     def datetime(self):
-        return 'datetime'
+        return self.time
 
     def __unicode__(self):
         if self.category == MessageCategory.ToAdmin:
@@ -126,7 +126,8 @@ for attr in [
     'manager_dept',
     'manager_tel',
     'manager_email',
-    'association']:
+    'association',
+    'user_submit']:
     add_delegate(OfficialAccount, 'application', attr)
 
 for attr in ['id', 'name', 'description']:

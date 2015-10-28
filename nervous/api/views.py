@@ -67,7 +67,9 @@ def del_admin(request):
 
 def add_message(request):
     dic = {}
+    username = session.get_username(request)
     print request.POST.dict()
+    print username
     for attr in ['category', 'official_account_id', 'title', 'content']:
         dic[attr] = request.POST[attr]
     backend.add_message(**dic)
