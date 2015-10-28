@@ -190,27 +190,7 @@ class MessageCategory:
 
 
 def message(request, id):
-    print 'show message'
-    message1 = {
-        'realname': 'ytl',
-        'category': 'student',
-        'datetime': '2015.10.28',
-        'content': '学生申请怎么做?',
-    }
-    message2 = {
-        'realname': 'haungdada',
-        'category': 'admin',
-        'datetime': '2015.10.28',
-        'content': '不知道,董文飞凤凰网阿胶分哦覅 风味访问欧美佛问哦房氛围好奇偶访问欧非分雄风呢间哦'
-                   '你自己试试看吧',
-    }
-    message3 = {
-        'realname': 'ytl',
-        'category': 'student',
-        'datetime': '2015.10.28',
-        'content': '请问老师申请人联系方式怎么填？',
-    }
-    messages = [message1, message2, message3]
+    messages = backend.get_messages(official_account_id = id)
     try:
         official_account = backend.get_official_account_by_id(id)
     except:

@@ -88,6 +88,18 @@ class Message(models.Model):
     content = models.CharField(max_length=140)
     processed = models.BooleanField()
 
+    def from_real_name(self):
+        return 'from_real_name'
+
+    def category_string(self):
+        if category == MessageCategory.ToAdmin:
+            return 'student'
+        else:
+            return 'admin'
+
+    def datetime(self):
+        return 'datetime'
+
     def __unicode__(self):
         if self.category == MessageCategory.ToAdmin:
             direction = 'from'
