@@ -24,6 +24,10 @@ def get_applications_by_user(username):
     return Application.filter(user_submit__exact=username)
 
 
+def get_applications_by_admin(username):
+    return Application.filter(operator_admin__exact=username)
+
+
 # TODO: add wx_id
 # TODO: unique wx_id validation
 def add_application(app):

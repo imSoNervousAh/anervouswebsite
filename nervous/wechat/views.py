@@ -165,9 +165,9 @@ def admin_show_applications(request, type):
         applications = backend.get_pending_applications()
         type_name = u'待审批申请'
     elif type == 'processed':
-        applications = backend.get_applications_by_status('approved') \
-                       | backend.get_applications_by_status('rejected')
-        type_name = u'我处理的申请（目前还是所有已审批申请）'
+        username = session.get_username(request)
+        applications = backend.get_applications_by_admin(username)
+        type_name = u'我处理的申请'
     elif type == 'all':
         applications = backend.get_applications()
         type_name = u'所有申请'
