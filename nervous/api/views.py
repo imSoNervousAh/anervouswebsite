@@ -65,17 +65,18 @@ def del_admin(request):
     backend.del_admin(request.POST['username'])
     return HttpResponseRedirect('/superuser')
 
+
 def add_message(request):
     dic = request.POST.dict()
     username = session.get_username(request)
     backend.add_message(
-           dic['category'],
-           dic['official_account_id'],
-           dic['title'],
-           dic['content'],
-           username
+        dic['category'],
+        dic['official_account_id'],
+        dic['title'],
+        dic['content'],
+        username
     )
-    print dic['category'],' ',MessageCategory.ToStudent
+    print dic['category'], ' ', MessageCategory.ToStudent
     return HttpResponse(request.POST)
     # if (dic['category'] == str(MessageCategory.ToStudent)):
     #     print 'add message admin'
@@ -83,3 +84,7 @@ def add_message(request):
     # else:
     #     print 'add message student'
     #     return HttpResponseRedirect('/student/message/%s' % dic['official_account_id'])
+
+
+def process_message(request):
+    pass

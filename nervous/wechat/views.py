@@ -58,11 +58,14 @@ def student(request):
 
     username = session.get_username(request)
 
-    official_account_id = '118'
+    approved_applications = backend.get_applications_by_status('approved')
+    official_accounts = []
+    for app in approved_applications:
+        if app.user_submit == username:
+            official_accounts.append(app.official_account)
 
     return render(request, 'student/index.html', {'username': username,
-                                                  'official_account_id': official_account_id,
-
+                                                  'official_accounts': official_accounts,
                                                   })
 
 
@@ -120,13 +123,11 @@ def admin(request):
 def admin_dashboard(request):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
-
+    
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles()
-    # messages = backend.get_messages(only_unprocessed=True)
-    messages = backend.get_messages()
-    print messages
+    messages = backend.get_messages(only_unprocessed=True)
 
     return render(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
                                                             'official_accounts': official_accounts,
@@ -221,12 +222,13 @@ def admin_show_official_account_articles(request, id):
             'current': page_current,
             'pages': pages}
 
-    return render(request, 'administrator/detail_articles_list.html', {'articles': articles,
-                                                                       'official_account_id': id,
-                                                                       'page': page,
-                                                                       'sort_by': request.GET.get('sort_by', 'time'),
-                                                                       'sort_order': request.GET.get('sort_order', 'asc')
-                                                                       })
+    return render(request, 'administrator/detail_articles_list.html',
+                  {'articles': articles,
+                   'official_account_id': id,
+                   'page': page,
+                   'sort_by': request.GET.get('sort_by', 'time'),
+                   'sort_order': request.GET.get('sort_order', 'asc')
+                   })
 
 
 # message

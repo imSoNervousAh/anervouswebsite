@@ -1,189 +1,195 @@
 <div id="message-area">
 
-{% load staticfiles %}
+    {% load staticfiles %}
 
-<link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
+    <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
 
-<a style="text-decoration: none;" class="fake-link">
-    <strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong>
-</a>
-<hr>
+    <a style="text-decoration: none;" class="fake-link">
+        <strong><i class="glyphicon glyphicon-comment"></i>　站内消息</strong>
+    </a>
+    <hr>
 
-<div class="row">
-    <!-- center left-->
-    <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>站内信息<span class="badge pull-right">{{ pending_count }}</span></h4>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-offset-1">
-                        <!-- comment -->
-                        {% for message in messages %}
+    <div class="row">
+        <!-- center left-->
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>站内信息<span class="badge pull-right">{{ pending_count }}</span></h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-offset-1">
+                            <!-- comment -->
+                            {% for message in messages %}
 
-                            {% if message.category != category %}
+                                {% if message.category != category %}
 
-                                <div class="row" style="margin-top: 30px">
-                                    <div class="col-md-7 ">
-                                        <div class="ds-comment-body">
-                                            <p class="user-name">{{ message.from_real_name }}
-                                                于 {{ message.datetime }}</p>
+                                    <div class="message-body row" style="margin-top: 30px">
+                                        <div class="col-md-7 ">
+                                            <div class="ds-comment-body">
+                                                <p class="user-name">{{ message.from_real_name }}
+                                                    于 {{ message.datetime }}</p>
 
-                                            <p><code>Title</code> {{ message.title }}</p>
+                                                <p><code>Title</code> {{ message.title }}</p>
 
-                                            <p>{{ message.content }}</p>
+                                                <p>{{ message.content }}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% else %}
+                                {% else %}
+                                    <div class="message-body row" style="margin-top: 30px">
+                                        <div class="col-md-7  col-md-offset-4">
+                                            <div class="ds-comment-body">
+                                                <p class="user-name">{{ message.from_real_name }}
+                                                    于 {{ message.datetime }}</p>
+
+                                                <p><code>Title</code> {{ message.title }}</p>
+
+                                                <p>{{ message.content }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- send message-->
+
+                            <script type="text/javascript">
+                                /*function submitFormCheck() {
+                                 var form = document.forms["reply_message_form"];
+                                 if (form['title'].value == '') {
+                                 alert('请填写标题');
+                                 return false;
+                                 }
+                                 if (form['content'].value == '') {
+                                 alert('请填写正文');
+                                 return false;
+                                 }
+                                 form.submit();
+                                 loadContent('message/admin/{{ official_account_id }}')
+                                 return true;
+                                 }*/
+                                $(function () {
+                                    var msg = $("#error-msg");
+                                    msg.fadeOut(0);
+                                    msg.find("> button").click(function () {
+                                        $("#error-msg").fadeOut();
+                                    });
+                                });
+                                $("#reply-message-form").submit(function (event) {
+                                    event.preventDefault();
+                                    var url = "{% url 'api/add_message' %}";
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: $("#reply-message-form").serialize(),
+                                        success: function (data) {
+                                            loadContent("{% url 'message/admin' official_account_id %}",
+                                                    {}, undefined, function () {
+                                                        $("html, body").delay(60).animate({
+                                                            "scroll-top": $(document).height()
+                                                        }, function () {
+                                                            var item = $(".message-body:nth-last-of-type(1)");
+                                                            animate(item, "flash");
+                                                        });
+                                                    });
+                                        },
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
+                                    });
+                                });
+                                $("#mark-read").submit(function (event) {
+                                    event.preventDefault();
+                                    var url = "{% url 'api/process_message' %}";
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: $("#reply-message-form").serialize(),
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
+                                    });
+                                });
+                            </script>
+
+                            <button class="button" id="mark-read">标记已读（尚未实现）</button>
+
+                            <form id="reply-message-form">
+                                {% csrf_token %}
                                 <div class="row" style="margin-top: 30px">
                                     <div class="col-md-7  col-md-offset-4">
-                                        <div class="ds-comment-body">
-                                            <p class="user-name">{{ message.from_real_name }}
-                                                于 {{ message.datetime }}</p>
-
-                                            <p><code>Title</code> {{ message.title }}</p>
-
-                                            <p>{{ message.content }}</p>
+                                        <div class="input-group" style="margin-top: 20px;">
+                                            <input name="category" style="display:none" value="{{ category }}">
+                                            <input name="official_account_id" style="display:none"
+                                                   value="{{ account.id }}">
+                                            <input name="title" type="text" class="form-control" placeholder="标题">
+                                        <textarea name="content" type="text" class="form-control" style="height:90px"
+                                                  placeholder="正文"></textarea>
+                                            <button class="button pull-right">Send</button>
                                         </div>
                                     </div>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- send message-->
 
-                        <script type="text/javascript">
-                            /*function submitFormCheck() {
-                             var form = document.forms["reply_message_form"];
-                             if (form['title'].value == '') {
-                             alert('请填写标题');
-                             return false;
-                             }
-                             if (form['content'].value == '') {
-                             alert('请填写正文');
-                             return false;
-                             }
-                             form.submit();
-                             loadContent('message/admin/{{ official_account_id }}')
-                             return true;
-                             }*/
-                            $(function () {
-                                var msg = $("#error-msg");
-                                msg.fadeOut(0);
-                                msg.find("> button").click(function () {
-                                    $("#error-msg").fadeOut();
-                                });
-                            });
-                            $("#reply-message-form").submit(function (event) {
-                                event.preventDefault();
-                                var url = "{% url 'api/add_message' %}";
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    data: $("#reply-message-form").serialize(),
-                                    success: function (data) {
-                                        loadContentOfItem("#message-area", function () {
-                                            //var item = $("#message-area");
-                                            //animate(item, "flash");
-                                        });
-                                    },
-                                    error: function (xhr, textStatus, errorThrown) {
-                                        var msg = $("#error-msg");
-                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                        console.log(xhr.responseText);
-                                        msg.fadeIn();
-                                    }
-                                });
-                            });
-                            $("#mark-readed").submit(function (event) {
-                                event.preventDefault();
-                                var url = "{% url 'api/deal_message' %}";
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    data: $("#reply-message-form").serialize(),
-                                    error: function (xhr, textStatus, errorThrown) {
-                                        var msg = $("#error-msg");
-                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                        console.log(xhr.responseText);
-                                        msg.fadeIn();
-                                    }
-                                });
-                            });
-                        </script>
+            </div>
+        </div>
+        <!-- right column-->
+        <!--/col-->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公告</h4></div>
+                <div class="panel-body">
+                    <div class="alert alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        一些<strong>不那么重要</strong>的通知
+                    </div>
+                    <p>站长给管理员的通知</p>
 
-                            <button class="button" id="mark-readed">标记已读</button>
-
-                        <form id="reply-message-form">
-                            {% csrf_token %}
-                            <div class="row" style="margin-top: 30px">
-                                <div class="col-md-7  col-md-offset-4">
-                                    <div class="input-group" style="margin-top: 20px;">
-                                        <input name="category" style="display:none" value="{{ category }}">
-                                        <input name="official_account_id" style="display:none" value="{{ account.id }}">
-                                        <input name="title" type="text" class="form-control" placeholder="标题">
-                                        <textarea name="content" type="text" class="form-control" style="height:90px"
-                                                  placeholder="正文"></textarea>
-                                        <button class="button pull-right">Send</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <p>真的有这种东西吗</p>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>公众号关注排行</h4></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>名称</th>
+                                <th>关注人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for account in official_accounts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ account.name }}</td>
+                                    <td>{{ account.subscribers }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
-
         </div>
+        <!--/col-span-6-->
+        <!-- end right column-->
     </div>
-    <!-- right column-->
-    <!--/col-->
-    <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>公告</h4></div>
-            <div class="panel-body">
-                <div class="alert alert-info" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    一些<strong>不那么重要</strong>的通知
-                </div>
-                <p>站长给管理员的通知</p>
-
-                <p>真的有这种东西吗</p>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>公众号关注排行</h4></div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>名称</th>
-                            <th>关注人数</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for account in official_accounts %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ account.name }}</td>
-                                <td>{{ account.subscribers }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/col-span-6-->
-    <!-- end right column-->
-</div>
 
 </div>

@@ -113,7 +113,7 @@
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>站内消息</h4></div>
+                <h4>未读站内消息<span class="badge pull-right">{{ messages|length }}</span></h4></div>
             <div class="panel-body">
                 {% for message in messages %}
                     <p><a style="cursor:pointer;" class="message-link"

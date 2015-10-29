@@ -18,31 +18,33 @@ from django.contrib import admin
 
 urlpatterns = [
     # wechat part
-    #  login/logout
+    #   login/logout
     url(r'^index/?$', 'wechat.views.index', name='index'),
     url(r'^login/([^/]+)/?$', 'wechat.views.login', name='login'),
     url(r'^login', 'wechat.views.login', name='login'),
     url(r'^logout', 'wechat.views.logout', name='logout'),
 
-    #  message
+    #   message
     url(r'^message/student/([0-9]+)/?', 'wechat.views.message_detail_student', name='message/student'),
     url(r'^message/admin/([0-9]+)/?', 'wechat.views.message_detail_admin', name='message/admin'),
 
-    #  student
+    #   student
     url(r'^student/my-applications', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add-application', 'wechat.views.student_add_applications', name='student/add-application'),
     url(r'^student', 'wechat.views.student', name='student'),
 
-    #  administrator
-    url(r'^administrator/detail/([0-9]+)/articles_list', 'wechat.views.admin_show_official_account_articles', name='admin/detail/articles-list'),
+    #   administrator
+    url(r'^administrator/detail/([0-9]+)/articles_list', 'wechat.views.admin_show_official_account_articles',
+        name='admin/detail/articles-list'),
     url(r'^administrator/detail/([0-9]+)', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^administrator/applications/(\w+)', 'wechat.views.admin_show_applications', name='admin/applications'),
-    url(r'^administrator/official_accounts', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
+    url(r'^administrator/official_accounts', 'wechat.views.admin_show_official_accounts',
+        name='admin/official-accounts'),
     url(r'^administrator/articles', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^administrator/dashboard', 'wechat.views.admin_dashboard', name='admin/dashboard'),
     url(r'^administrator', 'wechat.views.admin', name='administrator'),
 
-    #  superuser
+    #   superuser
     url(r'^superuser/admin_list/$', 'wechat.views.superuser_show_admins', name='superuser/admins'),
     url(r'^superuser', 'wechat.views.superuser', name='superuser'),
 
@@ -57,7 +59,7 @@ urlpatterns = [
     url(r'^api/add_admin', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin', 'api.views.del_admin', name='api/del_admin'),
     url(r'^api/add_message', 'api.views.add_message', name='api/add_message'),
-    url(r'^api/add_message', 'api.views.add_message', name='api/add_message'),
+    url(r'^api/process_message', 'api.views.process_message', name='api/process_message'),
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),

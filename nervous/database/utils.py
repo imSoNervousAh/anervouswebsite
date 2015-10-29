@@ -28,7 +28,7 @@ def build_offline_test_db():
     mu = OfficialAccount.create(name='Lab Mu')
     Application.create(official_account=mu, user_submit='FANG KUAI', status='not_submitted')
     zx = OfficialAccount.create(name='酒井资讯', wx_id='jiujingzixun')
-    Application.create(official_account=zx, user_submit='Huang Da Da', status='pending')
+    Application.create(official_account=zx, user_submit='2014011416', status='pending')
 
     assert(backend.add_message(
         MessageCategory.ToAdmin, zx.id,

@@ -183,7 +183,7 @@ def get_messages(category=None, official_account_id=None, only_unprocessed=None)
     if category and category != MessageCategory.All:
         messages = messages.filter(category__exact=category)
     if only_unprocessed:
-        messages = messages.filter(processed__exact=True)
+        messages = messages.filter(processed__exact=False)
     return messages
 
 
