@@ -181,7 +181,7 @@ def add_message(category, official_account_id, title, content, admin_name = None
     try:
         message = Message.model()
         message.category = category
-        if category == MessageCategory.ToStudent:
+        if int(category) == MessageCategory.ToStudent:
             admin = Admin.get(pk=admin_name)
             message.admin = admin
         message.official_account = OfficialAccount.get(pk=official_account_id)

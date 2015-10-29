@@ -94,7 +94,10 @@ class Message(models.Model):
         if self.category == MessageCategory.ToAdmin:
             return self.official_account.user_submit()
         else:
-            return self.admin.description
+            try:
+                return self.admin.description
+            except:
+                return "unknown admin"
         
 
     def datetime(self):

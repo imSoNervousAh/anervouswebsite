@@ -66,11 +66,13 @@ def del_admin(request):
     return HttpResponseRedirect('/superuser')
 
 def add_message(request):
-    dic = {}
+    dic = request.POST.dict()
     username = session.get_username(request)
-    print request.POST.dict()
-    print username
-    for attr in ['category', 'official_account_id', 'title', 'content']:
-        dic[attr] = request.POST[attr]
-    backend.add_message(**dic)
+    backend.add_message(
+           dic['category'],
+           dic['official_account_id'],
+           dic['title'],
+           dic['content'],
+           username
+    )
     return HttpResponseRedirect('/administrator/message/%s' % dic['official_account_id'])
