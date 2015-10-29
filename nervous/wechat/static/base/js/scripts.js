@@ -38,6 +38,8 @@ function loadContent(url, params, item, callback) {
     var height = $("#left-column").height();
     var main = $("#main-page");
 
+    console.log(url);
+
     main.animate({
         opacity: 0,
         height: height
@@ -82,10 +84,10 @@ function loadContent(url, params, item, callback) {
                 <div class="alert alert-danger" role="alert">\
                     <strong>页面载入出错。</strong>\
                     错误信息：' +
-                textStatus + ": " + xhr.status + " " + errorThrown +
+                textStatus + ": " + xhr.status + " " + errorThrown + xhr.responseText +
                 '</div>'
             );
-            console.log(xhr.responseText);
+            console.log(xhr.responseText.substr(0, 500));
         }
     });
 }

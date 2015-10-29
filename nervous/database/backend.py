@@ -107,34 +107,35 @@ def check_admin(username, password):
 
 def set_student_information(student_id, real_name):
     try:
-        student = Student.create(student_id = student_id)
+        student = Student.create(student_id=student_id)
     except IntegrityError:
-        student = Student.get(pk = student_id)
+        student = Student.get(pk=student_id)
     student.real_name = real_name
     student.save()
 
 
 def check_student_information_filled(student_id):
     try:
-        student = Student.get(pk = student_id)
+        student = Student.get(pk=student_id)
     except ObjectDoesNotExist:
-        student = Student.create(student_id = student_id)
+        student = Student.create(student_id=student_id)
     return student.information_filled()
 
 
 # Articles
 
-def get_articles(sortby = SortBy.Time, order = SortOrder.Descending, start_from = 0, count = 10, filter = None):
+def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, count=10, filter=None):
     articles = Article.all()
+    articles_count = len(articles)
     filter = filter or {}
     official_account_id = filter.get('official_account_id', None)
     article_title_keyword = filter.get('article_title_keyword', None)
     if official_account_id:
-        articles = articles.filter(official_account_id__exact = official_account_id)
+        articles = articles.filter(official_account_id__exact=official_account_id)
     if article_title_keyword:
-        articles = articles.filter(title__contains = article_title_keyword)
+        articles = articles.filter(title__contains=article_title_keyword)
     sort_param_key = {
-        SortBy.Time: 'likes', # we don't have TIME information yet
+        SortBy.Time: 'likes',  # we don't have TIME information yet
         SortBy.Likes: 'likes',
         SortBy.Views: 'views',
     }[sortby]
@@ -144,7 +145,7 @@ def get_articles(sortby = SortBy.Time, order = SortOrder.Descending, start_from 
     }[order]
     sort_param = sort_param_order + sort_param_key
     articles = articles.order_by(sort_param)
-    return articles[start_from:(start_from + count)]
+    return articles_count, articles[start_from:(start_from + count)]
 
 
 def add_article(dic):
@@ -175,20 +176,20 @@ def get_articles_by_official_account_id(id):
 
 # Messages
 
-def get_messages(category = None, official_account_id = None, only_unprocessed = None):
+def get_messages(category=None, official_account_id=None, only_unprocessed=None):
     messages = Message.all()
     if official_account_id:
-        messages = messages.filter(official_account__id__exact = official_account_id)
+        messages = messages.filter(official_account__id__exact=official_account_id)
     if category and category != MessageCategory.All:
-        messages = messages.filter(category__exact = category)
+        messages = messages.filter(category__exact=category)
     if only_unprocessed:
-        messages = messages.filter(processed__exact = True)
+        messages = messages.filter(processed__exact=True)
     return messages
 
 
 def process_message(message_id):
     try:
-        message = Message.get(pk = message_id)
+        message = Message.get(pk=message_id)
         message.processed = True
         message.save()
         return True
@@ -196,7 +197,7 @@ def process_message(message_id):
         return False
 
 
-def add_message(category, official_account_id, title, content, admin_name = None):
+def add_message(category, official_account_id, title, content, admin_name=None):
     try:
         message = Message.model()
         message.category = category

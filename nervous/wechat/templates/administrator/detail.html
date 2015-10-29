@@ -7,7 +7,17 @@
 
 <script src="{% static 'base/js/referrer-killer.js' %}"></script>
 
-<a href="/administrator/message/{{ official_account_id }}/" class="fake-link pull-right"><i class="glyphicon glyphicon-comment"></i>　消息一览</a>
+<a id="messages-link" class="fake-link pull-right"
+   data-url="{% url 'admin/message' official_account_id %}">
+    <strong><i class="glyphicon glyphicon-comment"></i>　消息一览</strong>
+</a>
+<script>
+    $("#messages-link").ready(function () {
+        $("#messages-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+    });
+</script>
 <a class="fake-link">
     <strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong>
 </a>
@@ -84,12 +94,81 @@
                                     obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
                                         "alt": obj.data("alt"),
                                     }));
-                                }, index * 100);
+                                }, index * 200);
                             });
                         </script>
                         </tbody>
                     </table>
                 </div>
+                <nav>
+                    <ul id="pager" class="pagination">
+                        {% if page.current > 1 %}
+                            <li class="pager-link" data-page="{{ page.current|add:'-1' }}">
+                                <a class="fake-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if page.pages|first > 1 %}
+                            {% if page.pages|last > 2 %}
+                                <li class="pager-link" data-page="1">
+                                    <a class="fake-link">1</a>
+                                </li>
+                            {% endif %}
+                            <li class="disabled"><a>...</a></li>
+                        {% endif %}
+
+                        {% for p in page.pages %}
+                            {% if p == page.current %}
+                                <li class="active pager-link" data-page="{{ p }}">
+                                    <a class="fake-link">{{ p }}</a>
+                                </li>
+                            {% else %}
+                                <li class="pager-link" data-page="{{ p }}">
+                                    <a class="fake-link">{{ p }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page.pages|last < page.count %}
+                            <li class="disabled"><a>...</a></li>
+                            {% if page.pages|last < page.count|add:'-1' %}
+                                <li class="pager-link" data-page="{{ page.count }}">
+                                    <a class="fake-link">{{ page.count }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if page.current < page.count %}
+                            <li class="pager-link" data-page="{{ page.current|add:'1' }}">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <script>
+                        $("#pager").ready(function () {
+                            $(".pager-link").click(function () {
+                                loadContent("{% url 'admin/detail' official_account_id %}",
+                                        {'page': $(this).data("page")});
+                            });
+                        });
+                    </script>
+                </nav>
             </div>
         </div>
     </div>

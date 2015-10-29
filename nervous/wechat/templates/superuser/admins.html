@@ -16,10 +16,10 @@
                     $(function () {
                         $('body').popover({
                             'html': true,
+                            'container': 'body',
                             'selector': '.delete-admin-link',
                             'title': "确认删除账号？",
                             'trigger': 'focus',
-                            'viewport': {selector: 'body', padding: 0}
                         });
                     });
                 </script>
@@ -28,7 +28,7 @@
                         <td>{{ admin.username }}</td>
                         <td>{{ admin.description }}</td>
                         <td>
-                            <a style="cursor: pointer;" class="delete-admin-link" data-toggle="popover"
+                            <a style="cursor: pointer;" href="#/" class="delete-admin-link" data-toggle="popover"
                                data-content="
                                 <form method='post' action='{% url 'api/del_admin' %}'>
                                     {% csrf_token %}
@@ -37,7 +37,7 @@
                                     <span>　</span>
                                     <input type='submit' value='删除' class='btn btn-danger'>
                                 </form>">
-                                <span class="glyphicon glyphicon-minus-sign"></span> 删除
+                                <span class="fa fa-user-times"></span> 删除
                             </a>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
         </div>
         <ul class="list-inline pull-right">
             <li><a title="Add Widget" data-toggle="modal" href="#add-admin-modal"><span
-                    class="glyphicon glyphicon-plus-sign"></span> 添加管理员</a></li>
+                    class="fa fa-user-plus"></span> 添加管理员</a></li>
         </ul>
     </div>
 </div>

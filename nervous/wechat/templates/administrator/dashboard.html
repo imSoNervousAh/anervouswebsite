@@ -40,7 +40,8 @@
                                 <td>{{ app.manager_name }}</td>
                                 <td>{{ app.description|linebreaks }}</td>
                                 <td>
-                                    <a style="cursor:pointer;" href="#/" class="change-app-status-link" data-toggle="popover"
+                                    <a style="cursor:pointer;" href="#/" class="change-app-status-link"
+                                       data-toggle="popover"
                                        data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
                                             {% csrf_token %}
@@ -115,7 +116,7 @@
                 <h4>站内信</h4></div>
             <div class="panel-body">
                 {% for message in messages %}
-                    <p><a href="/administrator/message/{{ message.official_account_id }}/">{{ message.title }}</a></p>
+                    <p><a href="{% url 'admin/message' message.official_account_id %}/">{{ message.title }}</a></p>
                 {% endfor %}
             </div>
         </div>
@@ -152,7 +153,10 @@
                         {% for account in official_accounts %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ account.name }}</td>
+                                <td><a style="cursor:pointer;" class="official-account-link"
+                                       data-url="{% url 'admin/detail' account.id %}">
+                                    {{ account.name }}
+                                </a></td>
                                 <td>{{ account.subscribers }}</td>
                             </tr>
                         {% endfor %}

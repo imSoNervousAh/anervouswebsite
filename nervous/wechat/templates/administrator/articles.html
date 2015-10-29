@@ -18,7 +18,7 @@
                 {% for article in articles %}
                     <tr>
                         <td><a style="cursor:pointer;" class="official-account-link"
-                               data-url="{% url 'admin/detail' article.official_account_id %}">
+                                data-url="{% url 'admin/detail' article.official_account_id %}">
                             {{ article.official_account_name }}
                         </a></td>
                         <td><a target="_blank" href="{{ article.url }}">

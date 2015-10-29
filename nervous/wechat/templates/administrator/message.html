@@ -1,11 +1,15 @@
 {% extends 'administrator/index.html' %}
 
-{% block main-page %}
-    <a style="text-decoration: none;" class="fake-link"><strong><i
-            class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong></a>
-    <hr>
+{% load staticfiles %}
 
+{% block css %}
+    <link href="{% static 'bubble/bubble-twitter.css' %}" rel="stylesheet">
+    <link href="{% static 'bubble/bubble-triangle-border.css' %}" rel="stylesheet">
+    <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block main-page %}
     <script>
-        loadContent('/message/admin/{{ official_account_id }}')
+        loadContent("{% url 'message/admin' official_account_id %}");
     </script>
 {% endblock main-page %}

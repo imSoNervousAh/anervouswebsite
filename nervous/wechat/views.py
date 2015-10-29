@@ -29,7 +29,8 @@ def index(request):
 def login(request, identity='student'):
     print 'login/'
     if identity in ['student', 'administrator', 'superuser']:
-        return HttpResponseRedirect('/login/' + identity)
+        response = render(request, 'login/index.html', {'identity': identity})
+        return response
     return to_notfound(request)
 
 
@@ -122,11 +123,12 @@ def admin_dashboard(request):
 
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
-    articles = backend.get_articles()
+    articles_count, articles = backend.get_articles()
 
     return render(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
                                                             'official_accounts': official_accounts,
                                                             'articles': articles,
+                                                            'articles_count': articles_count,
                                                             })
 
 
@@ -143,22 +145,26 @@ def admin_show_articles(request):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
-    articles = backend.get_articles()
+    articles_count, articles = backend.get_articles()
 
-    return render(request, 'administrator/articles.html', {'articles': articles})
+    return render(request, 'administrator/articles.html', {'articles': articles,
+                                                           'articles_count': articles_count,
+                                                           })
 
 
 def admin_show_applications(request, type):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
+
     if type == 'pending':
         applications = backend.get_pending_applications()
         type_name = u'待审批申请'
     elif type == 'processed':
-        applications = backend.get_pending_applications()
-        type_name = u'我处理的申请'
+        applications = backend.get_applications_by_status('approved') \
+                       | backend.get_applications_by_status('rejected')
+        type_name = u'我处理的申请（目前还是所有已审批申请）'
     elif type == 'all':
-        applications = backend.get_pending_applications()
+        applications = backend.get_applications()
         type_name = u'所有申请'
     else:
         applications = []
@@ -173,15 +179,38 @@ def admin_show_official_account_detail(request, id):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
+    articles_on_one_page = 10
+    try:
+        page_current = int(request.GET['page'])
+    except:
+        page_current = 1
+
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
         return to_notfound(request)
-    articles = backend.get_articles_by_official_account_id(id)
+    articles_count, articles = backend.get_articles(start_from=(page_current - 1) * articles_on_one_page,
+                                                    count=articles_on_one_page,
+                                                    filter={'official_account_id': id})
+
+    page_count = (articles_count + articles_on_one_page - 1) // articles_on_one_page
+    pages = xrange(1, page_count + 1)
+    '''
+    if page_count <= 5:
+
+    elif page_current > 1:
+
+        page['pages'] = xrange(1, 5)
+        '''
+    page = {'count': page_count,
+            'current': page_current,
+            'pages': pages}
 
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
+                                                         'articles_count': articles_count,
                                                          'official_account_id': id,
+                                                         'page': page,
                                                          })
 
 
@@ -189,18 +218,16 @@ def admin_message(request, id):
     print 'show admin_message'
     messages = backend.get_messages(official_account_id=id)
     try:
-        official_account = backend.get_official_account_by_id(id)
+        account = backend.get_official_account_by_id(id)
     except:
         return to_notfound(request)
-    articles = backend.get_articles_by_official_account_id(id)
+    official_accounts = backend.get_official_accounts()
 
-    return render(request, 'administrator/message.html', {'account': official_account,
-                                                          'articles': articles,
-                                                          'article_count': len(articles),
-                                                          'username': session.get_username(request),
+    return render(request, 'administrator/message.html', {'account': account,
                                                           'messages': messages,
                                                           'MessageCategory': MessageCategory,
                                                           'official_account_id': id,
+                                                          'official_accounts': official_accounts
                                                           })
 
 
