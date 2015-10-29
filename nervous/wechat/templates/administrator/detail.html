@@ -56,114 +56,16 @@
             <div class="panel-heading">
                 <h4>最近文章</h4></div>
             <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th style="width: 25%; min-width: 100px">文章标题</th>
-                            <th>文章简介</th>
-                            <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                            <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for article in articles %}
-                            <tr>
-                                <td>
-                                    <div class="article-avatar" data-src="{{ article.avatar_url }}"
-                                         data-alt="{{ article.title }}"></div>
-                                </td>
-                                <td><a target="_blank" href="{{ article.url }}">
-                                    <div>{{ article.title }}</div>
-                                </a></td>
-                                <td>{{ article.description|linebreaks }}</td>
-                                <td align="right">{{ article.views }}</td>
-                                <td align="right">{{ article.likes }}</td>
-                            </tr>
-                        {% endfor %}
-                        <script>
-                            $(".article-avatar").each(function (index) {
-                                var obj = $(this);
-                                setTimeout(function () {
-                                    obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
-                                        "alt": obj.data("alt"),
-                                    }));
-                                }, index * 200);
-                            });
-                        </script>
-                        </tbody>
-                    </table>
-                </div>
-                <nav>
-                    <ul id="pager" class="pagination">
-                        {% if page.current > 1 %}
-                            <li class="pager-link" data-page="{{ page.current|add:'-1' }}">
-                                <a class="fake-link" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled">
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
+                <div class="table-responsive" id="articles-list-container">
+                    <!-- to be loaded using ajax -->
 
-                        {% if page.pages|first > 1 %}
-                            {% if page.pages|last > 2 %}
-                                <li class="pager-link" data-page="1">
-                                    <a class="fake-link">1</a>
-                                </li>
-                            {% endif %}
-                            <li class="disabled"><a>...</a></li>
-                        {% endif %}
-
-                        {% for p in page.pages %}
-                            {% if p == page.current %}
-                                <li class="active pager-link" data-page="{{ p }}">
-                                    <a class="fake-link">{{ p }}</a>
-                                </li>
-                            {% else %}
-                                <li class="pager-link" data-page="{{ p }}">
-                                    <a class="fake-link">{{ p }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if page.pages|last < page.count %}
-                            <li class="disabled"><a>...</a></li>
-                            {% if page.pages|last < page.count|add:'-1' %}
-                                <li class="pager-link" data-page="{{ page.count }}">
-                                    <a class="fake-link">{{ page.count }}</a>
-                                </li>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if page.current < page.count %}
-                            <li class="pager-link" data-page="{{ page.current|add:'1' }}">
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled">
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
                     <script>
-                        $("#pager").ready(function () {
-                            $(".pager-link").click(function () {
-                                loadContent("{% url 'admin/detail' official_account_id %}",
-                                        {'page': $(this).data("page")});
-                            });
-                        });
+                        loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
+                            'sort_by': 'views',
+                            'sort_order': 'desc'
+                        }, "#articles-list-container");
                     </script>
-                </nav>
+                </div>
             </div>
         </div>
     </div>

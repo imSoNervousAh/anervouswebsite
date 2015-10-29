@@ -183,39 +183,50 @@ def admin_show_official_account_detail(request, id):
     if not check_identity(request, 'administrator'):
         return login(request, 'administrator')
 
-    articles_on_one_page = 10
-    try:
-        page_current = int(request.GET['page'])
-    except:
-        page_current = 1
-
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
         return to_notfound(request)
+
+    articles_count = backend.get_articles()
+
+    return render(request, 'administrator/detail.html', {'account': official_account,
+                                                         'official_account_id': id,
+                                                         'articles_count': articles_count,
+                                                         })
+
+
+def admin_show_official_account_articles(request, id):
+    articles_on_one_page = 10
+    page_current = int(request.GET.get('page', '1'))
+    sort_order = {
+        'asc': SortOrder.Ascending,
+        'desc': SortOrder.Descending
+    }[request.GET.get('sort_order', 'asc')]
+    sort_by = {
+        'time': SortBy.Time,
+        'likes': SortBy.Likes,
+        'views': SortBy.Views
+    }[request.GET.get('sort_by', 'time')]
+
     articles_count, articles = backend.get_articles(start_from=(page_current - 1) * articles_on_one_page,
                                                     count=articles_on_one_page,
-                                                    filter={'official_account_id': id})
+                                                    filter={'official_account_id': id},
+                                                    sortby=sort_by,
+                                                    order=sort_order)
 
     page_count = (articles_count + articles_on_one_page - 1) // articles_on_one_page
     pages = xrange(1, page_count + 1)
-    '''
-    if page_count <= 5:
-
-    elif page_current > 1:
-
-        page['pages'] = xrange(1, 5)
-        '''
     page = {'count': page_count,
             'current': page_current,
             'pages': pages}
 
-    return render(request, 'administrator/detail.html', {'account': official_account,
-                                                         'articles': articles,
-                                                         'articles_count': articles_count,
-                                                         'official_account_id': id,
-                                                         'page': page,
-                                                         })
+    return render(request, 'administrator/detail_articles_list.html', {'articles': articles,
+                                                                       'official_account_id': id,
+                                                                       'page': page,
+                                                                       'sort_by': request.GET.get('sort_by', 'time'),
+                                                                       'sort_order': request.GET.get('sort_order', 'asc')
+                                                                       })
 
 
 # message

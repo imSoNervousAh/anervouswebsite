@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^student', 'wechat.views.student', name='student'),
 
     #  administrator
+    url(r'^administrator/detail/([0-9]+)/articles_list', 'wechat.views.admin_show_official_account_articles', name='admin/detail/articles-list'),
     url(r'^administrator/detail/([0-9]+)', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^administrator/applications/(\w+)', 'wechat.views.admin_show_applications', name='admin/applications'),
     url(r'^administrator/official_accounts', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),

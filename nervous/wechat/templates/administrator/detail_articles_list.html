@@ -1,0 +1,165 @@
+{% load staticfiles %}
+
+<script src="{% static 'base/js/referrer-killer.js' %}"></script>
+
+<table class="table table-striped table-sortable">
+    <thead>
+    <tr>
+        <th></th>
+        <th class="th-sortable" data-key="title"
+            style="width: 25%; min-width: 100px">文章标题
+        </th>
+        <th>文章简介</th>
+        <th class="th-sortable" data-key="views"
+            style="width: 100px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数
+        </th>
+        <th class="th-sortable" data-key="likes"
+            style="width: 100px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数
+        </th>
+    </tr>
+    </thead>
+
+    <script>
+        $(".table-sortable").find("thead").ready(function () {
+            var th = $("th.th-sortable");
+
+            th.html(function (index, old) {
+                return old + ' <span class="sort-label pull-right fa fa-unsorted"></span>';
+            });
+
+            var icons = th.find("span.sort-label");
+            var allClasses = "fa-unsorted fa-sort-asc fa-sort-desc";
+
+            th.each(function () {
+                if ($(this).data("key") == "{{ sort_by }}") {
+                    $(this).find("span.sort-label")
+                            .removeClass(allClasses).addClass("fa-sort-" + "{{ sort_order }}");
+                }
+            });
+
+            th.click(function () {
+                var sort_order = "";
+                console.log($(this));
+                var icon = $(this).find("span.sort-label");
+                if (icon.hasClass("fa-unsorted")) {
+                    sort_order = "asc";
+                } else if (icon.hasClass("fa-sort-asc")) {
+                    sort_order = "desc";
+                } else if (icon.hasClass("fa-sort-desc")) {
+                    sort_order = "asc";
+                } else {
+                    console.log("uh-oh");
+                }
+                // icons.removeClass(allClasses).addClass("fa-unsorted");
+                // icon.removeClass(allClasses).addClass("fa-sort-" + sort_order);
+
+                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
+                    'sort_by': $(this).data("key"),
+                    'sort_order': sort_order
+                }, "#articles-list-container");
+            });
+        });
+    </script>
+
+    <tbody>
+    {% for article in articles %}
+        <tr>
+            <td>
+                <div class="article-avatar" data-src="{{ article.avatar_url }}"
+                     data-alt="{{ article.title }}"></div>
+            </td>
+            <td><a target="_blank" href="{{ article.url }}">
+                <div>{{ article.title }}</div>
+            </a></td>
+            <td>{{ article.description|linebreaks }}</td>
+            <td align="right">{{ article.views }}</td>
+            <td align="right">{{ article.likes }}</td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        $(".article-avatar").each(function (index) {
+            var obj = $(this);
+            setTimeout(function () {
+                obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
+                    "alt": obj.data("alt"),
+                }));
+            }, index * 200);
+        });
+    </script>
+    </tbody>
+</table>
+
+<nav>
+    <ul id="pager" class="pagination">
+        {% if page.current > 1 %}
+            <li class="pager-link" data-page="{{ page.current|add:'-1' }}">
+                <a class="fake-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="disabled">
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        {% if page.pages|first > 1 %}
+            {% if page.pages|last > 2 %}
+                <li class="pager-link" data-page="1">
+                    <a class="fake-link">1</a>
+                </li>
+            {% endif %}
+            <li class="disabled"><a>...</a></li>
+        {% endif %}
+
+        {% for p in page.pages %}
+            {% if p == page.current %}
+                <li class="active pager-link" data-page="{{ p }}">
+                    <a class="fake-link">{{ p }}</a>
+                </li>
+            {% else %}
+                <li class="pager-link" data-page="{{ p }}">
+                    <a class="fake-link">{{ p }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page.pages|last < page.count %}
+            <li class="disabled"><a>...</a></li>
+            {% if page.pages|last < page.count|add:'-1' %}
+                <li class="pager-link" data-page="{{ page.count }}">
+                    <a class="fake-link">{{ page.count }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+
+        {% if page.current < page.count %}
+            <li class="pager-link" data-page="{{ page.current|add:'1' }}">
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="disabled">
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+    <script>
+        $("#pager").ready(function () {
+            $(".pager-link").click(function () {
+                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
+                    'sort_by': "{{ sort_by }}",
+                    'sort_order': "{{ sort_order }}",
+                    'page': $(this).data("page")
+                }, "#articles-list-container");
+            });
+        });
+    </script>
+</nav>

@@ -109,3 +109,9 @@ a > span.badge-info {
     text-decoration: none !important;
     cursor: pointer;
 }
+
+/* sortable tables */
+th.th-sortable {
+    cursor: pointer;
+    font-weight: bold;
+}
