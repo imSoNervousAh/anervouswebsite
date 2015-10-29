@@ -64,7 +64,7 @@ def student(request):
 
     username = session.get_username(request)
 
-    official_account_id='112'
+    official_account_id = '112'
 
     return render(request, 'student/index.html', {'username': username,
                                                   'official_account_id': official_account_id,
@@ -186,15 +186,9 @@ def admin_show_official_account_detail(request, id):
 
     return render(request, 'administrator/detail.html', {'account': official_account,
                                                          'articles': articles,
-                                                         'official_account_id':id,
+                                                         'official_account_id': id,
                                                          })
 
-class MessageCategory:
-    All,ToStudent,ToAdmin=range(3)
-
-
-class MessageCategory:
-    All, ToStudent, ToAdmin = range(3)
 
 
 def admin_message(request, id):
@@ -209,18 +203,29 @@ def admin_message(request, id):
                                                           'articles': articles,
                                                           'article_count': len(articles),
                                                           'username': session.get_username(request),
-                                                          'official_account_id':id,
+                                                          'official_account_id': id,
                                                           })
 
-def message_detail_admin(request,id):
-    messages = backend.get_messages(official_account_id = id)
-    return render(request,'message/message.html',{'messages':messages,
-                                                   'MessageCategory': MessageCategory,
-                                                  'official_account_id':id,
-                                                  })
+#message
 
-def message_detail_student(request,id):
-    return message_detail_admin(request,id)
+
+def message_detail_admin(request, id,category=MessageCategory.ToStudent):
+    messages = backend.get_messages(official_account_id=id)
+    try:
+        official_account = backend.get_official_account_by_id(id)
+    except:
+        return to_notfound(request)
+
+    return render(request, 'message/message.html', {'account': official_account,
+                                                    'messages': messages,
+                                                    'category': category,
+                                                    'official_account_id': id,
+                                                    'MessageCategory':MessageCategory
+                                                    })
+
+
+def message_detail_student(request, id):
+    return message_detail_admin(request,id,MessageCategory.ToAdmin)
 
 
 # superuser

@@ -21,13 +21,12 @@ urlpatterns = [
     #  login/logout
     url(r'^index/?$', 'wechat.views.index', name='index'),
     url(r'^login/([^/]+)/?$', 'wechat.views.login', name='login'),
-    url(r'^login', 'wechat.views.login',name='login'),
-    url(r'^logout','wechat.views.logout',name='logout'),
+    url(r'^login', 'wechat.views.login', name='login'),
+    url(r'^logout', 'wechat.views.logout', name='logout'),
 
-    #message detail
-    url(r'^message/student/([0-9]+)/?', 'wechat.views.message_detail_admin', name='admin/message'),
-    url(r'^message/admin/([0-9]+)/?', 'wechat.views.message_detail_student', name='admin/message'),
-
+    # message detail
+    url(r'^message/student/([0-9]+)/?', 'wechat.views.message_detail_student', name='admin/message'),
+    url(r'^message/admin/([0-9]+)/?', 'wechat.views.message_detail_admin', name='admin/message'),
 
     #  student
     url(r'^student/my-applications/$', 'wechat.views.student_show_applications', name='student/my-applications'),
@@ -38,7 +37,8 @@ urlpatterns = [
     url(r'^administrator/message/([0-9]+)/?', 'wechat.views.admin_message', name='admin/message'),
     url(r'^administrator/detail/([0-9]+)/$', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^administrator/applications/(\w+)/$', 'wechat.views.admin_show_applications', name='admin/applications'),
-    url(r'^administrator/official_accounts/$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
+    url(r'^administrator/official_accounts/$', 'wechat.views.admin_show_official_accounts',
+        name='admin/official-accounts'),
     url(r'^administrator/articles/$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^administrator/dashboard/$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
     url(r'^administrator', 'wechat.views.admin', name='administrator'),
@@ -49,7 +49,7 @@ urlpatterns = [
 
     # django admin
     url(r'^admin/', include(admin.site.urls)),
-    
+
     # api part
     url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),
 
