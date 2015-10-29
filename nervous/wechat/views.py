@@ -58,7 +58,7 @@ def student(request):
 
     username = session.get_username(request)
 
-    official_account_id = '112'
+    official_account_id = '118'
 
     return render(request, 'student/index.html', {'username': username,
                                                   'official_account_id': official_account_id,
@@ -237,7 +237,13 @@ def admin_message(request, id):
 
 # message
 
-def message_detail_admin(request, id, category=MessageCategory.ToStudent):
+
+def message_detail_admin(request, id):
+    if not check_identity(request, 'administrator'):
+        return login(request, 'administrator')
+
+    category = MessageCategory.ToStudent
+
     messages = backend.get_messages(official_account_id=id)
     try:
         official_account = backend.get_official_account_by_id(id)
@@ -248,12 +254,25 @@ def message_detail_admin(request, id, category=MessageCategory.ToStudent):
                                                     'messages': messages,
                                                     'category': category,
                                                     'official_account_id': id,
-                                                    'MessageCategory': MessageCategory
                                                     })
 
 
 def message_detail_student(request, id):
-    return message_detail_admin(request, id, MessageCategory.ToAdmin)
+    if not check_identity(request, 'student'):
+        return login(request, 'student')
+
+    category = MessageCategory.ToAdmin
+    messages = backend.get_messages(official_account_id=id)
+    try:
+        official_account = backend.get_official_account_by_id(id)
+    except:
+        return to_notfound(request)
+
+    return render(request, 'message/message.html', {'account': official_account,
+                                                    'messages': messages,
+                                                    'category': category,
+                                                    'official_account_id': id,
+                                                    })
 
 
 # superuser

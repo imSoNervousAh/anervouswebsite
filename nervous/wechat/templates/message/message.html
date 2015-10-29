@@ -22,13 +22,13 @@
 
                             {% if message.category != category %}
 
-                                <div class="row" style="margin-top: 30px">
-                                    <div class="col-md-7 ">
-                                        <div class="ds-comment-body">
-                                            <p class="user-name">{{ message.from_real_name }}
-                                                于 {{ message.datetime }}</p>
-
-                                            <p>{{ message.content }}</p>
+                                    <div class="row" style="margin-top: 30px">
+                                        <div class="col-md-7 ">
+                                            <div class="ds-comment-body">
+                                                <p class="user-name">{{ message.from_real_name }} 于 {{ message.datetime }}</p>
+                                                <p><code>Title</code>  {{ message.title }}</p>
+                                                <p>{{ message.content }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -39,7 +39,9 @@
                                             <p class="user-name">{{ message.from_real_name }}
                                                 于 {{ message.datetime }}</p>
 
-                                            <p>{{ message.content }}</p>
+                                                <p><code>Title</code>  {{ message.title }}</p>
+                                                <p>{{ message.content }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
