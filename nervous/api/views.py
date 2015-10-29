@@ -51,7 +51,10 @@ def submit_application(request):
 
 
 def modify_application(request):
-    backend.modify_application(request.POST)
+    dic = request.POST.dict()
+    username = session.get_username(request)
+    dic['operator_admin'] = username
+    backend.modify_application(dic)
     return HttpResponseRedirect('/administrator')
 
 

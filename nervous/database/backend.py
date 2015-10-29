@@ -51,12 +51,12 @@ def add_application(app):
 
 
 def modify_application(app):
-    app = app.dict()
     print app
     try:
         account = OfficialAccount.get(pk=app['account_id'])
         application = Application.get(pk=account)
-        application.status = app['status']
+        for attr in ['status', 'operator_admin']:
+            setattr(application, attr, app.get(attr, "unknown"))
         application.save()
     except ObjectDoesNotExist:
         return False
