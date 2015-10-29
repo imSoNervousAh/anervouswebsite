@@ -218,23 +218,6 @@ def admin_show_official_account_detail(request, id):
                                                          })
 
 
-def admin_message(request, id):
-    print 'show admin_message'
-    messages = backend.get_messages(official_account_id=id)
-    try:
-        account = backend.get_official_account_by_id(id)
-    except:
-        return to_notfound(request)
-    official_accounts = backend.get_official_accounts()
-
-    return render(request, 'administrator/message.html', {'account': account,
-                                                          'messages': messages,
-                                                          'MessageCategory': MessageCategory,
-                                                          'official_account_id': id,
-                                                          'official_accounts': official_accounts
-                                                          })
-
-
 # message
 
 

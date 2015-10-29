@@ -1,3 +1,5 @@
+<div id="message-area">
+
 {% load staticfiles %}
 
 <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
@@ -22,13 +24,15 @@
 
                             {% if message.category != category %}
 
-                                    <div class="row" style="margin-top: 30px">
-                                        <div class="col-md-7 ">
-                                            <div class="ds-comment-body">
-                                                <p class="user-name">{{ message.from_real_name }} 于 {{ message.datetime }}</p>
-                                                <p><code>Title</code>  {{ message.title }}</p>
-                                                <p>{{ message.content }}</p>
-                                            </div>
+                                <div class="row" style="margin-top: 30px">
+                                    <div class="col-md-7 ">
+                                        <div class="ds-comment-body">
+                                            <p class="user-name">{{ message.from_real_name }}
+                                                于 {{ message.datetime }}</p>
+
+                                            <p><code>Title</code> {{ message.title }}</p>
+
+                                            <p>{{ message.content }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -39,9 +43,9 @@
                                             <p class="user-name">{{ message.from_real_name }}
                                                 于 {{ message.datetime }}</p>
 
-                                                <p><code>Title</code>  {{ message.title }}</p>
-                                                <p>{{ message.content }}</p>
-                                            </div>
+                                            <p><code>Title</code> {{ message.title }}</p>
+
+                                            <p>{{ message.content }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -51,45 +55,89 @@
                         <!-- send message-->
 
                         <script type="text/javascript">
-                            function submitFormCheck() {
-                                var form = document.forms["reply_message_form"];
-                                if (form['title'].value == '') {
-                                    alert('请填写标题');
-                                    return false;
-                                }
-                                if (form['content'].value == '') {
-                                    alert('请填写正文');
-                                    return false;
-                                }
-                                form.submit();
-                                return true;
-                            }
+                            /*function submitFormCheck() {
+                             var form = document.forms["reply_message_form"];
+                             if (form['title'].value == '') {
+                             alert('请填写标题');
+                             return false;
+                             }
+                             if (form['content'].value == '') {
+                             alert('请填写正文');
+                             return false;
+                             }
+                             form.submit();
+                             loadContent('message/admin/{{ official_account_id }}')
+                             return true;
+                             }*/
+                            $(function () {
+                                var msg = $("#error-msg");
+                                msg.fadeOut(0);
+                                msg.find("> button").click(function () {
+                                    $("#error-msg").fadeOut();
+                                });
+                            });
+                            $("#reply-message-form").submit(function (event) {
+                                event.preventDefault();
+                                var url = "{% url 'api/add_message' %}";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: $("#reply-message-form").serialize(),
+                                    success: function (data) {
+                                        loadContentOfItem("#message-area", function () {
+                                            //var item = $("#message-area");
+                                            //animate(item, "flash");
+                                        });
+                                    },
+                                    error: function (xhr, textStatus, errorThrown) {
+                                        var msg = $("#error-msg");
+                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                        console.log(xhr.responseText);
+                                        msg.fadeIn();
+                                    }
+                                });
+                            });
+                            $("#mark-readed").submit(function (event) {
+                                event.preventDefault();
+                                var url = "{% url 'api/deal_message' %}";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: $("#reply-message-form").serialize(),
+                                    error: function (xhr, textStatus, errorThrown) {
+                                        var msg = $("#error-msg");
+                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                        console.log(xhr.responseText);
+                                        msg.fadeIn();
+                                    }
+                                });
+                            });
                         </script>
 
-                        <form id="reply_message_form" action="/api/add_message" method="post"
-                              onsubmit="return submitFormCheck();">
+                            <button class="button" id="mark-readed">标记已读</button>
+
+                        <form id="reply-message-form">
                             {% csrf_token %}
                             <div class="row" style="margin-top: 30px">
                                 <div class="col-md-7  col-md-offset-4">
                                     <div class="input-group" style="margin-top: 20px;">
                                         <input name="category" style="display:none" value="{{ category }}">
                                         <input name="official_account_id" style="display:none" value="{{ account.id }}">
-                                        <input name="title" tyep="text" class="form-control" placeholder="标题">
-                                        <textarea name="content" tyep="text" class="form-control" style="height:90px"
+                                        <input name="title" type="text" class="form-control" placeholder="标题">
+                                        <textarea name="content" type="text" class="form-control" style="height:90px"
                                                   placeholder="正文"></textarea>
-                                        <button class="button">Send</button>
+                                        <button class="button pull-right">Send</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-
-
             </div>
+
+
         </div>
     </div>
-
     <!-- right column-->
     <!--/col-->
     <div class="col-md-3">
@@ -136,4 +184,6 @@
     </div>
     <!--/col-span-6-->
     <!-- end right column-->
+</div>
+
 </div>

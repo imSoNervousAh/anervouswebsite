@@ -93,7 +93,6 @@ function loadContent(url, params, item, callback) {
 }
 
 function loadContentOfItem(item, callback) {
-    // console.log($(item).data("url"));
     loadContent($(item).data("url"), {}, $(item), callback);
 }
 

@@ -25,8 +25,8 @@ urlpatterns = [
     url(r'^logout', 'wechat.views.logout', name='logout'),
 
     #  message
-    url(r'^message/student/([0-9]+)/?', 'wechat.views.message_detail_student', name='message/admin'),
-    url(r'^message/admin/([0-9]+)/?', 'wechat.views.message_detail_admin', name='message/student'),
+    url(r'^message/student/([0-9]+)/?', 'wechat.views.message_detail_student', name='message/student'),
+    url(r'^message/admin/([0-9]+)/?', 'wechat.views.message_detail_admin', name='message/admin'),
 
     #  student
     url(r'^student/my-applications', 'wechat.views.student_show_applications', name='student/my-applications'),
@@ -34,7 +34,6 @@ urlpatterns = [
     url(r'^student', 'wechat.views.student', name='student'),
 
     #  administrator
-    url(r'^administrator/message/([0-9]+)', 'wechat.views.admin_message', name='admin/message'),
     url(r'^administrator/detail/([0-9]+)', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^administrator/applications/(\w+)', 'wechat.views.admin_show_applications', name='admin/applications'),
     url(r'^administrator/official_accounts', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
@@ -56,7 +55,8 @@ urlpatterns = [
     url(r'^api/modify_application', 'api.views.modify_application', name='api/modify_application'),
     url(r'^api/add_admin', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin', 'api.views.del_admin', name='api/del_admin'),
-    url(r'^api/add_message', 'api.views.add_message', name='add_message'),
+    url(r'^api/add_message', 'api.views.add_message', name='api/add_message'),
+    url(r'^api/add_message', 'api.views.add_message', name='api/add_message'),
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),

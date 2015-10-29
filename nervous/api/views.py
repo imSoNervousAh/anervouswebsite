@@ -76,9 +76,10 @@ def add_message(request):
            username
     )
     print dic['category'],' ',MessageCategory.ToStudent
-    if (dic['category'] == str(MessageCategory.ToStudent)):
-        print 'add message admin'
-        return HttpResponseRedirect('/administrator/message/%s' % dic['official_account_id'])
-    else:
-        print 'add message student'
-        return HttpResponseRedirect('/student/message/%s' % dic['official_account_id'])
+    return HttpResponse(request.POST)
+    # if (dic['category'] == str(MessageCategory.ToStudent)):
+    #     print 'add message admin'
+    #     return HttpResponseRedirect('/administrator/message/%s' % dic['official_account_id'])
+    # else:
+    #     print 'add message student'
+    #     return HttpResponseRedirect('/student/message/%s' % dic['official_account_id'])

@@ -117,7 +117,7 @@
             <div class="panel-body">
                 {% for message in messages %}
                     <p><a style="cursor:pointer;" class="message-link"
-                          data-url="{% url 'message/admin' message.official_account_id %}/">{{ message.title }}</a>
+                          data-url="{% url 'message/admin' message.official_account_id %}">{{ message.title }}</a>
                     </p>
                 {% endfor %}
             </div>
