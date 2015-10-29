@@ -1,14 +1,9 @@
-<a class="fake-link">
-    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
-</a>
-<hr>
-
 {% load staticfiles %}
 
 <script src="{% static 'base/js/referrer-killer.js' %}"></script>
 
 <a id="messages-link" class="fake-link pull-right"
-   data-url="{% url 'admin/message' official_account_id %}">
+   data-url="{% url 'message/admin' official_account_id %}">
     <strong><i class="glyphicon glyphicon-comment"></i>　消息一览</strong>
 </a>
 <script>

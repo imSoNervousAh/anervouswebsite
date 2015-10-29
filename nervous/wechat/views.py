@@ -124,11 +124,15 @@ def admin_dashboard(request):
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles()
+    # messages = backend.get_messages(only_unprocessed=True)
+    messages = backend.get_messages()
+    print messages
 
     return render(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
                                                             'official_accounts': official_accounts,
                                                             'articles': articles,
                                                             'articles_count': articles_count,
+                                                            'messages': messages,
                                                             })
 
 
