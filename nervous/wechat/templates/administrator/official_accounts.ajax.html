@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>公众号</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 15%; min-width: 100px">名称</th>
+                    <th>公众号简介</th>
+                    <th style="width: 100px"><span class="fa fa-users"></span> 关注人数</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in official_accounts %}
+                    <tr>
+                        <td><a style="cursor:pointer;" class="official-account-link"
+                               data-url="{% url 'admin/detail' account.id %}">
+                            {{ account.name }}
+                        </a></td>
+                        <td>{{ account.subscribers }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <script>
+                    $(".official-account-link").click(function () {
+                        loadContent($(this).data("url"), {});
+                    });
+                </script>
+            </table>
+        </div>
+    </div>
+</div>

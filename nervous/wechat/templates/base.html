@@ -21,6 +21,8 @@
     {% endblock css %}
     <!-- script references -->
     <script src="{% static 'jquery/jquery.js' %}"></script>
+    <script src="{% static 'jquery/jquery.history.js' %}"></script>
+    <script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'base/js/scripts.js' %}"></script>
     {% block scripts %}
@@ -39,7 +41,12 @@
             {% endblock subtitle %}
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
+            <li class="pull-left hidden-lg hidden-md hidden-sm">
+                <a id="left-column-toggle" class="fake-link">
+                    <i class="glyphicon glyphicon-menu-hamburger"></i>
+                </a>
+            </li>
+            <li class="pull-right dropdown">
                 <a class="fake-link dropdown-toggle" role="button" data-toggle="dropdown" data-target="#">
                     <i class="glyphicon glyphicon-user"></i> {{ username }} <span class="caret"></span>
                 </a>
@@ -59,51 +66,49 @@
 <!-- Main -->
 <div class="container-fluid main">
     <div class="row">
-        <div class="col-sm-2 hidden-xs">
-            <div class="affix" id="left-column">
-                <!-- Left column -->
-                {% block left-column %}
-                    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
-                       data-target="#application-menu"><strong><i
-                            class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
-                    <ul class="nav nav-stacked collapse in" id="application-menu">
-                        <hr>
-                        <ul class="nav nav-stacked collapse in" id="userMenu">
-                            <li class="nav-header left-column-item"><a href="#"><i
-                                    class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
-                                    class="badge badge-info">{{ pending_count }}</span></a></li>
-                            <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
-                            </li>
-                            <li class="nav-header left-column-item"><a href="#"><i
-                                    class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
-                            </li>
-                        </ul>
+        <div class="col-md-2 col-sm-3" id="left-column">
+            <!-- Left column -->
+            {% block left-column %}
+                <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
+                   data-target="#application-menu"><strong><i
+                        class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong></a>
+                <ul class="nav nav-stacked collapse in" id="application-menu">
+                    <hr>
+                    <ul class="nav nav-stacked collapse in" id="userMenu">
+                        <li class="nav-header left-column-item"><a href="#"><i
+                                class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
+                                class="badge badge-info">{{ pending_count }}</span></a></li>
+                        <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
+                        </li>
+                        <li class="nav-header left-column-item"><a href="#"><i
+                                class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
                         </li>
                     </ul>
+                    </li>
+                </ul>
+                <hr>
+                <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
+                   data-target="#analyse-menu"><strong><i
+                        class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
+                <ul class="nav nav-stacked collapse in" id="analyse-menu">
                     <hr>
-                    <a style="text-decoration: none;" class="fake-link" data-toggle="collapse"
-                       data-target="#analyse-menu"><strong><i
-                            class="glyphicon glyphicon-signal"></i>　查看并分析</strong></a>
-                    <ul class="nav nav-stacked collapse in" id="analyse-menu">
-                        <hr>
-                        <ul class="nav nav-stacked collapse in" id="userMenu">
-                            <li class="nav-header left-column-item"><a href="#"><i
-                                    class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
-                            </li>
-                            <li class="nav-header left-column-item"><a href="#"><i
-                                    class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
-                            </li>
-                            <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
-                            </li>
-                        </ul>
+                    <ul class="nav nav-stacked collapse in" id="userMenu">
+                        <li class="nav-header left-column-item"><a href="#"><i
+                                class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
+                        </li>
+                        <li class="nav-header left-column-item"><a href="#"><i
+                                class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
+                        </li>
+                        <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
                         </li>
                     </ul>
-                    <hr>
-                {% endblock left-column %}
-            </div>
+                    </li>
+                </ul>
+                <hr>
+            {% endblock left-column %}
         </div>
         <!-- /col-2 -->
-        <div class="col-sm-10 container-fluid" id="main-page">
+        <div class="container-fluid" id="main-page">
             <!-- column 2 -->
             {% block main-page %}
             {% endblock main-page %}

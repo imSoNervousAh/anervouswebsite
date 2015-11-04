@@ -1,0 +1,41 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>公众号文章</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 15%; min-width: 100px">公众号名称</th>
+                    <th style="width: 25%; min-width: 100px">文章标题</th>
+                    <th>文章简介</th>
+                    <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
+                    <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td><a style="cursor:pointer;" class="official-account-link"
+                                data-url="{% url 'admin/detail' article.official_account_id %}">
+                            {{ article.official_account_name }}
+                        </a></td>
+                        <td><a target="_blank" href="{{ article.url }}">
+                            <div>{{ article.title }}</div>
+                        </a></td>
+                        <td>{{ article.description|linebreaks }}</td>
+                        <td align="right">{{ article.views }}</td>
+                        <td align="right">{{ article.likes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <script>
+                    $(".official-account-link").click(function () {
+                        loadContent($(this).data("url"), {});
+                    });
+                </script>
+            </table>
+        </div>
+    </div>
+</div>

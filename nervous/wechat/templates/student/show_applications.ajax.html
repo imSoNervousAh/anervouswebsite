@@ -1,0 +1,40 @@
+<a class="fake-link">
+    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
+</a>
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>我的备案申请<span class="badge pull-right">{{ pending_count }}</span></h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="application-list">
+                        <thead>
+                            <tr>
+                                <th>公众号名称</th>
+                                <th>公众号简介</th>
+                                <th>审批状态</th>
+                                <th>处理人</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                            <tr>
+                                <td>{{ app.name }}</td>
+                                <td>{{ app.description|linebreaksbr }}</td>
+                                <td>
+                                    <span class="glyphicon {{ app.status_glyphicon }}"></span> {{ app.status_name }}
+                                </td>
+                                <td>{{ app.operator_admin }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

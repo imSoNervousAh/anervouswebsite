@@ -42,7 +42,11 @@
 {% endblock left-column %}
 
 {% block main-page %}
-    <span id="first-page-indicator" style="display: none;" data-first-page="#admins-item"></span>
+    <script>
+        $(function () {
+            loadContentOfItem("#admins-item");
+        });
+    </script>
 {% endblock main-page %}
 
 {% block modals %}

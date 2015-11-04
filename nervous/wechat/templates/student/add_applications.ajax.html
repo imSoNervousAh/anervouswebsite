@@ -1,0 +1,155 @@
+<a class="fake-link">
+    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
+</a>
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>添加备案申请</h4>
+            </div>
+            <div class="panel-body">
+                <form id="application-form" class="form form-vertical">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>公众号名称</label>
+
+                                <div class="controls">
+                                    <input name="name" type="text" class="form-control" placeholder="公众号名称">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>公众号微信ID</label>
+
+                                <div class="controls">
+                                    <input name="wx_id" type="text" class="form-control" placeholder="公众号微信ID">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>公众号简介</label>
+
+                        <div class="controls">
+                        <textarea name="description" class="form-control" placeholder="公众号简介"
+                                  style="resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>所属学生组织</label>
+
+                        <div class="controls">
+                            <select name="association" class="form-control">
+                                <option value="校学生会">校学生会</option>
+                                <option value="校科协">校科协</option>
+                                <option value="校团委">校团委</option>
+                                <option value="计算机系学生会">计算机系学生会</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>负责人姓名</label>
+
+                                <div class="controls">
+                                    <input name="manager_name" type="text" class="form-control" placeholder="负责人姓名">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>负责人学号</label>
+
+                                <div class="controls">
+                                    <input name="manager_student_id" type="text" class="form-control"
+                                           placeholder="负责人学号">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>负责人电话</label>
+
+                                <div class="controls">
+                                    <input name="manager_tel" type="text" class="form-control" placeholder="负责人电话">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>负责人邮箱</label>
+
+                                <div class="controls">
+                                    <input name="manager_email" type="email" class="form-control" placeholder="负责人邮箱">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>负责人院系</label>
+
+                        <div class="controls">
+                            <select name="manager_dept" class="form-control">
+                                <option value="计算机系">计算机系</option>
+                                <option value="人文学院">人文学院</option>
+                                <option value="隔壁">隔壁</option>
+                            </select>
+                        </div>
+                    </div>
+                    -->
+                    <div class="control-group">
+                        <label></label>
+
+                        <div id="error-msg" class="alert alert-danger alert-dismissible">
+                            <label></label>
+                            <button type="button" class="close" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="controls">
+                            <button type="submit" name="method" value="submit" class="btn btn-primary">
+                                提交
+                            </button>
+                            <button type="submit" name="method" value="save" class="btn btn-info">
+                                保存
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $(function () {
+                        var msg = $("#error-msg");
+                        msg.fadeOut(0);
+                        msg.find("> button").click(function () {
+                            $("#error-msg").fadeOut();
+                        });
+                    });
+                    $("#application-form").submit(function (event) {
+                        event.preventDefault();
+                        var url = "{% url 'api/submit_application' %}";
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: $("#application-form").serialize(),
+                            success: function (data) {
+                                loadContentOfItem("#my-applications-item", function () {
+                                    var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
+                                    animate(item, "flash");
+                                });
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                var msg = $("#error-msg");
+                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                console.log(xhr.responseText);
+                                msg.fadeIn();
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

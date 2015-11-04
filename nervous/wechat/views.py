@@ -5,7 +5,8 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 from  django.shortcuts import render_to_response
-
+from database import backend
+from wechat import session
 import re
 import urllib2
 import urllib
@@ -13,8 +14,17 @@ import cookielib
 import codecs
 import json
 
-from database import backend
-from wechat import session
+
+# misc
+
+def notfound(request):
+    print '[in] notfound'
+    return render(request, 'notfound.html')
+
+
+def to_notfound(request):
+    print '%s redirect_to notfound' % request.path
+    return HttpResponseRedirect('/notfound')
 
 
 # index
@@ -22,6 +32,15 @@ from wechat import session
 def index(request):
     # 默认返回学生登录界面
     return render(request, 'login/index.html', {'identity': 'student'})
+
+
+def render_ajax(request, url, params):
+    if request.is_ajax():
+        url = url.split('.')[0] + ".ajax.html"
+    else:
+        params['username'] = session.get_username(request)
+
+    return render(request, url, params)
 
 
 # login/logout
@@ -118,15 +137,15 @@ def student_show_applications(request):
         if app.status == 'pending':
             pending_count += 1
 
-    return render(request, 'student/show_applications.html', {'applications': applications,
-                                                              'pending_count': pending_count,
-                                                              })
+    return render_ajax(request, 'student/show_applications.html', {'applications': applications,
+                                                                   'pending_count': pending_count,
+                                                                   })
 
 
 @check_identity('student')
 @check_have_student_info
 def student_add_applications(request):
-    return render(request, 'student/add_applications.html', {})
+    return render_ajax(request, 'student/add_applications.html', {})
 
 
 def student_fill_info(request):
@@ -162,28 +181,28 @@ def admin_dashboard(request):
     articles_count, articles = backend.get_articles()
     messages = backend.get_messages(only_unprocessed=True)
 
-    return render(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
-                                                            'official_accounts': official_accounts,
-                                                            'articles': articles,
-                                                            'articles_count': articles_count,
-                                                            'messages': messages,
-                                                            })
+    return render_ajax(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
+                                                                 'official_accounts': official_accounts,
+                                                                 'articles': articles,
+                                                                 'articles_count': articles_count,
+                                                                 'messages': messages,
+                                                                 })
 
 
 @check_identity('administrator')
 def admin_show_official_accounts(request):
     official_accounts = backend.get_official_accounts()
 
-    return render(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
+    return render_ajax(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
 
 
 @check_identity('administrator')
 def admin_show_articles(request):
     articles_count, articles = backend.get_articles()
 
-    return render(request, 'administrator/articles.html', {'articles': articles,
-                                                           'articles_count': articles_count,
-                                                           })
+    return render_ajax(request, 'administrator/articles.html', {'articles': articles,
+                                                                'articles_count': articles_count,
+                                                                })
 
 
 @check_identity('administrator')
@@ -202,9 +221,9 @@ def admin_show_applications(request, type):
         applications = []
         type_name = ''
 
-    return render(request, 'administrator/applications.html', {'applications': applications,
-                                                               'application_type': type_name,
-                                                               })
+    return render_ajax(request, 'administrator/applications.html', {'applications': applications,
+                                                                    'application_type': type_name,
+                                                                    })
 
 
 @check_identity('administrator')
@@ -216,10 +235,10 @@ def admin_show_official_account_detail(request, id):
 
     articles_count = backend.get_articles()
 
-    return render(request, 'administrator/detail.html', {'account': official_account,
-                                                         'official_account_id': id,
-                                                         'articles_count': articles_count,
-                                                         })
+    return render_ajax(request, 'administrator/detail.html', {'account': official_account,
+                                                              'official_account_id': id,
+                                                              'articles_count': articles_count,
+                                                              })
 
 
 @check_identity('administrator')
@@ -248,13 +267,13 @@ def admin_show_official_account_articles(request, id):
             'current': page_current,
             'pages': pages}
 
-    return render(request, 'administrator/detail_articles_list.html',
-                  {'articles': articles,
-                   'official_account_id': id,
-                   'page': page,
-                   'sort_by': request.GET.get('sort_by', 'time'),
-                   'sort_order': request.GET.get('sort_order', 'asc')
-                   })
+    return render_ajax(request, 'administrator/detail_articles_list.html',
+                       {'articles': articles,
+                        'official_account_id': id,
+                        'page': page,
+                        'sort_by': request.GET.get('sort_by', 'time'),
+                        'sort_order': request.GET.get('sort_order', 'asc')
+                        })
 
 
 # message
@@ -270,11 +289,11 @@ def message_detail_admin(request, id):
     except:
         return to_notfound(request)
 
-    return render(request, 'message/message.html', {'account': official_account,
-                                                    'messages': messages,
-                                                    'category': category,
-                                                    'official_account_id': id,
-                                                    })
+    return render_ajax(request, 'message/message.html', {'account': official_account,
+                                                         'messages': messages,
+                                                         'category': category,
+                                                         'official_account_id': id,
+                                                         })
 
 
 @check_identity('student')
@@ -286,11 +305,11 @@ def message_detail_student(request, id):
     except:
         return to_notfound(request)
 
-    return render(request, 'message/message.html', {'account': official_account,
-                                                    'messages': messages,
-                                                    'category': category,
-                                                    'official_account_id': id,
-                                                    })
+    return render_ajax(request, 'message/message.html', {'account': official_account,
+                                                         'messages': messages,
+                                                         'category': category,
+                                                         'official_account_id': id,
+                                                         })
 
 
 # superuser
@@ -304,16 +323,4 @@ def superuser(request):
 def superuser_show_admins(request):
     administrators = backend.get_admins()
 
-    return render(request, 'superuser/admins.html', {'administrators': administrators})
-
-
-# misc
-
-def notfound(request):
-    print '[in] notfound'
-    return render(request, 'notfound.html')
-
-
-def to_notfound(request):
-    print '%s redirect_to notfound' % request.path
-    return HttpResponseRedirect('/notfound')
+    return render_ajax(request, 'superuser/admins.html', {'administrators': administrators})

@@ -40,22 +40,14 @@ footer {
 
 .navbar {
     width: 100%;
-}
-
-.main {
-    padding-top: 70px;
+    z-index: 1000;
 }
 
 #left-column {
-    width: 200 !important;
 }
 
 .container-fluid {
     max-width: 1200px;
-}
-
-@media (min-width: 1200px) {
-
 }
 
 /* align badges with left-column items */
@@ -78,6 +70,11 @@ a > span.badge-info {
     for readability concerns, only apply to large screens
 */
 @media screen and (min-width: 768px) {
+
+    .main {
+        padding-top: 70px;
+    }
+
     .modal {
         text-align: center;
     }
@@ -93,6 +90,49 @@ a > span.badge-info {
         display: inline-block;
         text-align: left;
         vertical-align: middle;
+    }
+
+    #left-column {
+        position: fixed;
+        width: 210px !important;
+        float: left;
+    }
+
+    #main-page {
+        margin-left: 210px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .main {
+        padding-top: 130px;
+    }
+
+    #left-column {
+        z-index: 999;
+        position: fixed;
+        margin-top: -30px;
+        padding-top: 30px;
+        height: 100%;
+        margin-left: -100%;
+        background: rgb(26, 188, 156);
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    #left-column > a {
+        color: #2c3e50;
+    }
+    #left-column li a {
+        color: #eeeeee;
+    }
+    #left-column li > a:hover {
+        color: #18bc9c;
+    }
+    #left-column.expanded {
+        margin-left: 0;
     }
 }
 

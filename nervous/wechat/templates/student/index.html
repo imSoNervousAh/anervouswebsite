@@ -28,7 +28,7 @@
             {% for account in official_accounts %}
                 <li id="message-detail-{{ account.id }}" class="left-column-item"
                     data-url="{% url 'message/student' account.id %}">
-                    <a class="fake-link"><i class="glyphicon glyphicon-comment"></i>　站内信 - {{ account.name }}</a>
+                    <a class="fake-link"><i class="glyphicon glyphicon-comment"></i>　站内信 - {{ account.name|truncatechars:6 }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -38,5 +38,9 @@
 {% endblock left-column %}
 
 {% block main-page %}
-    <span id="first-page-indicator" style="display: none;" data-first-page="#my-applications-item"></span>
+    <script>
+        $(function () {
+            loadContentOfItem("#my-applications-item");
+        });
+    </script>
 {% endblock main-page %}

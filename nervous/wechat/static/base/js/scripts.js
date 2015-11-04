@@ -32,9 +32,10 @@ $(function () {
     })
 });
 
+var __manualStateChange = false;
 
 // load page content using ajax
-function loadContent(url, params, item, callback) {
+function loadContent(url, params, item_selector, callback) {
     var height = $("#left-column").height();
     var main = $("#main-page");
 
@@ -45,38 +46,24 @@ function loadContent(url, params, item, callback) {
         height: height
     }, 250);
     $(".left-column-item").removeClass("active");
-    if (typeof item !== typeof undefined) {
-        item.addClass("active");
+    if (item_selector != false) {
+        var item = $(item_selector);
+        if (typeof item != typeof undefined) {
+            $(item).addClass("active");
+        }
     }
-
-    var show = function (data) {
-        main.queue(function () {
-            main.html(data);
-            var new_height = 0;
-            main.children().each(function () {
-                new_height += $(this).outerHeight(true);
-            });
-            $("html, body").delay(60).animate({
-                "scroll-top": 0
-            });
-            main.delay(50).animate({
-                opacity: 1.0,
-                height: new_height
-            }, function () {
-                main.css("height", "auto");
-                if (typeof callback !== typeof undefined)
-                    callback();
-            });
-            $(this).dequeue();
-        });
-    };
 
     $.ajax({
         type: "GET",
         url: url,
         data: params,
         success: function (data) {
-            show(data);
+            __manualStateChange = true;
+            History.pushState({
+                data: data,
+                item: item_selector,
+                callback: callback
+            }, null, url);
         },
         error: function (xhr, textStatus, errorThrown) {
             show('\
@@ -107,7 +94,8 @@ function loadContentOn(url, params, container, callback) {
             main.children().each(function () {
                 new_height += $(this).outerHeight(true);
             });
-            /*            $("html, body").delay(60).animate({
+            /*
+             $("html, body").delay(60).animate({
              "scroll-top": main.offset().top
              });
              */
@@ -144,7 +132,7 @@ function loadContentOn(url, params, container, callback) {
 }
 
 function loadContentOfItem(item, callback) {
-    loadContent($(item).data("url"), {}, $(item), callback);
+    loadContent($(item).data("url"), {}, item, callback);
 }
 
 // apply one-time-only animation using animate.css
@@ -157,19 +145,88 @@ function animate(item, animation) {
 
 // on document ready
 $(function () {
-    $(".left-column-item").click(function () {
-        if (!$(this).hasClass("active")) {
-            loadContentOfItem(this);
+    // bind History.js
+    History.Adapter.bind(window, 'statechange', function () {
+        var state = History.getState();
+        console.log('statechange: ' + state.url);
+        var main = $("#main-page");
+
+        $("#left-column").removeClass("expanded");
+
+        if (!__manualStateChange) {
+            main.animate({
+                opacity: 0,
+                height: height
+            }, 250);
+            $(".left-column-item").removeClass("active");
+            if (state.data.item != false) {
+                var item = $(state.data.item);
+                if (typeof item != typeof undefined) {
+                    $(item).addClass("active");
+                }
+            }
+        } else {
+            __manualStateChange = false;
+        }
+
+        main.queue(function () {
+            main.html(state.data.data);
+            var new_height = 0;
+            main.children().each(function () {
+                new_height += $(this).outerHeight(true);
+            });
+            $("html, body").delay(60).animate({
+                "scroll-top": 0
+            });
+            main.delay(50).animate({
+                opacity: 1.0,
+                height: new_height
+            }, function () {
+                main.css("height", "auto");
+                if (typeof state.data.callback !== typeof undefined)
+                    state.data.callback();
+            });
+            $(this).dequeue();
+        });
+    });
+
+    // bind toggle left column button (visible in xs)
+    $("#left-column-toggle").click(function (e) {
+        e.preventDefault();
+        var left = $("#left-column");
+        left.toggleClass("expanded");
+        if (left.hasClass("expanded")) {
+            var backdrop = $('<div id="left-column-backdrop" class="modal-backdrop fade"></div>');
+            $("body").append(backdrop);
+            setTimeout(function() {
+                backdrop.addClass("in");
+            }, 100);
+            $(backdrop).click(function () {
+                $("#left-column").removeClass("expanded");
+                backdrop.removeClass("in");
+                setTimeout(function() {
+                    backdrop.remove();
+                }, 500);
+            });
+        } else {
+            var backdrop = $("#left-column-backdrop");
+            backdrop.removeClass("in");
+            setTimeout(function() {
+                backdrop.remove();
+            }, 500);
         }
     });
 
-    var height = $("#left-column").height();
+    // bind left column items to ajax calls
+    $(".left-column-item").click(function () {
+        if (!$(this).hasClass("active")) {
+            loadContentOfItem("#" + this.id);
+        }
+    });
+
+    // set page min height according to left column
+    var height = $("#left-column").outerHeight(true);
     $("#main-page").css({
         "min-height": height
     });
-
-    var itemSel = $("#main-page > #first-page-indicator").data("first-page");
-    if (typeof itemSel !== typeof undefined) {
-        loadContentOfItem(itemSel);
-    }
 });
