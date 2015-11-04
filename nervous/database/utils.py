@@ -38,24 +38,27 @@ def build_offline_test_db():
     admin_w = Admin.create(username='w', password='x', description='www')
     admin_ytl = Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
 
-    mu = OfficialAccount.create(name='Lab Mu')
-    Application.create(official_account=mu, user_submit='FANG KUAI', status='not_submitted')
-    mu = OfficialAccount.create(name='谜之公众号', description='有换行的哦\n啊\n')
-    Application.create(official_account=mu, user_submit='2014011417', status='rejected')
-    zx = OfficialAccount.create(name='酒井资讯', wx_id='jiujingzixun')
-    Application.create(official_account=zx, user_submit='2014011416', status='pending')
+    oa_mu = OfficialAccount.create(name='Lab Mu', wx_id='mulab_thu')
+    Application.create(official_account=oa_mu, user_submit='FANG KUAI', status='not_submitted')
+    oa_mz = OfficialAccount.create(name='谜之公众号', description='有换行的哦\n啊\n', wx_id='mizhigongzhonghao')
+    Application.create(official_account=oa_mz, user_submit='2014011417', status='rejected')
+    oa_zx = OfficialAccount.create(name='酒井资讯', wx_id='jiujingzixun')
+    Application.create(official_account=oa_zx, user_submit='2014011416', status='pending')
+    backend.add_application({'name': '清华研读间', 'wx_id': 'qinghuayandujian'})
+
+    message_test_oa_id = oa_zx.id
 
     assert (backend.add_message(
-        MessageCategory.ToAdmin, zx.id,
+        MessageCategory.ToAdmin, message_test_oa_id,
         'to_admin_title', 'to_admin_content'
     ))
     assert (backend.add_message(
-        MessageCategory.ToStudent, zx.id,
+        MessageCategory.ToStudent, message_test_oa_id,
         'to_student_title', 'to_student_content',
         'wyl8899'
     ))
     assert (backend.add_message(
-        MessageCategory.ToAdmin, zx.id,
+        MessageCategory.ToAdmin, message_test_oa_id,
         'yet_another_title', 'yet_another_content'
     ))
 

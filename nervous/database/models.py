@@ -41,7 +41,7 @@ class Student(models.Model):
 
 
 class OfficialAccount(models.Model):
-    wx_id = models.CharField(max_length=50)
+    wx_id = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
 
@@ -70,7 +70,7 @@ class Application(models.Model):
     association = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return "Application for %s from user %s, status: %s" % (
+        return u"Application for %s from user %s, status: %s" % (
             self.official_account,
             self.user_submit,
             self.status

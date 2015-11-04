@@ -17,7 +17,7 @@ def add_items(dic):
 
 
 def update_official_account(account):
-    print 'updating.......'
+    print 'updating official account: %s' % account
     paras = {}
     paras['wx_name'] = account
     paras['datestart'] = time.strftime('%Y-%m-%d', time.localtime(time.time() - delta))
@@ -39,8 +39,6 @@ def update_official_account(account):
 
 
 def update_all():
-    # TODO: backend should return a list of wx_id
-    # lists = backend.get_official_accounts_wx_name()
-    lists = ['jiujingzixun']
+    lists = backend.get_official_accounts_wx_name()
     for i in lists:
         update_official_account(i)

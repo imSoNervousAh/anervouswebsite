@@ -29,17 +29,16 @@ def get_applications_by_admin(username):
     return Application.filter(operator_admin__exact=username)
 
 
-# TODO: add wx_id
-# TODO: unique wx_id validation
 def add_application(app):
     name = app['name']
     description = app.get('description', name)
     try:
-        OfficialAccount.get(name__exact=name)
-        return False
-    except ObjectDoesNotExist:
         application = Application.model()
-        account = OfficialAccount.create(name=name, description=description)
+        account = OfficialAccount.create(
+            name=name,
+            description=description,
+            wx_id=app['wx_id']
+        )
         application.official_account = account
         application.status = 'pending'
         for attr in [
@@ -53,6 +52,8 @@ def add_application(app):
             return True
         except:
             return False
+    except IntegrityError:
+        return False
 
 
 def modify_application(app):
@@ -71,6 +72,10 @@ def modify_application(app):
 
 def get_official_accounts():
     return OfficialAccount.all().filter(application__status__exact='approved')
+
+
+def get_official_accounts_wx_name():
+    return map(lambda account: account.wx_id, get_official_accounts())
 
 
 def get_official_account_by_id(id):
