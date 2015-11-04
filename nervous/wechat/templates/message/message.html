@@ -17,9 +17,9 @@
                 <div class="panel-heading">
                     <h4>站内信息
                         {% if processed == 'True' %}
-                            <code>状态:未读<code/>
+                            <strong class="user-name" style="font-size: medium">[未读]</strong>
                         {% else %}
-                            <code>状态:已读</code>
+                            <strong class="user-name" style="font-size: medium">[已读]</strong>
                         {% endif %}
                         <span class="badge pull-right">{{ pending_count }}</span>
                     </h4>
@@ -38,7 +38,9 @@
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
 
+                                                <!--
                                                 <p><code>Title</code> {{ message.title }}</p>
+                                                -->
 
                                                 <p>{{ message.content }}</p>
                                             </div>
@@ -50,8 +52,9 @@
                                             <div class="ds-comment-body">
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
-
+                                                <!--
                                                 <p><code>Title</code> {{ message.title }}</p>
+                                                -->
 
                                                 <p>{{ message.content }}</p>
                                             </div>
@@ -126,25 +129,28 @@
                                     });
                                 });
                             </script>
-
+                        <!--
                             <button class="button" id="mark-read">标记已读（尚未实现）</button>
+                            -->
 
-                            <form id="reply-message-form">
-                                {% csrf_token %}
-                                <div class="row" style="margin-top: 30px">
-                                    <div class="col-md-7  col-md-offset-4">
+                                <form id="reply-message-form">
+                                    {% csrf_token %}
+                                    <div class="row" style="margin-top: 30px">
+                            <div class="col-md-9  col-md-offset-1">
                                         <div class="input-group" style="margin-top: 20px;">
                                             <input name="category" style="display:none" value="{{ category }}">
                                             <input name="official_account_id" style="display:none"
                                                    value="{{ account.id }}">
-                                            <input name="title" type="text" class="form-control" placeholder="标题">
-                                        <textarea name="content" type="text" class="form-control" style="height:90px"
-                                                  placeholder="正文"></textarea>
+                                            <!-- <input name="title" type="text" class="form-control" placeholder="标题">
+                                             -->
+                                            <textarea name="content" type="text" class="form-control"
+                                                      style="height:90px"
+                                                      placeholder="请输入回复"></textarea>
                                             <button class="button pull-right">Send</button>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+                            </div>
+                                </form>
                         </div>
                     </div>
                 </div>
