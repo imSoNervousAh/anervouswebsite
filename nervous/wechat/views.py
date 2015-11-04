@@ -54,10 +54,10 @@ def check_identity(request, identity):
 
 # decorator for check student fill the basic info
 def check_have_student_info(func):
-    def wrapper(request,*args,**kw):
+    def wrapper(request, *args, **kw):
         if backend.check_student_information_filled(session.get_username(request)) == False:
             return student_fill_student_info(request)
-        return func(request,*args,**kw)
+        return func(request, *args, **kw)
 
     return wrapper
 
@@ -65,10 +65,10 @@ def check_have_student_info(func):
 # [ATTENTION]put this decorator at the most previous,decorator for check login status
 def check_identity(identity):
     def decorator(func):
-        def wrapper(request,*args,**kw):
+        def wrapper(request, *args, **kw):
             if (session.get_identity(request) != identity):
                 return login(request, identity)
-            return func(request,*args,**kw)
+            return func(request, *args, **kw)
 
         return wrapper
 
@@ -124,6 +124,11 @@ def student_show_applications(request):
 @check_have_student_info
 def student_add_applications(request):
     return render(request, 'student/add_applications.html', {})
+
+
+def student_fill_student_info(request):
+    print 'fill_basic_info'
+    return render(request, 'student/fill_student_info.html')
 
 
 @check_identity('student')
