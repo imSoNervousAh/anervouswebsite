@@ -110,6 +110,9 @@ def check_admin(username, password):
 
 # Students
 
+def get_student_by_id(student_id):
+    return Student.get(pk=student_id)
+
 def set_student_information(student_id, dic):
     try:
         student = Student.create(student_id=student_id)
