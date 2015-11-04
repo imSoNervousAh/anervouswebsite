@@ -34,6 +34,29 @@ $(function () {
 
 var __manualStateChange = false;
 
+function displayContent(data, callback) {
+    var main = $("#main-page");
+    main.queue(function () {
+        main.html(data);
+        var new_height = 0;
+        main.children().each(function () {
+            new_height += $(this).outerHeight(true);
+        });
+        $("html, body").delay(60).animate({
+            "scroll-top": 0
+        });
+        main.delay(50).animate({
+            opacity: 1.0,
+            height: new_height
+        }, function () {
+            main.css("height", "auto");
+            if (typeof callback !== typeof undefined)
+                callback();
+        });
+        $(this).dequeue();
+    });
+}
+
 // load page content using ajax
 function loadContent(url, params, item_selector, callback) {
     var height = $("#left-column").height();
@@ -66,7 +89,7 @@ function loadContent(url, params, item_selector, callback) {
             }, null, url);
         },
         error: function (xhr, textStatus, errorThrown) {
-            show('\
+            displayContent('\
                 <div class="alert alert-danger" role="alert">\
                     <strong>页面载入出错。</strong>\
                     错误信息：' +
@@ -81,36 +104,36 @@ function loadContent(url, params, item_selector, callback) {
 function loadContentOn(url, params, container, callback) {
     console.log(url);
     var main = $(container);
-/*
-    main.animate({
-        opacity: 0,
-        height: 0
-    }, 250);
-*/
+    /*
+     main.animate({
+     opacity: 0,
+     height: 0
+     }, 250);
+     */
     var show = function (data) {
         main.queue(function () {
             main.html(data);
             if (typeof callback !== typeof undefined)
                 callback();
             /*
-            var new_height = 0;
-            main.children().each(function () {
-                new_height += $(this).outerHeight(true);
-            });
+             var new_height = 0;
+             main.children().each(function () {
+             new_height += $(this).outerHeight(true);
+             });
 
              $("html, body").delay(60).animate({
              "scroll-top": main.offset().top
              });
 
-            main.delay(50).animate({
-                opacity: 1.0,
-                height: new_height
-            }, function () {
-                main.css("height", "auto");
-                if (typeof callback !== typeof undefined)
-                    callback();
-            });
-            */
+             main.delay(50).animate({
+             opacity: 1.0,
+             height: new_height
+             }, function () {
+             main.css("height", "auto");
+             if (typeof callback !== typeof undefined)
+             callback();
+             });
+             */
             $(this).dequeue();
         });
     };
@@ -156,6 +179,7 @@ $(function () {
         var main = $("#main-page");
 
         if ($(window).width() < 768) {
+            console.log("mobile");
             $("#left-column").removeClass("expanded");
             var backdrop = $("#left-column-backdrop");
             backdrop.removeClass("in");
@@ -181,25 +205,7 @@ $(function () {
             __manualStateChange = false;
         }
 
-        main.queue(function () {
-            main.html(state.data.data);
-            var new_height = 0;
-            main.children().each(function () {
-                new_height += $(this).outerHeight(true);
-            });
-            $("html, body").delay(60).animate({
-                "scroll-top": 0
-            });
-            main.delay(50).animate({
-                opacity: 1.0,
-                height: new_height
-            }, function () {
-                main.css("height", "auto");
-                if (typeof state.data.callback !== typeof undefined)
-                    state.data.callback();
-            });
-            $(this).dequeue();
-        });
+        displayContent(state.data.data, state.data.callback);
     });
 
     // bind toggle left column button (visible in xs)
@@ -208,9 +214,9 @@ $(function () {
         var left = $("#left-column");
         left.toggleClass("expanded");
         if (left.hasClass("expanded")) {
-            var height = $("body").height();
+            var height = max($("body").height(), $(window).height());
             var backdrop = $('<div id="left-column-backdrop"' +
-                ' class="modal-backdrop fade hidden-lg hidden-md hidden-sm"' +
+                ' class="modal-backdrop fade visible-xs"' +
                 ' style="height:' + height.toString() + 'px"></div>');
             $("body").append(backdrop);
             setTimeout(function () {
@@ -238,7 +244,6 @@ $(function () {
             loadContentOfItem("#" + this.id);
         }
     });
-
     $(".fake-link-scroll").click(function (e) {
         e.preventDefault();
         $("html, body").animate({

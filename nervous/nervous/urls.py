@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^logout', 'wechat.views.logout', name='logout'),
 
     #change_info
-    url(r'^change_info/?$','wechat.views.change_info',name='change_info'),
+#    url(r'^change_info/?$','wechat.views.change_info',name='change_info'),
 
     #   message
     url(r'^message/student/([0-9]+)/?$', 'wechat.views.message_detail_student', name='message/student'),

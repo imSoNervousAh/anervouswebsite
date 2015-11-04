@@ -46,6 +46,10 @@ footer {
 #left-column {
 }
 
+#main-page {
+    overflow: hidden;
+}
+
 .container-fluid {
     max-width: 1200px;
 }
