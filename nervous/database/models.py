@@ -46,6 +46,14 @@ class OfficialAccount(models.Model):
         return self.name
 
 
+class AccountRecord(models.Model):
+    account = models.ForeignKey(OfficialAccount)
+    date = models.DateField()
+    articles = models.IntegerField()
+    likes = models.IntegerField()
+    views = models.IntegerField()
+
+
 class Application(models.Model):
     official_account = models.OneToOneField(OfficialAccount, primary_key=True)
     user_submit = models.CharField(max_length=32)
