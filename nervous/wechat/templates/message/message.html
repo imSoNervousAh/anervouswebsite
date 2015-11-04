@@ -14,7 +14,14 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>站内信息<span class="badge pull-right">{{ pending_count }}</span></h4>
+                    <h4>站内信息
+                        {% if processed == 'True' %}
+                            <code>状态:未读<code/>
+                        {% else %}
+                            <code>状态:已读</code>
+                        {% endif %}
+                        <span class="badge pull-right">{{ pending_count }}</span>
+                    </h4>
                 </div>
                 <div class="panel-body">
                     <div class="row">
