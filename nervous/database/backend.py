@@ -69,7 +69,7 @@ def modify_application(app):
 # Official Accounts
 
 def get_official_accounts():
-    return OfficialAccount.all()
+    return OfficialAccount.all().filter(application__status__exact='approved')
 
 
 def get_official_account_by_id(id):

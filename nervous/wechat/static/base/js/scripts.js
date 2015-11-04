@@ -107,10 +107,11 @@ function loadContentOn(url, params, container, callback) {
             main.children().each(function () {
                 new_height += $(this).outerHeight(true);
             });
-/*            $("html, body").delay(60).animate({
-                "scroll-top": main.offset().top
-            });
-  */          main.delay(50).animate({
+            /*            $("html, body").delay(60).animate({
+             "scroll-top": main.offset().top
+             });
+             */
+            main.delay(50).animate({
                 opacity: 1.0,
                 height: new_height
             }, function () {

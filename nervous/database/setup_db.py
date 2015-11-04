@@ -10,9 +10,9 @@ def setup():
     import database.models as models
     for klass in ['Admin', 'OfficialAccount', 'Application', 'Article', 'Message', 'Student']:
         setattr(__builtin__, klass, getattr(models, klass).objects)
-    for enum in [ 'SortOrder', 'SortBy', 'MessageCategory']:
+    for enum in ['SortOrder', 'SortBy', 'MessageCategory']:
         setattr(__builtin__, enum, getattr(models, enum))
 
 
-if (__name__ == '__main__'):
+if __name__ == '__main__':
     setup()

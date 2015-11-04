@@ -6,6 +6,7 @@ import urllib, urllib2, cookielib, string
 __username__ = 'username'
 __password__ = 'password'
 
+
 def auth_by_info(username, password):
     cj = cookielib.CookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
@@ -22,9 +23,10 @@ def auth_by_info(username, password):
         text = opener.open(url_login, urllib.urlencode(body)).read().decode('gb2312')
     
     seed = u'用户名或密码错误！'
-    if (text.find(seed) != -1):
+    if text.find(seed) != -1:
         return False
     else:
         return True
-    
+
+
 print auth_by_info(__username__, __password__)

@@ -1,18 +1,19 @@
 from django.test import TestCase
 from database import backend, utils
 
+
 class StudentTestCase(TestCase):
     def test_student_without_info(self):
         self.assertFalse(backend.check_student_information_filled(1))
 
     def test_student_with_unfinished_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, real_name = '')
+        backend.set_student_information(student_id, real_name='')
         self.assertFalse(backend.check_student_information_filled(student_id))
 
     def test_student_with_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, real_name = 'doge')
+        backend.set_student_information(student_id, real_name='doge')
         self.assertTrue(backend.check_student_information_filled(student_id))
 
 
@@ -55,7 +56,6 @@ class ApplicationTestCase(TestCase):
         self.assertTrue(backend.add_application(app))
         self.assertFalse(backend.add_application(another_app))
 
-
     def test_get_application_by_user_submit(self):
         username = 'hdd'
         acc_name = 'acc_name'
@@ -80,5 +80,3 @@ class ApplicationTestCase(TestCase):
         pending_acc_name = 'pending_acc_name'
         backend.add_application({'name': acc_name})
         backend.add_application({'name': pending_acc_name})
-        
-
