@@ -64,19 +64,14 @@ def logout(request):
     return login(request, 'student')
 
 
-def check_identity(request, identity):
-    print identity, 'identity: ', session.get_identity(request)
-    return session.get_identity(request) == identity
-
-
 # student
 
 # decorator for check student fill the basic info
 def check_have_student_info(func):
     def wrapper(request, *args, **kw):
         student_id = session.get_username(request)
-        if backend.check_student_information_filled(student_id) == False:
-            return student_fill_student_info(request)
+        if not backend.check_student_information_filled(student_id):
+            return student_fill_info(request)
         return func(request, *args, **kw)
 
     return wrapper
@@ -86,7 +81,7 @@ def check_have_student_info(func):
 def check_identity(identity):
     def decorator(func):
         def wrapper(request, *args, **kw):
-            if (session.get_identity(request) != identity):
+            if session.get_identity(request) != identity:
                 return login(request, identity)
             return func(request, *args, **kw)
 
