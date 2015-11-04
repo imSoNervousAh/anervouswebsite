@@ -8,10 +8,19 @@ import setup_db
 
 setup_db.setup()
 
+from django.db import connection
+
 
 def clean_test_db():
     call(["python", "manage.py", "flush", "--noinput"])
     call(["python", "manage.py", "sqlsequencereset", "database"])
+    cursor = connection.cursor()
+    cursor.execute("delete from sqlite_sequence")
+    for table in ['official_account', 'message', 'article']:
+        command = "delete from sqlite_sequence where name='%s'" % table;
+        print command
+        cursor.execute(command)
+    connection.commit()
 
 
 # test gsdata
@@ -26,6 +35,7 @@ def build_offline_test_db():
     clean_test_db()
 
     admin_wyl = Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
+    admin_w = Admin.create(username='w', password='x', description='www')
     admin_ytl = Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
 
     mu = OfficialAccount.create(name='Lab Mu')
