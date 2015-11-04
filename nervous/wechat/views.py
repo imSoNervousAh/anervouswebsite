@@ -54,11 +54,11 @@ def check_identity(request, identity):
 
 # decorator for check student fill the basic info
 def check_have_student_info(func):
-    def wrapper(request):
-        print '!!!have_student_info'
+    def wrapper(request,*args,**kw):
         if backend.check_student_information_filled(session.get_username(request)) == False:
-            return student_fill_student_info(request)
-        return func(request)
+            #return student_fill_student_info(request)
+            pass
+        return func(request,*args,**kw)
 
     return wrapper
 
@@ -66,11 +66,10 @@ def check_have_student_info(func):
 # [ATTENTION]put this decorator at the most previous,decorator for check login status
 def check_identity(identity):
     def decorator(func):
-        def wrapper(request):
-            print '!!!check_identity'
+        def wrapper(request,*args,**kw):
             if (session.get_identity(request) != identity):
                 return login(request, identity)
-            return func(request)
+            return func(request,*args,**kw)
 
         return wrapper
 
@@ -127,6 +126,8 @@ def student_show_applications(request):
 def student_add_applications(request):
     return render(request, 'student/add_applications.html', {})
 
+
+@check_identity('student')
 def student_fill_student_info(request):
     print 'fill_basic_info'
     return render(request, 'student/fill_student_info.html')
@@ -146,7 +147,6 @@ def admin(request):
 
 @check_identity('administrator')
 def admin_dashboard(request):
-
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles()
@@ -162,7 +162,6 @@ def admin_dashboard(request):
 
 @check_identity('administrator')
 def admin_show_official_accounts(request):
-
     official_accounts = backend.get_official_accounts()
 
     return render(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
@@ -170,7 +169,6 @@ def admin_show_official_accounts(request):
 
 @check_identity('administrator')
 def admin_show_articles(request):
-
     articles_count, articles = backend.get_articles()
 
     return render(request, 'administrator/articles.html', {'articles': articles,
@@ -180,7 +178,6 @@ def admin_show_articles(request):
 
 @check_identity('administrator')
 def admin_show_applications(request, type):
-
     if type == 'pending':
         applications = backend.get_pending_applications()
         type_name = u'待审批申请'
@@ -202,7 +199,6 @@ def admin_show_applications(request, type):
 
 @check_identity('administrator')
 def admin_show_official_account_detail(request, id):
-
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -256,7 +252,6 @@ def admin_show_official_account_articles(request, id):
 
 @check_identity('administrator')
 def message_detail_admin(request, id):
-
     category = MessageCategory.ToStudent
 
     messages = backend.get_messages(official_account_id=id)
@@ -274,7 +269,6 @@ def message_detail_admin(request, id):
 
 @check_identity('student')
 def message_detail_student(request, id):
-
     category = MessageCategory.ToAdmin
     messages = backend.get_messages(official_account_id=id)
     try:
@@ -293,13 +287,11 @@ def message_detail_student(request, id):
 
 @check_identity('superuser')
 def superuser(request):
-
     return render(request, 'superuser/index.html', {'username': u'超级管理员'})
 
 
 @check_identity('superuser')
 def superuser_show_admins(request):
-
     administrators = backend.get_admins()
 
     return render(request, 'superuser/admins.html', {'administrators': administrators})
