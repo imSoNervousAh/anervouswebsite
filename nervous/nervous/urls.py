@@ -20,7 +20,7 @@ urlpatterns = [
     # wechat part
     #   login/logout
     url(r'^index/?$', 'wechat.views.index', name='index'),
-    url(r'^login/(\w+)/?$', 'wechat.views.login', name='login'),
+    url(r'^login/([^/]+)/?$', 'wechat.views.login', name='login'),
     url(r'^login', 'wechat.views.login', name='login'),
     url(r'^logout', 'wechat.views.logout', name='logout'),
 

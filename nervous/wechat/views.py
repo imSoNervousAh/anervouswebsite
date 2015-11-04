@@ -100,7 +100,7 @@ def change_info(request):
                                                      'student': student,
                                                      })
     else:
-        pass
+        return HttpResponse(request,'还没有写...')
 
 
 @check_identity('student')
@@ -282,7 +282,7 @@ def admin_show_official_account_articles(request, id):
 @check_identity('administrator')
 def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
-
+    print 'detail'
     messages = backend.get_messages(official_account_id=id)
     try:
         official_account = backend.get_official_account_by_id(id)

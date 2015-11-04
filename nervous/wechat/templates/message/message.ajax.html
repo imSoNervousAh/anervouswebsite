@@ -1,7 +1,6 @@
+{% load staticfiles %}
+
 <div id="message-area">
-
-    {% load staticfiles %}
-
     <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
 
     <a style="text-decoration: none;" class="fake-link">
@@ -14,7 +13,14 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>站内信息<span class="badge pull-right">{{ pending_count }}</span></h4>
+                    <h4>站内信息
+                        {% if processed == 'True' %}
+                            <strong class="user-name" style="font-size: medium">[未读]</strong>
+                        {% else %}
+                            <strong class="user-name" style="font-size: medium">[已读]</strong>
+                        {% endif %}
+                        <span class="badge pull-right">{{ pending_count }}</span>
+                    </h4>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -30,7 +36,9 @@
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
 
+                                                <!--
                                                 <p><code>Title</code> {{ message.title }}</p>
+                                                -->
 
                                                 <p>{{ message.content }}</p>
                                             </div>
@@ -42,8 +50,9 @@
                                             <div class="ds-comment-body">
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
-
+                                                <!--
                                                 <p><code>Title</code> {{ message.title }}</p>
+                                                -->
 
                                                 <p>{{ message.content }}</p>
                                             </div>
@@ -69,6 +78,8 @@
                                  loadContent('message/admin/{{ official_account_id }}')
                                  return true;
                                  }*/
+
+                                //$.scrollTo('#reply-message-form',1000);
                                 $(function () {
                                     var msg = $("#error-msg");
                                     msg.fadeOut(0);
@@ -118,25 +129,34 @@
                                     });
                                 });
                             </script>
+                            <!--
+                                <button class="button" id="mark-read">标记已读（尚未实现）</button>
+                                -->
 
-                            <button class="button" id="mark-read">标记已读（尚未实现）</button>
 
                             <form id="reply-message-form">
-                                {% csrf_token %}
                                 <div class="row" style="margin-top: 30px">
-                                    <div class="col-md-7  col-md-offset-4">
+                                    <div class="col-md-9  col-md-offset-4">
+                                        {% csrf_token %}
                                         <div class="input-group" style="margin-top: 20px;">
                                             <input name="category" style="display:none" value="{{ category }}">
                                             <input name="official_account_id" style="display:none"
                                                    value="{{ account.id }}">
-                                            <input name="title" type="text" class="form-control" placeholder="标题">
-                                        <textarea name="content" type="text" class="form-control" style="height:90px"
-                                                  placeholder="正文"></textarea>
-                                            <button class="button pull-right">Send</button>
+                                            <input name="title" style="display: none;" value="">
+                                            <textarea name="content" type="text" class="form-control"
+                                                      placeholder="请输入回复"
+                                                      style="height: 100px;width: 350px;margin-bottom: 5px"></textarea>
+
+                                            <p></p>
+
+                                            <p></p>
+                                            <button class="btn btn-primary pull-right">Send</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
+
+
                         </div>
                     </div>
                 </div>
@@ -188,8 +208,9 @@
                 </div>
             </div>
         </div>
-        <!--/col-span-6-->
-        <!-- end right column-->
     </div>
-
 </div>
+
+<script src="{% static 'jquery/jquery.scrollto.js' %}">
+    $.scrollTo('#reply-message-form', 1500);
+</script>

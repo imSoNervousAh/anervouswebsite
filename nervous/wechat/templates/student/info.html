@@ -33,7 +33,7 @@
                                 <label>负责人姓名</label>
 
                                 <div class="controls">
-                                    <input name="manager_name" type="text" class="form-control" placeholder="负责人姓名">
+                                    <input name="manager_name" type="text" class="form-control" placeholder="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                                 <label>负责人电话</label>
 
                                 <div class="controls">
-                                    <input name="manager_tel" type="text" class="form-control" placeholder="负责人电话">
+                                    <input name="manager_tel" type="text" class="form-control" placeholder="{% if type == 'change' %}{{ student.tel }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                                 <label>负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input name="manager_email" type="email" class="form-control" placeholder="负责人邮箱">
+                                    <input name="manager_email" type="email" class="form-control" placeholder="{% if type == 'change' %}{{ student.email }}{% endif %}">
                                 </div>
                             </div>
                         </div>
