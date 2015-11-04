@@ -90,6 +90,19 @@ def check_identity(identity):
     return decorator
 
 
+def change_info(request):
+    identity = session.get_identity(request)
+    if (identity == 'student'):
+        username = session.get_username(request)
+        student = backend.get_student_by_id(username)
+        return render(request, 'student/info.html', {'type': 'change',
+                                                     'username': student.real_name,
+                                                     'student': student,
+                                                     })
+    else:
+        pass
+
+
 @check_identity('student')
 @check_have_student_info
 def student(request):
@@ -143,18 +156,10 @@ def student_add_applications(request):
     return render_ajax(request, 'student/add_applications.html', {})
 
 
+@check_identity('student')
 def student_fill_info(request):
     return render(request, 'student/info.html', {'type': 'fill',
                                                  'username': '未登录', })
-
-
-def student_change_info(request):
-    username = session.get_username(request)
-    student = backend.get_student_by_id(username)
-    return render(request, 'student/info.html', {'type': 'change',
-                                                 'username': student.real_name,
-                                                 'student': student,
-                                                 })
 
 
 # administrator

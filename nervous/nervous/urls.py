@@ -20,8 +20,12 @@ urlpatterns = [
     # wechat part
     #   login/logout
     url(r'^index/?$', 'wechat.views.index', name='index'),
+    url(r'^login/(\w+)/?$', 'wechat.views.login', name='login'),
     url(r'^login', 'wechat.views.login', name='login'),
     url(r'^logout', 'wechat.views.logout', name='logout'),
+
+    #change_info
+    url(r'^change_info/?$','wechat.views.change_info',name='change_info'),
 
     #   message
     url(r'^message/student/([0-9]+)/?$', 'wechat.views.message_detail_student', name='message/student'),
@@ -30,7 +34,7 @@ urlpatterns = [
     #   student
     url(r'^student/my-applications/?$', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add-application/?$', 'wechat.views.student_add_applications', name='student/add-application'),
-    url(r'^student/fill_student_info/?$','wechat.views.student_fill_student_info',name='student/fill_student_info'),
+    url(r'^student/fill_info/?$','wechat.views.student_fill_info',name='student/fill_info'),
     url(r'^student', 'wechat.views.student', name='student'),
 
 
