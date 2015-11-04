@@ -59,7 +59,7 @@ def build_offline_test_db():
         'yet_another_title', 'yet_another_content'
     ))
 
-    backend.set_student_information(2014011434, 'wyl')
+    backend.set_student_information(2014011416, 'Huang Da Da')
 
 
 def build_test_db():

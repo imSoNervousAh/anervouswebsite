@@ -110,12 +110,14 @@ def check_admin(username, password):
 
 # Students
 
-def set_student_information(student_id, real_name):
+def set_student_information(student_id, dic):
     try:
         student = Student.create(student_id=student_id)
     except IntegrityError:
         student = Student.get(pk=student_id)
-    student.real_name = real_name
+    student.real_name = dic['manager_name']
+    for attr in ['dept', 'tel', 'email']:
+        setattr(student, attr, dic['manager_%s' % attr])
     student.save()
 
 

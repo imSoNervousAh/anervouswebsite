@@ -54,8 +54,7 @@ def submit_student_info(request):
     print dic
     username = session.get_username(request)
     print "submit_student_info", username
-    dic['user_submit'] = username
-    # backend.add_application(dic)
+    backend.set_student_information(username, dic)
     return HttpResponse(request.POST)
 
 

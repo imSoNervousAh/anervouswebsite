@@ -29,6 +29,9 @@ class Admin(models.Model):
 class Student(models.Model):
     student_id = models.IntegerField(primary_key=True)
     real_name = models.CharField(max_length=20)
+    dept = models.CharField(max_length=40)
+    tel = models.CharField(max_length=20)
+    email = models.CharField(max_length=254)
 
     def information_filled(self):
         return self.real_name != ""
