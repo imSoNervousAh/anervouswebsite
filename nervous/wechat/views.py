@@ -52,10 +52,34 @@ def check_identity(request, identity):
 
 # student
 
-def student(request):
-    if not check_identity(request, 'student'):
-        return login(request, 'student')
+# decorator for check student fill the basic info
+def check_have_student_info(func):
+    def wrapper(request):
+        print '!!!have_student_info'
+        if backend.check_student_information_filled(session.get_username(request)) == False:
+            return student_fill_student_info(request)
+        return func(request)
 
+    return wrapper
+
+
+# [ATTENTION]put this decorator at the most previous,decorator for check login status
+def check_identity(identity):
+    def decorator(func):
+        def wrapper(request):
+            print '!!!check_identity'
+            if (session.get_identity(request) != identity):
+                return login(request, identity)
+            return func(request)
+
+        return wrapper
+
+    return decorator
+
+
+@check_identity('student')
+@check_have_student_info
+def student(request):
     username = session.get_username(request)
 
     approved_applications = backend.get_applications_by_status('approved')
@@ -69,10 +93,9 @@ def student(request):
                                                   })
 
 
+@check_identity('student')
+@check_have_student_info
 def student_show_applications(request):
-    if not check_identity(request, 'student'):
-        return login(request, 'student')
-
     username = session.get_username(request)
 
     glyphicons = {'approved': 'glyphicon-ok-sign',
@@ -99,19 +122,20 @@ def student_show_applications(request):
                                                               })
 
 
+@check_identity('student')
+@check_have_student_info
 def student_add_applications(request):
-    if not check_identity(request, 'student'):
-        return login(request, 'student')
-
     return render(request, 'student/add_applications.html', {})
+
+def student_fill_student_info(request):
+    print 'fill_basic_info'
+    return render(request, 'student/fill_student_info.html')
 
 
 # administrator
-
+@check_identity('administrator')
 def admin(request):
     print 'show admin'
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     pending_applications_count = len(backend.get_pending_applications())
     username = session.get_username(request)
@@ -120,10 +144,9 @@ def admin(request):
                                                         'pending_applications_count': pending_applications_count})
 
 
+@check_identity('administrator')
 def admin_dashboard(request):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
-    
+
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles()
@@ -137,18 +160,16 @@ def admin_dashboard(request):
                                                             })
 
 
+@check_identity('administrator')
 def admin_show_official_accounts(request):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     official_accounts = backend.get_official_accounts()
 
     return render(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
 
 
+@check_identity('administrator')
 def admin_show_articles(request):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     articles_count, articles = backend.get_articles()
 
@@ -157,9 +178,8 @@ def admin_show_articles(request):
                                                            })
 
 
+@check_identity('administrator')
 def admin_show_applications(request, type):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     if type == 'pending':
         applications = backend.get_pending_applications()
@@ -180,9 +200,8 @@ def admin_show_applications(request, type):
                                                                })
 
 
+@check_identity('administrator')
 def admin_show_official_account_detail(request, id):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     try:
         official_account = backend.get_official_account_by_id(id)
@@ -197,6 +216,7 @@ def admin_show_official_account_detail(request, id):
                                                          })
 
 
+@check_identity('administrator')
 def admin_show_official_account_articles(request, id):
     articles_on_one_page = 10
     page_current = int(request.GET.get('page', '1'))
@@ -234,9 +254,8 @@ def admin_show_official_account_articles(request, id):
 # message
 
 
+@check_identity('administrator')
 def message_detail_admin(request, id):
-    if not check_identity(request, 'administrator'):
-        return login(request, 'administrator')
 
     category = MessageCategory.ToStudent
 
@@ -253,9 +272,8 @@ def message_detail_admin(request, id):
                                                     })
 
 
+@check_identity('student')
 def message_detail_student(request, id):
-    if not check_identity(request, 'student'):
-        return login(request, 'student')
 
     category = MessageCategory.ToAdmin
     messages = backend.get_messages(official_account_id=id)
@@ -273,16 +291,14 @@ def message_detail_student(request, id):
 
 # superuser
 
+@check_identity('superuser')
 def superuser(request):
-    if not check_identity(request, 'superuser'):
-        return login(request, 'superuser')
 
     return render(request, 'superuser/index.html', {'username': u'超级管理员'})
 
 
+@check_identity('superuser')
 def superuser_show_admins(request):
-    if not check_identity(request, 'superuser'):
-        return login(request, 'superuser')
 
     administrators = backend.get_admins()
 
