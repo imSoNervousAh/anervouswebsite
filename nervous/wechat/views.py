@@ -56,8 +56,7 @@ def check_identity(request, identity):
 def check_have_student_info(func):
     def wrapper(request,*args,**kw):
         if backend.check_student_information_filled(session.get_username(request)) == False:
-            #return student_fill_student_info(request)
-            pass
+            return student_fill_student_info(request)
         return func(request,*args,**kw)
 
     return wrapper
