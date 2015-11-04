@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from database import backend, utils
 from api.info_login import auth_by_info as tsinghua_login
 import json
-
 from wechat import session
 
 

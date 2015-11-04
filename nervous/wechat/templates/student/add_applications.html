@@ -12,10 +12,21 @@
             <form id="application-form" class="form form-vertical">
                 {% csrf_token %}
                 <div class="control-group">
-                    <label>公众号名称</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>公众号名称</label>
 
-                    <div class="controls">
-                        <input name="name" type="text" class="form-control" placeholder="公众号名称">
+                            <div class="controls">
+                                <input name="name" type="text" class="form-control" placeholder="公众号名称">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>公众号微信ID</label>
+
+                            <div class="controls">
+                                <input name="wx_id" type="text" class="form-control" placeholder="公众号微信ID">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">
