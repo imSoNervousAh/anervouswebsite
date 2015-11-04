@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
 
 import setup_db
 
@@ -139,7 +140,7 @@ def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, c
     if article_title_keyword:
         articles = articles.filter(title__contains=article_title_keyword)
     sort_param_key = {
-        SortBy.Time: 'likes',  # we don't have TIME information yet
+        SortBy.Time: 'posttime',
         SortBy.Likes: 'likes',
         SortBy.Views: 'views',
     }[sortby]
@@ -165,6 +166,7 @@ def add_article(dic):
         )
     art = Article.model()
     art.official_account_id = acc.id
+    art.posttime = datetime.strptime(dic['posttime'], "%Y-%m-%d %H:%M:%S")
     for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
         setattr(art, attr, dic[attr])
     try:
