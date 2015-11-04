@@ -55,7 +55,8 @@ def check_identity(request, identity):
 # decorator for check student fill the basic info
 def check_have_student_info(func):
     def wrapper(request, *args, **kw):
-        if backend.check_student_information_filled(session.get_username(request)) == False:
+        student_id = session.get_username(request)
+        if backend.check_student_information_filled(student_id) == False:
             return student_fill_student_info(request)
         return func(request, *args, **kw)
 
@@ -82,12 +83,14 @@ def student(request):
 
     approved_applications = backend.get_applications_by_status('approved')
     official_accounts = []
+    student = backend.get_student_by_id(username)
     for app in approved_applications:
         if app.user_submit == username:
             official_accounts.append(app.official_account)
 
-    return render(request, 'student/index.html', {'username': username,
+    return render(request, 'student/index.html', {'username': student.real_name,
                                                   'official_accounts': official_accounts,
+                                                  'student': student,
                                                   })
 
 
@@ -126,15 +129,18 @@ def student_add_applications(request):
     return render(request, 'student/add_applications.html', {})
 
 
-def student_fill_student_info(request):
-    print 'fill_basic_info'
-    return render(request, 'student/fill_student_info.html')
+def student_fill_info(request):
+    return render(request, 'student/info.html', {'type': 'fill',
+                                                 'username': '未登录', })
 
 
-@check_identity('student')
-def student_fill_student_info(request):
-    print 'fill_basic_info'
-    return render(request, 'student/fill_student_info.html')
+def student_change_info(request):
+    username = session.get_username(request)
+    student = backend.get_student_by_id(username)
+    return render(request, 'student/info.html', {'type': 'change',
+                                                 'username': student.real_name,
+                                                 'student': student,
+                                                 })
 
 
 # administrator

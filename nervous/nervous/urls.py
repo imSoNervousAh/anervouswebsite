@@ -31,7 +31,8 @@ urlpatterns = [
     #   student
     url(r'^student/my-applications', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add-application', 'wechat.views.student_add_applications', name='student/add-application'),
-    url(r'^student/fill_student_info','wechat.views.student_fill_student_info',name='student/fill_student_info'),
+    url(r'^student/fill_info','wechat.views.student_fill_info',name='student/fill_info'),
+    url(r'^student/change_info','wechat.views.student_change_info',name='student/change_info'),
     url(r'^student', 'wechat.views.student', name='student'),
 
 
