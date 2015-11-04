@@ -74,6 +74,7 @@ class Article(models.Model):
     url = models.CharField(max_length=300, unique=True)
     likes = models.IntegerField()
     views = models.IntegerField()
+    posttime = models.DateTimeField()
 
     def official_account_name(self):
         return OfficialAccount.objects.get(pk=self.official_account_id).name
