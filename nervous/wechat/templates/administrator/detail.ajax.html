@@ -54,16 +54,45 @@
         <hr>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>最近文章</h4></div>
+                <div class="row">
+                    <h4 class="col-xs-6">最近文章</h4>
+
+                    <div class="col-xs-6">
+                        <div style="vertical-align: text-top">
+                            <div id="table-search-box" class="left-inner-addon col-xs-10" style="margin-top: 3px;">
+                                <i class="glyphicon glyphicon-search"></i>
+                                <input id="table-search-input" name="keyword" type="text" class="form-control"
+                                       placeholder="搜索关键字……"/>
+                            </div>
+                        </div>
+                        <span id="articles-count-badge" class="badge pull-right"
+                              style="margin-top: 10px;">{{ articles_count }}</span>
+                    </div>
+                </div>
+            </div>
             <div class="panel-body">
+                <script src="{% static 'base/js/referrer-killer.js' %}"></script>
                 <div class="table-responsive" id="articles-list-container">
                     <!-- to be loaded using ajax -->
 
                     <script>
+                        console.log("aaaa");
                         loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
-                            'sort_by': 'views',
+                            'sort_by': 'posttime',
                             'sort_order': 'desc'
                         }, "#articles-list-container");
+                        $(function () {
+                            $("#table-search-input").on("input propertychange paste", function () {
+                                console.log($(this).val());
+                                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
+                                    'sort_by': 'posttime',
+                                    'sort_order': 'desc',
+                                    'article_title_keyword': $(this).val()
+                                }, "#articles-list-container", function () {
+                                    $("#articles-count-badge").html($("#articles-count-value").html());
+                                });
+                            });
+                        });
                     </script>
                 </div>
             </div>

@@ -4,7 +4,9 @@ from django.http import HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
-from  django.shortcuts import render_to_response
+from django.shortcuts import render_to_response
+from django.utils import timezone
+from datetime import timedelta
 from database import backend
 from wechat import session
 import re
@@ -25,6 +27,21 @@ def notfound(request):
 def to_notfound(request):
     print '%s redirect_to notfound' % request.path
     return HttpResponseRedirect('/notfound')
+
+
+def get_pagination(item_total, item_per_page, cur):
+    page_count = (item_total + item_per_page + 1) // item_per_page
+    l = max(1, cur - 1)
+    r = min(page_count, cur + 2)
+    if l <= 2:
+        l = 1
+    if r >= page_count - 1:
+        r = page_count
+    pages = xrange(l, r + 1)
+    page = {'count': page_count,
+            'current': cur,
+            'pages': pages}
+    return page
 
 
 # index
@@ -178,7 +195,8 @@ def admin(request):
 def admin_dashboard(request):
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
-    articles_count, articles = backend.get_articles()
+    articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
+        'posttime_begin': timezone.now().date() - timedelta(days=7)})
     messages = backend.get_messages(only_unprocessed=True)
 
     return render_ajax(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
@@ -233,7 +251,7 @@ def admin_show_official_account_detail(request, id):
     except:
         return to_notfound(request)
 
-    articles_count = backend.get_articles()
+    articles_count, articles = backend.get_articles(filter={'official_account_id': id})
 
     return render_ajax(request, 'administrator/detail.html', {'account': official_account,
                                                               'official_account_id': id,
@@ -245,39 +263,45 @@ def admin_show_official_account_detail(request, id):
 def admin_show_official_account_articles(request, id):
     articles_on_one_page = 10
     page_current = int(request.GET.get('page', '1'))
+
+    sort_order_keyword = request.GET.get('sort_order', 'desc')
     sort_order = {
         'asc': SortOrder.Ascending,
         'desc': SortOrder.Descending
-    }[request.GET.get('sort_order', 'asc')]
+    }[sort_order_keyword]
+
+    sort_by_keyword = request.GET.get('sort_by', 'posttime')
     sort_by = {
-        'time': SortBy.Time,
+        'posttime': SortBy.Time,
         'likes': SortBy.Likes,
         'views': SortBy.Views
-    }[request.GET.get('sort_by', 'time')]
+    }[sort_by_keyword]
+
+    article_filter = {}
+    keyword = request.GET.get('article_title_keyword', '').strip()
+    if keyword:
+        article_filter['article_title_keyword'] = keyword
+    article_filter['official_account_id'] = id
 
     articles_count, articles = backend.get_articles(start_from=(page_current - 1) * articles_on_one_page,
                                                     count=articles_on_one_page,
-                                                    filter={'official_account_id': id},
+                                                    filter=article_filter,
                                                     sortby=sort_by,
                                                     order=sort_order)
 
-    page_count = (articles_count + articles_on_one_page - 1) // articles_on_one_page
-    pages = xrange(1, page_count + 1)
-    page = {'count': page_count,
-            'current': page_current,
-            'pages': pages}
+    page = get_pagination(articles_count, articles_on_one_page, page_current)
 
-    return render_ajax(request, 'administrator/detail_articles_list.html',
-                       {'articles': articles,
-                        'official_account_id': id,
-                        'page': page,
-                        'sort_by': request.GET.get('sort_by', 'time'),
-                        'sort_order': request.GET.get('sort_order', 'asc')
-                        })
+    return render(request, 'administrator/detail_articles_list.html',
+                  {'articles': articles,
+                   'articles_count': articles_count,
+                   'official_account_id': id,
+                   'page': page,
+                   'sort_by': sort_by_keyword,
+                   'sort_order': sort_order_keyword
+                   })
 
 
 # message
-
 
 @check_identity('administrator')
 def message_detail_admin(request, id):

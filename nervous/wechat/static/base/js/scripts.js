@@ -81,24 +81,27 @@ function loadContent(url, params, item_selector, callback) {
 function loadContentOn(url, params, container, callback) {
     console.log(url);
     var main = $(container);
-
+/*
     main.animate({
         opacity: 0,
         height: 0
     }, 250);
-
+*/
     var show = function (data) {
         main.queue(function () {
             main.html(data);
+            if (typeof callback !== typeof undefined)
+                callback();
+            /*
             var new_height = 0;
             main.children().each(function () {
                 new_height += $(this).outerHeight(true);
             });
-            /*
+
              $("html, body").delay(60).animate({
              "scroll-top": main.offset().top
              });
-             */
+
             main.delay(50).animate({
                 opacity: 1.0,
                 height: new_height
@@ -107,6 +110,7 @@ function loadContentOn(url, params, container, callback) {
                 if (typeof callback !== typeof undefined)
                     callback();
             });
+            */
             $(this).dequeue();
         });
     };
@@ -151,9 +155,17 @@ $(function () {
         console.log('statechange: ' + state.url);
         var main = $("#main-page");
 
-        $("#left-column").removeClass("expanded");
+        if ($(window).width() < 768) {
+            $("#left-column").removeClass("expanded");
+            var backdrop = $("#left-column-backdrop");
+            backdrop.removeClass("in");
+            setTimeout(function () {
+                backdrop.remove();
+            }, 500);
+        }
 
         if (!__manualStateChange) {
+            var height = $("#left-column").height();
             main.animate({
                 opacity: 0,
                 height: height
@@ -196,22 +208,25 @@ $(function () {
         var left = $("#left-column");
         left.toggleClass("expanded");
         if (left.hasClass("expanded")) {
-            var backdrop = $('<div id="left-column-backdrop" class="modal-backdrop fade"></div>');
+            var height = $("body").height();
+            var backdrop = $('<div id="left-column-backdrop"' +
+                ' class="modal-backdrop fade hidden-lg hidden-md hidden-sm"' +
+                ' style="height:' + height.toString() + 'px"></div>');
             $("body").append(backdrop);
-            setTimeout(function() {
+            setTimeout(function () {
                 backdrop.addClass("in");
             }, 100);
             $(backdrop).click(function () {
                 $("#left-column").removeClass("expanded");
                 backdrop.removeClass("in");
-                setTimeout(function() {
+                setTimeout(function () {
                     backdrop.remove();
                 }, 500);
             });
         } else {
             var backdrop = $("#left-column-backdrop");
             backdrop.removeClass("in");
-            setTimeout(function() {
+            setTimeout(function () {
                 backdrop.remove();
             }, 500);
         }
@@ -222,6 +237,13 @@ $(function () {
         if (!$(this).hasClass("active")) {
             loadContentOfItem("#" + this.id);
         }
+    });
+
+    $(".fake-link-scroll").click(function (e) {
+        e.preventDefault();
+        $("html, body").animate({
+            "scroll-top": 0
+        }, "fast");
     });
 
     // set page min height according to left column

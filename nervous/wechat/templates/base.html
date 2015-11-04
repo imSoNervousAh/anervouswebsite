@@ -34,10 +34,10 @@
 <div id="top-nav" class="navbar navbar-default navbar-static-top affix">
     <div class="container-fluid">
         <div class="nav navbar-nav navbar-left">
-            <a href="#" class="navbar-brand">清华大学微信公众号备案平台</a>
+            <a class="fake-link-scroll navbar-brand">清华大学微信公众号备案平台</a>
             {% block subtitle %}
                 <a class="navbar-brand">&gt;</a>
-                <a href="#" class="navbar-brand">管理员后台</a>
+                <a class="fake-link-scroll navbar-brand">管理员后台</a>
             {% endblock subtitle %}
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -52,7 +52,7 @@
                 </a>
                 <ul id="g-account-menu" class="dropdown-menu" role="menu">
                     {% block user-menu %}
-                        <li><a href="/change_info"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a></li>
+                        <li><a href="{% url 'student/change-info' %}"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
                     {% endblock user-menu %}
@@ -75,12 +75,12 @@
                 <ul class="nav nav-stacked collapse in" id="application-menu">
                     <hr>
                     <ul class="nav nav-stacked collapse in" id="userMenu">
-                        <li class="nav-header left-column-item"><a href="#"><i
+                        <li class="nav-header left-column-item"><a class="fake-link"><i
                                 class="glyphicon glyphicon-tasks"></i>　待审批申请 <span
                                 class="badge badge-info">{{ pending_count }}</span></a></li>
-                        <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
+                        <li class="nav-header left-column-item"><a class="fake-link"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
                         </li>
-                        <li class="nav-header left-column-item"><a href="#"><i
+                        <li class="nav-header left-column-item"><a class="fake-link"><i
                                 class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
                         </li>
                     </ul>
@@ -93,13 +93,13 @@
                 <ul class="nav nav-stacked collapse in" id="analyse-menu">
                     <hr>
                     <ul class="nav nav-stacked collapse in" id="userMenu">
-                        <li class="nav-header left-column-item"><a href="#"><i
+                        <li class="nav-header left-column-item"><a class="fake-link"><i
                                 class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
                         </li>
-                        <li class="nav-header left-column-item"><a href="#"><i
+                        <li class="nav-header left-column-item"><a class="fake-link"><i
                                 class="glyphicon glyphicon-sort-by-attributes"></i>　统计信息</a>
                         </li>
-                        <li class="nav-header left-column-item"><a href="#"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
+                        <li class="nav-header left-column-item"><a class="fake-link"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
                         </li>
                     </ul>
                     </li>

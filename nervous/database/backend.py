@@ -1,7 +1,6 @@
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-
 import setup_db
 
 setup_db.setup()
@@ -118,6 +117,7 @@ def check_admin(username, password):
 def get_student_by_id(student_id):
     return Student.get(pk=student_id)
 
+
 def set_student_information(student_id, dic):
     try:
         student = Student.create(student_id=student_id)
@@ -141,14 +141,21 @@ def check_student_information_filled(student_id):
 
 def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, count=10, filter=None):
     articles = Article.all()
-    articles_count = len(articles)
     filter = filter or {}
     official_account_id = filter.get('official_account_id', None)
     article_title_keyword = filter.get('article_title_keyword', None)
+    posttime_begin = filter.get('posttime_begin', None)
+    posttime_end = filter.get('posttime_end', None)
     if official_account_id:
         articles = articles.filter(official_account_id__exact=official_account_id)
     if article_title_keyword:
         articles = articles.filter(title__contains=article_title_keyword)
+    if posttime_begin:
+        articles = articles.filter(posttime__gte=posttime_begin)
+    if posttime_end:
+        articles = articles.filter(posttime__lte=posttime_end)
+    articles_count = articles.count()
+
     sort_param_key = {
         SortBy.Time: 'posttime',
         SortBy.Likes: 'likes',

@@ -122,15 +122,19 @@ a > span.badge-info {
         -o-transition: all 0.5s ease-in-out;
         transition: all 0.5s ease-in-out;
     }
+
     #left-column > a {
         color: #2c3e50;
     }
+
     #left-column li a {
         color: #eeeeee;
     }
+
     #left-column li > a:hover {
         color: #18bc9c;
     }
+
     #left-column.expanded {
         margin-left: 0;
     }
@@ -138,8 +142,8 @@ a > span.badge-info {
 
 /* crop and resize article avatar */
 .article-avatar {
-    width: 200px;
-    height: 100px;
+    width: 180px;
+    height: 90px;
     overflow: hidden;
     display: inline-block;
 }
@@ -150,8 +154,25 @@ a > span.badge-info {
     cursor: pointer;
 }
 
+.fake-link-scroll {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
 /* sortable tables */
 th.th-sortable {
     cursor: pointer;
     font-weight: bold;
+}
+
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
 }
