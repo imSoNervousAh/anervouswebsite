@@ -28,9 +28,9 @@ urlpatterns = [
 #    url(r'^change_info/?$','wechat.views.change_info',name='change_info'),
 
     #   message
-    url(r'^message/([0-9]+)/?$', 'wechat.views.message_jump', name='message/jump'),
+    url(r'^messagee/[^/]+/?$', 'wechat.views.message_jump', name='message/jump'),
     url(r'^message/student/([0-9]+)/?$', 'wechat.views.message_detail_student', name='message/student'),
-    url(r'^message/admin/([0-9]+)/?$', 'wechat.views.message_detail_admin', name='message/admin'),
+    url(r'^message/administrator/([0-9]+)/?$', 'wechat.views.message_detail_admin', name='message/administrator'),
 
     #   student
     url(r'^student/my_applications', 'wechat.views.student_show_applications', name='student/my-applications'),

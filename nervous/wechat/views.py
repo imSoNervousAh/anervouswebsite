@@ -320,11 +320,6 @@ def admin_show_official_account_articles(request, id):
 # message
 
 def message_jump(request,id):
-    print id
-    print session.get_identity(request)
-    if (session.get_identity(request)=='administrator'):
-        return HttpResponseRedirect('/message/%s/%s' %('admin',id))
-
     return HttpResponseRedirect('/message/%s/%s' %(session.get_identity(request),id))
 
 @check_identity('administrator')
