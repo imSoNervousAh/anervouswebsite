@@ -157,7 +157,10 @@ def student_show_applications(request):
 @check_identity('student')
 @check_have_student_info
 def student_add_applications(request):
-    return render_ajax(request, 'student/add_applications.html', {})
+    username=session.get_username(request)
+    student = backend.get_student_by_id(username)
+    return render_ajax(request, 'student/add_applications.html', {'student':student,
+                                                                  'student_id':username,})
 
 
 @check_identity('student')
@@ -198,7 +201,6 @@ def admin_dashboard(request):
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)})
     messages = backend.get_messages(only_unprocessed=True)
-
     return render_ajax(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
                                                                  'official_accounts': official_accounts,
                                                                  'articles': articles,

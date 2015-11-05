@@ -50,22 +50,22 @@
                             </select>
                         </div>
                     </div>
-                    <!--
+
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
                                 <label>负责人姓名</label>
 
                                 <div class="controls">
-                                    <input name="manager_name" type="text" class="form-control" placeholder="负责人姓名">
+                                    <input readonly="readonly" name="manager_name" type="text" class="form-control" placeholder="{{ student.real_name }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人学号</label>
 
                                 <div class="controls">
-                                    <input name="manager_student_id" type="text" class="form-control"
-                                           placeholder="负责人学号">
+                                    <input readonly="readonly" name="manager_student_id" type="text" class="form-control"
+                                           placeholder="{{ student_id }}">
                                 </div>
                             </div>
                         </div>
@@ -76,18 +76,30 @@
                                 <label>负责人电话</label>
 
                                 <div class="controls">
-                                    <input name="manager_tel" type="text" class="form-control" placeholder="负责人电话">
+                                    <input readonly="readonly" name="manager_tel" type="text" class="form-control" placeholder="{{ student.tel }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input name="manager_email" type="email" class="form-control" placeholder="负责人邮箱">
+                                    <input readonly="readonly" name="manager_email" type="email" class="form-control" placeholder="{{ student.email }}">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>负责人院系</label>
+
+                                <div class="controls">
+                                    <input readonly="readonly" name="manager_dept" type="text" class="form-control" placeholder="{{ student.dept }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
                     <div class="control-group">
                         <label>负责人院系</label>
 
