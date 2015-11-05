@@ -81,6 +81,15 @@ def get_official_account_by_id(id):
     return OfficialAccount.get(pk=id)
 
 
+def add_account_record(wx_id, dic):
+    account = OfficialAccount.get(wx_id__exact=wx_id)
+    record = AccountRecord.model()
+    record.account = account
+    for attr in ['likes', 'views', 'articles']:
+        setattr(record, attr, dic.get(attr, 0))
+    record.save()
+
+
 # Admins
 
 def add_admin(username, md5_password, description):
