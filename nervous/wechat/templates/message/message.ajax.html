@@ -64,18 +64,19 @@
                             <!-- send message-->
 
                             <script type="text/javascript">
+
                                 function submitFormCheck() {
                                     var form = document.forms["reply_message_form"];
-                                    /*if (form['title'].value == '') {
-                                     alert('请填写标题');
-                                     return false;
-                                     }*/
+                                    //if (form['title'].value == '') {
+                                     //alert('请填写标题');
+                                     //return false;
+                                     //}
                                     if (form['content'].value == '') {
                                         alert('请填写正文');
                                         return false;
                                     }
                                     form.submit();
-                                    loadContent('message/admin/{{ official_account_id }}');
+                                    loadContent('message/{{ official_account_id }}');
                                     return true;
 
                                 }
@@ -122,7 +123,7 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("{% url '/administrator' official_account_id %}",
+                                                loadContent("/administrator",
                                                         {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
