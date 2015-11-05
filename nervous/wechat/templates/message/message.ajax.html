@@ -14,11 +14,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>站内信息
-                        {{ processed }}
-                        {% if processed == 'True' %}
-                            <strong class="user-name" style="font-size: medium">[未读]</strong>
-                        {% elif  processed == 'False'%}
+                        {% if processed %}
                             <strong class="user-name" style="font-size: medium">[已读]</strong>
+                        {% else %}
+                            <strong class="user-name" style="font-size: medium">[未读]</strong>
                         {% endif %}
                         <span class="badge pull-right">{{ pending_count }}</span>
                     </h4>
@@ -68,15 +67,15 @@
                                 function submitFormCheck() {
                                     var form = document.forms["reply_message_form"];
                                     /*if (form['title'].value == '') {
-                                        alert('请填写标题');
-                                        return false;
-                                    }*/
+                                     alert('请填写标题');
+                                     return false;
+                                     }*/
                                     if (form['content'].value == '') {
                                         alert('请填写正文');
                                         return false;
                                     }
                                     form.submit();
-                                    loadContent('message/admin/{{ official_account_id }}')
+                                    loadContent('message/admin/{{ official_account_id }}');
                                     return true;
 
                                 }
@@ -88,48 +87,62 @@
                                     msg.find("> button").click(function () {
                                         $("#error-msg").fadeOut();
                                     });
-                                });
-                                $("#reply-message-form").submit(function (event) {
-                                    event.preventDefault();
-                                    var url = "{% url 'api/add_message' %}";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        data: $("#reply-message-form").serialize(),
-                                        success: function (data) {
-                                            loadContent("{% url 'message/admin' official_account_id %}",
-                                                    {}, undefined, function () {
-                                                        $("html, body").delay(60).animate({
-                                                            "scroll-top": $(document).height()
-                                                        }, function () {
-                                                            var item = $(".message-body:nth-last-of-type(1)");
-                                                            animate(item, "flash");
+
+                                    $("#send-reply").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/add_message' %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: $("#reply-message-form").serialize(),
+                                            success: function (data) {
+                                                loadContent("{% url 'message/admin' official_account_id %}",
+                                                        {}, undefined, function () {
+                                                            $("html, body").delay(60).animate({
+                                                                "scroll-top": $(document).height()
+                                                            }, function () {
+                                                                var item = $(".message-body:nth-last-of-type(1)");
+                                                                animate(item, "flash");
+                                                            });
                                                         });
-                                                    });
-                                        },
-                                        error: function (xhr, textStatus, errorThrown) {
-                                            var msg = $("#error-msg");
-                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                            console.log(xhr.responseText);
-                                            msg.fadeIn();
-                                        }
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
+                                            }
+                                        });
+                                    });
+                                    $("#mark-read").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/process_message' %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: $("#reply-message-form").serialize(),
+                                            success: function (data) {
+                                                loadContent("{% url '/administrator' official_account_id %}",
+                                                        {}, undefined, function () {
+                                                            $("html, body").delay(60).animate({
+                                                                "scroll-top": $(document).height()
+                                                            }, function () {
+                                                                var item = $(".message-body:nth-last-of-type(1)");
+                                                                animate(item, "flash");
+                                                            });
+                                                        });
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
+                                            }
+                                        });
                                     });
                                 });
-                                $("#mark-read").submit(function (event) {
-                                    event.preventDefault();
-                                    var url = "{% url 'api/process_message' %}";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        data: $("#reply-message-form").serialize(),
-                                        error: function (xhr, textStatus, errorThrown) {
-                                            var msg = $("#error-msg");
-                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                            console.log(xhr.responseText);
-                                            msg.fadeIn();
-                                        }
-                                    });
-                                });
+
+
                             </script>
 
 
@@ -149,10 +162,12 @@
                                             <p></p>
 
                                             <p></p>
-                                            {% if processed == 'False'%}
-                                            <button class="btn btn-primary pull-right">标记已读</button>
+                                            <button id="send-reply" class="btn btn-primary pull-right">Send</button>
+                                            {% if not processed and category == MessageCategory.ToStudent %}
+                                                <button id="mark-read" class="btn btn-primary pull-right"
+                                                        style="margin-right: 10px">标记已读
+                                                </button>
                                             {% endif %}
-                                            <button class="btn btn-primary pull-right">Send</button>
                                         </div>
                                     </div>
                                 </div>

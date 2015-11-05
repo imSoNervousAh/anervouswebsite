@@ -98,4 +98,5 @@ def add_message(request):
 
 
 def process_message(request):
+    print 'process_message'
     pass

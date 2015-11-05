@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.utils import timezone
 from datetime import timedelta
 from database import backend
+from database import models
 from wechat import session
 import re
 import urllib2
@@ -107,6 +108,19 @@ def check_identity(identity):
     return decorator
 
 
+def change_info(request):
+    identity = session.get_identity(request)
+    if (identity == 'student'):
+        username = session.get_username(request)
+        student = backend.get_student_by_id(username)
+        return render(request, 'student/info.html', {'type': 'change',
+                                                     'username': student.real_name,
+                                                     'student': student,
+                                                     })
+    else:
+        return HttpResponse(request, '还没有写...')
+
+
 @check_identity('student')
 @check_have_student_info
 def student(request):
@@ -157,10 +171,10 @@ def student_show_applications(request):
 @check_identity('student')
 @check_have_student_info
 def student_add_applications(request):
-    username=session.get_username(request)
+    username = session.get_username(request)
     student = backend.get_student_by_id(username)
-    return render_ajax(request, 'student/add_applications.html', {'student':student,
-                                                                  'student_id':username,})
+    return render_ajax(request, 'student/add_applications.html', {'student': student,
+                                                                  'student_id': username, })
 
 
 @check_identity('student')
@@ -310,7 +324,7 @@ def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
-    print messages[1].processed
+    processed = messages[len(messages) - 1].processed
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -320,6 +334,8 @@ def message_detail_admin(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
+                                                         'processed': processed,
+                                                         'MessageCategory':MessageCategory,
                                                          })
 
 
@@ -336,6 +352,7 @@ def message_detail_student(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
+                                                         'MessageCategory': MessageCategory,
                                                          })
 
 
