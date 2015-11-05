@@ -14,9 +14,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>站内信息
+                        {{ processed }}
                         {% if processed == 'True' %}
                             <strong class="user-name" style="font-size: medium">[未读]</strong>
-                        {% else %}
+                        {% elif  processed == 'False'%}
                             <strong class="user-name" style="font-size: medium">[已读]</strong>
                         {% endif %}
                         <span class="badge pull-right">{{ pending_count }}</span>
@@ -64,22 +65,23 @@
                             <!-- send message-->
 
                             <script type="text/javascript">
-                                /*function submitFormCheck() {
-                                 var form = document.forms["reply_message_form"];
-                                 if (form['title'].value == '') {
-                                 alert('请填写标题');
-                                 return false;
-                                 }
-                                 if (form['content'].value == '') {
-                                 alert('请填写正文');
-                                 return false;
-                                 }
-                                 form.submit();
-                                 loadContent('message/admin/{{ official_account_id }}')
-                                 return true;
-                                 }*/
+                                function submitFormCheck() {
+                                    var form = document.forms["reply_message_form"];
+                                    /*if (form['title'].value == '') {
+                                        alert('请填写标题');
+                                        return false;
+                                    }*/
+                                    if (form['content'].value == '') {
+                                        alert('请填写正文');
+                                        return false;
+                                    }
+                                    form.submit();
+                                    loadContent('message/admin/{{ official_account_id }}')
+                                    return true;
 
-                                //$.scrollTo('#reply-message-form',1000);
+                                }
+
+
                                 $(function () {
                                     var msg = $("#error-msg");
                                     msg.fadeOut(0);
@@ -129,9 +131,6 @@
                                     });
                                 });
                             </script>
-                            <!--
-                                <button class="button" id="mark-read">标记已读（尚未实现）</button>
-                                -->
 
 
                             <form id="reply-message-form">
@@ -150,6 +149,9 @@
                                             <p></p>
 
                                             <p></p>
+                                            {% if processed == 'False'%}
+                                            <button class="btn btn-primary pull-right">标记已读</button>
+                                            {% endif %}
                                             <button class="btn btn-primary pull-right">Send</button>
                                         </div>
                                     </div>

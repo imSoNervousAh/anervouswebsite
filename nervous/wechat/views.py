@@ -308,6 +308,7 @@ def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
+    print messages[1].processed
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
