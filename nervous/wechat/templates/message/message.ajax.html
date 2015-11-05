@@ -129,7 +129,7 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("/",
+                                                loadContent("/{% if category == MessageCategory.ToStudent %}administrator{% else %}student{% endif %}",
                                                         {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
