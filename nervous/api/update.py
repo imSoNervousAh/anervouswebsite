@@ -42,3 +42,15 @@ def update_all():
     lists = backend.get_official_accounts_wx_name()
     for i in lists:
         update_official_account(i)
+
+def update_official_account_nums(account):
+    paras = {}
+    paras['wx_name'] = account
+    d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
+    paras['datestart'] = time.strftime('%Y-%m-%d', time.localtime(time.time() - delta))
+    paras['dateend'] = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    res = d['returnData']
+    print res
+    #res['url_num_total']
+    #res['readnum_total']
+    #res['likenum_total']
