@@ -46,7 +46,7 @@ class OfficialAccount(models.Model):
     description = models.CharField(max_length=300)
 
     def __unicode__(self):
-        return self.name
+        return "%s(%s)" % (self.name, self.wx_id)
 
 
 class AccountRecord(models.Model):
@@ -55,6 +55,9 @@ class AccountRecord(models.Model):
     articles = models.IntegerField()
     likes = models.IntegerField()
     views = models.IntegerField()
+
+    def __unicode__(self):
+        return "%s at %s" % (self.account.name, self.date)
 
 
 class Application(models.Model):

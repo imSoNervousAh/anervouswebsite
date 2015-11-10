@@ -83,10 +83,17 @@ def get_official_account_by_id(id):
 
 def add_account_record(wx_id, dic):
     account = OfficialAccount.get(wx_id__exact=wx_id)
+    date = dic['date']
+    try:
+        old_record = account.accountrecord_set.get(date__exact=date)
+        old_record.delete()
+    except ObjectDoesNotExist:
+        pass
     record = AccountRecord.model()
     record.account = account
+    record.date = date
     for attr in ['likes', 'views', 'articles']:
-        setattr(record, attr, dic.get(attr, 0))
+        setattr(record, attr, dic.get(attr, -1))
     record.save()
 
 

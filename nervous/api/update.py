@@ -1,8 +1,26 @@
 from database import backend
 from api import getdata
-import time
 
-delta = 60 * 60 * 24 * 30
+import time
+import datetime
+
+
+def get_time_string_before_n_days(n):
+    seconds_of_day = 60 * 60 * 24;
+    target_time = time.localtime(time.time() - n * seconds_of_day)
+    return time.strftime('%Y-%m-%d', target_time)
+
+
+def get_date_object_before_n_days(n):
+    return datetime.date.today() - datetime.timedelta(days = n)
+
+
+def get_time_string_before_month():
+    return get_time_string_before_n_days(30)
+
+
+def get_time_string_now():
+    return get_time_string_before_n_days(0)
 
 
 def add_items(dic):
@@ -12,17 +30,18 @@ def add_items(dic):
         temp['views'] = temp['readnum']
         temp['likes'] = temp['likenum']
         temp['avatar_url'] = temp['picurl']
-        temp['update_time'] = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+        temp['update_time'] = get_time_string_now()
         backend.add_article(temp)
 
 
 def update_official_account(account):
     print 'updating official account: %s' % account
+
     paras = {}
     paras['wx_name'] = account
-    paras['datestart'] = time.strftime('%Y-%m-%d', time.localtime(time.time() - delta))
-    paras['dateend'] = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-    # paras['start'] = 0
+    paras['datestart'] = get_time_string_before_month()
+    paras['dateend'] = get_time_string_now()
+
     d = getdata.get_dict('wx/opensearchapi/content_list', paras)
     totnum = d['returnData']['total']
     ind = (d['returnData'])['items']
@@ -38,19 +57,33 @@ def update_official_account(account):
         cnt += 10
 
 
-def update_all():
-    lists = backend.get_official_accounts_wx_name()
-    for i in lists:
-        update_official_account(i)
+def update_official_account_nums_before_n_days(account, n):
+    day_string = get_time_string_before_n_days(n)
 
-def update_official_account_nums(account):
     paras = {}
     paras['wx_name'] = account
+    paras['beginDate'] = day_string
+    paras['endDate'] = day_string
     d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
-    paras['datestart'] = time.strftime('%Y-%m-%d', time.localtime(time.time() - delta))
-    paras['dateend'] = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+
     res = d['returnData']
-    print res
-    #res['url_num_total']
-    #res['readnum_total']
-    #res['likenum_total']
+    dic = {
+        'date': get_date_object_before_n_days(n),
+        'likes': res['likenum_total'],
+        'views': res['readnum_total'],
+        'articles': res['url_num_total']
+    }
+    backend.add_account_record(account, dic)
+
+
+def update_official_account_nums(account):
+    for i in xrange(2, 9):
+        update_official_account_nums_before_n_days(account, i)
+
+
+def update_all():
+    lists = backend.get_official_accounts_wx_name()
+    for account in lists:
+        update_official_account(account)
+        update_official_account_nums(account)
+
