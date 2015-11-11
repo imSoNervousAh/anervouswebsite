@@ -30,11 +30,16 @@
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
-                                    <!--
-                                    <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
+                                    <a id="modify_{{app.id}}">
+                                        <span class="glyphicon glyphicon-check"></span> 修改
+                                    </a>
+                                </td>
+                                <!--
+                                <td>
+                                        <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
                                        data-toggle="popover"
                                        data-content="
-                                        <form method='post' action='{% url 'api/modify_application' %}'>
+                                        <form method='post' action="{% url 'api/delete_application' app.id %}">
                                             {% csrf_token %}
                                             <button type='submit' name='status' value='rejected'
                                                 class='btn btn-danger'>
@@ -48,12 +53,52 @@
                                                 <span class='glyphicon glyphicon-ok-sign'></span> 通过
                                             </button>
                                         </form>">
-                                        <span class="glyphicon glyphicon-check"></span> 修改</a>
-                                    -->
-                                        <a href='api/modify_application/{{app.id}}' style="cursor:pointer;" class="change-app-status-link"
-                                        <span class="glyphicon glyphicon-check"></span> 修改</a>
+                                        <span class="glyphicon glyphicon-check"></span> 删除</a>
+                                
+                                </td>
+                            -->
+                                <td>
+                                        <a id="delete_{{app.id}}" >
+                                        <span class="glyphicon glyphicon-check"></span> 删除</a>
+                                
                                 </td>
                             </tr>
+
+                            <script>
+
+
+                                    $("#modify_{{app.id}}").click(function(){
+                                        loadContent("{% url 'student/modify-application' app.id %}");
+                                    });
+
+                    $(function () {
+                        var msg = $("#error-msg");
+                        msg.fadeOut(0);
+                        msg.find("> button").click(function () {
+                            $("#error-msg").fadeOut();
+                        });
+                    });
+$("#delete_{{app.id}}").submit(function (event) {
+                        event.preventDefault();
+                        var url = "{% url 'api/delete_application' app.id %}";
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: {{app.in}},
+                            success: function (data) {
+                                alert('提交成功!');
+                                loadContent("/student");
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                var msg = $("#error-msg");
+                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                console.log(xhr.responseText);
+                                msg.fadeIn();
+                            }
+                        });
+                    });
+                                </script>
+                                
                             {% endfor %}
                         </tbody>
                     </table>

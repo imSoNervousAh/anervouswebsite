@@ -63,6 +63,10 @@ def modify_application(request):
     username = session.get_username(request)
     dic['operator_admin'] = username
     backend.modify_application(dic)
+    return HttpResponse(request.POST)
+
+def delete_application(request,id):
+    print 'delete: ',id
     return HttpResponseRedirect('/admin')
 
 
