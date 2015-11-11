@@ -61,8 +61,9 @@ function displayContent(data, params, container, callback) {
                 new_height += $(this).outerHeight(true);
             });
             if (scroll) {
+                var delta = $(".main").css("padding-top");
                 $("html, body").delay(400).animate({
-                    "scroll-top": main.position().top
+                    "scroll-top": main.position().top - delta
                 });
             }
             main.delay(50).animate({

@@ -17,7 +17,7 @@
                             <th style="width: 15%; min-width: 110px">公众号负责人</th>
                             <th style="width: 10000px">公众号简介</th>
                             <th>
-                                <div style="width: 50px"></div>
+                                <div style="width: 55px"></div>
                             </th>
                         </tr>
                         </thead>
@@ -47,7 +47,7 @@
                                             {% csrf_token %}
                                             <button type='submit' name='status' value='rejected'
                                                 class='btn btn-danger'>
-                                                <span class='fa fa-remove-circle fa-fw'></span> 拒绝
+                                                <span class='fa fa-times-circle fa-fw'></span> 拒绝
                                             </button>
                                             <input style='display:none' name='username' value='{{ admin.username }}'>
                                             <input style='display:none' name='account_id' value='{{ app.id }}'>
@@ -79,8 +79,8 @@
                             <th style="width: 15%; min-width: 100px">公众号名称</th>
                             <th style="width: 25%; min-width: 100px">文章标题</th>
                             <th>文章简介</th>
-                            <th style="width: 80px"><span class="fa fa-eye fa-fw"></span> 阅览数</th>
-                            <th style="width: 80px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数</th>
+                            <th style="width: 85px"><span class="fa fa-eye fa-fw"></span> 阅览数</th>
+                            <th style="width: 85px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数</th>
                         </tr>
                         </thead>
                         <tbody>

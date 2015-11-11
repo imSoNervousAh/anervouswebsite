@@ -136,7 +136,7 @@ def student_show_applications(request):
     username = session.get_username(request)
 
     glyphicons = {'approved': 'fa-check-circle',
-                  'rejected': 'fa-remove-circle',
+                  'rejected': 'fa-times-circle',
                   'pending': 'fa-question-circle',
                   'not_submitted': 'fa-info-circle',
                   }
