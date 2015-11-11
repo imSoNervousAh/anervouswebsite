@@ -71,6 +71,15 @@ def modify_application(app):
         return False
 
 
+def del_application(id):
+    try:
+        app = Application.get(official_account__id__exact=id)
+        app.delete()
+        return True
+    except ObjectDoesNotExist:
+        return False
+
+
 # Official Accounts
 
 def get_official_accounts():
@@ -84,6 +93,17 @@ def get_official_accounts_wx_name():
 def get_official_account_by_id(id):
     return OfficialAccount.get(pk=id)
 
+
+def del_official_account(id):
+    try:
+        account = OfficialAccount.get(pk=id)
+        account.delete()
+        return True
+    except ObjectDoesNotExist:
+        return False
+
+
+# Account Record
 
 def add_account_record(wx_id, dic):
     account = OfficialAccount.get(wx_id__exact=wx_id)
@@ -246,6 +266,7 @@ def add_message(category, official_account_id, title, content, admin_name=None):
         message = Message.model()
         message.category = category
         if int(category) == MessageCategory.ToStudent:
+            process_all_messages(official_account_id)
             admin = Admin.get(pk=admin_name)
             message.admin = admin
         message.official_account = OfficialAccount.get(pk=official_account_id)
