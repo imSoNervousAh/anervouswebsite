@@ -34,8 +34,9 @@ urlpatterns = [
     #   student
     url(r'^student/my_applications', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add_application', 'wechat.views.student_add_applications', name='student/add-application'),
-    url(r'^student/fill_info', 'wechat.views.student_fill_info', name='student/fill-info'),
-    url(r'^student/change_info', 'wechat.views.student_change_info', name='student/change-info'),
+    url(r'^student/modify_application/([0-9]+)/?$', 'wechat.views.student_modify_applications', name='student/modify-application'),
+    url(r'^student/fill_info','wechat.views.student_fill_info',name='student/fill-info'),
+    url(r'^student/change_info','wechat.views.student_change_info',name='student/change-info'),
     url(r'^student', 'wechat.views.student', name='student'),
 
     #   admin
