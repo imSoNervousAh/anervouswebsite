@@ -2,7 +2,7 @@
 
 from subprocess import call
 
-import api
+import api.update as api_update
 import backend
 import setup_db
 
@@ -26,7 +26,7 @@ def clean_test_db():
 # test gsdata
 
 def update():
-    api.update.update_all()
+    api_update.update_all()
 
 
 # build a db for testing
