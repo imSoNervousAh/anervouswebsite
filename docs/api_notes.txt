@@ -14,7 +14,8 @@ manager_name
 manager_student_id
 manager_dept
 manager_tel
-manager_email
+manager_
+
 
 (jump to id page)
 

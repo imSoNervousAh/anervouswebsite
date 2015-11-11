@@ -409,16 +409,20 @@ def admin_forewarn(request):
     rule['target']='0'
     rule['value']='50'
 
-    rule2=rule
-    rule2['value']='100'
+    rule2={}
+    rule2['account']=""
     rule2['duration']='100'
-
+    rule2['notification']='0'
+    rule2['target']='0'
+    rule2['value']='100'
+    
     rules=(rule,rule2)
     
-
     #pre deal
     for i in range(0,len(rules)):
-      rules[i]['id']=i
+        rules[i]['id']=i
+        if (rules[i]['account']) == "":
+            rules[i]['account']='所有公众号'
     return render_ajax(request, 'admin/forewarn.html', {'rules':rules})
 
 

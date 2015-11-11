@@ -7,24 +7,23 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="width: 100px">预警条目</th>
-                        <th style="width: 100px">预警公众号范围</th>
-                        <th style="width: 100px">预警时限</th>
-                        <th style="width: 100px">通知方式</th>
-                        <th style="width: 100px">具体规则</th>
+                        <th>预警条目</th>
+                        <th>预警公众号范围</th>
+                        <th>预警时限</th>
+                        <th>通知方式</th>
+                        <th>具体规则</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
                         {% for rule in rules %}
-                        <th style="width: 100px">{{ rule.id }}</th>
-                        <th style="width: 100px">{{ rule.duration }}天 </th>
-                        <th style="width: 100px">{{}}</th>
-                        <th style="width: 100px">{{}}</th>
-                        <th style="width: 100px">{{}}</th>
-                        
-                        {% endfor %}
+                    <tr>
+                        <td>{{ rule.id }}</td>
+                        <td>{{ rule.account }} </td>
+                        <td>{{ rule.duration }}天</td>
+                        <td>{{ rule.notification }}</td>
+                        <td>阅读增长量大于{{ rule.value }}条</td>
                     </tr>
+                        {% endfor %}
                 </tbody>
                 <script>
                 $(".official-account-link").click(function() {
@@ -88,9 +87,9 @@
                         <label>预警规则</label>
                         <div class="row">
                             <div class="controls">
-                            <div class="col-sm-12">
-                                        <input name="target" type="text" class="form-control" placeholder="阅读量预警" disabled="disabled">
-                            </div>
+                                <div class="col-sm-12">
+                                    <input name="target" type="text" class="form-control" placeholder="阅读量预警" disabled="disabled">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,35 +124,35 @@
                 <script>
                 function checkLegal() {
                     var form = document.forms["rule-form"];
-                    
+
                     if (form['duration'].value < 1 || form['duration'].value > 365) {
                         alert('预警时限不合法');
                         return false;
                     }
-                    
+
                     if (form['account'].value == "不填写为所有公众号") {
                         from['account'].value = "";
                     }
-                    
-                    if (form['notification']).value=="Email"){
-                        form['notification']).value="0";
-                    }else if (form['notification']).value=="Message"){
-                        form['notification']).value="1";
-                    }
+
+                    if (form['notification']).value == "Email") {
+                    form['notification']).value = "0";
+                } else if (form['notification']).value == "Message") {
+                    form['notification']).value = "1";
+                }
 
 
-                    form['target']='0';
+                form['target'] = '0';
 
 
-                    if (form['account'].value == "填写待关注公众号,默认为所有公众号") {
-                        from['account'].value = "";
-                        alert('请填写正文');
-                        return false;
-                    }
-                    return true;
+                if (form['account'].value == "填写待关注公众号,默认为所有公众号") {
+                    from['account'].value = "";
+                    alert('请填写正文');
+                    return false;
+                }
+                return true;
 
                 }
-                
+
                 $(function() {
                     var msg = $("#error-msg");
                     msg.fadeOut(0);
