@@ -130,26 +130,28 @@
                         return false;
                     }
 
+                    if (form['account'].value == "填写待关注公众号,默认为所有公众号") {
+                        from['account'].value = "";
+                        alert('请填写正文');
+                        return false;
+                    }
+                    
                     if (form['account'].value == "不填写为所有公众号") {
                         from['account'].value = "";
                     }
 
-                    if (form['notification']).value == "Email") {
-                    form['notification']).value = "0";
-                } else if (form['notification']).value == "Message") {
-                    form['notification']).value = "1";
-                }
+                    if (form['notification'].value == "Email") {
+                        form['notification'].value = "0";
+                    } else if (form['notification'].value == "Message") {
+                        form['notification'].value = "1";
+                    }
 
 
-                form['target'] = '0';
+                    form['target'] = '0';
 
 
-                if (form['account'].value == "填写待关注公众号,默认为所有公众号") {
-                    from['account'].value = "";
-                    alert('请填写正文');
-                    return false;
-                }
-                return true;
+                    document.forms["rule-form"]=form;
+                    return true;
 
                 }
 
@@ -160,7 +162,8 @@
                         $("#error-msg").fadeOut();
                     });
                 });
-                $("#form-submit").clink(function(event) {
+                $("#form-submit").click(function(event) {
+                    alert('!!!');
                     if (!checkLegal()) return;
                     event.preventDefault();
                     var url = "{% url 'api/submit_rule' %}";
@@ -169,7 +172,7 @@
                         url: url,
                         data: $("#rule-form").serialize(),
                         success: function(data) {
-                            alert("成功!");
+                            alert("创建成功");
                         },
                         error: function(xhr, textStatus, errorThrown) {
                             var msg = $("#error-msg");
