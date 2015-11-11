@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from subprocess import call
-import api.update as api_update
 import backend
 import setup_db
+
+import api.update as api_update
+
 from django.db import connection
 
+from subprocess import call
+import datetime
+
 setup_db.setup()
+
+
+def get_date_object_before_n_days(n):
+    return datetime.date.today() - datetime.timedelta(days=n)
 
 
 def clean_test_db():
@@ -29,6 +37,22 @@ def update():
 
 # build a db for testing
 
+def message_test_db(message_test_oa_id):
+    assert (backend.add_message(
+        MessageCategory.ToAdmin, message_test_oa_id,
+        'to_admin_title', 'to_admin_content'
+    ))
+    assert (backend.add_message(
+        MessageCategory.ToStudent, message_test_oa_id,
+        'to_student_title', 'to_student_content',
+        'wyl8899'
+    ))
+    assert (backend.add_message(
+        MessageCategory.ToAdmin, message_test_oa_id,
+        'yet_another_title', 'yet_another_content'
+    ))
+
+
 def build_test_db():
     clean_test_db()
 
@@ -47,19 +71,6 @@ def build_test_db():
     Application.create(official_account=oa_zx, user_submit='2014011416', status='pending')
     backend.add_application({'name': '清华研读间', 'wx_id': 'qinghuayandujian'})
 
-    message_test_oa_id = oa_zx.id
+    message_test_db(oa_zx.id)
 
-    assert (backend.add_message(
-        MessageCategory.ToAdmin, message_test_oa_id,
-        'to_admin_title', 'to_admin_content'
-    ))
-    assert (backend.add_message(
-        MessageCategory.ToStudent, message_test_oa_id,
-        'to_student_title', 'to_student_content',
-        'wyl8899'
-    ))
-    assert (backend.add_message(
-        MessageCategory.ToAdmin, message_test_oa_id,
-        'yet_another_title', 'yet_another_content'
-    ))
     update()
