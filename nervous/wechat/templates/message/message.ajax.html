@@ -90,6 +90,7 @@
                                     });
 
                                     $("#send-reply").click(function (event) {
+                                        if (!submitFormCheck()) return;
                                         event.preventDefault();
                                         var url = "{% url 'api/add_message' %}";
                                         console.log(url);
