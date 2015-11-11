@@ -400,6 +400,24 @@ def admin_show_official_account_articles_list(request, id):
                    })
 
 
+@check_identity('admin')
+def admin_forewarn(request):
+    pending_applications = backend.get_pending_applications()
+    official_accounts = backend.get_official_accounts()
+    articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
+        'posttime_begin': timezone.now().date() - timedelta(days=7)
+    })
+    messages = backend.get_messages(only_unprocessed=True)
+    return render_ajax(request, 'admin/forewarn.html', {'pending_applications': pending_applications,
+                                                         'official_accounts': official_accounts,
+                                                         'articles': articles,
+                                                         'articles_count': articles_count,
+                                                         'messages': messages,
+                                                         })
+
+
+
+
 # message
 
 def message_jump(request, id):
