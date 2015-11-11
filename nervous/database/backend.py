@@ -28,6 +28,10 @@ def get_applications_by_admin(username):
     return Application.filter(operator_admin__exact=username)
 
 
+def get_application_by_id(id):
+    return Application.get(official_account__id__exact=id)
+
+
 def add_application(app):
     name = app['name']
     description = app.get('description', name)
