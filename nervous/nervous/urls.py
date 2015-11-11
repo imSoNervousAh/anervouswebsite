@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^api/submit_application/?$', 'api.views.submit_application', name='api/submit_application'),
     url(r'^api/submit_student_info/?$', 'api.views.submit_student_info', name='api/submit_student_info'),
     url(r'^api/modify_application/?$', 'api.views.modify_application', name='api/modify_application'),
+    url(r'^api/student_modify_application/?$', 'api.views.student_modify_application', name='api/student_modify_application'),
     url(r'^api/delete_application/([0-9]+)/?$', 'api.views.delete_application', name='api/delete_application'),
     url(r'^api/add_admin/?$', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin/?$', 'api.views.del_admin', name='api/del_admin'),
