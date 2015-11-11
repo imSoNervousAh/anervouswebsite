@@ -89,31 +89,36 @@ Messages:
 		content
 	)
 
+
+Forewarning:
+    add_forewarn_rule(dic)
+
+
 ==================================
 
 database:
 
 Application:
-	id
-	name
-	description
-	association
-	manager_name
-	manager_student_id
-	manager_dept
-	manager_tel
-	manager_email
-	status
-	operator_admin_id
-    
+    id
+    name
+    description
+    association
+    manager_name
+    manager_student_id
+    manager_dept
+    manager_tel
+    manager_email
+    status
+    operator_admin_id
+
 Message:
     realname
     datetime
-	official_account
-	category = MessageCategory.?
-	title
-	content
-	processed
+    official_account
+    category = MessageCategory.?
+    title
+    content
+    processed
 
 
 AccountRecord:
@@ -122,3 +127,17 @@ AccountRecord:
     subscribers
     wci
     date
+
+
+ForewarnRule:
+    account (None if applied to all accounts)
+    duration (in days)
+    notification
+    target
+    value
+
+
+ForewarnRecord:
+    account
+    target
+    value
