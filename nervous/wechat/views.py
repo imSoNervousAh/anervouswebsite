@@ -121,30 +121,6 @@ def change_info(request):
         return HttpResponse(request, '还没有写...')
 
 
-# decorator for check student fill the basic info
-def check_have_student_info(func):
-    def wrapper(request):
-        print '!!!have_student_info'
-        if backend.check_student_information_filled(session.get_username(request)) == False:
-            return student_fill_student_info(request)
-        return func(request)
-
-    return wrapper
-
-
-# [ATTENTION]put this decorator at the most previous,decorator for check login status
-def check_identity(identity):
-    def decorator(func):
-        def wrapper(request):
-            print '!!!check_identity'
-            if (session.get_identity(request) != identity):
-                return login(request, identity)
-            return func(request)
-
-        return wrapper
-
-    return decorator
-
 
 @check_identity('student')
 @check_have_student_info
@@ -196,7 +172,6 @@ def student_show_applications(request):
 @check_identity('student')
 @check_have_student_info
 def student_add_applications(request):
-<<<<<<< HEAD
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
     return render_ajax(request, 'student/add_applications.html', {'student': student,
@@ -209,6 +184,8 @@ def student_fill_info(request):
                                                  'username': '未登录', })
 
 
+@check_identity('student')
+@check_have_student_info
 def student_change_info(request):
     identity = session.get_identity(request)
     if identity == 'student':
@@ -222,15 +199,7 @@ def student_change_info(request):
         return HttpResponse(request, '还没有写...')
 
 
-=======
-    return render(request, 'student/add_applications.html', {})
 
-def student_fill_student_info(request):
-    print 'fill_basic_info'
-    return render(request, 'student/fill_student_info.html')
-
-
->>>>>>> add fill_student_info
 # administrator
 @check_identity('administrator')
 def admin(request):
@@ -245,10 +214,6 @@ def admin(request):
 
 @check_identity('administrator')
 def admin_dashboard(request):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
@@ -264,10 +229,6 @@ def admin_dashboard(request):
 
 @check_identity('administrator')
 def admin_show_official_accounts(request):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     official_accounts = backend.get_official_accounts()
 
     return render_ajax(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
@@ -275,10 +236,6 @@ def admin_show_official_accounts(request):
 
 @check_identity('administrator')
 def admin_show_articles(request):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     articles_count, articles = backend.get_articles()
 
     return render_ajax(request, 'administrator/articles.html', {'articles': articles,
@@ -288,10 +245,6 @@ def admin_show_articles(request):
 
 @check_identity('administrator')
 def admin_show_applications(request, type):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     if type == 'pending':
         applications = backend.get_pending_applications()
         type_name = u'待审批申请'
@@ -313,10 +266,6 @@ def admin_show_applications(request, type):
 
 @check_identity('administrator')
 def admin_show_official_account_detail(request, id):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
@@ -379,10 +328,6 @@ def message_jump(request,id):
 
 @check_identity('administrator')
 def message_detail_admin(request, id):
-<<<<<<< HEAD
-=======
-
->>>>>>> add fill_student_info
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
