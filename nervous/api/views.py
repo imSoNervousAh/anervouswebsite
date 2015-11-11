@@ -9,12 +9,12 @@ import json
 from wechat import session
 
 
-def check_student(username, password):
-    return tsinghua_login(username, password)
-
-
 def check_administrator(username, password):
     return backend.check_admin(username, password)
+
+
+def check_student(username, password):
+    return tsinghua_login(username, password) or check_administrator(username, password)
 
 
 def check_superuser(username, password):

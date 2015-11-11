@@ -2,7 +2,7 @@
 
 from subprocess import call
 
-from api import getdata, update
+import api
 import backend
 import setup_db
 
@@ -25,18 +25,21 @@ def clean_test_db():
 
 # test gsdata
 
-def test_update():
-    update.update_all()
+def update():
+    api.update.update_all()
 
 
 # build a db for testing
 
-def build_offline_test_db():
+def build_test_db():
     clean_test_db()
 
-    admin_wyl = Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
     admin_w = Admin.create(username='w', password='x', description='www')
+    admin_wyl = Admin.create(username='wyl8899', password='xxxxxxxx', description='韦毅龙')
     admin_ytl = Admin.create(username='ytl14', password='shenmegui', description='杨基龙')
+    for id_suffix in ['417', '310', '434', '416']:
+        id = '2014011%s' % id_suffix
+        backend.add_admin(id, '0', id_suffix)
 
     oa_mu = OfficialAccount.create(name='Lab Mu', wx_id='mulab_thu')
     Application.create(official_account=oa_mu, user_submit='FANG KUAI', status='not_submitted')
@@ -61,8 +64,4 @@ def build_offline_test_db():
         MessageCategory.ToAdmin, message_test_oa_id,
         'yet_another_title', 'yet_another_content'
     ))
-
-
-def build_test_db():
-    build_offline_test_db()
-    test_update()
+    update()
