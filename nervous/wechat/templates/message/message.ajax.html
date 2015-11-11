@@ -1,5 +1,7 @@
 {% load staticfiles %}
 
+<script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
+
 <div id="message-area">
     <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
 
@@ -240,7 +242,9 @@
     </div>
 </div>
 
+<script>
+    //alert('aaa');
+</script>
 <script src="{% static 'jquery/jquery.scrollto.js' %}">
-    alert('aaa');
     $.scrollTo('#reply-message-form', 1500);
 </script>
