@@ -34,8 +34,9 @@ urlpatterns = [
     #   student
     url(r'^student/my_applications', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add_application', 'wechat.views.student_add_applications', name='student/add-application'),
-    url(r'^student/fill_info', 'wechat.views.student_fill_info', name='student/fill-info'),
-    url(r'^student/change_info', 'wechat.views.student_change_info', name='student/change-info'),
+    url(r'^student/modify_application/([0-9]+)/?$', 'wechat.views.student_modify_applications', name='student/modify-application'),
+    url(r'^student/fill_info','wechat.views.student_fill_info',name='student/fill-info'),
+    url(r'^student/change_info','wechat.views.student_change_info',name='student/change-info'),
     url(r'^student', 'wechat.views.student', name='student'),
 
     #   admin
@@ -62,6 +63,8 @@ urlpatterns = [
     url(r'^api/submit_application/?$', 'api.views.submit_application', name='api/submit_application'),
     url(r'^api/submit_student_info/?$', 'api.views.submit_student_info', name='api/submit_student_info'),
     url(r'^api/modify_application/?$', 'api.views.modify_application', name='api/modify_application'),
+    url(r'^api/student_modify_application/?$', 'api.views.student_modify_application', name='api/student_modify_application'),
+    url(r'^api/delete_application/([0-9]+)/?$', 'api.views.delete_application', name='api/delete_application'),
     url(r'^api/add_admin/?$', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin/?$', 'api.views.del_admin', name='api/del_admin'),
     url(r'^api/add_message/?$', 'api.views.add_message', name='api/add_message'),

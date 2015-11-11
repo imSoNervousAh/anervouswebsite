@@ -127,7 +127,7 @@
                                         event.preventDefault();
                                         var url = "{% url 'api/process_message' %}";
                                         $.ajax({
-                                            type: "POST",
+                                            type: "GET",
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
@@ -241,5 +241,6 @@
 </div>
 
 <script src="{% static 'jquery/jquery.scrollto.js' %}">
+    alert('aaa');
     $.scrollTo('#reply-message-form', 1500);
 </script>

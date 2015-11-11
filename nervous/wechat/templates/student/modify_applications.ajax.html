@@ -1,5 +1,5 @@
 <a class="fake-link">
-    <strong><i class="fa fa-dashboard fa-fw"></i>　信息总览</strong>
+    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
 </a>
 <hr>
 
@@ -7,25 +7,26 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>添加备案申请</h4>
+                <h4>修改备案申请</h4>
             </div>
             <div class="panel-body">
                 <form id="application-form" class="form form-vertical">
                     {% csrf_token %}
+		    <input name="application_id" type="text" style="display:none" value="{{app.id}}">
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
                                 <label>公众号名称</label>
 
                                 <div class="controls">
-                                    <input name="name" type="text" class="form-control" placeholder="公众号名称">
+                                    <input name="name" type="text" class="form-control" value="{{app.name}}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>公众号微信ID</label>
 
                                 <div class="controls">
-                                    <input name="wx_id" type="text" class="form-control" placeholder="公众号微信ID">
+                                    <input name="wx_id" type="text" class="form-control" value="{{app.official_account.wx_id}}">
                                 </div>
                             </div>
                         </div>
@@ -34,7 +35,7 @@
                         <label>公众号简介</label>
 
                         <div class="controls">
-                        <textarea name="description" class="form-control" placeholder="公众号简介"
+                        <textarea name="description" class="form-control" value="{{app.description}}"
                                   style="resize: vertical;"></textarea>
                         </div>
                     </div>
@@ -57,16 +58,14 @@
                                 <label>负责人姓名</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_name" type="text" class="form-control"
-                                           value="{{ student.real_name }}">
+                                    <input readonly="readonly" name="manager_name" type="text" class="form-control" value="{{ student.real_name }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人学号</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_student_id" type="text"
-                                           class="form-control"
+                                    <input readonly="readonly" name="manager_student_id" type="text" class="form-control"
                                            value="{{ student_id }}">
                                 </div>
                             </div>
@@ -78,16 +77,14 @@
                                 <label>负责人电话</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_tel" type="text" class="form-control"
-                                           value="{{ student.tel }}">
+                                    <input readonly="readonly" name="manager_tel" type="text" class="form-control" value="{{ student.tel }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_email" type="email" class="form-control"
-                                           value="{{ student.email }}">
+                                    <input readonly="readonly" name="manager_email" type="email" class="form-control" value="{{ student.email }}">
                                 </div>
                             </div>
                         </div>
@@ -98,8 +95,7 @@
                                 <label>负责人院系</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_dept" type="text" class="form-control"
-                                           value="{{ student.dept }}">
+                                    <input readonly="readonly" name="manager_dept" type="text" class="form-control" value="{{ student.dept }}">
                                 </div>
                             </div>
                         </div>
@@ -146,7 +142,7 @@
                     });
                     $("#application-form").submit(function (event) {
                         event.preventDefault();
-                        var url = "{% url 'api/submit_application' %}";
+                        var url = "{% url 'api/student_modify_application' %}";
                         $.ajax({
                             type: "POST",
                             url: url,

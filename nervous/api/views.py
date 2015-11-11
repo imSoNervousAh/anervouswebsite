@@ -39,16 +39,6 @@ def login(request, identity):
         return response
 
 
-def submit_application(request):
-    dic = request.POST.dict()
-    print dic
-    username = session.get_username(request)
-    print "submit_application", username
-    dic['user_submit'] = username
-    backend.add_application(dic)
-    return HttpResponse(request.POST)
-
-
 def submit_student_info(request):
     dic = request.POST.dict()
     print dic
@@ -58,11 +48,32 @@ def submit_student_info(request):
     return HttpResponse(request.POST)
 
 
+def submit_application(request):
+    dic = request.POST.dict()
+    username = session.get_username(request)
+    dic['user_submit'] = username
+    backend.add_application(dic)
+    return HttpResponse(request.POST)
+
+
 def modify_application(request):
     dic = request.POST.dict()
     username = session.get_username(request)
     dic['operator_admin'] = username
     backend.modify_application(dic)
+    return HttpResponse(request.POST)
+
+
+def student_modify_application(request):
+    dic = request.POST.dict()
+    id = dic['application_id']
+    backend.del_application(id)
+    submit_application(request)
+    return HttpResponseRedirect('/student')
+
+
+def delete_application(request,id):
+    print 'delete: ',id
     return HttpResponseRedirect('/admin')
 
 
