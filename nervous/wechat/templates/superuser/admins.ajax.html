@@ -6,20 +6,20 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>管理员账号列表<span class="badge pull-right">{{ administrators|length }}</span></h4></div>
+                <h4>管理员账号列表<span class="badge pull-right">{{ admins|length }}</span></h4></div>
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>用户名</th>
-                                <th>账号说明</th>
-                                <th style="width:220px">操作</th>
-                            </tr>
+                        <tr>
+                            <th>用户名</th>
+                            <th>账号说明</th>
+                            <th style="width:220px">操作</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <script>
-                            $(function() {
+                        <script>
+                            $(function () {
                                 $('body').popover({
                                     'html': true,
                                     'container': 'body',
@@ -28,13 +28,14 @@
                                     'trigger': 'focus',
                                 });
                             });
-                            </script>
-                            {% for admin in administrators %}
+                        </script>
+                        {% for admin in admins %}
                             <tr>
                                 <td>{{ admin.username }}</td>
                                 <td>{{ admin.description }}</td>
                                 <td>
-                                    <a style="cursor: pointer;" href="#/" class="delete-admin-link" data-toggle="popover" data-content="
+                                    <a style="cursor: pointer;" href="#/" class="delete-admin-link"
+                                       data-toggle="popover" data-content="
                                 <form method='post' action='{% url 'api/del_admin' %}'>
                                     {% csrf_token %}
                                     <div class='btn btn-info'>取消</div>
@@ -46,13 +47,13 @@
                                     </a>
                                 </td>
                             </tr>
-                            {% endfor %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 <ul class="list-inline pull-right">
                     <li><a title="Add Widget" data-toggle="modal" href="#add-admin-modal"><span
-                    class="fa fa-user-plus"></span> 添加管理员</a></li>
+                            class="fa fa-user-plus"></span> 添加管理员</a></li>
                 </ul>
             </div>
         </div>

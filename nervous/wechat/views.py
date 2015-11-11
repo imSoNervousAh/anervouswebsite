@@ -1,21 +1,13 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.template.loader import get_template
-from django.template import Context
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.utils import timezone
 from datetime import timedelta
+
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.utils import timezone
+
 from database import backend
-from database import models
 from wechat import session
-import re
-import urllib2
-import urllib
-import cookielib
-import codecs
-import json
 
 
 # misc
@@ -65,7 +57,7 @@ def render_ajax(request, url, params):
 
 def login(request, identity='student'):
     print 'login/'
-    if identity in ['student', 'administrator', 'superuser']:
+    if identity in ['student', 'admin', 'superuser']:
         response = render(request, 'login/index.html', {'identity': identity})
         return response
     return to_notfound(request)
@@ -110,7 +102,7 @@ def check_identity(identity):
 
 def change_info(request):
     identity = session.get_identity(request)
-    if (identity == 'student'):
+    if identity == 'student':
         username = session.get_username(request)
         student = backend.get_student_by_id(username)
         return render(request, 'student/info.html', {'type': 'change',
@@ -119,7 +111,6 @@ def change_info(request):
                                                      })
     else:
         return HttpResponse(request, '还没有写...')
-
 
 
 @check_identity('student')
@@ -199,51 +190,51 @@ def student_change_info(request):
         return HttpResponse(request, '还没有写...')
 
 
-
-# administrator
-@check_identity('administrator')
+# admin
+@check_identity('admin')
 def admin(request):
     print 'show admin'
 
     pending_applications_count = len(backend.get_pending_applications())
     username = session.get_username(request)
 
-    return render(request, 'administrator/index.html', {'username': username,
-                                                        'pending_applications_count': pending_applications_count})
+    return render(request, 'admin/index.html', {'username': username,
+                                                'pending_applications_count': pending_applications_count})
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_dashboard(request):
     pending_applications = backend.get_pending_applications()
     official_accounts = backend.get_official_accounts()
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
-        'posttime_begin': timezone.now().date() - timedelta(days=7)})
+        'posttime_begin': timezone.now().date() - timedelta(days=7)
+    })
     messages = backend.get_messages(only_unprocessed=True)
-    return render_ajax(request, 'administrator/dashboard.html', {'pending_applications': pending_applications,
-                                                                 'official_accounts': official_accounts,
-                                                                 'articles': articles,
-                                                                 'articles_count': articles_count,
-                                                                 'messages': messages,
-                                                                 })
+    return render_ajax(request, 'admin/dashboard.html', {'pending_applications': pending_applications,
+                                                         'official_accounts': official_accounts,
+                                                         'articles': articles,
+                                                         'articles_count': articles_count,
+                                                         'messages': messages,
+                                                         })
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_show_official_accounts(request):
     official_accounts = backend.get_official_accounts()
 
-    return render_ajax(request, 'administrator/official_accounts.html', {'official_accounts': official_accounts})
+    return render_ajax(request, 'admin/official_accounts.html', {'official_accounts': official_accounts})
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_show_articles(request):
     articles_count, articles = backend.get_articles()
 
-    return render_ajax(request, 'administrator/articles.html', {'articles': articles,
-                                                                'articles_count': articles_count,
-                                                                })
+    return render_ajax(request, 'admin/articles.html', {'articles': articles,
+                                                        'articles_count': articles_count,
+                                                        })
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_show_applications(request, type):
     if type == 'pending':
         applications = backend.get_pending_applications()
@@ -259,12 +250,12 @@ def admin_show_applications(request, type):
         applications = []
         type_name = ''
 
-    return render_ajax(request, 'administrator/applications.html', {'applications': applications,
-                                                                    'application_type': type_name,
-                                                                    })
+    return render_ajax(request, 'admin/applications.html', {'applications': applications,
+                                                            'application_type': type_name,
+                                                            })
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_show_official_account_detail(request, id):
     try:
         official_account = backend.get_official_account_by_id(id)
@@ -273,13 +264,13 @@ def admin_show_official_account_detail(request, id):
 
     articles_count, articles = backend.get_articles(filter={'official_account_id': id})
 
-    return render_ajax(request, 'administrator/detail.html', {'account': official_account,
-                                                              'official_account_id': id,
-                                                              'articles_count': articles_count,
-                                                              })
+    return render_ajax(request, 'admin/detail.html', {'account': official_account,
+                                                      'official_account_id': id,
+                                                      'articles_count': articles_count,
+                                                      })
 
 
-@check_identity('administrator')
+@check_identity('admin')
 def admin_show_official_account_articles(request, id):
     articles_on_one_page = 10
     page_current = int(request.GET.get('page', '1'))
@@ -311,7 +302,7 @@ def admin_show_official_account_articles(request, id):
 
     page = get_pagination(articles_count, articles_on_one_page, page_current)
 
-    return render(request, 'administrator/detail_articles_list.html',
+    return render(request, 'admin/detail_articles_list.html',
                   {'articles': articles,
                    'articles_count': articles_count,
                    'official_account_id': id,
@@ -323,10 +314,11 @@ def admin_show_official_account_articles(request, id):
 
 # message
 
-def message_jump(request,id):
-    return HttpResponseRedirect('/message/%s/%s' %(session.get_identity(request),id))
+def message_jump(request, id):
+    return HttpResponseRedirect('/message/%s/%s' % (session.get_identity(request), id))
 
-@check_identity('administrator')
+
+@check_identity('admin')
 def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
@@ -342,7 +334,7 @@ def message_detail_admin(request, id):
                                                          'category': category,
                                                          'official_account_id': id,
                                                          'processed': processed,
-                                                         'MessageCategory':MessageCategory,
+                                                         'MessageCategory': MessageCategory,
                                                          })
 
 
@@ -372,6 +364,6 @@ def superuser(request):
 
 @check_identity('superuser')
 def superuser_show_admins(request):
-    administrators = backend.get_admins()
+    admins = backend.get_admins()
 
-    return render_ajax(request, 'superuser/admins.html', {'administrators': administrators})
+    return render_ajax(request, 'superuser/admins.html', {'admins': admins})

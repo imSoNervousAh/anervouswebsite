@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from subprocess import call
-
 import api.update as api_update
 import backend
 import setup_db
+from django.db import connection
 
 setup_db.setup()
-
-from django.db import connection
 
 
 def clean_test_db():

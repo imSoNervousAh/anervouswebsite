@@ -58,12 +58,12 @@
 			{% endif %}
 			"><a href="/login/student">Student</a></li>
         <li class="
-			{% if identity == 'administrator' %}
+			{% if identity == 'admin' %}
 			uk-active
 			{% else %}
 			uk-parent
 			{% endif %}
-			"><a href="/login/administrator">Admin</a></li>
+			"><a href="/login/admin">Admin</a></li>
         <li class="
 			{% if identity == 'superuser' %}
 			uk-active
@@ -79,7 +79,7 @@
     <h1>
         {% if identity == 'student' %}
             请登录
-        {% elif identity == 'administrator' %}
+        {% elif identity == 'admin' %}
             欢迎 管理员 ，请登录
         {% elif identity == 'superuser' %}
             欢迎 超级管理员 ，请登录

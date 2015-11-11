@@ -40,7 +40,7 @@ footer {
 
 .navbar {
     width: 100%;
-    z-index: 1000;
+    z-index: 1;
 }
 
 #left-column {
@@ -172,11 +172,22 @@ th.th-sortable {
 .left-inner-addon {
     position: relative;
 }
+
 .left-inner-addon input {
     padding-left: 30px;
 }
+
 .left-inner-addon i {
     position: absolute;
     padding: 10px 12px;
     pointer-events: none;
+}
+
+/* make sure modal shadows everything else */
+.modal-backdrop {
+    z-index: 100
+}
+
+.modal {
+    z-index: 101
 }

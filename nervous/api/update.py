@@ -1,6 +1,5 @@
 from database import backend
 from api import getdata
-
 import time
 import datetime
 
@@ -12,7 +11,7 @@ def get_time_string_before_n_days(n):
 
 
 def get_date_object_before_n_days(n):
-    return datetime.date.today() - datetime.timedelta(days = n)
+    return datetime.date.today() - datetime.timedelta(days=n)
 
 
 def get_time_string_before_month():
@@ -37,10 +36,11 @@ def add_items(dic):
 def update_official_account(account):
     print 'updating official account: %s' % account
 
-    paras = {}
-    paras['wx_name'] = account
-    paras['datestart'] = get_time_string_before_month()
-    paras['dateend'] = get_time_string_now()
+    paras = {
+        'wx_name': account,
+        'datestart': get_time_string_before_month(),
+        'dateend': get_time_string_now()
+    }
 
     d = getdata.get_dict('wx/opensearchapi/content_list', paras)
     totnum = d['returnData']['total']
@@ -60,10 +60,11 @@ def update_official_account(account):
 def update_official_account_nums_before_n_days(account, n):
     day_string = get_time_string_before_n_days(n)
 
-    paras = {}
-    paras['wx_name'] = account
-    paras['beginDate'] = day_string
-    paras['endDate'] = day_string
+    paras = {
+        'wx_name': account,
+        'beginDate': day_string,
+        'endDate': day_string
+    }
     d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
 
     res = d['returnData']
@@ -86,4 +87,3 @@ def update_all():
     for account in lists:
         update_official_account(account)
         update_official_account_nums(account)
-

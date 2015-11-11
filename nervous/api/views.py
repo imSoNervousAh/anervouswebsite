@@ -1,20 +1,20 @@
 # -*-coding:utf-8
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
-from database import backend, utils
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
 from api.info_login import auth_by_info as tsinghua_login
-import json
+from database import backend
 from wechat import session
 
 
-def check_administrator(username, password):
+def check_admin(username, password):
     return backend.check_admin(username, password)
 
 
 def check_student(username, password):
-    return tsinghua_login(username, password) or check_administrator(username, password)
+    return tsinghua_login(username, password) or check_admin(username, password)
 
 
 def check_superuser(username, password):
@@ -24,7 +24,7 @@ def check_superuser(username, password):
 def login(request, identity):
     print 'identity: ', identity
     username, password = request.POST['account'], request.POST['password']
-    if identity in ['student', 'administrator', 'superuser']:
+    if identity in ['student', 'admin', 'superuser']:
         if globals()['check_%s' % identity](username, password):
             session.add_session(request, identity=identity, username=username)
             response = HttpResponseRedirect('/%s' % identity)
@@ -63,7 +63,7 @@ def modify_application(request):
     username = session.get_username(request)
     dic['operator_admin'] = username
     backend.modify_application(dic)
-    return HttpResponseRedirect('/administrator')
+    return HttpResponseRedirect('/admin')
 
 
 def add_admin(request):

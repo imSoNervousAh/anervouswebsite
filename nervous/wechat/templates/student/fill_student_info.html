@@ -121,7 +121,7 @@
                             data: $("#application-form").serialize(),
                             success: function (data) {
                                 alert('提交成功!');
-                                window.location.href='/student';
+                                window.location.href = '/student';
                             },
                             error: function (xhr, textStatus, errorThrown) {
                                 var msg = $("#error-msg");

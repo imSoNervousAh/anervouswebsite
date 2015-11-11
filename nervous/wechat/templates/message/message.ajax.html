@@ -99,18 +99,18 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("/message/{% if category == MessageCategory.ToStudent %}administrator{% else %}student{% endif %}/{{ official_account_id }}",
-                                                {
-                                                }
-                                                ,
-                                                undefined, function () {
-                                                    $("html, body").delay(60).animate({
-                                                        "scroll-top": $(document).height()
-                                                    }, function () {
-                                                        var item = $(".message-body:nth-last-of-type(1)");
-                                                        animate(item, "flash");
-                                                    });
-                                                }
+                                                loadContent("/message/{% if category == MessageCategory.ToStudent %}
+                                                            admin{% else %}student{% endif %}/{{ official_account_id }}",
+                                                        {}
+                                                        ,
+                                                        undefined, function () {
+                                                            $("html, body").delay(60).animate({
+                                                                "scroll-top": $(document).height()
+                                                            }, function () {
+                                                                var item = $(".message-body:nth-last-of-type(1)");
+                                                                animate(item, "flash");
+                                                            });
+                                                        }
                                                 )
                                                 ;
                                             },
@@ -130,7 +130,8 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("/{% if category == MessageCategory.ToStudent %}administrator{% else %}student{% endif %}",
+                                                loadContent("/{% if category == MessageCategory.ToStudent %}
+                                                            admin{% else %}student{% endif %}",
                                                         {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
