@@ -9,32 +9,32 @@
 
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
-        <strong><i class="glyphicon glyphicon-wrench"></i>　管理员账户</strong>
+        <strong><i class="fa fa-wrench fa-fw"></i>　管理员账户</strong>
     </a>
     <ul class="nav nav-stacked collapse in" id="application-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills" id="userMenu">
             <li id="admins-item" class="nav-header left-column-item"
                 data-url="{% url 'superuser/admins' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-user"></i>　管理员账户列表</a>
+                <a class="fake-link"><i class="fa fa-user fa-fw"></i>　管理员账户列表</a>
             </li>
             <li id="modify-announcement-item" class="nav-header left-column-item">
-                <a class="fake-link"><i class="glyphicon glyphicon-bullhorn"></i>　修改管理员公告</a>
+                <a class="fake-link"><i class="fa fa-bullhorn fa-fw"></i>　修改管理员公告</a>
             </li>
         </ul>
     </ul>
     <hr>
     <a class="fake-link" data-toggle="collapse" data-target="#analyse-menu">
-        <strong><i class="glyphicon glyphicon-stats"></i>　数据库管理</strong>
+        <strong><i class="fa fa-database fa-fw"></i>　数据库管理</strong>
     </a>
     <ul class="nav nav-stacked collapse in" id="analyse-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills" id="userMenu">
             <li id="database-info-item" class="nav-header left-column-item">
-                <a class="fake-link"><i class="glyphicon glyphicon-th-large"></i>　数据库信息概览</a>
+                <a class="fake-link"><i class="fa fa-th-large fa-fw"></i>　数据库信息概览</a>
             </li>
             <li if="update-data-item" class="nav-header left-column-item">
-                <a class="fake-link"><i class="glyphicon glyphicon-cloud-download"></i>　数据更新</a>
+                <a class="fake-link"><i class="fa fa-cloud-download fa-fw"></i>　数据更新</a>
             </li>
         </ul>
     </ul>

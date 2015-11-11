@@ -39,12 +39,15 @@ urlpatterns = [
     url(r'^student', 'wechat.views.student', name='student'),
 
     #   admin
-    url(r'^admin/detail/([0-9]+)/articles_list/?$', 'wechat.views.admin_show_official_account_articles',
+    url(r'^admin/detail/([0-9]+)/articles_list/?$', 'wechat.views.admin_show_official_account_articles_list',
         name='admin/detail/articles-list'),
+    url(r'^admin/detail/([0-9]+)/statistics/?$', 'wechat.views.admin_show_official_account_statistics',
+        name='admin/detail/statistics'),
+    url(r'^admin/detail/([0-9]+)/articles/?$', 'wechat.views.admin_show_official_account_articles',
+        name='admin/detail/articles'),
     url(r'^admin/detail/([0-9]+)/?$', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^admin/applications/(\w+)/?$', 'wechat.views.admin_show_applications', name='admin/applications'),
     url(r'^admin/official_accounts/?$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
-    url(r'^admin/statistics/([0-9]+)/?$', 'wechat.views.admin_show_statistics', name='admin/statistics'),
     url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^admin/dashboard/?$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
     url(r'^admin', 'wechat.views.admin', name='admin'),

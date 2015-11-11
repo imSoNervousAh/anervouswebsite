@@ -1,5 +1,5 @@
 <a class="fake-link">
-    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
+    <strong><i class="fa fa-dashboard fa-fw"></i>　信息总览</strong>
 </a>
 <hr>
 
@@ -26,7 +26,7 @@
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.description|linebreaksbr }}</td>
                                 <td>
-                                    <span class="glyphicon {{ app.status_glyphicon }}"></span> {{ app.status_name }}
+                                    <span class="fa {{ app.status_glyphicon }} fa-fw"></span> {{ app.status_name }}
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                             </tr>

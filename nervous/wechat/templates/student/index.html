@@ -11,24 +11,24 @@
 
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
-        <strong><i class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong>
+        <strong><i class="fa fa-wrench fa-fw"></i>　管理公众号申请</strong>
     </a>
     <hr>
     <ul class="nav nav-stacked collapse in" id="application-menu">
         <ul class="nav nav-stacked collapse in nav-pills">
             <li id="my-applications-item" class="left-column-item"
                 data-url="{% url 'student/my-applications' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-briefcase"></i>　我的备案申请　<span
+                <a class="fake-link"><i class="fa fa-briefcase fa-fw"></i>　我的备案申请　<span
                         class="badge badge-info">{{ pending_count }}</span></a>
             </li>
             <li id="add-application-item" class="left-column-item"
                 data-url="{% url 'student/add-application' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-plus-sign"></i>　添加备案申请</a>
+                <a class="fake-link"><i class="fa fa-plus-circle fa-fw"></i>　添加备案申请</a>
             </li>
             {% for account in official_accounts %}
                 <li id="message-detail-{{ account.id }}" class="left-column-item"
                     data-url="{% url 'message/student' account.id %}">
-                    <a class="fake-link"><i class="glyphicon glyphicon-comment"></i>　站内信 - {{ account.name|truncatechars:6 }}</a>
+                    <a class="fake-link"><i class="fa fa-comment fa-fw"></i>　站内信 - {{ account.name|truncatechars:6 }}</a>
                 </li>
             {% endfor %}
         </ul>

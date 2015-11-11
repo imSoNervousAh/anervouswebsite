@@ -1,5 +1,5 @@
 <a class="fake-link">
-    <strong><i class="glyphicon glyphicon-dashboard"></i>　信息概览</strong>
+    <strong><i class="fa fa-dashboard fa-fw"></i>　信息概览</strong>
 </a>
 <hr>
 <div class="row">
@@ -47,17 +47,17 @@
                                             {% csrf_token %}
                                             <button type='submit' name='status' value='rejected'
                                                 class='btn btn-danger'>
-                                                <span class='glyphicon glyphicon-remove-sign'></span> 拒绝
+                                                <span class='fa fa-remove-circle fa-fw'></span> 拒绝
                                             </button>
                                             <input style='display:none' name='username' value='{{ admin.username }}'>
                                             <input style='display:none' name='account_id' value='{{ app.id }}'>
                                             <span>　</span>
                                             <button type='submit' name='status' value='approved'
                                                 class='btn btn-success'>
-                                                <span class='glyphicon glyphicon-ok-sign'></span> 通过
+                                                <span class='fa fa-check-circle fa-fw'></span> 通过
                                             </button>
                                         </form>">
-                                        <span class="glyphicon glyphicon-check"></span> 审批</a>
+                                        <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -79,8 +79,8 @@
                             <th style="width: 15%; min-width: 100px">公众号名称</th>
                             <th style="width: 25%; min-width: 100px">文章标题</th>
                             <th>文章简介</th>
-                            <th style="width: 80px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数</th>
-                            <th style="width: 80px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数</th>
+                            <th style="width: 80px"><span class="fa fa-eye fa-fw"></span> 阅览数</th>
+                            <th style="width: 80px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -10,13 +10,13 @@
         </th>
         <th>文章简介</th>
         <th class="th-sortable" data-key="views"
-            style="width: 95px"><span class="glyphicon glyphicon-eye-open"></span> 阅览数
+            style="width: 100px"><span class="fa fa-eye fa-fw"></span> 阅览数
         </th>
         <th class="th-sortable" data-key="likes"
-            style="width: 95px"><span class="glyphicon glyphicon-thumbs-up"></span> 点赞数
+            style="width: 100px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数
         </th>
         <th class="th-sortable" data-key="posttime"
-            style="width: 120px"><span class="glyphicon glyphicon-calendar"></span> 发布日期
+            style="width: 120px"><span class="fa fa-calendar fa-fw"></span> 发布日期
         </th>
     </tr>
     </thead>
@@ -55,11 +55,12 @@
                 // icons.removeClass(allClasses).addClass("fa-unsorted");
                 // icon.removeClass(allClasses).addClass("fa-sort-" + sort_order);
 
-                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
-                    'sort_by': $(this).data("key"),
-                    'sort_order': sort_order,
-                    'article_title_keyword': $("#table-search-input").val()
-                }, "#articles-list-container");
+                loadContentOn("#articles-list-container",
+                        "{% url 'admin/detail/articles-list' official_account_id %}", {
+                            'sort_by': $(this).data("key"),
+                            'sort_order': sort_order,
+                            'article_title_keyword': $("#table-search-input").val()
+                        });
             });
         });
     </script>

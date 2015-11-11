@@ -3,7 +3,7 @@
 <script src="{% static 'base/js/referrer-killer.js' %}"></script>
 
 <a class="fake-link">
-    <strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong>
+    <strong><i class="fa fa-briefcase fa-fw"></i>　公众号详细信息</strong>
 </a>
 <hr>
 <div class="row">
@@ -40,75 +40,49 @@
                 </div>
                 <div class="pull-right" style="margin-top: 10px">
                     <button class="btn btn-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="fa fa-remove fa-fw"></span>
                         &nbsp;删除公众号
                     </button>
                     <button class="btn btn-info" style="margin-left: 10px"
                             id="statistics-link">
-                        <span class="fa fa-bar-chart"></span>
+                        <span class="fa fa-bar-chart fa-fw"></span>
                         &nbsp;查看分析
+                    </button>
+                    <button class="btn btn-info" style="margin-left: 10px; display: none"
+                            id="articles-link">
+                        <span class="fa fa-file-text fa-fw"></span>
+                        &nbsp;查看文章
                     </button>
                     <script>
                         $(function () {
                             $("#statistics-link").click(function () {
-                                $(this).html('<span class="fa fa-bar-chart"></span>&nbsp;查看分析');
-                                loadContentOn("{% url 'admin/statistics' official_account_id %}", {},
-                                        "#detail-page-main");
+                                $("#articles-link").css("display", "");
+                                $(this).css("display", "none");
+                                loadContentOn("#detail-page-main",
+                                        "{% url 'admin/detail/statistics' official_account_id %}",
+                                        {}, {anim: true, scroll: true});
+                            });
+
+                            $("#articles-link").click(function () {
+                                $("#statistics-link").css("display", "");
+                                $(this).css("display", "none");
+                                loadContentOn("#detail-page-main",
+                                        "{% url 'admin/detail/articles' official_account_id %}",
+                                        {}, {anim: true, scroll: true});
                             });
                         });
                     </script>
                     <button class="btn btn-primary ajax-link" style="margin-left: 10px"
                             data-url="{% url 'message/admin' official_account_id %}">
-                        <span class="glyphicon glyphicon-comment"></span>
+                        <span class="fa fa-comment fa-fw"></span>
                         &nbsp;查看站内消息
                     </button>
                 </div>
             </div>
         </div>
         <hr>
-        <div class="panel panel-default" id="detail-page-main">
-            <div class="panel-heading">
-                <div class="row">
-                    <h4 class="col-xs-6">最近文章</h4>
-
-                    <div class="col-xs-6">
-                        <div style="vertical-align: text-top">
-                            <div id="table-search-box" class="left-inner-addon col-xs-10" style="margin-top: 3px;">
-                                <i class="glyphicon glyphicon-search"></i>
-                                <input id="table-search-input" name="keyword" type="text" class="form-control"
-                                       placeholder="搜索关键字……"/>
-                            </div>
-                        </div>
-                        <span id="articles-count-badge" class="badge pull-right"
-                              style="margin-top: 10px;">{{ articles_count }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-body">
-                <script src="{% static 'base/js/referrer-killer.js' %}"></script>
-                <div class="table-responsive" id="articles-list-container">
-                    <!-- to be loaded using ajax -->
-
-                    <script>
-                        loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
-                            'sort_by': 'posttime',
-                            'sort_order': 'desc'
-                        }, "#articles-list-container");
-                        $(function () {
-                            $("#table-search-input").on("input propertychange paste", function () {
-                                console.log($(this).val());
-                                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
-                                    'sort_by': 'posttime',
-                                    'sort_order': 'desc',
-                                    'article_title_keyword': $(this).val()
-                                }, "#articles-list-container", function () {
-                                    $("#articles-count-badge").html($("#articles-count-value").html());
-                                });
-                            });
-                        });
-                    </script>
-                </div>
-            </div>
+        <div id="detail-page-main">
+            {% include 'admin/detail_articles.html' %}
         </div>
     </div>
 </div>

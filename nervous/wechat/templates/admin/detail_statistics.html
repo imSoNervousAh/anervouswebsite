@@ -12,13 +12,12 @@
     <div class="panel-body">
         <div id="chart-container"></div>
         <script>
-            $(function () {
-                var container = $("#chart-container");
+            var container = $("#chart-container");
+            container.attr("height", container.width() * 0.618);
+            container.ready(function () {
                 renderMultiChart("#chart-container", {{ chart_json|safe }}, {
                     width: container.width(),
-                    height: container.width() * 0.618,
-                }, function () {
-                    container.attr("height", container.width() * 0.618);
+                    height: container.width() * 0.618
                 });
             });
         </script>

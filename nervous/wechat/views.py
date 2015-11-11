@@ -135,10 +135,10 @@ def student(request):
 def student_show_applications(request):
     username = session.get_username(request)
 
-    glyphicons = {'approved': 'glyphicon-ok-sign',
-                  'rejected': 'glyphicon-remove-sign',
-                  'pending': 'glyphicon-question-sign',
-                  'not_submitted': 'glyphicon-info-sign',
+    glyphicons = {'approved': 'fa-check-circle',
+                  'rejected': 'fa-remove-circle',
+                  'pending': 'fa-question-circle',
+                  'not_submitted': 'fa-info-circle',
                   }
     status_name = {'approved': '已通过审批',
                    'rejected': '审批被拒绝',
@@ -270,7 +270,7 @@ def admin_show_official_account_detail(request, id):
 
 
 @check_identity('admin')
-def admin_show_statistics(request, id):
+def admin_show_official_account_statistics(request, id):
     official_account = backend.get_official_account_by_id(id)
     chart_raw = backend.get_records(id,
                                     timezone.now().date() - timedelta(days=9),
@@ -284,7 +284,9 @@ def admin_show_statistics(request, id):
             'exportEnabled': '1',
             'xAxisName': "日期",
             'pYAxisName': "阅读数",
-            'sYAxisName': "点赞数"
+            'sYAxisName': "点赞数",
+            'sYAxisMaxValue': int(reduce(lambda x, y: max(x, y.likes),
+                                         chart_raw, 0) * 0.18) * 10
         },
         'categories': [
             {'category': []}
@@ -297,7 +299,7 @@ def admin_show_statistics(request, id):
             {
                 'seriesName': "点赞数",
                 'parentYAxis': 'S',
-                'renderAs': 'column',
+                'renderAs': 'area',
                 'data': []
             }
         ]
@@ -311,12 +313,17 @@ def admin_show_statistics(request, id):
     chart_json = json.dumps(chart_data)
 
     return render(request, 'admin/detail_statistics.html', {'account': official_account,
-                                                     'chart_json': chart_json
-                                                     })
+                                                            'chart_json': chart_json
+                                                            })
 
 
 @check_identity('admin')
 def admin_show_official_account_articles(request, id):
+    return render(request, 'admin/detail_articles.html', {'official_account_id': id});
+
+
+@check_identity('admin')
+def admin_show_official_account_articles_list(request, id):
     articles_on_one_page = 10
     page_current = int(request.GET.get('page', '1'))
 

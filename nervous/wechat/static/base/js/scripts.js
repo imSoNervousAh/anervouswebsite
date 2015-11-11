@@ -34,25 +34,44 @@ $(function () {
 
 var __manualStateChange = false;
 
-function displayContent(data, callback) {
-    var main = $("#main-page");
+function displayContent(data, params, container, callback) {
+    var main;
+    if (typeof container !== typeof undefined) {
+        main = $(container);
+    } else {
+        main = $("#main-page");
+    }
+    var anim = true, scroll = true;
+    for (var prop in params) {
+        if (prop === "anim") anim = params.anim;
+        if (prop === "scroll") scroll = params.scroll;
+    }
     main.queue(function () {
         main.html(data);
-        var new_height = 0;
-        main.children().each(function () {
-            new_height += $(this).outerHeight(true);
-        });
-        $("html, body").delay(60).animate({
-            "scroll-top": 0
-        });
-        main.delay(50).animate({
-            opacity: 1.0,
-            height: new_height
-        }, function () {
+
+        var final = function () {
             main.css("height", "auto");
             if (typeof callback === "function")
                 callback();
-        });
+        };
+
+        if (anim) {
+            var new_height = 0;
+            main.children().each(function () {
+                new_height += $(this).outerHeight(true);
+            });
+            if (scroll) {
+                $("html, body").delay(400).animate({
+                    "scroll-top": main.position().top
+                });
+            }
+            main.delay(50).animate({
+                opacity: 1.0,
+                height: new_height
+            }, final);
+        } else {
+            final();
+        }
         $(this).dequeue();
     });
 }
@@ -111,60 +130,39 @@ function initAjaxPage(container) {
     });
 }
 
-function loadContentOn(url, params, container, callback) {
+
+function loadContentOn(container, url, params, load_params, callback) {
     console.log("on: " + url);
     var main = $(container);
-    /*
-     main.animate({
-     opacity: 0,
-     height: 0
-     }, 250);
-     */
-    var show = function (data) {
-        main.queue(function () {
-            main.html(data);
-            if (typeof callback === "function")
-                callback();
-            /*
-             var new_height = 0;
-             main.children().each(function () {
-             new_height += $(this).outerHeight(true);
-             });
 
-             $("html, body").delay(60).animate({
-             "scroll-top": main.offset().top
-             });
-
-             main.delay(50).animate({
-             opacity: 1.0,
-             height: new_height
-             }, function () {
-             main.css("height", "auto");
-             if (typeof callback === "function")
-             callback();
-             });
-             */
-            $(this).dequeue();
-        });
-    };
+    var anim = false;
+    for (var prop in load_params) {
+        if (prop === "anim") anim = load_params.anim;
+    }
+    if (anim === true) {
+        main.animate({
+            opacity: 0,
+            height: 0
+        }, 250);
+    }
 
     $.ajax({
         type: "GET",
         url: url,
         data: params,
         success: function (data) {
-            show(data);
+            displayContent(data, load_params, container);
             initAjaxPage(container);
         },
         error: function (xhr, textStatus, errorThrown) {
-            show('\
+            displayContent('\
                 <div class="alert alert-danger" role="alert">\
                     <strong>部件载入出错。</strong>\
                     错误信息：' +
                 textStatus + ": " + xhr.status + " " + errorThrown
                 + xhr.responseText.replace(/\n/g, "<br>") +
-                '</div>'
-            );
+                '</div>',
+                {anim: true, scroll: true}, container);
             console.log(xhr.responseText.substr(0, 500));
         }
     });
@@ -217,7 +215,7 @@ $(function () {
             __manualStateChange = false;
         }
 
-        displayContent(state.data.data, state.data.callback);
+        displayContent(state.data.data, {}, undefined, state.data.callback);
     });
 
     // bind toggle left column button (visible in xs)
@@ -265,6 +263,7 @@ $(function () {
 
     // set page min height according to left column
     var height = $("#left-column").outerHeight(true);
+    $("html, body").css("min-height", height);
     $("#main-page").css({
         "min-height": height
     });

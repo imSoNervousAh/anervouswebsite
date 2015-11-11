@@ -9,59 +9,59 @@
 
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#dashboard-menu">
-        <strong><i class="glyphicon glyphicon-dashboard"></i>　信息概览</strong>
+        <strong><i class="fa fa-dashboard fa-fw"></i>　信息概览</strong>
     </a>
     <ul class="nav nav-stacked collapse in" id="dashboard-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills">
             <li id="dashboard-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/dashboard' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-dashboard"></i>　信息概览</a>
+                <a class="fake-link"><i class="fa fa-dashboard fa-fw"></i>　信息概览</a>
             </li>
         </ul>
     </ul>
     <hr>
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
-        <strong><i class="glyphicon glyphicon-wrench"></i>　管理公众号申请</strong>
+        <strong><i class="fa fa-wrench fa-fw"></i>　管理公众号申请</strong>
     </a>
     <ul class="nav nav-stacked collapse in" id="application-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills">
             <li id="pending-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'pending' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-tasks"></i>　待审批申请　<span
+                <a class="fake-link"><i class="fa fa-tasks fa-fw"></i>　待审批申请　<span
                         class="badge badge-info">{{ pending_applications|length }}</span></a>
             </li>
             <li id="processed-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'processed' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-ok"></i>　我处理的申请</a>
+                <a class="fake-link"><i class="fa fa-check fa-fw"></i>　我处理的申请</a>
             </li>
             <li id="all-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'all' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-list-alt"></i>　所有申请</a>
+                <a class="fake-link"><i class="fa fa-list-alt fa-fw"></i>　所有申请</a>
             </li>
         </ul>
     </ul>
     <hr>
     <a class="fake-link" data-toggle="collapse" data-target="#analyse-menu">
-        <strong><i class="glyphicon glyphicon-signal"></i>　查看并分析</strong>
+        <strong><i class="fa fa-signal fa-fw"></i>　查看并分析</strong>
     </a>
     <ul class="nav nav-stacked collapse in" id="analyse-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills">
             <li id="official-accounts-list-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/official-accounts' %}">
-                <a class="fake-link"><i class="glyphicon glyphicon-th-list"></i>　公众号列表</a>
+                <a class="fake-link"><i class="fa fa-th-list fa-fw"></i>　公众号列表</a>
             </li>
             <li id="articles-list-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/articles' %}">
-                <a class="fake-link"><i class="fa fa-file-text"></i>　文章列表</a>
+                <a class="fake-link"><i class="fa fa-file-text fa-fw"></i>　文章列表</a>
             </li>
             <li class="nav-header left-column-item">
-                <a class="fake-link"><i class="fa fa-bar-chart"></i>　统计信息</a>
+                <a class="fake-link"><i class="fa fa-bar-chart fa-fw"></i>　统计信息</a>
             </li>
             <li class="nav-header left-column-item">
-                <a class="fake-link"><i class="glyphicon glyphicon-bell"></i>　数据预警</a>
+                <a class="fake-link"><i class="fa fa-bell fa-fw"></i>　数据预警</a>
             </li>
         </ul>
     </ul>
