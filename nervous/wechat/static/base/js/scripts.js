@@ -87,6 +87,7 @@ function loadContent(url, params, item_selector, callback) {
                 item: item_selector,
                 callback: callback
             }, null, url);
+            initAjaxPage("#main-page");
         },
         error: function (xhr, textStatus, errorThrown) {
             displayContent('\
@@ -98,6 +99,14 @@ function loadContent(url, params, item_selector, callback) {
             );
             console.log(xhr.responseText.substr(0, 500));
         }
+    });
+}
+
+function initAjaxPage(container) {
+    $(container).ready(function () {
+        $(".ajax-link").click(function() {
+            loadContent($(this).data("url"));
+        })
     });
 }
 
@@ -144,6 +153,7 @@ function loadContentOn(url, params, container, callback) {
         data: params,
         success: function (data) {
             show(data);
+            initAjaxPage(container);
         },
         error: function (xhr, textStatus, errorThrown) {
             show('\
@@ -256,4 +266,6 @@ $(function () {
     $("#main-page").css({
         "min-height": height
     });
+
+    initAjaxPage();
 });

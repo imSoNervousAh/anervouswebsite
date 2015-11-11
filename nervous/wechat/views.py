@@ -271,6 +271,14 @@ def admin_show_official_account_detail(request, id):
 
 
 @check_identity('admin')
+def admin_show_statistics(request):
+    official_accounts = backend.get_official_accounts()
+
+    return render_ajax(request, 'admin/statistics.html', {'account': official_accounts
+                                                          })
+
+
+@check_identity('admin')
 def admin_show_official_account_articles(request, id):
     articles_on_one_page = 10
     page_current = int(request.GET.get('page', '1'))

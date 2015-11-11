@@ -64,7 +64,6 @@
                             <!-- send message-->
 
                             <script type="text/javascript">
-
                                 function submitFormCheck() {
                                     var form = document.forms["reply-message-form"];
                                     //if (form['title'].value == '') {
@@ -80,7 +79,6 @@
                                     return true;
 
                                 }
-
 
                                 $(function () {
                                     var msg = $("#error-msg");
@@ -99,11 +97,14 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("/message/{% if category == MessageCategory.ToStudent %}
-                                                            admin{% else %}student{% endif %}/{{ official_account_id }}",
-                                                        {}
-                                                        ,
-                                                        undefined, function () {
+                                                var category;
+                                                {% if category == MessageCategory.ToStudent %}
+                                                    category = 'admin';
+                                                {% else %}
+                                                    category = 'student';
+                                                {% endif %}
+                                                loadContent("/message/" + category + "/{{ official_account_id }}",
+                                                        {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
                                                             }, function () {
@@ -130,8 +131,13 @@
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
-                                                loadContent("/{% if category == MessageCategory.ToStudent %}
-                                                            admin{% else %}student{% endif %}",
+                                                var category;
+                                                {% if category == MessageCategory.ToStudent %}
+                                                    category = 'admin';
+                                                {% else %}
+                                                    category = 'student';
+                                                {% endif %}
+                                                loadContent("/" + category,
                                                         {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
@@ -150,10 +156,7 @@
                                         });
                                     });
                                 });
-
-
                             </script>
-
 
                             <form id="reply-message-form">
                                 <div class="row" style="margin-top: 30px">

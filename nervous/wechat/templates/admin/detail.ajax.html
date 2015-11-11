@@ -2,17 +2,6 @@
 
 <script src="{% static 'base/js/referrer-killer.js' %}"></script>
 
-<a id="messages-link" class="fake-link pull-right"
-   data-url="{% url 'message/admin' official_account_id %}">
-    <strong><i class="glyphicon glyphicon-comment"></i>　消息一览</strong>
-</a>
-<script>
-    $("#messages-link").ready(function () {
-        $("#messages-link").click(function () {
-            loadContent($(this).data("url"), {});
-        });
-    });
-</script>
 <a class="fake-link">
     <strong><i class="glyphicon glyphicon-briefcase"></i>　公众号详细信息</strong>
 </a>
@@ -25,7 +14,7 @@
                 <h4>基本信息<span class="badge pull-right">{{ pending_count }}</span></h4></div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                         <div class="pull-left" style="width: 90px; height: 90px;
                                 background: url(http://open.weixin.qq.com/qr/code/?username={{ account.wechat_id }})
                                 -170px -170px no-repeat;"></div>
@@ -37,7 +26,7 @@
                             <b>公众号描述：</b>{{ account.description }}<br/>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                         <div style="line-height: 160%;">
                             <b>隶属组织：</b>{{ account.association }}<br/>
                             <b>负责人姓名：</b>{{ account.manager_name }}<br/>
@@ -48,6 +37,21 @@
                                 href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
                         </div>
                     </div>
+                </div>
+                <div class="pull-right" style="margin-top: 10px">
+                    <button class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        &nbsp;删除公众号
+                    </button>
+                    <button class="btn btn-info ajax-link" style="margin-left: 10px">
+                        <span class="fa fa-bar-chart"></span>
+                        &nbsp;查看分析
+                    </button>
+                    <button class="btn btn-primary ajax-link" style="margin-left: 10px"
+                            id="messages-link" data-url="{% url 'message/admin' official_account_id %}">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        &nbsp;查看站内消息
+                    </button>
                 </div>
             </div>
         </div>
