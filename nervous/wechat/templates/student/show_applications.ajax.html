@@ -34,29 +34,6 @@
                                         <span class="glyphicon glyphicon-check"></span> 修改
                                     </a>
                                 </td>
-                                <!--
-                                <td>
-                                        <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
-                                       data-toggle="popover"
-                                       data-content="
-                                        <form method='post' action="{% url 'api/delete_application' app.id %}">
-                                            {% csrf_token %}
-                                            <button type='submit' name='status' value='rejected'
-                                                class='btn btn-danger'>
-                                                <span class='glyphicon glyphicon-remove-sign'></span> 拒绝
-                                            </button>
-                                            <input style='display:none' name='username' value='{{ admin.username }}'>
-                                            <input style='display:none' name='account_id' value='{{ app.id }}'>
-                                            <span>　</span>
-                                            <button type='submit' name='status' value='approved'
-                                                class='btn btn-success'>
-                                                <span class='glyphicon glyphicon-ok-sign'></span> 通过
-                                            </button>
-                                        </form>">
-                                        <span class="glyphicon glyphicon-check"></span> 删除</a>
-                                
-                                </td>
-                            -->
                                 <td>
                                         <a id="delete_{{app.id}}" >
                                         <span class="glyphicon glyphicon-check"></span> 删除</a>
@@ -84,7 +61,7 @@ $("#delete_{{app.id}}").submit(function (event) {
                         $.ajax({
                             type: "POST",
                             url: url,
-                            data: {{app.in}},
+                            data: "{{app.in}}",
                             success: function (data) {
                                 alert('提交成功!');
                                 loadContent("/student");
