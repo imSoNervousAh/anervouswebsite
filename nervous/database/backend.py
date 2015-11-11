@@ -311,3 +311,64 @@ def get_records(official_account_id, day_start, day_end):
 def get_views(account, day_start, day_end):
     records = get_records(account, day_start, day_end)
     return map(lambda rec: rec.views, records)
+
+
+def get_latest_record(official_account_id):
+    return AccountRecord\
+            .filter(account__id__exact=official_account_id)\
+            .order_by('-date')[0]
+
+# Forewarning
+
+def add_forewarn_rule(dic):
+    rule = ForewarnRule.model()
+    raw_id = dic['official_account_id']
+    if raw_id.isdigit():
+        try:
+            account = OfficialAccount.get(pk=int(raw_id))
+        except ObjectDoesNotExist:
+            return False
+    else:
+        account = None
+    rule.account = account
+    try:
+        for attr in ['duration', 'notification', 'target', 'value']:
+            setattr(rule, attr, int(dic[attr]))
+        rule.save()
+        return True
+    except ValueError:
+        return False
+
+
+def get_forewarn_rules():
+    return ForewarnRule.all()
+
+
+def report_if(cond, rule, account):
+    if cond:
+        print "report_if (%s, %s): True" % (rule, account)
+
+
+def check_forewarn_rule_on_account(rule, account):
+    # print "check_forewarn_rule_on_account: %s on %s" % (rule, account)
+    try:
+        if rule.target == ForewarnTarget.ViewsTotal:
+            rec = get_latest_record(account.id)
+            report_if(rec.views > rule.value, rule, account)
+    except IndexError:
+        pass
+
+
+def check_forewarn_rule(rule):
+    if rule.account:
+        accounts = [rule.account]
+    else:
+        accounts = get_official_accounts()
+    for account in accounts:
+        check_forewarn_rule_on_account(rule, account)
+
+
+def check_all_forewarn_rules():
+    rules = get_forewarn_rules()
+    for rule in rules:
+        check_forewarn_rule(rule)

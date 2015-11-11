@@ -72,9 +72,11 @@ def update_official_account_nums_before_n_days(account, n):
         'date': get_date_object_before_n_days(n),
         'likes': res.get('likenum_total', 0),
         'views': res.get('readnum_total', 0),
-        'articles': res.get('url_num_total', 0)
+        'articles': res.get('url_num_total', 0),
     }
-    backend.add_account_record(account, dic)
+    # Maybe gsdata hasn't got the data ...
+    if dic['views'] > 0:
+        backend.add_account_record(account, dic)
 
 
 def update_official_account_nums(account):

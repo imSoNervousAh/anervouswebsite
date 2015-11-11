@@ -2,13 +2,14 @@ import datetime
 import time
 
 import api.update as api_update
+import backend
 
 def update_all():
     api_update.update_all()
+    backend.check_all_forewarn_rules()
 
 def daemon():
     while True:
-        print "update_all"
         update_all()
         now = datetime.datetime.now()
         delta_day = datetime.timedelta(days = 1)

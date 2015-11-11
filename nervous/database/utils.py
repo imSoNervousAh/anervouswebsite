@@ -51,6 +51,30 @@ def message_test_db(message_test_oa_id):
     ))
 
 
+def forewarn_test_db(id):
+    assert (backend.add_forewarn_rule({
+        'official_account_id': str(id),
+        'duration': str(1),
+        'notification': str(0),
+        'target': str(0),
+        'value': str(10000),
+    }))
+    assert (backend.add_forewarn_rule({
+        'official_account_id': str(id),
+        'duration': str(1),
+        'notification': str(0),
+        'target': str(0),
+        'value': str(5),
+    }))
+    assert (backend.add_forewarn_rule({
+        'official_account_id': "",
+        'duration': str(1),
+        'notification': str(0),
+        'target': str(0),
+        'value': str(5),
+    }))
+
+
 def build_test_db():
     clean_test_db()
 
@@ -71,5 +95,6 @@ def build_test_db():
     Application.create(official_account=oa_yandujian, user_submit='2014011434', status='pending')
 
     message_test_db(oa_zx.id)
+    forewarn_test_db(4)
 
     update()
