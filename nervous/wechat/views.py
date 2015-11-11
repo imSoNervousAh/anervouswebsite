@@ -402,18 +402,24 @@ def admin_show_official_account_articles_list(request, id):
 
 @check_identity('admin')
 def admin_forewarn(request):
-    pending_applications = backend.get_pending_applications()
-    official_accounts = backend.get_official_accounts()
-    articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
-        'posttime_begin': timezone.now().date() - timedelta(days=7)
-    })
-    messages = backend.get_messages(only_unprocessed=True)
-    return render_ajax(request, 'admin/forewarn.html', {'pending_applications': pending_applications,
-                                                         'official_accounts': official_accounts,
-                                                         'articles': articles,
-                                                         'articles_count': articles_count,
-                                                         'messages': messages,
-                                                         })
+    rule={}
+    rule['account']='111'
+    rule['duration']='3'
+    rule['notification']='0'
+    rule['target']='0'
+    rule['value']='50'
+
+    rule2=rule
+    rule2['value']='100'
+    rule2['duration']='100'
+
+    rules=(rule,rule2)
+    
+
+    #pre deal
+    for i in range(0,len(rules)):
+      rules[i]['id']=i
+    return render_ajax(request, 'admin/forewarn.html', {'rules':rules})
 
 
 

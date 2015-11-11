@@ -1,34 +1,187 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4>公众号</h4>
+        <h4>预警规则列表</h4>
     </div>
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th style="width: 15%; min-width: 100px">名称</th>
-                    <th>公众号简介</th>
-                    <th style="width: 100px"><span class="fa fa-users"></span> 关注人数</th>
-                </tr>
+                    <tr>
+                        <th style="width: 100px">预警条目</th>
+                        <th style="width: 100px">预警公众号范围</th>
+                        <th style="width: 100px">预警时限</th>
+                        <th style="width: 100px">通知方式</th>
+                        <th style="width: 100px">具体规则</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for account in official_accounts %}
                     <tr>
-                        <td><a style="cursor:pointer;" class="official-account-link"
-                               data-url="{% url 'admin/detail' account.id %}">
-                            {{ account.name }}
-                        </a></td>
-                        <td>{{ account.subscribers }}</td>
+                        {% for rule in rules %}
+                        <th style="width: 100px">{{ rule.id }}</th>
+                        <th style="width: 100px">{{ rule.duration }}天 </th>
+                        <th style="width: 100px">{{}}</th>
+                        <th style="width: 100px">{{}}</th>
+                        <th style="width: 100px">{{}}</th>
+                        
+                        {% endfor %}
                     </tr>
-                {% endfor %}
                 </tbody>
                 <script>
-                    $(".official-account-link").click(function () {
-                        loadContent($(this).data("url"), {});
-                    });
+                $(".official-account-link").click(function() {
+                    loadContent($(this).data("url"), {});
+                });
                 </script>
             </table>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:50px">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>创建预警规则</h4>
+            </div>
+            <div class="panel-body">
+                <form id="rule-form" class="form form-vertical">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>预警公众号账号</label>
+                                <div class="controls">
+                                    <input name="account" type="text" class="form-control" placeholder="不填写为所有公众号">
+                                    <!--
+                                    <select name="account" class="form-control">
+                                        <option value="">单个公众号</option>
+                                        <option value="">所有公众号</option>
+                                        <option value="" disabled="disabled">指定公众号</option>
+                                    </select>
+                                -->
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>通知方式</label>
+                                <div class="controls">
+                                    <select name="notification" class="form-control">
+                                        <option value="Email">邮件</option>
+                                        <option value="Message">站内通知</option>
+                                        <option value="短信" disabled="disabled">短信</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>预警时限</label>
+                        <div class="row">
+                            <div class="controls">
+                                <div class="col-sm-6">
+                                    <input name="duration" type="text" class="form-control" placeholder="数字">
+                                </div>
+                                <div class="col-sm-6">
+                                    天
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>预警规则</label>
+                        <div class="row">
+                            <div class="controls">
+                            <div class="col-sm-12">
+                                        <input name="target" type="text" class="form-control" placeholder="阅读量预警" disabled="disabled">
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>阅读量增长量</label>
+                        <div class="row">
+                            <div class="controls">
+                                <div class="col-sm-3">
+                                    <select name="" class="form-control">
+                                        <option value="大于">大于</option>
+                                        <option value="小于" disabled="disabled">小于</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input name="value" type="text" class="form-control" placeholder="数字">
+                                </div>
+                                <div class="col-sm-6">
+                                    条
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label></label>
+                        <div class="controls">
+                            <button name="form-submit" type="submit" name="method" value="submit" class="btn btn-primary">
+                                创建
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                function checkLegal() {
+                    var form = document.forms["rule-form"];
+                    
+                    if (form['duration'].value < 1 || form['duration'].value > 365) {
+                        alert('预警时限不合法');
+                        return false;
+                    }
+                    
+                    if (form['account'].value == "不填写为所有公众号") {
+                        from['account'].value = "";
+                    }
+                    
+                    if (form['notification']).value=="Email"){
+                        form['notification']).value="0";
+                    }else if (form['notification']).value=="Message"){
+                        form['notification']).value="1";
+                    }
+
+
+                    form['target']='0';
+
+
+                    if (form['account'].value == "填写待关注公众号,默认为所有公众号") {
+                        from['account'].value = "";
+                        alert('请填写正文');
+                        return false;
+                    }
+                    return true;
+
+                }
+                
+                $(function() {
+                    var msg = $("#error-msg");
+                    msg.fadeOut(0);
+                    msg.find("> button").click(function() {
+                        $("#error-msg").fadeOut();
+                    });
+                });
+                $("#form-submit").clink(function(event) {
+                    if (!checkLegal()) return;
+                    event.preventDefault();
+                    var url = "{% url 'api/submit_rule' %}";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: $("#rule-form").serialize(),
+                        success: function(data) {
+                            alert("成功!");
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            var msg = $("#error-msg");
+                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                            console.log(xhr.responseText);
+                            msg.fadeIn();
+                        }
+                    });
+                });
+                </script>
+            </div>
         </div>
     </div>
 </div>

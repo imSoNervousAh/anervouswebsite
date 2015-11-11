@@ -2,7 +2,6 @@
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-
 from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
@@ -72,8 +71,8 @@ def student_modify_application(request):
     return HttpResponseRedirect('/student')
 
 
-def delete_application(request,id):
-    print 'delete: ',id
+def delete_application(request, id):
+    print 'delete: ', id
     return HttpResponseRedirect('/admin')
 
 
@@ -105,3 +104,7 @@ def process_message(request):
     account_id = request.POST['official_account_id']
     backend.process_all_messages(account_id)
     return HttpResponse(request.POST)
+
+
+def submit_rule(request):
+    pass

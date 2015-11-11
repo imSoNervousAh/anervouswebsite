@@ -72,6 +72,9 @@ urlpatterns = [
     url(r'^api/del_admin/?$', 'api.views.del_admin', name='api/del_admin'),
     url(r'^api/add_message/?$', 'api.views.add_message', name='api/add_message'),
     url(r'^api/process_message/?$', 'api.views.process_message', name='api/process_message'),
+    url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
+
+
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),
