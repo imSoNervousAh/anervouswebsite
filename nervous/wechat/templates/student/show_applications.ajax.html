@@ -2,7 +2,6 @@
     <strong><i class="glyphicon glyphicon-dashboard"></i>　信息总览</strong>
 </a>
 <hr>
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -31,51 +30,46 @@
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
                                     <a id="modify_{{app.id}}">
-                                        <span class="glyphicon glyphicon-check"></span> 修改
+                                        <span class="glyphicon glyphicon-check facklink"></span> 修改
                                     </a>
                                 </td>
                                 <td>
-                                        <a id="delete_{{app.id}}" >
-                                        <span class="glyphicon glyphicon-check"></span> 删除</a>
-                                
+                                    <a id="delete_{{app.id}}">
+                                        <span class="glyphicon glyphicon-check facklink"></span> 删除</a>
                                 </td>
                             </tr>
-
                             <script>
+                            $("#modify_{{app.id}}").click(function() {
+                                loadContent("{% url 'student/modify-application' app.id %}");
+                            });
 
-
-                                    $("#modify_{{app.id}}").click(function(){
-                                        loadContent("{% url 'student/modify-application' app.id %}");
-                                    });
-
-                    $(function () {
-                        var msg = $("#error-msg");
-                        msg.fadeOut(0);
-                        msg.find("> button").click(function () {
-                            $("#error-msg").fadeOut();
-                        });
-                    });
-$("#delete_{{app.id}}").submit(function (event) {
-                        event.preventDefault();
-                        var url = "{% url 'api/delete_application' app.id %}";
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: "{{app.in}}",
-                            success: function (data) {
-                                alert('提交成功!');
-                                loadContent("/student");
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
+                            $(function() {
                                 var msg = $("#error-msg");
-                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                console.log(xhr.responseText);
-                                msg.fadeIn();
-                            }
-                        });
-                    });
-                                </script>
-                                
+                                msg.fadeOut(0);
+                                msg.find("> button").click(function() {
+                                    $("#error-msg").fadeOut();
+                                });
+                            });
+                            $("#delete_{{app.id}}").submit(function(event) {
+                                event.preventDefault();
+                                var url = "{% url 'api/delete_application' app.id %}";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: "{{app.in}}",
+                                    success: function(data) {
+                                        alert('提交成功!');
+                                        loadContent("/student");
+                                    },
+                                    error: function(xhr, textStatus, errorThrown) {
+                                        var msg = $("#error-msg");
+                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                        console.log(xhr.responseText);
+                                        msg.fadeIn();
+                                    }
+                                });
+                            });
+                            </script>
                             {% endfor %}
                         </tbody>
                     </table>
