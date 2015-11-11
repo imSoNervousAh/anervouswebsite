@@ -8,9 +8,9 @@ def setup():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nervous.settings')
     django.setup()
     import database.models as models
-    for klass in ['Admin', 'OfficialAccount', 'Application', 'Article', 'Message', 'Student', 'AccountRecord']:
+    for klass in ['Admin', 'OfficialAccount', 'Application', 'Article', 'Message', 'Student', 'AccountRecord', 'ForewarnRule']:
         setattr(__builtin__, klass, getattr(models, klass).objects)
-    for enum in ['SortOrder', 'SortBy', 'MessageCategory']:
+    for enum in ['SortOrder', 'SortBy', 'MessageCategory', 'ForewarnTarget', 'NotificationOption']:
         setattr(__builtin__, enum, getattr(models, enum))
 
 

@@ -16,7 +16,7 @@ class MessageCategory:
 
 
 class ForewarnTarget:
-    ViewTotal = xrange(1)
+    ViewsTotal, LikesTotal = xrange(2)
 
 
 class NotificationOption:
@@ -160,7 +160,7 @@ class ForewarnRule(models.Model):
         return "[%s, %s] for %s" % (
             self.target,
             self.value,
-            account_name()
+            self.account_name()
         )
 
 
