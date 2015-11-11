@@ -2,6 +2,7 @@
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
+
 import setup_db
 
 setup_db.setup()

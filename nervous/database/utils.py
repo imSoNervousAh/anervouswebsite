@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import backend
+import daemon
 import setup_db
-
-import api.update as api_update
 
 from django.db import connection
 
@@ -32,8 +31,7 @@ def clean_test_db():
 # test gsdata
 
 def update():
-    api_update.update_all()
-
+    daemon.update_all()
 
 # build a db for testing
 
