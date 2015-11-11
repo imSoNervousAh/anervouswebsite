@@ -98,5 +98,5 @@ def add_message(request):
 
 
 def process_message(request):
-    print 'process_message'
-    pass
+    account_id = request.POST['official_account_id']
+    backend.process_all_messages(account_id)

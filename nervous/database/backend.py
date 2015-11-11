@@ -226,14 +226,15 @@ def get_messages(category=None, official_account_id=None, only_unprocessed=None)
     return messages
 
 
-def process_message(message_id):
-    try:
-        message = Message.get(pk=message_id)
+def process_all_messages(official_account_id):
+    messages = get_messages(
+        official_account_id=official_account_id,
+        only_unprocessed=True
+    )
+    for message in messages:
         message.processed = True
         message.save()
-        return True
-    except ObjectDoesNotExist:
-        return False
+    return True
 
 
 def add_message(category, official_account_id, title, content, admin_name=None):
