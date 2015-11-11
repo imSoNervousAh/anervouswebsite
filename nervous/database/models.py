@@ -15,6 +15,14 @@ class MessageCategory:
     All, ToStudent, ToAdmin = xrange(3)
 
 
+class ForewarnTarget:
+    ViewTotal = xrange(1)
+
+
+class NotificationOption:
+    Message, Email = xrange(2)
+
+
 # Models
 
 class Admin(models.Model):
@@ -132,6 +140,27 @@ class Message(models.Model):
             direction,
             self.official_account.application.user_submit,
             self.processed
+        )
+
+
+class ForewarnRule(models.Model):
+    account = models.ForeignKey(OfficialAccount, null=True)
+    duration = models.IntegerField()
+    notification = models.IntegerField()
+    target = models.IntegerField()
+    value = models.IntegerField()
+
+    def account_name(self):
+        if self.account:
+            return self.account.name
+        else:
+            return ""
+
+    def __unicode__(self):
+        return "[%s, %s] for %s" % (
+            self.target,
+            self.value,
+            account_name()
         )
 
 

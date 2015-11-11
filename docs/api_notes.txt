@@ -91,7 +91,16 @@ Messages:
 
 
 Forewarning:
+    Enum:
+        ForewarnTarget.
+            ViewTotal
+
+        NotificationOption.
+            Message,
+            Email
+
     add_forewarn_rule(dic)
+    get_forewarn_rules()
 
 
 ==================================
@@ -132,9 +141,11 @@ AccountRecord:
 ForewarnRule:
     account (None if applied to all accounts)
     duration (in days)
-    notification
-    target
+    notification = NotificationOption.?
+    target = ForewarnTarget.?
     value
+    [ <- official_account_id ]
+    [ -> id, account_name, ]
 
 
 ForewarnRecord:
