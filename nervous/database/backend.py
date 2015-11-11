@@ -278,13 +278,14 @@ def add_message(category, official_account_id, title, content, admin_name=None):
     except ObjectDoesNotExist:
         return False
 
+
 # Account records
 
 def get_records(official_account_id, day_start, day_end):
-    return AccountRecord\
-            .filter(account__id__exact=official_account_id)\
-            .filter(date__gte=day_start)\
-            .filter(date__lte=day_end)
+    return AccountRecord \
+        .filter(account__id__exact=official_account_id) \
+        .filter(date__gte=day_start) \
+        .filter(date__lte=day_end)
 
 
 def get_views(account, day_start, day_end):

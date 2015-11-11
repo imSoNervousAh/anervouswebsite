@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
-
+from datetime import datetime, timedelta
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
-
 from database import backend
 from wechat import session
+import json
 
 
 # misc
@@ -271,11 +270,49 @@ def admin_show_official_account_detail(request, id):
 
 
 @check_identity('admin')
-def admin_show_statistics(request):
-    official_accounts = backend.get_official_accounts()
+def admin_show_statistics(request, id):
+    official_account = backend.get_official_account_by_id(id)
+    chart_raw = backend.get_records(id,
+                                    timezone.now().date() - timedelta(days=9),
+                                    timezone.now().date() - timedelta(days=2))
+    chart_raw = chart_raw.order_by('date')
+    chart_data = {
+        'chart': {
+            'caption': "公众号一周信息",
+            'subCaption': official_account.name,
+            'theme': 'zune',
+            'exportEnabled': '1',
+            'xAxisName': "日期",
+            'pYAxisName': "阅读数",
+            'sYAxisName': "点赞数"
+        },
+        'categories': [
+            {'category': []}
+        ],
+        'dataset': [
+            {
+                'seriesName': "阅读数",
+                'data': []
+            },
+            {
+                'seriesName': "点赞数",
+                'parentYAxis': 'S',
+                'renderAs': 'column',
+                'data': []
+            }
+        ]
+    }
 
-    return render_ajax(request, 'admin/statistics.html', {'account': official_accounts
-                                                          })
+    for x in chart_raw:
+        chart_data['categories'][0]['category'].append({'label': str(x.date)})
+        chart_data['dataset'][0]['data'].append({'value': x.views})
+        chart_data['dataset'][1]['data'].append({'value': x.likes})
+
+    chart_json = json.dumps(chart_data)
+
+    return render(request, 'admin/detail_statistics.html', {'account': official_account,
+                                                     'chart_json': chart_json
+                                                     })
 
 
 @check_identity('admin')
@@ -331,7 +368,12 @@ def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
-    processed = messages[len(messages) - 1].processed
+
+    if len(messages) == 0:
+        processed = True
+    else:
+        processed = messages[len(messages) - 1].processed
+
     try:
         official_account = backend.get_official_account_by_id(id)
     except:

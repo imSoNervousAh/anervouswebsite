@@ -50,7 +50,7 @@ function displayContent(data, callback) {
             height: new_height
         }, function () {
             main.css("height", "auto");
-            if (typeof callback !== typeof undefined)
+            if (typeof callback === "function")
                 callback();
         });
         $(this).dequeue();
@@ -94,7 +94,8 @@ function loadContent(url, params, item_selector, callback) {
                 <div class="alert alert-danger" role="alert">\
                     <strong>页面载入出错。</strong>\
                     错误信息：' +
-                textStatus + ": " + xhr.status + " " + errorThrown + xhr.responseText +
+                textStatus + ": " + xhr.status + " " + errorThrown +
+                xhr.responseText.replace(/\n/g, "<br>") +
                 '</div>'
             );
             console.log(xhr.responseText.substr(0, 500));
@@ -104,14 +105,14 @@ function loadContent(url, params, item_selector, callback) {
 
 function initAjaxPage(container) {
     $(container).ready(function () {
-        $(".ajax-link").click(function() {
+        $(".ajax-link").click(function () {
             loadContent($(this).data("url"));
         })
     });
 }
 
 function loadContentOn(url, params, container, callback) {
-    console.log(url);
+    console.log("on: " + url);
     var main = $(container);
     /*
      main.animate({
@@ -122,7 +123,7 @@ function loadContentOn(url, params, container, callback) {
     var show = function (data) {
         main.queue(function () {
             main.html(data);
-            if (typeof callback !== typeof undefined)
+            if (typeof callback === "function")
                 callback();
             /*
              var new_height = 0;
@@ -139,7 +140,7 @@ function loadContentOn(url, params, container, callback) {
              height: new_height
              }, function () {
              main.css("height", "auto");
-             if (typeof callback !== typeof undefined)
+             if (typeof callback === "function")
              callback();
              });
              */
@@ -160,7 +161,8 @@ function loadContentOn(url, params, container, callback) {
                 <div class="alert alert-danger" role="alert">\
                     <strong>部件载入出错。</strong>\
                     错误信息：' +
-                textStatus + ": " + xhr.status + " " + errorThrown + xhr.responseText +
+                textStatus + ": " + xhr.status + " " + errorThrown
+                + xhr.responseText.replace(/\n/g, "<br>") +
                 '</div>'
             );
             console.log(xhr.responseText.substr(0, 500));
