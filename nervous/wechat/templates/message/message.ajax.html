@@ -52,6 +52,7 @@
                                             <div class="ds-comment-body">
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
+
                                                 <!--
                                                 <p><code>Title</code> {{ message.title }}</p>
                                                 -->
@@ -114,8 +115,8 @@
                                                                 animate(item, "flash");
                                                             });
                                                         }
-                                                )
-                                                ;
+                                                );
+                                            
                                             },
                                             error: function (xhr, textStatus, errorThrown) {
                                                 var msg = $("#error-msg");
@@ -129,7 +130,7 @@
                                         event.preventDefault();
                                         var url = "{% url 'api/process_message' %}";
                                         $.ajax({
-                                            type: "GET",
+                                            type: "POST",
                                             url: url,
                                             data: $("#reply-message-form").serialize(),
                                             success: function (data) {
@@ -139,7 +140,7 @@
                                                 {% else %}
                                                     category = 'student';
                                                 {% endif %}
-                                                loadContent("/" + category,
+                                                loadContent("/message/" + category + "/{{ official_account_id }}",
                                                         {}, undefined, function () {
                                                             $("html, body").delay(60).animate({
                                                                 "scroll-top": $(document).height()
@@ -147,7 +148,9 @@
                                                                 var item = $(".message-body:nth-last-of-type(1)");
                                                                 animate(item, "flash");
                                                             });
-                                                        });
+                                                        }
+                                                );
+                                            
                                             },
                                             error: function (xhr, textStatus, errorThrown) {
                                                 var msg = $("#error-msg");
@@ -243,8 +246,5 @@
 </div>
 
 <script>
-    //alert('aaa');
-</script>
-<script src="{% static 'jquery/jquery.scrollto.js' %}">
-    $.scrollTo('#reply-message-form', 1500);
+    $.scrollTo('#reply-message-form', 800);
 </script>

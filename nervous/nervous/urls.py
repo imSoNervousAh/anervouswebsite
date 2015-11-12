@@ -23,8 +23,8 @@ urlpatterns = [
     url(r'^login', 'wechat.views.login', name='login'),
     url(r'^logout', 'wechat.views.logout', name='logout'),
 
-    # change_info
-    #    url(r'^change_info/?$','wechat.views.change_info',name='change_info'),
+    #   home
+    url(r'^home/?$','wechat.views.home',name='home'),
 
     #   message
     url(r'^message/[^/]+/?$', 'wechat.views.message_jump', name='message/jump'),

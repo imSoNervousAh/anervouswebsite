@@ -99,6 +99,15 @@ def check_identity(identity):
     return decorator
 
 
+# home
+def home(request):
+    identity = session.get_identity(request)
+    if identity in ['student','admin','superuser']:
+        return HttpResponseRedirect('/%s' % identity)
+
+    return login(request) 
+
+
 def change_info(request):
     identity = session.get_identity(request)
     if identity == 'student':
@@ -385,27 +394,29 @@ def message_jump(request, id):
     return HttpResponseRedirect('/message/%s/%s' % (session.get_identity(request), id))
 
 
+def check_processed(messages):
+    for message in messages:
+        if (message.category == MessageCategory.ToAdmin) and (not message.processed ):
+            return False
+    return True
+
 @check_identity('admin')
 def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
 
-    if len(messages) == 0:
-        processed = True
-    else:
-        processed = messages[len(messages) - 1].processed
 
     try:
         official_account = backend.get_official_account_by_id(id)
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message.html', {'account': official_account,
+    return render_ajax(request, 'message/message_admin.html', {'account': official_account,
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
-                                                         'processed': processed,
+                                                         'processed': check_processed(messages),
                                                          'MessageCategory': MessageCategory,
                                                          })
 
@@ -419,7 +430,7 @@ def message_detail_student(request, id):
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message.html', {'account': official_account,
+    return render_ajax(request, 'message/message_student.html', {'account': official_account,
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
