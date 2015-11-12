@@ -409,9 +409,9 @@ def message_jump(request, id):
     return HttpResponseRedirect('/message/%s/%s' % (session.get_identity(request), id))
 
 
-def check_processed(messages):
+def check_processed(messages,category):
     for message in messages:
-        if (message.category == MessageCategory.ToAdmin) and (not message.processed ):
+        if (message.category != category) and (not message.processed ):
             return False
     return True
 
@@ -431,7 +431,7 @@ def message_detail_admin(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
-                                                         'processed': check_processed(messages),
+                                                         'processed': check_processed(messages,MessageCategory.ToStudent),
                                                          'MessageCategory': MessageCategory,
                                                          'identity':'identity',
                                                          'locate':'admin/index.html',
@@ -451,6 +451,7 @@ def message_detail_student(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
+                                                         'processed': check_processed(messages,MessageCategory.ToAdmin),
                                                          'MessageCategory': MessageCategory,
                                                          'identity':'student',
                                                          'locate':'student/index.html',

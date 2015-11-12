@@ -16,10 +16,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>站内信息
-                        {% if processed %}
+                        {% if category == MessageCategory.ToStudent %}
+                        {% if processed  %}
                             <strong class="user-name" style="font-size: medium">[已读]</strong>
                         {% else %}
                             <strong class="user-name" style="font-size: medium">[未读]</strong>
+                        {% endif %}
                         {% endif %}
                         <span class="badge pull-right">{{ pending_count }}</span>
                     </h4>
@@ -37,11 +39,9 @@
                                             <div class="ds-comment-body">
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
-
-                                                <!--
-                                                <p><code>Title</code> {{ message.title }}</p>
-                                                -->
-
+                                                    <!--
+                                                    [DEBUG]processed:{{ message.processed }}-->
+                    
                                                 <p>{{ message.content }}</p>
                                             </div>
                                         </div>
@@ -52,11 +52,10 @@
                                             <div class="ds-comment-body">
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
+                                                    <!--
 
-                                                <!--
-                                                <p><code>Title</code> {{ message.title }}</p>
+                                                [DEBUG]processed:{{ message.processed }}
                                                 -->
-
                                                 <p>{{ message.content }}</p>
                                             </div>
                                         </div>
