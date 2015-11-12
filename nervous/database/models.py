@@ -1,5 +1,6 @@
-from django.db import models
+# -*- coding: utf-8 -*-
 
+from django.db import models
 
 # Enums
 
@@ -154,7 +155,7 @@ class ForewarnRule(models.Model):
         if self.account:
             return self.account.name
         else:
-            return ""
+            return '所有公众号'
 
     def __unicode__(self):
         return "[%s, %s] for %s" % (

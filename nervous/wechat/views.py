@@ -402,29 +402,8 @@ def admin_show_official_account_articles_list(request, id):
 
 @check_identity('admin')
 def admin_forewarn(request):
-    rule={}
-    rule['account']='111'
-    rule['duration']='3'
-    rule['notification']='0'
-    rule['target']='0'
-    rule['value']='50'
-
-    rule2={}
-    rule2['account']=""
-    rule2['duration']='100'
-    rule2['notification']='0'
-    rule2['target']='0'
-    rule2['value']='100'
-    
-    rules=(rule,rule2)
-    
-    #pre deal
-    for i in range(0,len(rules)):
-        rules[i]['id']=i
-        if (rules[i]['account']) == "":
-            rules[i]['account']='所有公众号'
+    rules = backend.get_forewarn_rules()
     return render_ajax(request, 'admin/forewarn.html', {'rules':rules})
-
 
 
 
