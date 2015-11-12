@@ -427,7 +427,7 @@ def message_detail_admin(request, id):
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message_admin.html', {'account': official_account,
+    return render_ajax(request, 'message/message.html', {'account': official_account,
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
@@ -447,13 +447,13 @@ def message_detail_student(request, id):
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message_student.html', {'account': official_account,
+    return render_ajax(request, 'message/message.html', {'account': official_account,
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
                                                          'MessageCategory': MessageCategory,
                                                          'identity':'student',
-                                                         'locate':'admin/index.html',
+                                                         'locate':'student/index.html',
                                                          })
 
 
