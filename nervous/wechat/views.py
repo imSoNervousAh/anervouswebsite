@@ -108,6 +108,7 @@ def home(request):
     return login(request) 
 
 
+@check_identity('student')
 def change_info(request):
     identity = session.get_identity(request)
     if identity == 'student':
@@ -125,6 +126,7 @@ def change_info(request):
 @check_have_student_info
 def student(request):
     username = session.get_username(request)
+    student = backend.get_student_by_id(username)
 
     approved_applications = backend.get_applications_by_status('approved')
     official_accounts = []
@@ -143,6 +145,7 @@ def student(request):
 @check_have_student_info
 def student_show_applications(request):
     username = session.get_username(request)
+    student = backend.get_student_by_id(username)
 
     glyphicons = {'approved': 'fa-check-circle',
                   'rejected': 'fa-times-circle',
@@ -163,7 +166,8 @@ def student_show_applications(request):
         if app.status == 'pending':
             pending_count += 1
 
-    return render_ajax(request, 'student/show_applications.html', {'applications': applications,
+    return render_ajax(request, 'student/show_applications.html', {'username': student.real_name,
+                                                                    'applications': applications,
                                                                    'pending_count': pending_count,
                                                                    })
 
@@ -232,12 +236,23 @@ def admin_dashboard(request):
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
-    messages = backend.get_messages(only_unprocessed=True)
+    #messages = backend.get_messages(only_unprocessed=True)
+    account1={}
+    account1['official_account_id']='3'
+    account1['count']='2'
+    account1['name']='什么鬼'
+
+    account2={}
+    account2['official_account_id']='5'
+    account2['count']='1'
+    account2['name']='酒井资讯'
+    
+    unprocessed_account=(account1,account2)
     return render_ajax(request, 'admin/dashboard.html', {'pending_applications': pending_applications,
                                                          'official_accounts': official_accounts,
                                                          'articles': articles,
                                                          'articles_count': articles_count,
-                                                         'messages': messages,
+                                                         'unprocessed_account': unprocessed_account,
                                                          })
 
 
@@ -418,6 +433,8 @@ def message_detail_admin(request, id):
                                                          'official_account_id': id,
                                                          'processed': check_processed(messages),
                                                          'MessageCategory': MessageCategory,
+                                                         'identity':'identity',
+                                                         'locate':'admin/index.html',
                                                          })
 
 
@@ -435,6 +452,8 @@ def message_detail_student(request, id):
                                                          'category': category,
                                                          'official_account_id': id,
                                                          'MessageCategory': MessageCategory,
+                                                         'identity':'student',
+                                                         'locate':'admin/index.html',
                                                          })
 
 
