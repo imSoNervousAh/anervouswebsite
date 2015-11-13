@@ -45,6 +45,9 @@ class OfficialAccount(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=300)
 
+    def unprocessed_messages_count(self):
+        return self.message_set.filter(processed__exact=False).count()
+
     def __unicode__(self):
         return "%s(%s)" % (self.name, self.wx_id)
 
@@ -123,11 +126,12 @@ class Message(models.Model):
             direction = 'from'
         else:
             direction = 'to'
-        return "%s under account %s %s %s" % (
+        return "%s under account %s %s %s, processed = %s" % (
             self.title,
             self.official_account.name,
             direction,
-            self.official_account.application.user_submit
+            self.official_account.application.user_submit,
+            self.processed
         )
 
 

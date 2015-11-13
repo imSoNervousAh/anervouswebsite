@@ -94,6 +94,10 @@ def get_official_account_by_id(id):
     return OfficialAccount.get(pk=id)
 
 
+def get_official_accounts_with_unprocessed_messages():
+    return OfficialAccount.filter(message__processed__exact=False).distinct()
+
+
 def del_official_account(id):
     try:
         account = OfficialAccount.get(pk=id)
