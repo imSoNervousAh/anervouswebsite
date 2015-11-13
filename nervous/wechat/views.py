@@ -105,7 +105,7 @@ def home(request):
     if identity in ['student','admin','superuser']:
         return HttpResponseRedirect('/%s' % identity)
 
-    return login(request) 
+    return login(request)
 
 
 @check_identity('student')
@@ -178,7 +178,7 @@ def student_add_applications(request):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
     return render_ajax(request, 'student/add_applications.html', {'student': student,
-                                                                  'student_id': username, 
+                                                                  'student_id': username,
                                                                   'username': student.real_name,})
 
 
@@ -192,7 +192,7 @@ def student_modify_applications(request,id):
     print 'in student_modify_applications..'
     print 'real_name is:',student.real_name
     return render_ajax(request, 'student/modify_applications.html', {'student': student,
-                                                                  'student_id': username, 
+                                                                  'student_id': username,
                                                                   'username': student.real_name,
                                                                   'app':app})
 
@@ -236,18 +236,7 @@ def admin_dashboard(request):
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
-    #messages = backend.get_messages(only_unprocessed=True)
-    account1={}
-    account1['official_account_id']='3'
-    account1['count']='2'
-    account1['name']='什么鬼'
-
-    account2={}
-    account2['official_account_id']='5'
-    account2['count']='1'
-    account2['name']='酒井资讯'
-    
-    unprocessed_account=(account1,account2)
+    unprocessed_account = backend.get_official_accounts_with_unprocessed_messages()
     return render_ajax(request, 'admin/dashboard.html', {'pending_applications': pending_applications,
                                                          'official_accounts': official_accounts,
                                                          'articles': articles,

@@ -69,7 +69,8 @@ def build_test_db():
     Application.create(official_account=oa_mz, user_submit='2014011417', status='rejected')
     oa_zx = OfficialAccount.create(name='酒井资讯', wx_id='jiujingzixun')
     Application.create(official_account=oa_zx, user_submit='2014011416', status='pending')
-    backend.add_application({'name': '清华研读间', 'wx_id': 'qinghuayandujian'})
+    oa_yandujian = OfficialAccount.create(name='清华研读间', wx_id='qinghuayandujian')
+    Application.create(official_account=oa_yandujian, user_submit='2014011434', status='pending')
 
     message_test_db(oa_zx.id)
 

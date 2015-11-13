@@ -146,7 +146,7 @@
                 <h4>未读站内消息</h4></div>
             <div class="panel-body">
                 {% for account in unprocessed_account %}
-                <p><a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.official_account_id %}">{{ account.name }}</a><span class="badge pull-right">{{ account.count }}</span>
+                <p><a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">{{ account.name }}</a><span class="badge pull-right">{{ account.unprocessed_messages_count }}</span>
                 </p>
                 {% endfor %}
             </div>
