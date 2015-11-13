@@ -7,7 +7,8 @@
 
             <div class="col-xs-6">
                 <div style="vertical-align: text-top">
-                    <div id="table-search-box" class="left-inner-addon col-xs-10" style="margin-top: 3px; margin-left: 30px">
+                    <div id="table-search-box" class="left-inner-addon col-xs-10"
+                         style="margin-top: 3px; margin-left: 15px">
                         <i class="fa fa-search fa-fw"></i>
                         <input id="table-search-input" name="keyword" type="text" class="form-control"
                                placeholder="搜索关键字……"/>
@@ -23,28 +24,28 @@
         <div class="table-responsive" id="articles-list-container">
             <!-- to be loaded using ajax -->
 
-            <script>
-                loadContentOn("#articles-list-container",
-                        "{% url 'admin/detail/articles-list' official_account_id %}", {
-                            'sort_by': 'posttime',
-                            'sort_order': 'desc'
-                        }, {anim: true, scroll: false}, function () {
-                            $("#articles-count-badge").html($("#articles-count-value").html());
-                        });
-                $(function () {
-                    $("#table-search-input").on("input propertychange paste", function () {
-                        console.log($(this).val());
-                        loadContentOn("#articles-list-container",
-                                "{% url 'admin/detail/articles-list' official_account_id %}", {
-                                    'sort_by': 'posttime',
-                                    'sort_order': 'desc',
-                                    'article_title_keyword': $(this).val()
-                                }, {anim: false, scroll: false}, function () {
-                                    $("#articles-count-badge").html($("#articles-count-value").html());
-                                });
-                    });
-                });
-            </script>
         </div>
+        <script>
+            loadContentOn("#articles-list-container",
+                    "{% url 'admin/detail/articles-list' official_account_id %}", {
+                        'sort_by': 'posttime',
+                        'sort_order': 'desc'
+                    }, {anim: true, scroll: false}, function () {
+                        $("#articles-count-badge").html($("#articles-count-value").html());
+                    });
+            $(function () {
+                $("#table-search-input").on("input propertychange paste", function () {
+                    console.log($(this).val());
+                    loadContentOn("#articles-list-container",
+                            "{% url 'admin/detail/articles-list' official_account_id %}", {
+                                'sort_by': 'posttime',
+                                'sort_order': 'desc',
+                                'article_title_keyword': $(this).val()
+                            }, {anim: false, scroll: false}, function () {
+                                $("#articles-count-badge").html($("#articles-count-value").html());
+                            });
+                });
+            });
+        </script>
     </div>
 </div>

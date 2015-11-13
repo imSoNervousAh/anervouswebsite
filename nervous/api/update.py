@@ -70,15 +70,15 @@ def update_official_account_nums_before_n_days(account, n):
     res = d['returnData']
     dic = {
         'date': get_date_object_before_n_days(n),
-        'likes': res['likenum_total'],
-        'views': res['readnum_total'],
-        'articles': res['url_num_total']
+        'likes': res.get('likenum_total', 0),
+        'views': res.get('readnum_total', 0),
+        'articles': res.get('url_num_total', 0)
     }
     backend.add_account_record(account, dic)
 
 
 def update_official_account_nums(account):
-    for i in xrange(2, 9):
+    for i in xrange(1, 9):
         update_official_account_nums_before_n_days(account, i)
 
 

@@ -62,11 +62,12 @@
     <script>
         $("#pager").ready(function () {
             $(".pager-link").click(function () {
-                loadContentOn("{% url 'admin/detail/articles-list' official_account_id %}", {
-                    'sort_by': "{{ sort_by }}",
-                    'sort_order': "{{ sort_order }}",
-                    'page': $(this).data("page")
-                }, "#articles-list-container");
+                loadContentOn("#articles-list-container",
+                        "{% url 'admin/detail/articles-list' official_account_id %}", {
+                            'sort_by': "{{ sort_by }}",
+                            'sort_order': "{{ sort_order }}",
+                            'page': $(this).data("page")
+                        }, {anim: false, scroll: false});
             });
         });
     </script>

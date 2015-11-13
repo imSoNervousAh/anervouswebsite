@@ -19,6 +19,7 @@
                                data-url="{% url 'admin/detail' account.id %}">
                             {{ account.name }}
                         </a></td>
+                        <td>{{ account.description }}</td>
                         <td>{{ account.subscribers }}</td>
                     </tr>
                 {% endfor %}

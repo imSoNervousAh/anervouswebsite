@@ -36,11 +36,9 @@ var __manualStateChange = false;
 
 function displayContent(data, params, container, callback) {
     var main;
-    if (typeof container !== typeof undefined) {
-        main = $(container);
-    } else {
-        main = $("#main-page");
-    }
+    if (typeof container === typeof undefined)
+        container = "#main-page";
+    main = $(container);
     var anim = true, scroll = true;
     for (var prop in params) {
         if (prop === "anim") anim = params.anim;
@@ -61,9 +59,11 @@ function displayContent(data, params, container, callback) {
                 new_height += $(this).outerHeight(true);
             });
             if (scroll) {
-                var delta = $(".main").css("padding-top");
+                var delta_str = $(".main").css("padding-top");
+                var delta = parseInt(delta_str.substr(0, delta_str.indexOf("px")), 10);
+                var pos = main.position().top + ((container === "#main-page") ? (-delta) : delta);
                 $("html, body").delay(400).animate({
-                    "scroll-top": main.position().top - delta
+                    "scroll-top": pos
                 });
             }
             main.delay(50).animate({

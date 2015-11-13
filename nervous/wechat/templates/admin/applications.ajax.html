@@ -10,7 +10,7 @@
                     <th style="width: 15%; min-width: 110px">公众号负责人</th>
                     <th style="width: 10000px">公众号简介</th>
                     <th>
-                        <div style="width: 50px"></div>
+                        <div style="width: 60px"></div>
                     </th>
                 </tr>
                 </thead>
@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{ app.name }}</td>
                         <td>{{ app.manager_name }}</td>
-                        <td>{{ app.description|linebreaks }}</td>
+                        <td>{{ app.description|linebreaksbr }}</td>
                         <td>
                             {% if app.status == 'pending' %}
                                 <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link" data-toggle="popover"

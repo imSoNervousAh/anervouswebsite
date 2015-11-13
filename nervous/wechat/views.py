@@ -102,7 +102,7 @@ def check_identity(identity):
 # home
 def home(request):
     identity = session.get_identity(request)
-    if identity in ['student','admin','superuser']:
+    if identity in ['student', 'admin', 'superuser']:
         return HttpResponseRedirect('/%s' % identity)
 
     return login(request)
@@ -167,7 +167,7 @@ def student_show_applications(request):
             pending_count += 1
 
     return render_ajax(request, 'student/show_applications.html', {'username': student.real_name,
-                                                                    'applications': applications,
+                                                                   'applications': applications,
                                                                    'pending_count': pending_count,
                                                                    })
 
@@ -179,22 +179,23 @@ def student_add_applications(request):
     student = backend.get_student_by_id(username)
     return render_ajax(request, 'student/add_applications.html', {'student': student,
                                                                   'student_id': username,
-                                                                  'username': student.real_name,})
+                                                                  'username': student.real_name})
 
 
 @check_identity('student')
 @check_have_student_info
-def student_modify_applications(request,id):
+def student_modify_applications(request, id):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
     applications = backend.get_applications_by_user(username)
     app = backend.get_application_by_id(id)
     print 'in student_modify_applications..'
-    print 'real_name is:',student.real_name
+    print 'real_name is:', student.real_name
     return render_ajax(request, 'student/modify_applications.html', {'student': student,
-                                                                  'student_id': username,
-                                                                  'username': student.real_name,
-                                                                  'app':app})
+                                                                     'student_id': username,
+                                                                     'username': student.real_name,
+                                                                     'app': app})
+
 
 @check_identity('student')
 def student_fill_info(request):
@@ -250,6 +251,13 @@ def admin_show_official_accounts(request):
     official_accounts = backend.get_official_accounts()
 
     return render_ajax(request, 'admin/official_accounts.html', {'official_accounts': official_accounts})
+
+
+@check_identity('admin')
+def admin_show_statistics(request):
+    official_accounts = backend.get_official_accounts()
+
+    return render_ajax(request, 'admin/statistics.html', {'official_accounts': official_accounts})
 
 
 @check_identity('admin')
@@ -398,18 +406,18 @@ def message_jump(request, id):
     return HttpResponseRedirect('/message/%s/%s' % (session.get_identity(request), id))
 
 
-def check_processed(messages,category):
+def check_processed(messages, category):
     for message in messages:
-        if (message.category != category) and (not message.processed ):
+        if (message.category != category) and (not message.processed):
             return False
     return True
+
 
 @check_identity('admin')
 def message_detail_admin(request, id):
     category = MessageCategory.ToStudent
     print 'detail'
     messages = backend.get_messages(official_account_id=id)
-
 
     try:
         official_account = backend.get_official_account_by_id(id)
@@ -420,10 +428,11 @@ def message_detail_admin(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
-                                                         'processed': check_processed(messages,MessageCategory.ToStudent),
+                                                         'processed': check_processed(messages,
+                                                                                      MessageCategory.ToStudent),
                                                          'MessageCategory': MessageCategory,
-                                                         'identity':'identity',
-                                                         'locate':'admin/index.html',
+                                                         'identity': 'identity',
+                                                         'locate': 'admin/index.html',
                                                          })
 
 
@@ -440,10 +449,11 @@ def message_detail_student(request, id):
                                                          'messages': messages,
                                                          'category': category,
                                                          'official_account_id': id,
-                                                         'processed': check_processed(messages,MessageCategory.ToAdmin),
+                                                         'processed': check_processed(messages,
+                                                                                      MessageCategory.ToAdmin),
                                                          'MessageCategory': MessageCategory,
-                                                         'identity':'student',
-                                                         'locate':'student/index.html',
+                                                         'identity': 'student',
+                                                         'locate': 'student/index.html',
                                                          })
 
 

@@ -34,9 +34,6 @@ function renderChart(container, data_json, params, callback) {
 function renderMultiChart(container, data, params, callback) {
     FusionCharts.ready(function () {
         var chart_data = data;
-        //$.extend(chart_data, data);
-        //$.extend(chart_data.chart, params);
-        console.log(chart_data);
         var chart_params = {
             type: 'mscombidy2d',
             dataFormat: 'json',

@@ -7,20 +7,85 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4>公众号数据分析</h4>
+        <h4>已选公众号</h4>
     </div>
     <div class="panel-body">
-        <div id="chart-container"></div>
-        <script>
-            $(function () {
-                var container = $("#chart-container");
-                renderMultiChart("#chart-container", {{ chart_json|safe }}, {
-                    width: container.width(),
-                    height: container.width() * 0.618,
-                }, function () {
-                    container.attr("height", container.width() * 0.618);
-                });
-            });
-        </script>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 15%; min-width: 100px">名称</th>
+                    <th>公众号简介</th>
+                    <th style="width: 100px"><span class="fa fa-users"></span> 关注人数</th>
+                    <th>
+                        <div style="width: 55px"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="chosen-list">
+                </tbody>
+                <script>
+                    $(".official-account-link").click(function () {
+                        loadContent($(this).data("url"), {});
+                    });
+                </script>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>选择公众号加入对比</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 15%; min-width: 100px">名称</th>
+                    <th>公众号简介</th>
+                    <th style="width: 100px"><span class="fa fa-users"></span> 关注人数</th>
+                    <th>
+                        <div style="width: 55px"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in official_accounts %}
+                    <tr>
+                        <td><a style="cursor:pointer;" class="official-account-link"
+                               data-url="{% url 'admin/detail' account.id %}">
+                            {{ account.name }}
+                        </a></td>
+                        <td>{{ account.description }}</td>
+                        <td>{{ account.subscribers }}</td>
+                        <td>
+                            <a style="cursor:pointer;" href="javascript:void(0)" class="add-to-list-link"
+                               data-item='
+                                <tr id="chosen-item-{{ account.id }}">
+                                    <td><a style="cursor:pointer;" class="official-account-link"
+                                           data-url="{% url 'admin/detail' account.id %}">
+                                        {{ account.name }}
+                                    </a></td>
+                                    <td>{{ account.description }}</td>
+                                    <td>{{ account.subscribers }}</td>
+                                    <td>
+                                        <a style="cursor:pointer;" href="javascript:void(0)" class="add-to-list-link">
+                                            <span class="fa fa-minus-square fa-fw"></span> 删除</a>
+                                    </td>
+                                </tr>'>
+                                <span class="fa fa-plus-square fa-fw"></span> 添加</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <script>
+                    $(".add-to-list-link").click(function () {
+                    });
+                </script>
+            </table>
+        </div>
     </div>
 </div>

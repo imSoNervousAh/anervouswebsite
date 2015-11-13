@@ -12,15 +12,21 @@
                 <div class="table-responsive">
                     <table class="table table-striped" id="application-list">
                         <thead>
-                            <tr>
-                                <th>公众号名称</th>
-                                <th>公众号简介</th>
-                                <th>审批状态</th>
-                                <th>处理人</th>
-                            </tr>
+                        <tr>
+                            <th>公众号名称</th>
+                            <th>公众号简介</th>
+                            <th>审批状态</th>
+                            <th>处理人</th>
+                            <th>
+                                <div style="width: 55px"></div>
+                            </th>
+                            <th>
+                                <div style="width: 55px"></div>
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for app in applications %}
+                        {% for app in applications %}
                             <tr>
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.description|linebreaksbr }}</td>
@@ -29,48 +35,48 @@
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
-                                    <a id="modify_{{app.id}}" class="fake-link">
+                                    <a id="modify_{{ app.id }}" class="fake-link">
                                         <span class="glyphicon glyphicon-check"></span> 修改
                                     </a>
                                 </td>
                                 <td>
-                                    <a id="delete_{{app.id}}" class="fake-link">
+                                    <a id="delete_{{ app.id }}" class="fake-link">
                                         <span class="glyphicon glyphicon-check"></span> 删除</a>
                                 </td>
                             </tr>
                             <script>
-                            $(function() {
-                                var msg = $("#error-msg");
-                                msg.fadeOut(0);
-                                msg.find("> button").click(function() {
-                                    $("#error-msg").fadeOut();
-                                });
-    
-                                $("#modify_{{app.id}}").click(function() {
-                                    loadContent("{% url 'student/modify-application' app.id %}");
-                                });
-                                $("#delete_{{app.id}}").click(function(event) {
-                                    event.preventDefault();
-                                    var url = "{% url 'api/delete_application' app.id %}";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        data: "{{app.in}}",
-                                        success: function(data) {
-                                            alert('删除成功!');
-                                            loadContent("/student");
-                                        },
-                                        error: function(xhr, textStatus, errorThrown) {
-                                            var msg = $("#error-msg");
-                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                            console.log(xhr.responseText);
-                                            msg.fadeIn();
-                                        }
+                                $(function () {
+                                    var msg = $("#error-msg");
+                                    msg.fadeOut(0);
+                                    msg.find("> button").click(function () {
+                                        $("#error-msg").fadeOut();
+                                    });
+
+                                    $("#modify_{{app.id}}").click(function () {
+                                        loadContent("{% url 'student/modify-application' app.id %}");
+                                    });
+                                    $("#delete_{{app.id}}").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/delete_application' app.id %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: "{{app.in}}",
+                                            success: function (data) {
+                                                alert('删除成功!');
+                                                loadContent("/student");
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
+                                            }
+                                        });
                                     });
                                 });
-                            });
                             </script>
-                            {% endfor %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
