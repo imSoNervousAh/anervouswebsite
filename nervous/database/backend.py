@@ -346,7 +346,7 @@ def get_forewarn_rules():
 
 def report_if(cond, rule, account):
     if cond:
-        print "report_if (%s, %s): True" % (rule, account)
+        print u"report_if (%s, %s): True" % (rule, account)
 
 
 def check_forewarn_rule_on_account(rule, account):

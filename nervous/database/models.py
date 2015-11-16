@@ -155,10 +155,10 @@ class ForewarnRule(models.Model):
         if self.account:
             return self.account.name
         else:
-            return '所有公众号'
+            return u'所有公众号'
 
     def __unicode__(self):
-        return "[%s, %s] for %s" % (
+        return u"[%s, %s] for %s" % (
             self.target,
             self.value,
             self.account_name()
