@@ -44,6 +44,14 @@
             }
 
             $win.on('scroll', function () {
+
+                // Added: tweak for small windows
+                if ($win.width() < 768) {
+                    style.position = "fixed";
+                    style[cssPos] = "";
+                    return ;
+                }
+
                 var scrollPos = $win[hori ? 'scrollLeft' : 'scrollTop'](),
                     elemSize = $this[hori ? 'outerWidth' : 'outerHeight'](),
                     parentPos = $parent.offset()[cssPos],
@@ -53,9 +61,9 @@
                     style.position = 'fixed';
                     style[cssPos] = options.gap + 'px';
                     options.isFixed();
-                } else if (scrollPos < parentPos) {
+                } else if (scrollPos < parentPos - options.gap) {
                     style.position = 'absolute';
-                    style[cssPos] = '0px';
+                    style[cssPos] = 0;
                 } else {
                     style.position = 'absolute';
                     style[cssPos] = (parentSize - elemSize + options.gap) + 'px';

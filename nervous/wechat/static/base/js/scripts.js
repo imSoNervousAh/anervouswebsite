@@ -62,7 +62,7 @@ function displayContent(data, params, container, callback) {
                 var delta_str = $(".main").css("padding-top");
                 var delta = parseInt(delta_str.substr(0, delta_str.indexOf("px")), 10);
                 var pos = main.position().top + ((container === "#main-page") ? (-delta) : delta);
-                $("html, body").delay(400).animate({
+                $("html, body").delay(50).animate({
                     "scroll-top": pos
                 });
             }
