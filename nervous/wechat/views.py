@@ -403,7 +403,11 @@ def admin_show_official_account_articles_list(request, id):
 @check_identity('admin')
 def admin_forewarn(request):
     rules = backend.get_forewarn_rules()
-    return render_ajax(request, 'admin/forewarn.html', {'rules':rules})
+    return render_ajax(request, 'admin/forewarn.html', {
+        'rules': rules,
+        'NotificationOption': NotificationOption,
+        'ForewarnTarget': ForewarnTarget,
+    })
 
 
 

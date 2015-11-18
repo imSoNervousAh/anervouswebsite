@@ -107,4 +107,6 @@ def process_message(request):
 
 
 def submit_rule(request):
-    pass
+    dic = request.POST.dict()
+    print "submit_rule", dic
+    return HttpResponse(request.POST)
