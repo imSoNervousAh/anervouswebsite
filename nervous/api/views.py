@@ -1,7 +1,6 @@
 # -*-coding:utf-8
 
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from api.info_login import auth_by_info as tsinghua_login
@@ -45,15 +44,16 @@ def submit_student_info(request):
     username = session.get_username(request)
     print "submit_student_info", username
     backend.set_student_information(username, dic)
-    return HttpResponse(request.POST)
+    return HttpResponseRedirect('/student')
 
 
 def submit_application(request):
     dic = request.POST.dict()
     username = session.get_username(request)
     dic['user_submit'] = username
-    backend.add_application(dic)
-    return HttpResponse(request.POST)
+    response = backend.add_application(dic)
+    print response
+    return JsonResponse(response)
 
 
 def modify_application(request):
@@ -61,7 +61,7 @@ def modify_application(request):
     username = session.get_username(request)
     dic['operator_admin'] = username
     backend.modify_application(dic)
-    return HttpResponse(request.POST)
+    return HttpResponseRedirect('/admin')
 
 
 def student_modify_application(request):

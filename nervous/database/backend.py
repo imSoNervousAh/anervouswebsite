@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
@@ -33,8 +34,19 @@ def get_application_by_id(id):
 
 
 def add_application(app):
+    print app
+
     name = app['name']
     description = app.get('description', name)
+
+    if app['name'] == "":
+        return {
+            'status': 'error',
+            #            'submit_method': app['method'],
+            'error_message': u'请填写公众号名称！',
+            'error_field': 'name'
+        }
+
     try:
         application = Application.model()
         account = OfficialAccount.create(
@@ -52,7 +64,10 @@ def add_application(app):
             setattr(application, attr, val)
         try:
             application.save()
-            return True
+            return {
+                'status': 'ok',
+                #                'submit_method': app['method']
+            }
         except:
             return False
     except IntegrityError:

@@ -38,7 +38,7 @@
                             <tr>
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.manager_name }}</td>
-                                <td>{{ app.description|linebreaks }}</td>
+                                <td>{{ app.description|linebreaksbr|safe }}</td>
                                 <td>
                                     <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link" data-toggle="popover" data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
@@ -92,7 +92,7 @@
                                         <div>{{ article.title }}</div>
                                     </a>
                                 </td>
-                                <td>{{ article.description|linebreaks }}</td>
+                                <td>{{ article.description|linebreaksbr|safe }}</td>
                                 <td align="right">{{ article.views }}</td>
                                 <td align="right">{{ article.likes }}</td>
                             </tr>

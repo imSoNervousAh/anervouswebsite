@@ -24,7 +24,7 @@
                         <td><a target="_blank" href="{{ article.url }}">
                             <div>{{ article.title }}</div>
                         </a></td>
-                        <td>{{ article.description|linebreaks }}</td>
+                        <td>{{ article.description|linebreaksbr|safe }}</td>
                         <td align="right">{{ article.views }}</td>
                         <td align="right">{{ article.likes }}</td>
                     </tr>

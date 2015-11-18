@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{ app.name }}</td>
                         <td>{{ app.manager_name }}</td>
-                        <td>{{ app.description|linebreaksbr }}</td>
+                        <td>{{ app.description|linebreaksbr|safe }}</td>
                         <td>
                             {% if app.status == 'pending' %}
                                 <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link" data-toggle="popover"

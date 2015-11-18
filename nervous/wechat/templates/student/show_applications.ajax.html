@@ -29,7 +29,7 @@
                         {% for app in applications %}
                             <tr>
                                 <td>{{ app.name }}</td>
-                                <td>{{ app.description|linebreaksbr }}</td>
+                                <td>{{ app.description|linebreaksbr|safe }}</td>
                                 <td>
                                     <span class="fa {{ app.status_glyphicon }} fa-fw"></span> {{ app.status_name }}
                                 </td>

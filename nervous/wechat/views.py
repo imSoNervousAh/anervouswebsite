@@ -309,7 +309,7 @@ def admin_show_official_account_detail(request, id):
 def admin_show_official_account_statistics(request, id):
     official_account = backend.get_official_account_by_id(id)
     chart_raw = backend.get_records(id,
-                                    timezone.now().date() - timedelta(days=9),
+                                    timezone.now().date() - timedelta(days=8),
                                     timezone.now().date() - timedelta(days=2))
     chart_raw = chart_raw.order_by('date')
     chart_data = {

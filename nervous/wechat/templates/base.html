@@ -22,6 +22,7 @@
     <script src="{% static 'jquery/jquery.js' %}"></script>
     <script src="{% static 'jquery/jquery.history.js' %}"></script>
     <script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
+    <script src="{% static 'jquery/jquery.fixer.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'base/js/scripts.js' %}"></script>
     {% block scripts %}
@@ -33,7 +34,7 @@
 <div id="top-nav" class="navbar navbar-default navbar-static-top affix">
     <div class="container-fluid">
         <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand" href="{% url 'home' %}">清华大学微信公众号备案平台</a>
+            <a class="fake-link-scroll navbar-brand">清华大学微信公众号备案平台</a>
             {% block subtitle %}
                 <!-- example
                 <a class="navbar-brand">&gt;</a>
@@ -72,6 +73,12 @@
             <!-- Left column -->
             {% block left-column %}
             {% endblock left-column %}
+
+            {% if left_column_id %}
+                <script>
+                    $({{ left_column_id }}).addClass("active");
+                </script>
+            {% endif %}
         </div>
         <div class="container-fluid" id="main-page">
             <!-- Main page -->

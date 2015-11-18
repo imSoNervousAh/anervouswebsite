@@ -131,7 +131,6 @@ function initAjaxPage(container) {
     });
 }
 
-
 function loadContentOn(container, url, params, load_params, callback) {
     console.log("on: " + url);
     var main = $(container);
@@ -173,6 +172,88 @@ function loadContentOfItem(item, callback) {
     loadContent($(item).data("url"), {}, item, callback);
 }
 
+function handleFormPost(form_selector, post_url, params) {
+    /*
+     params = {
+        success_callback(data):
+            function to call when ajax POST returns success,
+        error_callback(xhr, textStatus, errorThrown):
+            function to call when ajax POST returns error,
+        success_msg(data):
+            function that returns message to display for success POST
+            note that though POST is successful, returned status maybe "error"
+     }
+     */
+    var form = $(form_selector);
+    form.ready(function () {
+        var msg = form.find(".form-error-msg");
+        var msg_text = msg.find("> div");
+        var form_groups = $(".form-group");
+
+        var success_callback = function () {
+            },
+            error_callback = function () {
+            },
+            success_msg = function (data) {
+                var method = "提交";
+                if (data.hasOwnProperty("submit_method"))
+                    method = data.submit_method === "submit" ? "提交" : "保存";
+                if (data.status === "ok") return method + "成功！";
+
+                if (data.hasOwnProperty("error_message"))
+                    return data.error_message;
+                return "提交出错，请再次检查您填写的信息。"
+            };
+        if (params.hasOwnProperty("success_callback"))
+            success_callback = params.success_callback;
+        if (params.hasOwnProperty("error_callback"))
+            success_callback = params.error_callback;
+        if (params.hasOwnProperty("success_msg"))
+            success_callback = params.success_msg;
+
+        msg.find("button").click(function () {
+            msg.fadeOut();
+        });
+        form_groups.find("input, textarea").focus(function () {
+            $(this).parent().removeClass("has-error");
+        });
+
+        form.submit(function (event) {
+            event.preventDefault();
+            form_groups.removeClass("has-error");
+
+            $.ajax({
+                type: "POST",
+                url: post_url,
+                data: form.serialize(),
+                success: function (data) {
+                    msg.removeClass("alert-danger alert-success");
+                    if (data.status === "ok") msg.addClass("alert-success");
+                    else msg.addClass("alert-danger");
+                    msg_text.html(success_msg(data));
+                    msg.fadeIn();
+
+                    if (data.hasOwnProperty("error_field")) {
+                        var field = form_groups.has("[name='" + data.error_field + "']");
+                        field.addClass("has-error");
+                        $.scrollTo(field, {offset: -200});
+                    }
+
+                    success_callback(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var msg = $("#error-msg");
+                    msg_text.html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                    console.log(xhr.responseText.substr(0, 500));
+                    msg.fadeIn();
+
+                    error_callback(xhr, textStatus, errorThrown);
+                }
+            });
+        });
+    });
+}
+
 // apply one-time-only animation using animate.css
 function animate(item, animation) {
     item.removeClass().addClass("animated " + animation)
@@ -183,6 +264,7 @@ function animate(item, animation) {
 
 // on document ready
 $(function () {
+
     // bind History.js
     History.Adapter.bind(window, 'statechange', function () {
         var state = History.getState();
@@ -219,16 +301,22 @@ $(function () {
         displayContent(state.data.data, {}, undefined, state.data.callback);
     });
 
+    // configure scrollto.js
+    $.extend($.scrollTo.defaults, {
+        axis: 'y',
+        duration: 250
+    });
+
     // bind toggle left column button (visible in xs)
     $("#left-column-toggle").click(function (e) {
         e.preventDefault();
         var left = $("#left-column");
         left.toggleClass("expanded");
         if (left.hasClass("expanded")) {
-            var height = max($("body").height(), $(window).height());
+            var height = Math.max($("body").height(), $(window).height());
             var backdrop = $('<div id="left-column-backdrop"' +
                 ' class="modal-backdrop fade visible-xs"' +
-                ' style="height:' + height.toString() + 'px"></div>');
+                ' style="z-index: 97; height: ' + height + 'px"></div>');
             $("body").append(backdrop);
             setTimeout(function () {
                 backdrop.addClass("in");
@@ -262,11 +350,29 @@ $(function () {
         }, "fast");
     });
 
+    // activate fixer for left column
+    var left_column = $("#left-column");
+    left_column.fixer({
+        gap: 70
+    });
+
     // set page min height according to left column
-    var height = $("#left-column").outerHeight(true);
+    var height = left_column.outerHeight(true);
     $("html, body").css("min-height", height);
     $("#main-page").css({
         "min-height": height
+    });
+
+    // spinning effect for chevrons
+    left_column.find("> a").each(function () {
+        $(this).append('<span class="fa fa-chevron-up pull-right"></span>');
+    }).click(function () {
+        var chevron = $(this).find("span.fa");
+        if (chevron.hasClass("fa-chevron-up")) {
+            chevron.removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        } else {
+            chevron.removeClass("fa-chevron-down").addClass("fa-chevron-up");
+        }
     });
 
     initAjaxPage();

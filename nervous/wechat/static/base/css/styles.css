@@ -71,8 +71,13 @@ a > span.badge-info {
 
 /*
     put modal windows in center
-    for readability concerns, only apply to large screens
+        for readability concerns, only apply to large screens
+    hide left-column on small screens
 */
+#left-column {
+    overflow: scroll;
+}
+
 @media screen and (min-width: 768px) {
 
     .main {
@@ -97,9 +102,8 @@ a > span.badge-info {
     }
 
     #left-column {
-        position: fixed;
         width: 210px !important;
-        float: left;
+        max-height: calc(100vh - 70px);
     }
 
     #main-page {
@@ -114,6 +118,7 @@ a > span.badge-info {
     }
 
     #left-column {
+        max-height: calc(100vh - 100px);
         z-index: 98;
         position: fixed;
         margin-top: -30px;
@@ -194,4 +199,22 @@ th.th-sortable {
 
 .ajax-link {
     cursor: pointer;
+}
+
+/* error alert used in forms */
+.form-error-msg {
+    display: none;
+}
+
+.form-error-msg > div {
+    display: inline-block;
+    font-weight: bold;
+}
+
+/* spinning effect for chevrons */
+.fa-chevron-up {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
