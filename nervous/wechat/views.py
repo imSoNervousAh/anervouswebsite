@@ -403,10 +403,13 @@ def admin_show_official_account_articles_list(request, id):
 @check_identity('admin')
 def admin_forewarn(request):
     rules = backend.get_forewarn_rules()
+    wx_name=map(lambda account: account.name, backend.get_official_accounts())
+
     return render_ajax(request, 'admin/forewarn.html', {
         'rules': rules,
         'NotificationOption': NotificationOption,
         'ForewarnTarget': ForewarnTarget,
+        'wx_name':wx_name,
     })
 
 
