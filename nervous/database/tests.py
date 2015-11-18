@@ -1,5 +1,6 @@
 from django.test import TestCase
 from database import backend, utils
+from models import *
 
 
 class StudentTestCase(TestCase):
@@ -8,12 +9,12 @@ class StudentTestCase(TestCase):
 
     def test_student_with_unfinished_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, real_name='')
+        backend.set_student_information(student_id, {'real_name':''})
         self.assertFalse(backend.check_student_information_filled(student_id))
 
     def test_student_with_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, real_name='doge')
+        backend.set_student_information(student_id, {'real_name':'doge'})
         self.assertTrue(backend.check_student_information_filled(student_id))
 
 
@@ -23,8 +24,8 @@ class AdminTestCase(TestCase):
         password = 'correct'
         description = 'test description'
         self.assertTrue(backend.add_admin(username, password, description))
-        self.assertEqual(Admin.all().count(), 1)
-        admin = Admin.get()
+        self.assertEqual(Admin.objects.all().count(), 1)
+        admin = Admin.objects.get()
         self.assertEqual(admin.username, username)
         self.assertEqual(admin.password, password)
         self.assertEqual(admin.description, description)
@@ -43,14 +44,16 @@ class AdminTestCase(TestCase):
 
 
 class ApplicationTestCase(TestCase):
-    def test_add_application_with_same_account_name(self):
-        name = 'test_name'
+    def test_add_application_with_same_account_wx_id(self):
+        wx_id = 'test_wx_id'
         app = {
-            'name': name,
+            'name': 'name',
+            'wx_id': wx_id,
             'description': 'description',
         }
         another_app = {
-            'name': name,
+            'name': 'another_name',
+            'wx_id': wx_id,
             'description': 'another description',
         }
         self.assertTrue(backend.add_application(app))
@@ -61,11 +64,13 @@ class ApplicationTestCase(TestCase):
         acc_name = 'acc_name'
         app = {
             'name': acc_name,
+            'wx_id': 'wx_id',
             'description': '',
             'user_submit': username,
         }
         another_app = {
             'name': 'another account name',
+            'wx_id': 'another_wx_id',
             'description': 'by another user',
             'user_submit': 'not equal to hdd',
         }
@@ -74,9 +79,3 @@ class ApplicationTestCase(TestCase):
         res = backend.get_applications_by_user(username)
         self.assertEqual(res.count(), 1)
         self.assertEqual(res.first().name(), acc_name)
-
-    def test_get_pending_applications(self):
-        acc_name = 'acc_name'
-        pending_acc_name = 'pending_acc_name'
-        backend.add_application({'name': acc_name})
-        backend.add_application({'name': pending_acc_name})

@@ -33,7 +33,7 @@
                                 <label>负责人姓名</label>
 
                                 <div class="controls">
-                                    <input name="manager_name" type="text" class="form-control" value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
+                                    <input name="real_name" type="text" class="form-control" value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                                 <label>负责人电话</label>
 
                                 <div class="controls">
-                                    <input name="manager_tel" type="text" class="form-control" value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
+                                    <input name="tel" type="text" class="form-control" value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                                 <label>负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input name="manager_email" type="email" class="form-control" value="{% if type == 'change' %}{{ student.email }}{% endif %}">
+                                    <input name="email" type="email" class="form-control" value="{% if type == 'change' %}{{ student.email }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                         <label>负责人院系</label>
 
                         <div class="controls">
-                            <select name="manager_dept" class="form-control">
+                            <select name="dept" class="form-control">
                                 <option value="计算机系">计算机系</option>
                                 <option value="人文学院">人文学院</option>
                                 <option value="隔壁">隔壁</option>

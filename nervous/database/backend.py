@@ -1,21 +1,18 @@
 # coding=utf-8
+from models import *
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
-
-import setup_db
-
-setup_db.setup()
 
 
 # Applications
 
 def get_applications():
-    return Application.all()
+    return Application.objects.all()
 
 
 def get_applications_by_status(status):
-    return Application.filter(status__exact=status)
+    return Application.objects.filter(status__exact=status)
 
 
 def get_pending_applications():
@@ -23,15 +20,15 @@ def get_pending_applications():
 
 
 def get_applications_by_user(username):
-    return Application.filter(user_submit__exact=username)
+    return Application.objects.filter(user_submit__exact=username)
 
 
 def get_applications_by_admin(username):
-    return Application.filter(operator_admin__exact=username)
+    return Application.objects.filter(operator_admin__exact=username)
 
 
 def get_application_by_id(id):
-    return Application.get(official_account__id__exact=id)
+    return Application.objects.get(official_account__id__exact=id)
 
 
 def add_application(app):
@@ -49,8 +46,8 @@ def add_application(app):
         }
 
     try:
-        application = Application.model()
-        account = OfficialAccount.create(
+        application = Application.objects.model()
+        account = OfficialAccount.objects.create(
             name=name,
             description=description,
             wx_id=app['wx_id']
@@ -78,8 +75,8 @@ def add_application(app):
 def modify_application(app):
     print app
     try:
-        account = OfficialAccount.get(pk=app['account_id'])
-        application = Application.get(pk=account)
+        account = OfficialAccount.objects.get(pk=app['account_id'])
+        application = Application.objects.get(pk=account)
         for attr in ['status', 'operator_admin']:
             setattr(application, attr, app.get(attr, "unknown"))
         application.save()
@@ -89,7 +86,7 @@ def modify_application(app):
 
 def del_application(id):
     try:
-        app = Application.get(official_account__id__exact=id)
+        app = Application.objects.get(official_account__id__exact=id)
         app.delete()
         return True
     except ObjectDoesNotExist:
@@ -99,7 +96,7 @@ def del_application(id):
 # Official Accounts
 
 def get_official_accounts():
-    return OfficialAccount.all().filter(application__status__exact='approved')
+    return OfficialAccount.objects.all().filter(application__status__exact='approved')
 
 
 def get_official_accounts_wx_name():
@@ -107,7 +104,7 @@ def get_official_accounts_wx_name():
 
 
 def get_official_account_by_id(id):
-    return OfficialAccount.get(pk=id)
+    return OfficialAccount.objects.get(pk=id)
 
 
 def get_official_accounts_with_unprocessed_messages():
@@ -116,7 +113,7 @@ def get_official_accounts_with_unprocessed_messages():
 
 def del_official_account(id):
     try:
-        account = OfficialAccount.get(pk=id)
+        account = OfficialAccount.objects.get(pk=id)
         account.delete()
         return True
     except ObjectDoesNotExist:
@@ -126,14 +123,14 @@ def del_official_account(id):
 # Account Record
 
 def add_account_record(wx_id, dic):
-    account = OfficialAccount.get(wx_id__exact=wx_id)
+    account = OfficialAccount.objects.get(wx_id__exact=wx_id)
     date = dic['date']
     try:
         old_record = account.accountrecord_set.get(date__exact=date)
         old_record.delete()
     except ObjectDoesNotExist:
         pass
-    record = AccountRecord.model()
+    record = AccountRecord.objects.model()
     record.account = account
     record.date = date
     for attr in ['likes', 'views', 'articles']:
@@ -145,7 +142,7 @@ def add_account_record(wx_id, dic):
 
 def add_admin(username, md5_password, description):
     try:
-        Admin.create(username=username, password=md5_password, description=description)
+        Admin.objects.create(username=username, password=md5_password, description=description)
         return True
     except IntegrityError:
         return False
@@ -153,7 +150,7 @@ def add_admin(username, md5_password, description):
 
 def del_admin(username):
     try:
-        admin = Admin.get(username=username)
+        admin = Admin.objects.get(username=username)
         admin.delete()
         return True
     except ObjectDoesNotExist:
@@ -161,12 +158,12 @@ def del_admin(username):
 
 
 def get_admins():
-    return Admin.all()
+    return Admin.objects.all()
 
 
 def check_admin(username, password):
     try:
-        admin = Admin.get(username=username)
+        admin = Admin.objects.get(username=username)
         return admin.password == password
     except ObjectDoesNotExist:
         return False
@@ -175,32 +172,31 @@ def check_admin(username, password):
 # Students
 
 def get_student_by_id(student_id):
-    return Student.get(pk=student_id)
+    return Student.objects.get(pk=student_id)
 
 
 def set_student_information(student_id, dic):
     try:
-        student = Student.create(student_id=student_id)
+        student = Student.objects.create(student_id=student_id)
     except IntegrityError:
-        student = Student.get(pk=student_id)
-    student.real_name = dic['manager_name']
-    for attr in ['dept', 'tel', 'email']:
-        setattr(student, attr, dic['manager_%s' % attr])
+        student = Student.objects.get(pk=student_id)
+    for attr in ['real_name', 'dept', 'tel', 'email']:
+        setattr(student, attr, dic.get(attr, ''))
     student.save()
 
 
 def check_student_information_filled(student_id):
     try:
-        student = Student.get(pk=student_id)
+        student = Student.objects.get(pk=student_id)
     except ObjectDoesNotExist:
-        student = Student.create(student_id=student_id)
+        student = Student.objects.create(student_id=student_id)
     return student.information_filled()
 
 
 # Articles
 
 def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, count=10, filter=None):
-    articles = Article.all()
+    articles = Article.objects.all()
     filter = filter or {}
     official_account_id = filter.get('official_account_id', None)
     article_title_keyword = filter.get('article_title_keyword', None)
@@ -233,15 +229,15 @@ def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, c
 def add_article(dic):
     acc_wx_name = dic['wx_name']
     try:
-        acc = OfficialAccount.get(wx_id__exact=acc_wx_name)
+        acc = OfficialAccount.objects.get(wx_id__exact=acc_wx_name)
     except ObjectDoesNotExist:
         acc_name = dic['name']
-        acc = OfficialAccount.create(
+        acc = OfficialAccount.objects.create(
             wx_id=acc_wx_name,
             name=acc_name,
             description=acc_name
         )
-    art = Article.model()
+    art = Article.objects.model()
     art.official_account_id = acc.id
     art.posttime = datetime.strptime(dic['posttime'], "%Y-%m-%d %H:%M:%S")
     for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
@@ -254,13 +250,13 @@ def add_article(dic):
 
 
 def get_articles_by_official_account_id(id):
-    return Article.filter(official_account_id__exact=id)
+    return Article.objects.filter(official_account_id__exact=id)
 
 
 # Messages
 
 def get_messages(category=None, official_account_id=None, only_unprocessed=None):
-    messages = Message.all()
+    messages = Message.objects.all()
     if official_account_id:
         messages = messages.filter(official_account__id__exact=official_account_id)
     if category and category != MessageCategory.All:
@@ -283,13 +279,13 @@ def process_all_messages(official_account_id):
 
 def add_message(category, official_account_id, title, content, admin_name=None):
     try:
-        message = Message.model()
+        message = Message.objects.model()
         message.category = category
         if int(category) == MessageCategory.ToStudent:
             process_all_messages(official_account_id)
-            admin = Admin.get(pk=admin_name)
+            admin = Admin.objects.get(pk=admin_name)
             message.admin = admin
-        message.official_account = OfficialAccount.get(pk=official_account_id)
+        message.official_account = OfficialAccount.objects.get(pk=official_account_id)
         message.title = title
         message.content = content
         message.processed = False
@@ -314,19 +310,20 @@ def get_views(account, day_start, day_end):
 
 
 def get_latest_record(official_account_id):
-    return AccountRecord\
-            .filter(account__id__exact=official_account_id)\
-            .order_by('-date')[0]
+    return AccountRecord \
+        .filter(account__id__exact=official_account_id) \
+        .order_by('-date')[0]
+
 
 # Forewarning
 
 def add_forewarn_rule(dic):
     print dic
     try:
-        rule = ForewarnRule.model()
+        rule = ForewarnRule.objects.model()
         account_name = dic['account_name']
         if account_name != "":
-            account = OfficialAccount.get(name__exact=account_name)
+            account = OfficialAccount.objects.get(name__exact=account_name)
         else:
             account = None
         rule.account = account
@@ -339,7 +336,7 @@ def add_forewarn_rule(dic):
 
 
 def get_forewarn_rules():
-    return ForewarnRule.all()
+    return ForewarnRule.objects.all()
 
 
 def report_if(cond, rule, account):

@@ -2,11 +2,14 @@ import sys, os
 import django
 import __builtin__
 
-
-def setup():
+def setup_env():
     sys.path.append('.')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nervous.settings')
     django.setup()
+
+
+def setup():
+    setup_env()
     import database.models as models
     for klass in ['Admin', 'OfficialAccount', 'Application', 'Article', 'Message', 'Student', 'AccountRecord', 'ForewarnRule']:
         setattr(__builtin__, klass, getattr(models, klass).objects)
