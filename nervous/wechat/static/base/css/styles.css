@@ -74,12 +74,17 @@ a > span.badge-info {
         for readability concerns, only apply to large screens
     hide left-column on small screens
 */
+
 #left-column {
     overflow: scroll;
+    -ms-overflow-style: none;
+}
+
+#left-column::-webkit-scrollbar {
+    display: none;
 }
 
 @media screen and (min-width: 768px) {
-
     .main {
         padding-top: 70px;
     }
@@ -110,6 +115,7 @@ a > span.badge-info {
         margin-left: 210px;
     }
 }
+
 
 @media screen and (max-width: 767px) {
 

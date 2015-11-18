@@ -82,7 +82,7 @@ function loadContent(url, params, item_selector, callback) {
     var height = $("#left-column").height();
     var main = $("#main-page");
 
-    console.log(url);
+//    console.log(url);
 
     main.animate({
         opacity: 0,
@@ -132,7 +132,7 @@ function initAjaxPage(container) {
 }
 
 function loadContentOn(container, url, params, load_params, callback) {
-    console.log("on: " + url);
+//    console.log("on: " + url);
     var main = $(container);
 
     var anim = false;
@@ -262,17 +262,22 @@ function animate(item, animation) {
         });
 }
 
+// pop up an modal for confirmation (substitute for "alert()")
+function showConfirmModal(text, callback) {
+
+}
+
 // on document ready
 $(function () {
 
     // bind History.js
     History.Adapter.bind(window, 'statechange', function () {
         var state = History.getState();
-        console.log('statechange: ' + state.url);
+//        console.log('statechange: ' + state.url);
         var main = $("#main-page");
 
         if ($(window).width() < 768) {
-            console.log("mobile");
+//            console.log("mobile");
             $("#left-column").removeClass("expanded");
             var backdrop = $("#left-column-backdrop");
             backdrop.removeClass("in");
@@ -346,6 +351,9 @@ $(function () {
     $(".fake-link-scroll").click(function (e) {
         e.preventDefault();
         $("html, body").animate({
+            "scroll-top": 0
+        }, "fast");
+        left_column.animate({
             "scroll-top": 0
         }, "fast");
     });

@@ -8,8 +8,10 @@
     <title>{% block title %}清华大学微信公众号备案平台{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--[if lt IE 9]>
-            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+        <script src="{% static 'ie/html5shiv.js' %}"></script>
+        <script src="{% static 'ie/jquery-1.11.3.min.js' %}"></script>
+        <script src="{% static 'ie/css3-mediaqueries.js' %}"></script>
+    <![endif]-->
     <!-- stylesheets -->
     <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet">

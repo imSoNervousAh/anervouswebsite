@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding:utf-8
 
-import urllib, urllib2, cookielib, string
+import cookielib
+import urllib
+import urllib2
 
 __username__ = 'username'
 __password__ = 'password'
@@ -29,4 +31,5 @@ def auth_by_info(username, password):
         return True
 
 
-print auth_by_info(__username__, __password__)
+if __name__ == '__main__':
+    print auth_by_info(__username__, __password__)

@@ -38,10 +38,33 @@
                     </div>
                 </div>
                 <div class="pull-right" style="margin-top: 10px">
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger" id="remove-account-link">
                         <span class="fa fa-remove fa-fw"></span>
                         &nbsp;删除公众号
                     </button>
+                    <script>
+                        $("#remove-account-link").click(function () {
+                            showConfirmModal("确认删除公众号 {{ account.name }}？", function () {
+                                var url = "url 'api/remove_official_account'";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: {
+                                        'id': {{ account.id }}
+                                    },
+                                    success: function (data) {
+
+                                    },
+                                    error: function (xhr, textStatus, errorThrown) {
+                                        var msg = $("#error-msg");
+                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                        console.log(xhr.responseText);
+                                        msg.fadeIn();
+                                    }
+                                });
+                            });
+                        });
+                    </script>
                     <button class="btn btn-info" style="margin-left: 10px"
                             id="statistics-link">
                         <span class="fa fa-bar-chart fa-fw"></span>

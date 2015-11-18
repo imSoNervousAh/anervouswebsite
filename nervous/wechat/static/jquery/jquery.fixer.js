@@ -36,7 +36,7 @@
         return this.each(function () {
             var style = this.style,
                 $this = $(this),
-                $parent = $this.parent();
+                $parent = $this.parent().parent();
 
             if (supportSticky(this)) {
                 style[cssPos] = options.gap + 'px';
@@ -63,7 +63,7 @@
                     options.isFixed();
                 } else if (scrollPos < parentPos - options.gap) {
                     style.position = 'absolute';
-                    style[cssPos] = 0;
+                    style[cssPos] = options.gap + 'px';
                 } else {
                     style.position = 'absolute';
                     style[cssPos] = (parentSize - elemSize + options.gap) + 'px';

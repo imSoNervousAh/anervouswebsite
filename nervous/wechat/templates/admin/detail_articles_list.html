@@ -6,7 +6,7 @@
     <thead>
     <tr>
         <th></th>
-        <th style="width: 25%; min-width: 100px">文章标题
+        <th class="hidden-sm" style="width: 25%; min-width: 100px">文章标题
         </th>
         <th>文章简介</th>
         <th class="th-sortable" data-key="views"
@@ -68,7 +68,7 @@
     <tbody>
     {% for article in articles %}
         <tr>
-            <td>
+            <td class="hidden-sm">
                 <div class="article-avatar" data-src="{{ article.avatar_url }}"
                      data-alt="{{ article.title }}"></div>
             </td>
