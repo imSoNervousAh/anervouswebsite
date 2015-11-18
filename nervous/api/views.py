@@ -108,5 +108,5 @@ def process_message(request):
 
 def submit_rule(request):
     dic = request.POST.dict()
-    print "submit_rule", dic
+    backend.add_forewarn_rule(dic)
     return HttpResponse(request.POST)

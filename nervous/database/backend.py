@@ -321,22 +321,20 @@ def get_latest_record(official_account_id):
 # Forewarning
 
 def add_forewarn_rule(dic):
-    rule = ForewarnRule.model()
-    raw_id = dic['official_account_id']
-    if raw_id.isdigit():
-        try:
-            account = OfficialAccount.get(pk=int(raw_id))
-        except ObjectDoesNotExist:
-            return False
-    else:
-        account = None
-    rule.account = account
+    print dic
     try:
+        rule = ForewarnRule.model()
+        account_name = dic['account_name']
+        if account_name != "":
+            account = OfficialAccount.get(name__exact=account_name)
+        else:
+            account = None
+        rule.account = account
         for attr in ['duration', 'notification', 'target', 'value']:
             setattr(rule, attr, int(dic[attr]))
         rule.save()
         return True
-    except ValueError:
+    except ObjectDoesNotExist, ValueError:
         return False
 
 
