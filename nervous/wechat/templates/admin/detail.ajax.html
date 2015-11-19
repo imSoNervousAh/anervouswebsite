@@ -23,6 +23,7 @@
                             <b>微信ID：</b>{{ account.wx_id }}<br/>
                             <b>订阅人数：</b>{{ account.subscribers }}<br/>
                             <b>公众号描述：</b>{{ account.description }}<br/>
+                            <b>审批管理员：</b>{{ account.application.operator_admin }}<br/>
                         </div>
                     </div>
                     <div class="col-xs-6">
@@ -44,7 +45,8 @@
                     </button>
                     <script>
                         $("#remove-account-link").click(function () {
-                            showConfirmModal("确认删除公众号 {{ account.name }}？", function () {
+                            showConfirmModal("确认删除", "确认删除公众号 <b>{{ account.name }}</b> ？", function () {
+                                console.log("delete {{ account.id }}");
                                 var url = "url 'api/remove_official_account'";
                                 $.ajax({
                                     type: "POST",

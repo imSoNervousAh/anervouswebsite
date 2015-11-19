@@ -61,7 +61,7 @@
                     style.position = 'fixed';
                     style[cssPos] = options.gap + 'px';
                     options.isFixed();
-                } else if (scrollPos < parentPos - options.gap) {
+                } else if (scrollPos < parentPos) {
                     style.position = 'absolute';
                     style[cssPos] = options.gap + 'px';
                 } else {

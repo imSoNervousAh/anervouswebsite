@@ -14,7 +14,7 @@
     <ul class="nav nav-stacked collapse in" id="application-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills" id="userMenu">
-            <li id="admins-item" class="nav-header left-column-item"
+            <li id="admins-list-item" class="nav-header left-column-item"
                 data-url="{% url 'superuser/admins' %}">
                 <a class="fake-link"><i class="fa fa-user fa-fw"></i>　管理员账户列表</a>
             </li>
@@ -44,7 +44,7 @@
 {% block main-page %}
     <script>
         $(function () {
-            loadContentOfItem("#admins-item");
+            loadContentOfItem("#admins-list-item");
         });
     </script>
 {% endblock main-page %}

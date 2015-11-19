@@ -84,7 +84,7 @@ function loadContent(url, params, item_selector, callback) {
 
 //    console.log(url);
 
-    main.animate({
+    main.stop(true).animate({
         opacity: 0,
         height: height
     }, 250);
@@ -190,10 +190,8 @@ function handleFormPost(form_selector, post_url, params) {
         var msg_text = msg.find("> div");
         var form_groups = $(".form-group");
 
-        var success_callback = function () {
-            },
-            error_callback = function () {
-            },
+        var success_callback = $.noop,
+            error_callback = $.noop,
             success_msg = function (data) {
                 var method = "提交";
                 if (data.hasOwnProperty("submit_method"))
@@ -273,14 +271,58 @@ function animate(item, animation) {
 }
 
 // pop up an modal for confirmation (substitute for "alert()")
-function showConfirmModal(text, callback) {
+function showConfirmModal(title, message, callback) {
+    var raw_html = '\
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label">\
+        <div class="modal-dialog modal-sm" role="document">\
+            <div class="modal-content">\
+                <div class="modal-header">\
+                    <h4 style="font-size: 19px;" class="modal-title" id="modal-label">\
+                        <!-- title -->\
+                    </h4>\
+                </div>\
+                <div class="modal-body" style="text-align: center;">\
+                    <!-- message -->\
+                </div>\
+                <div class="modal-footer">\
+                    <button id="modal-no-button" class="btn btn-danger" data-dismiss="modal">取消</button>\
+                    <button id="modal-yes-button" class="btn btn-success" data-dismiss="modal">确认</button>\
+                </div>\
+            </div>\
+        </div>\
+    </div>';
+    $("body").append(raw_html);
+    var modal = $("#confirm-modal");
 
+    modal.find(".modal-header > h4").html(title);
+    modal.find(".modal-body").html(message);
+    modal.find("#modal-yes-button").click(callback);
+
+    modal.on("hidden.bs.modal", function () {
+        modal.remove();
+    });
+    modal.modal();
+}
+
+// call a function for a number of times with same time delta
+function callRepeated(callback, cycles, time) {
+    var wrapper = function (x) {
+        if (x > 0) {
+            callback();
+            setTimeout(function () {
+                wrapper(x - 1);
+            }, time);
+        }
+    };
+    wrapper(cycles);
 }
 
 // on document ready
 $(function () {
+    var body = $("body");
 
     // bind History.js
+    $(window).unbind('statechange');
     History.Adapter.bind(window, 'statechange', function () {
         var state = History.getState();
 //        console.log('statechange: ' + state.url);
@@ -330,11 +372,11 @@ $(function () {
         e.preventDefault();
         left_column.toggleClass("expanded");
         if (left_column.hasClass("expanded")) {
-            var height = Math.max($("body").height(), $(window).height());
+            var height = Math.max(body.height(), $(window).height());
             var backdrop = $('<div id="left-column-backdrop"' +
                 ' class="modal-backdrop fade visible-xs"' +
                 ' style="z-index: 50; height: ' + height + 'px"></div>');
-            $("body").append(backdrop);
+            body.append(backdrop);
             setTimeout(function () {
                 backdrop.addClass("in");
             }, 100);
@@ -397,22 +439,37 @@ $(function () {
     // hide scrolling indicators when reached top or bottom
     left_column.ready(function () {
         var top = left_column.find(".scroll-edge-top"),
-            bottom = left_column.find(".scroll-edge-bottom");
+            top_chevron = top.find("span"),
+            bottom = left_column.find(".scroll-edge-bottom"),
+            bottom_chevron = bottom.find("span");
         var delta = 100;
         column_container.scroll(function () {
             var scrollPos = column_container.scrollTop(),
                 scrollHeight = column_container[0].scrollHeight,
                 outerHeight = left_column.outerHeight();
+
 //            console.log(scrollPos, scrollHeight, outerHeight);
-            var bottom_opac = 1, top_opac = 1;
+            var bottom_space = delta, top_space = delta;
             if (scrollPos + delta > scrollHeight - outerHeight)
-                bottom_opac = (scrollHeight - outerHeight - scrollPos) / delta;
+                bottom_space = (scrollHeight - outerHeight - scrollPos);
             if (scrollPos < delta)
-                top_opac = scrollPos / delta;
-            bottom.css("opacity", bottom_opac);
-//            bottom.css("filter", "alpha(opacity=" + bottom_opac + ")");
-            top.css("opacity", top_opac);
-//            top.css("filter", "alpha(opacity=" + top_opac + ");");
+                top_space = scrollPos;
+            bottom_chevron.css("opacity", bottom_space / delta);
+            top_chevron.css("opacity", top_space / delta);
+
+            if (bottom_space === 0) bottom.stop(true).fadeOut(150);
+            else bottom.stop(true).fadeIn(150);
+            if (top_space === 0) top.stop(true).fadeOut(150);
+            else top.stop(true).fadeIn(150);
+        });
+        top.fadeOut(0);
+        bottom.fadeOut(0);
+        column_container.scroll();
+        column_container.find("> a").click(function () {
+            callRepeated(function () {
+                $(window).scroll();
+                column_container.scroll();
+            }, 40, 10);
         });
         top.click(function () {
             column_container.animate({

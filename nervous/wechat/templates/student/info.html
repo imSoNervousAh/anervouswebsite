@@ -9,123 +9,114 @@
 
 {% block subtitle %}{% endblock subtitle %}
 
-{% block left-column %}
-{% endblock left-column %}
+{% block main-frame %}
+    <!--
+        <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10">
 
-{% block main-page %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>{% if type == 'fill' %}请填写个人信息{% else %}修改个人信息{% endif %}</h4>
+                </div>
+
+-->
     <a class="fake-link">
         <strong><i class="fa fa-dashboard fa-fw"></i>　信息填写</strong>
     </a>
     <hr>
 
     <div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>{% if type == 'fill' %}请填写个人信息{% else %}修改个人信息{% endif %}</h4>
-        </div>
-        <div class="panel-body">
-            <form id="application-form" class="form form-vertical" data-toggle="validator" role="form">
-                {% csrf_token %}
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>{% if type == 'fill' %}请填写个人信息{% else %}修改个人信息{% endif %}</h4>
+                </div>
+                <div class="panel-body">
+                    <form id="application-form" class="form form-vertical" data-toggle="validator" role="form">
+                        {% csrf_token %}
 
-                <div class="control-group">
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label class="control-label" for="manager-name-field">负责人姓名</label>
+                        <div class="control-group">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="manager-name-field">负责人姓名</label>
+
+                                    <div class="controls">
+                                        <input id="manager-name-field" name="real_name" type="text" class="form-control"
+                                               value="{% if type == 'change' %}{{ student.real_name }}{% endif %}"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="manager-tel-field">负责人电话</label>
+
+                                    <div class="controls">
+                                        <input id="manager-tel-field" name="tel" type="text" class="form-control"
+                                               value="{% if type == 'change' %}{{ student.tel }}{% endif %}" required
+                                               pattern="^\d{3,12}$">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="manager-email-field">负责人邮箱</label>
+
+                                    <div class="controls">
+                                        <input id="manager-email-field" name="email" type="email"
+                                               class="form-control"
+                                               value="{% if type == 'change' %}{{ student.email }}{% endif %}" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="manager-dept-field">负责人院系</label>
+
+                                    <div class="controls form-group">
+                                        <select id="manager-dept-field" name="dept" class="form-control">
+                                            <option value="计算机系">计算机系</option>
+                                            <option value="人文学院">人文学院</option>
+                                            <option value="隔壁">隔壁</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label></label>
+
+                            <div class="form-error-msg alert alert-danger alert-dismissible">
+                                <div></div>
+                                <button type="button" class="close" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            </div>
 
                             <div class="controls">
-                                <input id="manager-name-field" name="real_name" type="text" class="form-control"
-                                       value="{% if type == 'change' %}{{ student.real_name }}{% endif %}" required>
+                                <button id="save-button" value="submit" class="btn btn-info">
+                                    保存
+                                </button>
                             </div>
                         </div>
-                    </div>
+
+                    </form>
+
+
+                    <script>
+                        handleFormPost("#application-form", "/api/submit_student_info", {
+                            success_callback: function (data) {
+                                window.location.href = '/student';
+                            },
+                        });
+
+                    </script>
                 </div>
-                <div class="control-group">
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label class="control-label" for="manager-tel-field">负责人电话</label>
-
-                            <div class="controls">
-                                <input id="manager-tel-field" name="tel" type="text" class="form-control"
-                                       value="{% if type == 'change' %}{{ student.tel }}{% endif %}" required
-                                       pattern="^\d{3,12}$">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label class="control-label" for="manager-email-field">负责人邮箱</label>
-
-                            <div class="controls">
-                                <input id="manager-email-field" name="email" type="email"
-                                       class="form-control"
-                                       value="{% if type == 'change' %}{{ student.email }}{% endif %}" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            <label class="control-label" for="manager-dept-field">负责人院系</label>
-
-                            <div class="controls form-group">
-                                <select id="manager-dept-field" name="dept" class="form-control">
-                                    <option value="计算机系">计算机系</option>
-                                    <option value="人文学院">人文学院</option>
-                                    <option value="隔壁">隔壁</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label></label>
-
-                    <div class="form-error-msg alert alert-danger alert-dismissible">
-                        <div></div>
-                        <button type="button" class="close" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-
-                    <div class="controls">
-                        <button id="save-button" value="submit" class="btn btn-info">
-                            保存
-                        </button>
-                    </div>
-                </div>
-
-            </form>
-
-
-            <script>
-                /*function checkLegal() {
-                 var form = document.forms['application-form'];
-                 var name = form['real_name'];
-                 var tel = form['tel'];
-                 var email = form['email'];
-                 var dept = form['dept'];
-
-                 if (name == "") {
-                 alert("请填写负责人姓名");
-                 return false;
-                 }
-
-                 var reTel = /\d{3,12}/;
-                 if (!reTel.test(tel)) {
-                 alert("请输入正确的电话号码");
-                 return false;
-                 }
-                 return true;
-                 }*/
-                handleFormPost("#application-form", "/api/submit_student_info", {
-                    success_callback: function (data) {
-                        window.location.href = '/student';
-                    },
-                });
-
-            </script>
+            </div>
         </div>
     </div>
 

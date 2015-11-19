@@ -92,6 +92,7 @@
                                 </div>
                             </form>
 
+
                             <script type="text/javascript">
                                 function submitFormCheck() {
                                     var form = document.forms["reply-message-form"];
@@ -144,8 +145,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
         <!-- right column-->
@@ -153,48 +152,30 @@
         <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>公告</h4></div>
+                    <h4>基本信息<span class="badge pull-right">{{ pending_count }}</span></h4></div>
                 <div class="panel-body">
-                    <div class="alert alert-info" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        一些<strong>不那么重要</strong>的通知
-                    </div>
-                    <p>站长给管理员的通知</p>
-
-                    <p>真的有这种东西吗</p>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>公众号关注排行</h4></div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>名称</th>
-                                <th>关注人数</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for account in official_accounts %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ account.name }}</td>
-                                    <td>{{ account.subscribers }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                    <div style="margin-left: calc(50% - 45px); margin-bottom: 20px; width: 90px; height: 90px;
+                            background: url(http://open.weixin.qq.com/qr/code/?username={{ account.wx_id }})
+                            -170px -170px no-repeat;"></div>
+                    <div>
+                        <div style="vertical-align: middle; line-height: 160%;">
+                            <b>公众号名称：</b>{{ account.name }}<br/>
+                            <b>微信ID：</b>{{ account.wx_id }}<br/>
+                            <b>订阅人数：</b>{{ account.subscribers }}<br/>
+                            <b>公众号描述：</b>{{ account.description }}<br/>
+                            <b>隶属组织：</b>{{ account.association }}<br/>
+                            <b>审批管理员：</b>{{ account.application.operator_admin }}<br/>
+                            <br/>
+                            <b>负责人姓名：</b>{{ account.manager_name }}<br/>
+                            <b>负责人学号：</b>{{ account.manager_student_id }}<br/>
+                            <b>负责人院系：</b>{{ account.manager_dept }}<br/>
+                            <b>负责人电话：</b>{{ account.manager_tel }}<br/>
+                            <b>负责人电子邮件：</b><a
+                                href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    $.scrollTo('#reply-message-form', 800);
-</script>

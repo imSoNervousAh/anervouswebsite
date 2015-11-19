@@ -70,37 +70,43 @@
 <!-- /Header -->
 <!-- Main -->
 <div class="container-fluid main">
-    <div class="row">
-        <div id="left-column">
-            <div class="hidden-xs scroll-edge-top" style="opacity: 0;">
-                <img src="{% static 'image/scroll-edge-top.png' %}"
-                     style="position: absolute; top: 0;">
-                <span class="fa fa-chevron-up"
-                      style="position: absolute; top: 0; left: 50%; opacity: 0.5"></span>
+    {% block main-frame %}
+        <div class="row">
+            <div id="left-column">
+                <!-- Left column -->
+                <div class="container column-container">
+                    {% block left-column %}
+                    {% endblock left-column %}
+                </div>
+                {% if active_item %}
+                    <script>
+                        var container = $(".column-container"),
+                                item = $("#" + "{{ active_item }}.left-column-item");
+                        item.addClass("active");
+                        if (item.position().top > container.outerHeight())
+                            container.scrollTo(item);
+                    </script>
+                {% endif %}
+                <div class="hidden-xs scroll-edge scroll-edge-top">
+                    <img src="{% static 'image/scroll-edge-top.png' %}"
+                         style="position: absolute; top: -10px;">
+                    <span class="fa fa-chevron-up"
+                          style="position: absolute; top: 0; left: 50%; opacity: 0.5"></span>
+                </div>
+                <div class="hidden-xs scroll-edge scroll-edge-bottom">
+                    <img src="{% static 'image/scroll-edge-bottom.png' %}"
+                         style="position: absolute; bottom: 0;">
+                    <span class="fa fa-chevron-down"
+                          style="position: absolute; bottom: 0; left: 50%; opacity: 0.5;"></span>
+                </div>
             </div>
-            <!-- Left column -->
-            <div class="container column-container">
-                {% block left-column %}
-                {% endblock left-column %}
-            </div>
-            {% if left_column_id %}
-                <script>
-                    $({{ left_column_id }}).addClass("active");
-                </script>
-            {% endif %}
-            <div class="hidden-xs scroll-edge-bottom" style="opacity: 1;">
-                <img src="{% static 'image/scroll-edge-bottom.png' %}"
-                     style="position: absolute; bottom: 0;">
-                <span class="fa fa-chevron-down"
-                      style="position: absolute; bottom: 0; left: 50%; opacity: 0.5;"></span>
+            <div class="container-fluid" id="main-page">
+                <!-- Main page -->
+                {% block main-page %}
+                {% endblock main-page %}
             </div>
         </div>
-        <div class="container-fluid" id="main-page">
-            <!-- Main page -->
-            {% block main-page %}
-            {% endblock main-page %}
-        </div>
-    </div>
+    {% endblock main-frame %}
 </div>
 <!-- /Main -->
 

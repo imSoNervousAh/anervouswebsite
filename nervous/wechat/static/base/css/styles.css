@@ -119,12 +119,12 @@ a > span.badge-info {
     }
 
     #left-column {
-        width: 210px !important;
+        width: 230px !important;
         max-height: calc(100vh - 70px);
     }
 
     #main-page {
-        margin-left: 210px;
+        margin-left: 230px;
     }
 }
 

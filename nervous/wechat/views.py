@@ -45,11 +45,13 @@ def index(request):
     return render(request, 'login/index.html', {'identity': 'student'})
 
 
-def render_ajax(request, url, params):
+def render_ajax(request, url, params, item_id=''):
     if request.is_ajax():
-        url = url.split('.')[0] + ".ajax.html"
+        url = url.split('.')[0] + '.ajax.html'
     else:
         params['username'] = session.get_username(request)
+        if item_id != '':
+            params['active_item'] = item_id
 
     return render(request, url, params)
 
@@ -82,7 +84,6 @@ def check_have_student_info(func):
     def wrapper(request, *args, **kw):
         student_id = session.get_username(request)
         if not backend.check_student_information_filled(student_id):
-            print 'no student info :', student_id
             return student_fill_info(request)
         return func(request, *args, **kw)
 
@@ -117,10 +118,11 @@ def change_info(request):
     if identity == 'student':
         username = session.get_username(request)
         student = backend.get_student_by_id(username)
-        return render(request, 'student/info.html', {'type': 'change',
-                                                     'username': student.real_name,
-                                                     'student': student,
-                                                     })
+        return render(request, 'student/info.html', {
+            'type': 'change',
+            'username': student.real_name,
+            'student': student,
+        })
     else:
         return HttpResponse(request, '还没有写...')
 
@@ -138,10 +140,11 @@ def student(request):
         if app.user_submit == username:
             official_accounts.append(app.official_account)
 
-    return render(request, 'student/index.html', {'username': student.real_name,
-                                                  'official_accounts': official_accounts,
-                                                  'student': student,
-                                                  })
+    return render(request, 'student/index.html', {
+        'username': student.real_name,
+        'official_accounts': official_accounts,
+        'student': student,
+    })
 
 
 @check_identity('student')
@@ -150,16 +153,18 @@ def student_show_applications(request):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
 
-    glyphicons = {'approved': 'fa-check-circle',
-                  'rejected': 'fa-times-circle',
-                  'pending': 'fa-question-circle',
-                  'not_submitted': 'fa-info-circle',
-                  }
-    status_name = {'approved': '已通过审批',
-                   'rejected': '审批被拒绝',
-                   'pending': '待审批',
-                   'not_submitted': '尚未提交',
-                   }
+    glyphicons = {
+        'approved': 'fa-check-circle',
+        'rejected': 'fa-times-circle',
+        'pending': 'fa-question-circle',
+        'not_submitted': 'fa-info-circle',
+    }
+    status_name = {
+        'approved': '已通过审批',
+        'rejected': '审批被拒绝',
+        'pending': '待审批',
+        'not_submitted': '尚未提交',
+    }
 
     applications = backend.get_applications_by_user(username)
     pending_count = 0
@@ -169,10 +174,11 @@ def student_show_applications(request):
         if app.status == 'pending':
             pending_count += 1
 
-    return render_ajax(request, 'student/show_applications.html', {'username': student.real_name,
-                                                                   'applications': applications,
-                                                                   'pending_count': pending_count,
-                                                                   })
+    return render_ajax(request, 'student/show_applications.html', {
+        'username': student.real_name,
+        'applications': applications,
+        'pending_count': pending_count,
+    }, 'my-applications-item')
 
 
 @check_identity('student')
@@ -180,10 +186,11 @@ def student_show_applications(request):
 def student_add_applications(request):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
-    return render_ajax(request, 'student/modify_applications.html', {'student': student,
-                                                                  'student_id': username,
-                                                                  'username': student.real_name,
-                                                                  })
+    return render_ajax(request, 'student/modify_applications.html', {
+        'student': student,
+        'student_id': username,
+        'username': student.real_name
+    }, 'add-application-item')
 
 
 @check_identity('student')
@@ -194,17 +201,21 @@ def student_modify_applications(request, id):
     app = backend.get_application_by_id(id)
     print 'in student_modify_applications..'
     print 'real_name is:', student.real_name
-    return render_ajax(request, 'student/modify_applications.html', {'student': student,
-                                                                  'student_id': username,
-                                                                  'username': student.real_name,
-                                                                  'app': app,
-                                                                  'modify_app': 'true', })
+    return render_ajax(request, 'student/modify_applications.html', {
+        'student': student,
+        'student_id': username,
+        'username': student.real_name,
+        'app': app,
+        'modify_app': 'true',
+    })
 
 
 @check_identity('student')
 def student_fill_info(request):
-    return render(request, 'student/info.html', {'type': 'fill',
-                                                 'username': '未登录', })
+    return render(request, 'student/info.html', {
+        'type': 'fill',
+        'username': '未登录'
+    })
 
 
 @check_identity('student')
@@ -214,10 +225,11 @@ def student_change_info(request):
     if identity == 'student':
         username = session.get_username(request)
         student = backend.get_student_by_id(username)
-        return render(request, 'student/info.html', {'type': 'change',
-                                                     'username': student.real_name,
-                                                     'student': student,
-                                                     })
+        return render(request, 'student/info.html', {
+            'type': 'change',
+            'username': student.real_name,
+            'student': student,
+        })
     else:
         return HttpResponse(request, '还没有写...')
 
@@ -230,8 +242,10 @@ def admin(request):
     pending_applications_count = len(backend.get_pending_applications())
     username = session.get_username(request)
 
-    return render(request, 'admin/index.html', {'username': username,
-                                                'pending_applications_count': pending_applications_count})
+    return render(request, 'admin/index.html', {
+        'username': username,
+        'pending_applications_count': pending_applications_count
+    })
 
 
 @check_identity('admin')
@@ -242,35 +256,41 @@ def admin_dashboard(request):
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
     unprocessed_account = backend.get_official_accounts_with_unprocessed_messages()
-    return render_ajax(request, 'admin/dashboard.html', {'pending_applications': pending_applications,
-                                                         'official_accounts': official_accounts,
-                                                         'articles': articles,
-                                                         'articles_count': articles_count,
-                                                         'unprocessed_account': unprocessed_account,
-                                                         })
+    return render_ajax(request, 'admin/dashboard.html', {
+        'pending_applications': pending_applications,
+        'official_accounts': official_accounts,
+        'articles': articles,
+        'articles_count': articles_count,
+        'unprocessed_account': unprocessed_account,
+    }, 'dashboard-item')
 
 
 @check_identity('admin')
 def admin_show_official_accounts(request):
     official_accounts = backend.get_official_accounts()
 
-    return render_ajax(request, 'admin/official_accounts.html', {'official_accounts': official_accounts})
+    return render_ajax(request, 'admin/official_accounts.html', {
+        'official_accounts': official_accounts
+    }, 'official-accounts-list-item')
 
 
 @check_identity('admin')
 def admin_show_statistics(request):
     official_accounts = backend.get_official_accounts()
 
-    return render_ajax(request, 'admin/statistics.html', {'official_accounts': official_accounts})
+    return render_ajax(request, 'admin/statistics.html', {
+        'official_accounts': official_accounts
+    }, 'statistics-list-item')
 
 
 @check_identity('admin')
 def admin_show_articles(request):
     articles_count, articles = backend.get_articles()
 
-    return render_ajax(request, 'admin/articles.html', {'articles': articles,
-                                                        'articles_count': articles_count,
-                                                        })
+    return render_ajax(request, 'admin/articles.html', {
+        'articles': articles,
+        'articles_count': articles_count,
+    })
 
 
 @check_identity('admin')
@@ -278,20 +298,26 @@ def admin_show_applications(request, type):
     if type == 'pending':
         applications = backend.get_pending_applications()
         type_name = u'待审批申请'
+        type_icon = 'fa-tasks'
     elif type == 'processed':
         username = session.get_username(request)
         applications = backend.get_applications_by_admin(username)
         type_name = u'我处理的申请'
+        type_icon = 'fa-check'
     elif type == 'all':
         applications = backend.get_applications()
         type_name = u'所有申请'
+        type_icon = 'fa-list-alt'
     else:
         applications = []
         type_name = ''
+    item_id = type + '-applications-item'
 
-    return render_ajax(request, 'admin/applications.html', {'applications': applications,
-                                                            'application_type': type_name,
-                                                            })
+    return render_ajax(request, 'admin/applications.html', {
+        'applications': applications,
+        'application_type': type_name,
+        'application_icon': type_icon
+    }, item_id)
 
 
 @check_identity('admin')
@@ -303,10 +329,11 @@ def admin_show_official_account_detail(request, id):
 
     articles_count, articles = backend.get_articles(filter={'official_account_id': id})
 
-    return render_ajax(request, 'admin/detail.html', {'account': official_account,
-                                                      'official_account_id': id,
-                                                      'articles_count': articles_count,
-                                                      })
+    return render_ajax(request, 'admin/detail.html', {
+        'account': official_account,
+        'official_account_id': id,
+        'articles_count': articles_count,
+    })
 
 
 @check_identity('admin')
@@ -318,13 +345,13 @@ def admin_show_official_account_statistics(request, id):
     chart_raw = chart_raw.order_by('date')
     chart_data = {
         'chart': {
-            'caption': "公众号一周信息",
+            'caption': '公众号一周信息',
             'subCaption': official_account.name,
             'theme': 'zune',
             'exportEnabled': '1',
-            'xAxisName': "日期",
-            'pYAxisName': "阅读数",
-            'sYAxisName': "点赞数",
+            'xAxisName': '日期',
+            'pYAxisName': '阅读数',
+            'sYAxisName': '点赞数',
             'sYAxisMaxValue': int(reduce(lambda x, y: max(x, y.likes),
                                          chart_raw, 0) * 0.18) * 10
         },
@@ -333,11 +360,11 @@ def admin_show_official_account_statistics(request, id):
         ],
         'dataset': [
             {
-                'seriesName': "阅读数",
+                'seriesName': '阅读数',
                 'data': []
             },
             {
-                'seriesName': "点赞数",
+                'seriesName': '点赞数',
                 'parentYAxis': 'S',
                 'renderAs': 'area',
                 'data': []
@@ -352,9 +379,10 @@ def admin_show_official_account_statistics(request, id):
 
     chart_json = json.dumps(chart_data)
 
-    return render(request, 'admin/detail_statistics.html', {'account': official_account,
-                                                            'chart_json': chart_json
-                                                            })
+    return render(request, 'admin/detail_statistics.html', {
+        'account': official_account,
+        'chart_json': chart_json
+    })
 
 
 @check_identity('admin')
@@ -394,14 +422,14 @@ def admin_show_official_account_articles_list(request, id):
 
     page = get_pagination(articles_count, articles_on_one_page, page_current)
 
-    return render(request, 'admin/detail_articles_list.html',
-                  {'articles': articles,
-                   'articles_count': articles_count,
-                   'official_account_id': id,
-                   'page': page,
-                   'sort_by': sort_by_keyword,
-                   'sort_order': sort_order_keyword
-                   })
+    return render(request, 'admin/detail_articles_list.html', {
+        'articles': articles,
+        'articles_count': articles_count,
+        'official_account_id': id,
+        'page': page,
+        'sort_by': sort_by_keyword,
+        'sort_order': sort_order_keyword
+    })
 
 
 @check_identity('admin')
@@ -420,7 +448,7 @@ def admin_forewarn(request):
         'NotificationOption': NotificationOption,
         'ForewarnTarget': ForewarnTarget,
         'wx_name': wx_name,
-    })
+    }, 'forewarn-list-item')
 
 
 # message
@@ -447,16 +475,16 @@ def message_detail_admin(request, id):
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message.html', {'account': official_account,
-                                                         'messages': messages,
-                                                         'category': category,
-                                                         'official_account_id': id,
-                                                         'processed': check_processed(messages,
-                                                                                      MessageCategory.ToStudent),
-                                                         'MessageCategory': MessageCategory,
-                                                         'identity': 'identity',
-                                                         'locate': 'admin/index.html',
-                                                         })
+    return render_ajax(request, 'message/message.html', {
+        'account': official_account,
+        'messages': messages,
+        'category': category,
+        'official_account_id': id,
+        'processed': check_processed(messages, MessageCategory.ToStudent),
+        'MessageCategory': MessageCategory,
+        'identity': 'identity',
+        'locate': 'admin/index.html',
+    })
 
 
 @check_identity('student')
@@ -468,16 +496,16 @@ def message_detail_student(request, id):
     except:
         return to_notfound(request)
 
-    return render_ajax(request, 'message/message.html', {'account': official_account,
-                                                         'messages': messages,
-                                                         'category': category,
-                                                         'official_account_id': id,
-                                                         'processed': check_processed(messages,
-                                                                                      MessageCategory.ToAdmin),
-                                                         'MessageCategory': MessageCategory,
-                                                         'identity': 'student',
-                                                         'locate': 'student/index.html',
-                                                         })
+    return render_ajax(request, 'message/message.html', {
+        'account': official_account,
+        'messages': messages,
+        'category': category,
+        'official_account_id': id,
+        'processed': check_processed(messages, MessageCategory.ToAdmin),
+        'MessageCategory': MessageCategory,
+        'identity': 'student',
+        'locate': 'student/index.html',
+    }, 'message-detail-' + str(id))
 
 
 # superuser
@@ -491,4 +519,6 @@ def superuser(request):
 def superuser_show_admins(request):
     admins = backend.get_admins()
 
-    return render_ajax(request, 'superuser/admins.html', {'admins': admins})
+    return render_ajax(request, 'superuser/admins.html', {
+        'admins': admins
+    }, 'admins-list-item')
