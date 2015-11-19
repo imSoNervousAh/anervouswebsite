@@ -16,18 +16,25 @@
                 </thead>
                 <tbody>
                 {% for article in articles %}
-                    <tr>
-                        <td><a style="cursor:pointer;" class="official-account-link"
-                                data-url="{% url 'admin/detail' article.official_account_id %}">
-                            {{ article.official_account_name }}
-                        </a></td>
-                        <td><a target="_blank" href="{{ article.url }}">
-                            <div>{{ article.title }}</div>
-                        </a></td>
-                        <td>{{ article.description|linebreaksbr|safe }}</td>
-                        <td align="right">{{ article.views }}</td>
-                        <td align="right">{{ article.likes }}</td>
-                    </tr>
+                <tr>
+                    <td><a style="cursor:pointer;" class="official-account-link"
+                           data-url="{% url 'admin/detail' article.official_account_id %}">
+                        {{ article.official_account_name }}
+                    </a></td>
+                    <td><a target="_blank" href="{{ article.url }}">
+                        <div>{{ article.title }}</div>
+                    </a></td>
+                    <td>{{ article.description|linebreaksbr|safe }}</td>
+                    <td align="right">
+                        {% ifnotequal article.views 100000 %}
+                        {{ article.views }}
+                        {% else %}
+                        100000+
+                        {% endifnotequal %}
+
+                    </td>
+                    <td align="right">{{ article.likes }}</td>
+                </tr>
                 {% endfor %}
                 </tbody>
                 <script>

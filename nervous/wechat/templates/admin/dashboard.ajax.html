@@ -93,7 +93,13 @@
                                     </a>
                                 </td>
                                 <td>{{ article.description|linebreaksbr|safe }}</td>
-                                <td align="right">{{ article.views }}</td>
+                                <td align="right">
+                                {% ifnotequal article.views 100000 %}
+                                    {{ article.views }}
+                                {% else %}
+                                100000+
+                                {% endifnotequal %}
+                                </td>
                                 <td align="right">{{ article.likes }}</td>
                             </tr>
                             {% endfor %}
