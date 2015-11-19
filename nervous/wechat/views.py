@@ -198,7 +198,7 @@ def student_modify_applications(request, id):
                                                                   'student_id': username,
                                                                   'username': student.real_name,
                                                                   'app': app,
-                                                                  'modify': 'true', })
+                                                                  'modify_app': 'true', })
 
 
 @check_identity('student')

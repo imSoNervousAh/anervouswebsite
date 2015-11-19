@@ -110,7 +110,7 @@
                     </div>
                 </form>
                 <script>
-                    {% if modify %}
+                    {% if modify_app %}
                         handleFormPost("#application-form", "{% url 'api/student_modify_application' %}", {
                     {% else %}
                         handleFormPost("#application-form", "{% url 'api/submit_application' %}", {
