@@ -36,7 +36,7 @@
         return this.each(function () {
             var style = this.style,
                 $this = $(this),
-                $parent = $this.parent().parent();
+                $parent = $this.parent();
 
             if (supportSticky(this)) {
                 style[cssPos] = options.gap + 'px';

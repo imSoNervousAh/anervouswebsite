@@ -75,9 +75,21 @@ a > span.badge-info {
     hide left-column on small screens
 */
 
-#left-column {
-    overflow: scroll;
+.column-container {
+    overflow: scroll !important;
     -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    margin-top: -20px;
+    padding-top: 20px;
+    z-index: 91;
+    max-height: inherit;
+    width: inherit;
+}
+
+#left-column {
+    position: fixed;
+    margin-top: -20px;
+    padding-top: 20px;
 }
 
 #left-column::-webkit-scrollbar {
@@ -116,16 +128,15 @@ a > span.badge-info {
     }
 }
 
-
 @media screen and (max-width: 767px) {
 
     .main {
-        padding-top: 130px;
+        padding-top: 140px;
     }
 
     #left-column {
         max-height: calc(100vh - 100px);
-        z-index: 98;
+        z-index: 90;
         position: fixed;
         margin-top: -30px;
         padding-top: 30px;
@@ -138,7 +149,7 @@ a > span.badge-info {
         transition: all 0.5s ease-in-out;
     }
 
-    #left-column > a {
+    #left-column > div > a {
         color: #2c3e50;
     }
 

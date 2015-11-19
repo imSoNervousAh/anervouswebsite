@@ -313,21 +313,23 @@ $(function () {
     });
 
     // bind toggle left column button (visible in xs)
+    var left_column = $("#left-column");
+    var column_container = $(".column-container");
+
     $("#left-column-toggle").click(function (e) {
         e.preventDefault();
-        var left = $("#left-column");
-        left.toggleClass("expanded");
-        if (left.hasClass("expanded")) {
+        left_column.toggleClass("expanded");
+        if (left_column.hasClass("expanded")) {
             var height = Math.max($("body").height(), $(window).height());
             var backdrop = $('<div id="left-column-backdrop"' +
                 ' class="modal-backdrop fade visible-xs"' +
-                ' style="z-index: 97; height: ' + height + 'px"></div>');
+                ' style="z-index: 50; height: ' + height + 'px"></div>');
             $("body").append(backdrop);
             setTimeout(function () {
                 backdrop.addClass("in");
             }, 100);
             $(backdrop).click(function () {
-                $("#left-column").removeClass("expanded");
+                left_column.removeClass("expanded");
                 backdrop.removeClass("in");
                 setTimeout(function () {
                     backdrop.remove();
@@ -353,13 +355,12 @@ $(function () {
         $("html, body").animate({
             "scroll-top": 0
         }, "fast");
-        left_column.animate({
+        column_container.animate({
             "scroll-top": 0
         }, "fast");
     });
 
     // activate fixer for left column
-    var left_column = $("#left-column");
     left_column.fixer({
         gap: 70
     });
@@ -372,7 +373,7 @@ $(function () {
     });
 
     // spinning effect for chevrons
-    left_column.find("> a").each(function () {
+    left_column.find(".column-container > a").each(function () {
         $(this).append('<span class="fa fa-chevron-up pull-right"></span>');
     }).click(function () {
         var chevron = $(this).find("span.fa");
@@ -381,6 +382,38 @@ $(function () {
         } else {
             chevron.removeClass("fa-chevron-down").addClass("fa-chevron-up");
         }
+    });
+
+    // hide scrolling indicators when reached top or bottom
+    left_column.ready(function () {
+        var top = left_column.find(".scroll-edge-top"),
+            bottom = left_column.find(".scroll-edge-bottom");
+        var delta = 100;
+        column_container.scroll(function () {
+            var scrollPos = column_container.scrollTop(),
+                scrollHeight = column_container[0].scrollHeight,
+                outerHeight = left_column.outerHeight();
+//            console.log(scrollPos, scrollHeight, outerHeight);
+            var bottom_opac = 1, top_opac = 1;
+            if (scrollPos + delta > scrollHeight - outerHeight)
+                bottom_opac = (scrollHeight - outerHeight - scrollPos) / delta;
+            if (scrollPos < delta)
+                top_opac = scrollPos / delta;
+            bottom.css("opacity", bottom_opac);
+//            bottom.css("filter", "alpha(opacity=" + bottom_opac + ")");
+            top.css("opacity", top_opac);
+//            top.css("filter", "alpha(opacity=" + top_opac + ");");
+        });
+        top.click(function () {
+            column_container.animate({
+                "scroll-top": 0
+            }, "fast");
+        });
+        bottom.click(function () {
+            column_container.animate({
+                "scroll-top": column_container[0].scrollHeight - left_column.outerHeight()
+            }, "fast");
+        });
     });
 
     initAjaxPage();
