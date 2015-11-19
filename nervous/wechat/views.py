@@ -180,10 +180,10 @@ def student_show_applications(request):
 def student_add_applications(request):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
-    return render_ajax(request, 'student/add_applications.html', {'student': student,
-                                                                     'student_id': username,
-                                                                     'username': student.real_name,
-                                                                      })
+    return render_ajax(request, 'student/modify_applications.html', {'student': student,
+                                                                  'student_id': username,
+                                                                  'username': student.real_name,
+                                                                  })
 
 
 @check_identity('student')
@@ -191,15 +191,14 @@ def student_add_applications(request):
 def student_modify_applications(request, id):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
-    applications = backend.get_applications_by_user(username)
     app = backend.get_application_by_id(id)
     print 'in student_modify_applications..'
     print 'real_name is:', student.real_name
-    return render_ajax(request, 'student/add_applications.html', {'student': student,
-                                                                     'student_id': username,
-                                                                     'username': student.real_name,
-                                                                     'app': app,
-                                                                  'add_app': 'true',})
+    return render_ajax(request, 'student/modify_applications.html', {'student': student,
+                                                                  'student_id': username,
+                                                                  'username': student.real_name,
+                                                                  'app': app,
+                                                                  'modify': 'true', })
 
 
 @check_identity('student')

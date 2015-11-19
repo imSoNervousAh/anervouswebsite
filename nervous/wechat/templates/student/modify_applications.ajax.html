@@ -26,12 +26,12 @@
                             <div class="col-sm-6 form-group">
                                 <label class="control-label" for="name-field">公众号名称</label>
                                 <input id="name-field" name="name" type="text" class="form-control" placeholder=""
-                                       required value="{{ app.name }}">
+                                       value="{{ app.name }}" required>
                             </div>
                             <div class=" col-sm-6 form-group">
                                 <label class="control-label" for="wx_id-field">公众号微信ID</label>
                                 <input id="wx_id-field" name="wx_id" type="text" class="form-control"
-                                       placeholder="" required value="{{ app.official_account.wx_id }}">
+                                       placeholder="" value="{{ app.official_account.wx_id }}" required>
                             </div>
                         </div>
                     </div>
@@ -110,18 +110,23 @@
                     </div>
                 </form>
                 <script>
-                    handleFormPost("#application-form", "{% url 'api/submit_application' %}", {
-                        success_callback: function (data) {
-                            if (data.status === "ok") {
-                                setTimeout(function () {
-                                    loadContentOfItem("#my-applications-item", function () {
-                                        var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
-                                        animate(item, "flash");
-                                    });
-                                }, 1500);
-                            }
+                    {% if modify %}
+                        handleFormPost("#application-form", "{% url 'api/student_modify_application' %}", {
+                    {% else %}
+                        handleFormPost("#application-form", "{% url 'api/submit_application' %}", {
+                    {% endif %}
+                    success_callback: function (data) {
+                        if (data.status === "ok") {
+                            setTimeout(function () {
+                                loadContentOfItem("#my-applications-item", function () {
+                                    var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
+                                    animate(item, "flash");
+                                });
+                            }, 1500);
                         }
+                    }
                     });
+
                 </script>
             </div>
         </div>
