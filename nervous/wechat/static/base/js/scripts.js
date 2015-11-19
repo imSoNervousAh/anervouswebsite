@@ -206,8 +206,10 @@ function handleFormPost(form_selector, post_url, params) {
             };
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
-        if (params.hasOwnProperty("error_callback"))
+        if (params.hasOwnProperty("error_callback")) {
             success_callback = params.error_callback;
+            console.log("own error_callback");
+        }
         if (params.hasOwnProperty("success_msg"))
             success_callback = params.success_msg;
 
@@ -242,7 +244,7 @@ function handleFormPost(form_selector, post_url, params) {
                     success_callback(data);
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    var msg = $("#error-msg");
+                    console.log("post error");
                     msg_text.html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
                     console.log(xhr.responseText.substr(0, 500));
                     msg.fadeIn();
