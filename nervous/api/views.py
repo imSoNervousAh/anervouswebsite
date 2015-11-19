@@ -77,7 +77,7 @@ def student_modify_application(request):
 
 
 def delete_application(request, id):
-    print 'delete: ', id
+    backend.del_application(id)
     return HttpResponseRedirect('/admin')
 
 
