@@ -108,7 +108,7 @@ def get_official_account_by_id(id):
 
 
 def get_official_accounts_with_unprocessed_messages():
-    return OfficialAccount.filter(message__processed__exact=False).distinct()
+    return OfficialAccount.objects.filter(message__processed__exact=False).distinct()
 
 
 def del_official_account(id):
@@ -310,7 +310,7 @@ def get_views(account, day_start, day_end):
 
 
 def get_latest_record(official_account_id):
-    return AccountRecord \
+    return AccountRecord.objects \
         .filter(account__id__exact=official_account_id) \
         .order_by('-date')[0]
 
