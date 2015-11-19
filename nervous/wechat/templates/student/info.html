@@ -29,11 +29,12 @@
 
                     <div class="control-group">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label>负责人姓名</label>
+                            <div class="col-sm-6 form-group">
+                                <label class="control-label" for="manager-name-field">负责人姓名</label>
 
                                 <div class="controls">
-                                    <input name="real_name" type="text" class="form-control" value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
+                                    <input id="manager-name-field" name="manager_name" type="text" class="form-control"
+                                           value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -41,10 +42,11 @@
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label>负责人电话</label>
+                                <label class="control-label" for="manager-tel-field">负责人电话</label>
 
                                 <div class="controls">
-                                    <input name="tel" type="text" class="form-control" value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
+                                    <input id="manager-tel-field" name="manager_tel" type="text" class="form-control"
+                                           value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
                                 </div>
                             </div>
                         </div>
@@ -52,19 +54,21 @@
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label>负责人邮箱</label>
+                                <label class="control-label" for="manager-email-field">负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input name="email" type="email" class="form-control" value="{% if type == 'change' %}{{ student.email }}{% endif %}">
+                                    <input id="manager-email-field" name="manager_email" type="email"
+                                           class="form-control"
+                                           value="{% if type == 'change' %}{{ student.email }}{% endif %}">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>负责人院系</label>
+                        <label class="control-label" for="manager-dept-field">负责人院系</label>
 
                         <div class="controls">
-                            <select name="dept" class="form-control">
+                            <select id="manager-dept-field" name="manager_dept" class="form-control">
                                 <option value="计算机系">计算机系</option>
                                 <option value="人文学院">人文学院</option>
                                 <option value="隔壁">隔壁</option>
@@ -74,8 +78,8 @@
                     <div class="control-group">
                         <label></label>
 
-                        <div id="error-msg" class="alert alert-danger alert-dismissible">
-                            <label></label>
+                        <div class="form-error-msg alert alert-danger alert-dismissible">
+                            <div></div>
                             <button type="button" class="close" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
                         </div>
@@ -92,31 +96,10 @@
 
                 </form>
                 <script>
-
-                    $(function () {
-                        var msg = $("#error-msg");
-                        msg.fadeOut(0);
-                        msg.find("> button").click(function () {
-                            $("#error-msg").fadeOut();
-                        });
-                    });
-                    $("#application-form").submit(function (event) {
-                        event.preventDefault();
-                        var url = "/api/submit_student_info";
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: $("#application-form").serialize(),
-                            success: function (data) {
-                                window.location.href='/student';
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                var msg = $("#error-msg");
-                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                console.log(xhr.responseText);
-                                msg.fadeIn();
-                            }
-                        });
+                    handleFormPost("#application-form", "/api/submit_student_info", {
+                        success_callback: function (data) {
+                            window.location.href = '/student';
+                        }
                     });
 
                 </script>

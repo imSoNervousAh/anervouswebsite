@@ -12,21 +12,23 @@
             <div class="panel-body">
                 <form id="application-form" class="form form-vertical">
                     {% csrf_token %}
-		    <input name="application_id" type="text" style="display:none" value="{{app.id}}">
+                    <input name="application_id" type="text" style="display:none" value="{{ app.id }}">
+
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
                                 <label>公众号名称</label>
 
                                 <div class="controls">
-                                    <input name="name" type="text" class="form-control" value="{{app.name}}">
+                                    <input name="name" type="text" class="form-control" value="{{ app.name }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>公众号微信ID</label>
 
                                 <div class="controls">
-                                    <input name="wx_id" type="text" class="form-control" value="{{app.official_account.wx_id}}">
+                                    <input name="wx_id" type="text" class="form-control"
+                                           value="{{ app.official_account.wx_id }}">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +37,7 @@
                         <label>公众号简介</label>
 
                         <div class="controls">
-                        <textarea name="description" class="form-control" value="{{app.description}}"
+                        <textarea name="description" class="form-control" value="{{ app.description }}"
                                   style="resize: vertical;"></textarea>
                         </div>
                     </div>
@@ -58,14 +60,16 @@
                                 <label>负责人姓名</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_name" type="text" class="form-control" value="{{ student.real_name }}">
+                                    <input readonly="readonly" name="manager_name" type="text" class="form-control"
+                                           value="{{ student.real_name }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人学号</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_student_id" type="text" class="form-control"
+                                    <input readonly="readonly" name="manager_student_id" type="text"
+                                           class="form-control"
                                            value="{{ student_id }}">
                                 </div>
                             </div>
@@ -77,14 +81,16 @@
                                 <label>负责人电话</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_tel" type="text" class="form-control" value="{{ student.tel }}">
+                                    <input readonly="readonly" name="manager_tel" type="text" class="form-control"
+                                           value="{{ student.tel }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <label>负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_email" type="email" class="form-control" value="{{ student.email }}">
+                                    <input readonly="readonly" name="manager_email" type="email" class="form-control"
+                                           value="{{ student.email }}">
                                 </div>
                             </div>
                         </div>
@@ -95,7 +101,8 @@
                                 <label>负责人院系</label>
 
                                 <div class="controls">
-                                    <input readonly="readonly" name="manager_dept" type="text" class="form-control" value="{{ student.dept }}">
+                                    <input readonly="readonly" name="manager_dept" type="text" class="form-control"
+                                           value="{{ student.dept }}">
                                 </div>
                             </div>
                         </div>
@@ -133,33 +140,13 @@
                     </div>
                 </form>
                 <script>
-                    $(function () {
-                        var msg = $("#error-msg");
-                        msg.fadeOut(0);
-                        msg.find("> button").click(function () {
-                            $("#error-msg").fadeOut();
-                        });
-                    });
-                    $("#application-form").submit(function (event) {
-                        event.preventDefault();
-                        var url = "{% url 'api/student_modify_application' %}";
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: $("#application-form").serialize(),
-                            success: function (data) {
-                                loadContentOfItem("#my-applications-item", function () {
-                                    var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
-                                    animate(item, "flash");
-                                });
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                var msg = $("#error-msg");
-                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                console.log(xhr.responseText);
-                                msg.fadeIn();
-                            }
-                        });
+                    handleFormPost("#application-form", "{% url 'api/student_modify_application' %}", {
+                        success_callback: function (data) {
+                            loadContentOfItem("#my-applications-item", function () {
+                                var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
+                                animate(item, "flash");
+                            });
+                        }
                     });
                 </script>
             </div>
