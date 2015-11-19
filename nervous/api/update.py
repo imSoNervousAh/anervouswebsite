@@ -89,3 +89,11 @@ def update_all():
     for account in lists:
         update_official_account(account)
         update_official_account_nums(account)
+
+
+def update_wci(account):
+    paras = {}
+    paras['wx_name'] = account
+    d = get_dict('wx/opensearchapi/nickname_order_now', paras)
+    return d['returnData']['items']
+    #d['returnData']['items'][wci]
