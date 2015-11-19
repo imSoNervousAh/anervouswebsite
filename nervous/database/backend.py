@@ -2,7 +2,10 @@
 from models import *
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+from django.conf import settings
 from datetime import datetime
+import pytz
 
 
 # Applications
@@ -239,7 +242,8 @@ def add_article(dic):
         )
     art = Article.objects.model()
     art.official_account_id = acc.id
-    art.posttime = datetime.strptime(dic['posttime'], "%Y-%m-%d %H:%M:%S")
+    naive_time = datetime.strptime(dic['posttime'], "%Y-%m-%d %H:%M:%S")
+    art.posttime = pytz.timezone(settings.TIME_ZONE).localize(naive_time, is_dst=None)
     for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
         setattr(art, attr, dic[attr])
     try:
