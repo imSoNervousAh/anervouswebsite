@@ -87,7 +87,7 @@ def modify_application(app):
 def del_application(id):
     try:
         app = Application.objects.get(official_account__id__exact=id)
-        app.delete()
+        app.official_account.delete()
         return True
     except ObjectDoesNotExist:
         return False
