@@ -451,6 +451,27 @@ def admin_forewarn(request):
     }, 'forewarn-list-item')
 
 
+
+@check_identity('admin')
+def admin_forewarn_list(request):
+    record1={
+        'account':'酒#资讯',
+        'datetime':'2015/12/34',
+        'value':'233'
+    }
+    record2={
+        'account':'单身狗',
+        'datetime':'2111/11/11',
+        'value':'666'
+    }
+    recordlist=[record1,record2]
+
+    return render_ajax(request, 'admin/forewarn_list.html', {
+        'recordlist':recordlist,
+    }, 'forewarn-detail-list-item')
+
+
+
 # message
 
 def message_jump(request, id):

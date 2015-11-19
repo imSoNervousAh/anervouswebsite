@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^admin/dashboard/?$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
     url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^admin/forewarn/?$','wechat.views.admin_forewarn',name='admin/forewarn'),
+    url(r'^admin/forewarn_list/?$','wechat.views.admin_forewarn_list',name='admin/forewarn-list'),
     url(r'^admin', 'wechat.views.admin', name='admin'),
 
     #   superuser
