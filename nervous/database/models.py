@@ -2,6 +2,16 @@
 
 from django.db import models
 
+# Utils
+
+def get_field(model_instance, field_name):
+    return model_instance._meta.get_field_by_name(field_name)[0]
+
+
+def get_field_verbose_name(model_instance, field_name):
+    return get_field(model_instance, field_name).verbose_name
+
+
 # Enums
 
 class SortOrder:
@@ -50,9 +60,9 @@ class Student(models.Model):
 
 
 class OfficialAccount(models.Model):
-    wx_id = models.CharField(max_length=50, unique=True)
-    name = models.CharField(max_length=40)
-    description = models.CharField(max_length=300)
+    wx_id = models.CharField(u'公众号ID', max_length=50, unique=True)
+    name = models.CharField(u'公众号名称', max_length=40)
+    description = models.CharField(u'公众号描述', max_length=300)
 
     def unprocessed_messages_count(self):
         return self.message_set.filter(processed__exact=False).count()
