@@ -29,14 +29,23 @@
     <script src="{% static 'login/js/supersized.3.2.7.min.js' %}"></script>
     <script src="{% static 'login/js/supersized-init.js' %}"></script>
     <script src="{% static 'login/js/scripts.js' %}"></script>
-
     <script type="text/javascript">
-        function submitform() {
-            document.forms["login_form"].submit();
-            /*
-             var form2=document.forms["login_form"];
-             form2['password'].value=hex_md5(form2['password'].value);
-             form2.submit();*/
+        function form_submit() {
+            var form = document.forms["login_form"];
+            var account = form['account'];
+            var password = form['password'];
+
+            {% if identity == 'student' %}
+                var re =/\d{10}/;
+                if (!re.test(account.value)) {
+                    alert("请输入合法的学生号");
+                    return;
+                }
+            {% elif identity == 'admin' %}
+            {% elif identity == 'superuser' %}
+            {% endif %}
+
+            form.submit();
         }
     </script>
 
@@ -92,7 +101,7 @@
         {% csrf_token %}
         <input type="text" name="account" class="username" placeholder="用户名">
         <input type="password" name="password" class="password" placeholder="密码">
-        <button type="submit">提交</button>
+        <button type="submit" onclick="form_submit();">提交</button>
         <div class="error"><span>+</span></div>
     </form>
 </div>
