@@ -335,7 +335,7 @@ def add_forewarn_rule(dic):
             setattr(rule, attr, int(dic[attr]))
         rule.save()
         return True
-    except ObjectDoesNotExist, ValueError:
+    except (ObjectDoesNotExist, ValueError):
         return False
 
 

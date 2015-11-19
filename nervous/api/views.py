@@ -87,7 +87,7 @@ def delete_official_account(request):
         id = int(request.POST['id'])
         assert(backend.del_official_account(id))
         res = 'success'
-    except ValueError, AssertionError:
+    except (ValueError, AssertionError):
         res = 'failed'
     return HttpResponse(res)
 
