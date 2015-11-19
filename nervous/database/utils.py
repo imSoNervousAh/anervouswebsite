@@ -76,9 +76,9 @@ def forewarn_test_db(name):
 def build_test_db():
     clean_test_db()
 
-    admin_w = Admin.objects.create(username='w', password='x', description='www')
-    admin_wyl = Admin.objects.create(username='wyl8899', password='xxxxxxxx', description=u'韦毅龙')
-    admin_ytl = Admin.objects.create(username='ytl14', password='shenmegui', description=u'杨基龙')
+    admin_w = Admin.objects.create(username='w', password='x', description='www', email='huzecong@163.com')
+    admin_wyl = Admin.objects.create(username='wyl8899', password='xxxxxxxx', description=u'韦毅龙', email='wyl8899k@gmail.com')
+    admin_ytl = Admin.objects.create(username='ytl14', password='shenmegui', description=u'杨基龙', email='yangtianlong111@gmail.com')
     for id_suffix in ['417', '310', '434', '416']:
         id = '2014011%s' % id_suffix
         backend.add_admin(id, '0', id_suffix)

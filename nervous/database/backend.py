@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.conf import settings
 from datetime import datetime
+from api import sendemail
 import pytz
 
 
@@ -35,8 +36,6 @@ def get_application_by_id(id):
 
 
 def add_application(app):
-    print app
-
     name = app['name']
     description = app.get('description', name)
 
@@ -143,9 +142,14 @@ def add_account_record(wx_id, dic):
 
 # Admins
 
-def add_admin(username, md5_password, description):
+def add_admin(username, md5_password, email, description):
     try:
-        Admin.objects.create(username=username, password=md5_password, description=description)
+        Admin.objects.create(
+            username=username,
+            password=md5_password,
+            email=email,
+            description=description
+        )
         return True
     except IntegrityError:
         return False
@@ -162,6 +166,10 @@ def del_admin(username):
 
 def get_admins():
     return Admin.objects.all()
+
+
+def get_admin_emails():
+    return map(lambda x: x.email, get_admins())
 
 
 def check_admin(username, password):
@@ -345,7 +353,10 @@ def get_forewarn_rules():
 
 def report_if(cond, rule, account):
     if cond:
-        print u"report_if (%s, %s): True" % (rule, account)
+        subject = u"report_if"
+        content = u"report_if (%s, %s): True" % (rule, account)
+        print content
+        # sendemail.send_mail(get_admin_emails(), subject, content)
 
 
 def check_forewarn_rule_on_account(rule, account):

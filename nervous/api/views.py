@@ -93,7 +93,13 @@ def delete_official_account(request):
 
 
 def add_admin(request):
-    backend.add_admin(request.POST['username'], request.POST['password'], request.POST['description'])
+    dic = request.POST.dict()
+    backend.add_admin(
+        dic['username'],
+        dic['password'],
+        dic['email'],
+        dic['description']
+    )
     return HttpResponseRedirect('/superuser')
 
 

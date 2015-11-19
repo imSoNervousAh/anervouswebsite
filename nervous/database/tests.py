@@ -22,8 +22,9 @@ class AdminTestCase(TestCase):
     def test_add_admin(self):
         username = 'wyl8899'
         password = 'correct'
+        email = 'test_email@nervous.com'
         description = 'test description'
-        self.assertTrue(backend.add_admin(username, password, description))
+        self.assertTrue(backend.add_admin(username, password, email, description))
         self.assertEqual(Admin.objects.all().count(), 1)
         admin = Admin.objects.get()
         self.assertEqual(admin.username, username)
@@ -32,13 +33,15 @@ class AdminTestCase(TestCase):
 
     def test_admins_with_same_name(self):
         username = 'wyl'
-        self.assertTrue(backend.add_admin(username, 'xxx', 'des'))
-        self.assertFalse(backend.add_admin(username, 'another', '?'))
+        email = 'test_email@nervous.com'
+        self.assertTrue(backend.add_admin(username, 'xxx', email, 'des'))
+        self.assertFalse(backend.add_admin(username, 'another', email, '?'))
 
     def test_check_admin_password(self):
         username = 'wyl8899'
         password = 'correct'
-        backend.add_admin(username, password, 'description')
+        email = 'test_email@nervous.com'
+        backend.add_admin(username, password, email, 'description')
         self.assertTrue(backend.check_admin(username, password))
         self.assertFalse(backend.check_admin(username, 'wrong'))
 

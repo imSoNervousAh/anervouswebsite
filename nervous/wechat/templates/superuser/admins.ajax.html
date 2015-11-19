@@ -13,7 +13,8 @@
                         <thead>
                         <tr>
                             <th>用户名</th>
-                            <th>账号说明</th>
+                            <th>备注</th>
+                            <th>邮箱</th>
                             <th style="width:220px">操作</th>
                         </tr>
                         </thead>
@@ -33,6 +34,7 @@
                             <tr>
                                 <td>{{ admin.username }}</td>
                                 <td>{{ admin.description }}</td>
+                                <td>{{ admin.email }}</td>
                                 <td>
                                     <a style="cursor: pointer;" href="#/" class="delete-admin-link"
                                        data-toggle="popover" data-content="
@@ -85,7 +87,7 @@
                         <input type="email" class="form-control" id="email-input" name="email">
                     </div>
                     <div class="form-group">
-                        <label for="description-text" class="control-label">账号说明：</label>
+                        <label for="description-text" class="control-label">备注：</label>
                         <textarea class="form-control" id="description-text" name="description"></textarea>
                     </div>
                 </div>
