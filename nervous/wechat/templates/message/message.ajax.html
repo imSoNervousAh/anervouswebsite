@@ -65,103 +65,6 @@
 
                             <!-- send message-->
 
-                            <script type="text/javascript">
-                                function submitFormCheck() {
-                                    var form = document.forms["reply-message-form"];
-                                    //if (form['title'].value == '') {
-                                    //alert('请填写标题');
-                                    //return false;
-                                    //}
-                                    if (form['content'].value == '') {
-                                        alert('请填写正文');
-                                        return false;
-                                    }
-                                    form.submit();
-                                    loadContent('message/{{ official_account_id }}');
-                                    return true;
-
-                                }
-
-                                $(function () {
-                                    var msg = $("#error-msg");
-                                    msg.fadeOut(0);
-                                    msg.find("> button").click(function () {
-                                        $("#error-msg").fadeOut();
-                                    });
-
-                                    $("#send-reply").click(function (event) {
-                                        if (!submitFormCheck()) return;
-                                        event.preventDefault();
-                                        var url = "{% url 'api/add_message' %}";
-                                        console.log(url);
-                                        $.ajax({
-                                            type: "POST",
-                                            url: url,
-                                            data: $("#reply-message-form").serialize(),
-                                            success: function (data) {
-                                                var category;
-                                                {% if category == MessageCategory.ToStudent %}
-                                                    category = 'admin';
-                                                {% else %}
-                                                    category = 'student';
-                                                {% endif %}
-                                                loadContent("/message/" + category + "/{{ official_account_id }}",
-                                                        {}, undefined, function () {
-                                                            $("html, body").delay(60).animate({
-                                                                "scroll-top": $(document).height()
-                                                            }, function () {
-                                                                var item = $(".message-body:nth-last-of-type(1)");
-                                                                animate(item, "flash");
-                                                            });
-                                                        }
-                                                );
-
-                                            },
-                                            error: function (xhr, textStatus, errorThrown) {
-                                                var msg = $("#error-msg");
-                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                                console.log(xhr.responseText);
-                                                msg.fadeIn();
-                                            }
-                                        });
-                                    });
-                                    $("#mark-read").click(function (event) {
-                                        event.preventDefault();
-                                        var url = "{% url 'api/process_message' %}";
-                                        $.ajax({
-                                            type: "POST",
-                                            url: url,
-                                            data: $("#reply-message-form").serialize(),
-                                            success: function (data) {
-                                                var category;
-                                                {% if category == MessageCategory.ToStudent %}
-                                                    category = 'admin';
-                                                {% else %}
-                                                    category = 'student';
-                                                {% endif %}
-                                                loadContent("/message/" + category + "/{{ official_account_id }}",
-                                                        {}, undefined, function () {
-                                                            $("html, body").delay(60).animate({
-                                                                "scroll-top": $(document).height()
-                                                            }, function () {
-                                                                var item = $(".message-body:nth-last-of-type(1)");
-                                                                animate(item, "flash");
-                                                            });
-                                                        }
-                                                );
-
-                                            },
-                                            error: function (xhr, textStatus, errorThrown) {
-                                                var msg = $("#error-msg");
-                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                                console.log(xhr.responseText);
-                                                msg.fadeIn();
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-
                             <form id="reply-message-form">
                                 <div class="row" style="margin-top: 30px">
                                     <div class="col-md-9  col-md-offset-4">
@@ -188,6 +91,54 @@
                                     </div>
                                 </div>
                             </form>
+
+                            <script type="text/javascript">
+                                function submitFormCheck() {
+                                    var form = document.forms["reply-message-form"];
+                                    if (form['content'].value == '') {
+                                        alert('请填写正文');
+                                        return false;
+                                    }
+                                    form.submit();
+                                    loadContent('message/{{ official_account_id }}');
+                                    return true;
+
+                                }
+                                function postData() {
+                                    var category;
+                                    {% if category == MessageCategory.ToStudent %}
+                                        category = 'admin';
+                                    {% else %}
+                                        category = 'student';
+                                    {% endif %}
+                                    loadContent("/message/" + category + "/{{ official_account_id }}",
+                                            {}, undefined, function () {
+                                                $("html, body").delay(60).animate({
+                                                    "scroll-top": $(document).height()
+                                                }, function () {
+                                                    var item = $(".message-body:nth-last-of-type(1)");
+                                                    animate(item, "flash");
+                                                });
+                                            }
+                                    );
+
+                                }
+
+
+                                $("#send-reply").click(function () {
+                                    console.log("send-reply...");
+                                    if (!submitFormCheck()) return;
+                                    handleFormPost("#reply-message-form", "{% url 'api/add_message' %}", {
+                                        success_callback: postData,
+                                    });
+                                });
+
+                                $("#mark-read").click(function () {
+                                    handleFormPost("#reply-message-form", "{% url 'api/process_message' %}", {
+                                        success_callback: postData,
+                                    });
+                                });
+                            </script>
 
 
                         </div>
