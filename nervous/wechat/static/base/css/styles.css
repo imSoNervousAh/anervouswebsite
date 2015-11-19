@@ -86,14 +86,14 @@ a > span.badge-info {
     width: inherit;
 }
 
+.column-container::-webkit-scrollbar {
+    display: none;
+}
+
 #left-column {
     position: fixed;
     margin-top: -20px;
     padding-top: 20px;
-}
-
-#left-column::-webkit-scrollbar {
-    display: none;
 }
 
 @media screen and (min-width: 768px) {
