@@ -47,7 +47,7 @@
                         $("#remove-account-link").click(function () {
                             showConfirmModal("确认删除", "确认删除公众号 <b>{{ account.name }}</b> ？", function () {
                                 console.log("delete {{ account.id }}");
-                                var url = "url 'api/remove_official_account'";
+                                var url = "{% url 'api/delete_official_account'%}";
                                 $.ajax({
                                     type: "POST",
                                     url: url,

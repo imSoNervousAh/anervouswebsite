@@ -81,6 +81,17 @@ def delete_application(request, id):
     return HttpResponseRedirect('/admin')
 
 
+def delete_official_account(request):
+    print "delete_official_account", request.POST
+    try:
+        id = int(request.POST['id'])
+        assert(backend.del_official_account(id))
+        res = 'success'
+    except ValueError, AssertionError:
+        res = 'failed'
+    return HttpResponse(res)
+
+
 def add_admin(request):
     backend.add_admin(request.POST['username'], request.POST['password'], request.POST['description'])
     return HttpResponseRedirect('/superuser')
