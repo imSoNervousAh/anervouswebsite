@@ -64,6 +64,7 @@ def modify_application(request):
 
 
 def student_modify_application(request):
+    print 'modify_application...'
     dic = request.POST.dict()
     id = dic['application_id']
     backend.del_application(id)
