@@ -351,6 +351,10 @@ def get_forewarn_rules():
     return ForewarnRule.objects.all()
 
 
+def get_forewarn_records():
+    return ForewarnRecord.objects.all()
+
+
 def email_to_admins(subject, content):
     sendemail.send_mail(get_admin_emails(), subject, content)
 
