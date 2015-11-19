@@ -43,48 +43,49 @@
             <div class="panel-body">
                 <form id="rule-form" class="form form-vertical">
                     {% csrf_token %}
+
+
                     <div class="control-group">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 form-group">
                                 <label class="control-label" for="account-name-field">预警公众号账号</label>
 
-                                <div class="controls">
 
-                                    <input id="account-name-field" type="text" name="account_name"
-                                           list="account-name-list" class="form-control" placeholder="不填写为所有公众号">
-                                    <datalist id="account-name-list">
-                                        {% for id in wx_name %}
-                                            <option value="{{ id }}">
-                                        {% endfor %}
-                                    </datalist>
-                                </div>
+                                <input id="account-name-field" type="text" name="account_name"
+                                       list="account-name-list" class="form-control" placeholder="">
+                                <span class="help-block">  不填写默认为所有公众号</span>
+                                <datalist id="account-name-list">
+                                    {% for id in wx_name %}
+                                        <option value="{{ id }}">
+                                    {% endfor %}
+                                </datalist>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 form-group">
                                 <label class="control-label" for="notification-field">通知方式</label>
 
-                                <div class="controls">
-                                    <select id="notification-field" name="notification" class="form-control">
-                                        <option value={{ NotificationOption.Email }}>邮件</option>
-                                        <option value={{ NotificationOption.Message }}>站内通知</option>
-                                    </select>
-                                </div>
+                                <select id="notification-field" name="notification" class="form-control">
+                                    <option value={{ NotificationOption.Email }}>邮件</option>
+                                    <option value={{ NotificationOption.Message }}>站内通知</option>
+                                </select>
                             </div>
                         </div>
                     </div>
+
+
                     <div class="control-group">
                         <label class="control-label" for="duration-field">预警时限</label>
 
                         <div class="row">
-                            <div class="controls">
-                                <div class="c   ol-sm-6">
-                                    <input id="duration-field" name="duration" type="text" class="form-control"
-                                           placeholder="数字">
-                                </div>
-                                <div class="col-sm-1">
-                                    <h5>天</h5>
-                                </div>
+                            <div class="col-sm-6 form-group">
+                                <input id="duration-field" name="duration" type="text" class="form-control"
+                                       placeholder="" pattern="^[1-9]|\d{2,3}$" required>
+                                <span class="help-block">1-999</span>
+                            </div>
+                            <div class="col-sm-1 form-group">
+                                <h5>天</h5>
                             </div>
                         </div>
+
                     </div>
 
 
@@ -92,26 +93,25 @@
                         <label class="control-label" for="target-field">预警规则</label>
 
                         <div class="row">
-                            <div class="controls">
-                                <div class="col-sm-6">
-                                    <select id="target-field" name="target" class="form-control">
-                                        <option value={{ ForewarnTarget.ViewsTotal }}>阅读量</option>
-                                        <option value={{ ForewarnTarget.LikesTotal }} disabled="disabled">点赞数</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <select name="" class="form-control">
-                                        <option value="大于">大于</option>
-                                        <option value="小于" disabled="disabled">小于</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input id="value-field" name="value" type="text" class="form-control"
-                                           placeholder="数字">
-                                </div>
-                                <div class="col-sm-1">
-                                    <h5>条</h5>
-                                </div>
+                            <div class="col-sm-6  form-group">
+                                <select id="target-field" name="target" class="form-control">
+                                    <option value={{ ForewarnTarget.ViewsTotal }}>阅读量</option>
+                                    <option value={{ ForewarnTarget.LikesTotal }} disabled="disabled">点赞数</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2  form-group">
+                                <select name="" class="form-control">
+                                    <option value="大于">大于</option>
+                                    <option value="小于" disabled="disabled">小于</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3  form-group">
+                                <input id="value-field" name="value" type="text" class="form-control"
+                                       placeholder="" pattern="^[1-9]|\d{2,4}$" required>
+                                <!--<span class="help-block">1-5000</span>-->
+                            </div>
+                            <div class="col-sm-1  form-group">
+                                <h5>条</h5>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,8 @@
                         </div>
 
                         <div class="controls">
-                            <button id="form-submit" type="submit" name="method" value="submit" class="btn btn-primary">
+                            <button id="form-submit" type="submit" name="method" value="submit"
+                                    class="btn btn-primary">
                                 创建
                             </button>
                         </div>
@@ -145,15 +146,11 @@
                         return true;
                     }
 
-                    $("#form-submit").click(function () {
-                        if (!checkLegal()) return;
-                        handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
-                            success_callback: function (data) {
-                                alert("创建成功");
-                                location.reload();
-                            }
-                        });
-
+                    handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
+                        success_callback: function (data) {
+                            alert("创建成功");
+                            location.reload();
+                        }
                     });
 
 
