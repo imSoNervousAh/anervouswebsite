@@ -55,13 +55,11 @@
                                         'id': {{ account.id }}
                                     },
                                     success: function (data) {
-
+                                        loadContentOfItem("#official-accounts-list-item", {"replace": true});
                                     },
                                     error: function (xhr, textStatus, errorThrown) {
-                                        var msg = $("#error-msg");
-                                        msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                        alert("删除公众号遇到错误：" + textStatus + ": " + errorThrown);
                                         console.log(xhr.responseText);
-                                        msg.fadeIn();
                                     }
                                 });
                             });

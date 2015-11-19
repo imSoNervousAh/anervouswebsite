@@ -78,9 +78,14 @@ function displayContent(data, params, container, callback) {
 }
 
 // load page content using ajax
-function loadContent(url, params, item_selector, callback) {
+function loadContent(url, params, item_selector, load_params, callback) {
     var height = $("#left-column").height();
     var main = $("#main-page");
+
+    var replace = false;
+    if (typeof load_params != "undefined") {
+        replace = load_params["replace"];
+    }
 
 //    console.log(url);
 
@@ -102,11 +107,19 @@ function loadContent(url, params, item_selector, callback) {
         data: params,
         success: function (data) {
             __manualStateChange = true;
-            History.pushState({
-                data: data,
-                item: item_selector,
-                callback: callback
-            }, null, url);
+            if (replace) {
+                History.replaceState({
+                    data: data,
+                    item: item_selector,
+                    callback: callback
+                }, null, url);
+            } else {
+                History.pushState({
+                    data: data,
+                    item: item_selector,
+                    callback: callback
+                }, null, url);
+            }
             initAjaxPage("#main-page");
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -151,7 +164,7 @@ function loadContentOn(container, url, params, load_params, callback) {
         url: url,
         data: params,
         success: function (data) {
-            displayContent(data, load_params, container);
+            displayContent(data, load_params, container, callback);
             initAjaxPage(container);
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -168,8 +181,8 @@ function loadContentOn(container, url, params, load_params, callback) {
     });
 }
 
-function loadContentOfItem(item, callback) {
-    loadContent($(item).data("url"), {}, item, callback);
+function loadContentOfItem(item, load_params, callback) {
+    loadContent($(item).data("url"), {}, item, load_params, callback);
 }
 
 function handleFormPost(form_selector, post_url, params) {
