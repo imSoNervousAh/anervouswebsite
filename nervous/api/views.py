@@ -5,7 +5,29 @@ from django.shortcuts import render
 from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
+from django.core.exceptions import ValidationError
 
+# Utils
+
+def response_success():
+    response = {
+        'status': 'ok'
+    }
+    return response
+
+
+def response_from_validation_error(e):
+    error_dict = e.message_dict
+    key, value = error_dict.popitem()
+    response = {
+        'status': 'error',
+        'error_message': value,
+        'error_field': key,
+    }
+    return response
+
+
+# Views
 
 def check_admin(username, password):
     return backend.check_admin(username, password)
@@ -50,8 +72,11 @@ def submit_application(request):
     dic = request.POST.dict()
     username = session.get_username(request)
     dic['user_submit'] = username
-    response = backend.add_application(dic)
-    print response
+    try:
+        backend.add_application(dic)
+        response = response_success()
+    except ValidationError as e:
+        response = response_from_validation_error(e)
     return JsonResponse(response)
 
 

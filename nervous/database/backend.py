@@ -35,43 +35,40 @@ def get_application_by_id(id):
     return Application.objects.get(official_account__id__exact=id)
 
 
-def add_application(app):
-    name = app['name']
-    description = app.get('description', name)
+def add_official_account(dic):
+    oa = OfficialAccount.objects.model()
+    for attr in ['name', 'description', 'wx_id']:
+        setattr(oa, attr, dic[attr])
+    oa.full_clean()
+    oa.save()
+    return oa
 
-    if app['name'] == "":
-        return {
-            'status': 'error',
-            #            'submit_method': app['method'],
-            'error_message': u'请填写公众号名称！',
-            'error_field': 'name'
-        }
 
-    try:
-        application = Application.objects.model()
-        account = OfficialAccount.objects.create(
-            name=name,
-            description=description,
-            wx_id=app['wx_id']
-        )
-        application.official_account = account
-        application.status = 'pending'
-        for attr in [
+def add_application(dic):
+    # if dic['description'] == "":
+    #     return {
+    #         'status': 'error',
+    #         # 'submit_method': app['method'],
+    #         'error_message': u'请填写公众号描述！',
+    #         'error_field': 'description'
+    #     }
+
+    application = Application.objects.model()
+    account = add_official_account(dic)
+    application.official_account = account
+    application.status = 'pending'
+    for attr in [
             'manager_name', 'manager_student_id',
             'manager_dept', 'manager_tel', 'manager_email',
-            'user_submit']:
-            val = app.get(attr, '')
-            setattr(application, attr, val)
-        try:
-            application.save()
-            return {
-                'status': 'ok',
-                #                'submit_method': app['method']
-            }
-        except:
-            return False
-    except IntegrityError:
-        return False
+            'user_submit', 'association']:
+        val = dic.get(attr, 'placeholder')
+        setattr(application, attr, val)
+    application.full_clean()
+    application.save()
+    # return {
+    #     'status': 'ok',
+    #     # 'submit_method': app['method'],
+    # }
 
 
 def modify_application(app):
