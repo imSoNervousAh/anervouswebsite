@@ -150,6 +150,8 @@ ForewarnRule:
 
 
 ForewarnRecord:
+    datetime
     account
     target
     value
+    [ -> account_id, account_name ]
