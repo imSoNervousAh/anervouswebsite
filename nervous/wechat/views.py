@@ -82,6 +82,7 @@ def check_have_student_info(func):
     def wrapper(request, *args, **kw):
         student_id = session.get_username(request)
         if not backend.check_student_information_filled(student_id):
+            print 'no student info :',student_id
             return student_fill_info(request)
         return func(request, *args, **kw)
 

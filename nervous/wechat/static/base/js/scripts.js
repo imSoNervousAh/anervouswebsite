@@ -175,13 +175,13 @@ function loadContentOfItem(item, callback) {
 function handleFormPost(form_selector, post_url, params) {
     /*
      params = {
-        success_callback(data):
-            function to call when ajax POST returns success,
-        error_callback(xhr, textStatus, errorThrown):
-            function to call when ajax POST returns error,
-        success_msg(data):
-            function that returns message to display for success POST
-            note that though POST is successful, returned status maybe "error"
+     success_callback(data):
+     function to call when ajax POST returns success,
+     error_callback(xhr, textStatus, errorThrown):
+     function to call when ajax POST returns error,
+     success_msg(data):
+     function that returns message to display for success POST
+     note that though POST is successful, returned status maybe "error"
      }
      */
     var form = $(form_selector);
@@ -203,6 +203,8 @@ function handleFormPost(form_selector, post_url, params) {
                 if (data.hasOwnProperty("error_message"))
                     return data.error_message;
                 return "提交出错，请再次检查您填写的信息。"
+            },
+            before_callback = function () {
             };
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
@@ -210,8 +212,12 @@ function handleFormPost(form_selector, post_url, params) {
             success_callback = params.error_callback;
             console.log("own error_callback");
         }
-        if (params.hasOwnProperty("success_msg"))
+        if (params.hasOwnProperty("success_msg")) {
             success_callback = params.success_msg;
+        }
+        if (params.hasOwnProperty("before_callback")) {
+            before_callback = params.before_callback();
+        }
 
         msg.find("button").click(function () {
             msg.fadeOut();
@@ -221,6 +227,7 @@ function handleFormPost(form_selector, post_url, params) {
         });
 
         form.submit(function (event) {
+            before_callback();
             event.preventDefault();
             form_groups.removeClass("has-error");
 
@@ -229,6 +236,7 @@ function handleFormPost(form_selector, post_url, params) {
                 url: post_url,
                 data: form.serialize(),
                 success: function (data) {
+                    console.log("post success");
                     msg.removeClass("alert-danger alert-success");
                     if (data.status === "ok") msg.addClass("alert-success");
                     else msg.addClass("alert-danger");

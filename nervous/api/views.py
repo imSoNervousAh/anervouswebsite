@@ -41,8 +41,8 @@ def submit_student_info(request):
     dic = request.POST.dict()
     print dic
     username = session.get_username(request)
-    print "submit_student_info", username
     backend.set_student_information(username, dic)
+    print "submit_student_info: ", username," success"
     return HttpResponseRedirect('/student')
 
 

@@ -46,31 +46,24 @@
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label>预警公众号账号</label>
+                                <label class="control-label" for="account-name-field">预警公众号账号</label>
 
                                 <div class="controls">
 
-                                    <input type="text" name="account_name" list="exampleList" class="form-control" placeholder="不填写为所有公众号">
-                                    <datalist id="exampleList">
+                                    <input id="account-name-field" type="text" name="account_name"
+                                           list="account-name-list" class="form-control" placeholder="不填写为所有公众号">
+                                    <datalist id="account-name-list">
                                         {% for id in wx_name %}
                                             <option value="{{ id }}">
                                         {% endfor %}
                                     </datalist>
-
-                                    <!--
-                                    <select name="account" class="form-control">
-                                        <option value="">单个公众号</option>
-                                        <option value="">所有公众号</option>
-                                        <option value="" disabled="disabled">指定公众号</option>
-                                    </select>
-                                -->
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <label>通知方式</label>
+                                <label class="control-label" for="notification-field">通知方式</label>
 
                                 <div class="controls">
-                                    <select name="notification" class="form-control">
+                                    <select id="notification-field" name="notification" class="form-control">
                                         <option value={{ NotificationOption.Email }}>邮件</option>
                                         <option value={{ NotificationOption.Message }}>站内通知</option>
                                     </select>
@@ -79,12 +72,13 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>预警时限</label>
+                        <label class="control-label" for="duration-field">预警时限</label>
 
                         <div class="row">
                             <div class="controls">
                                 <div class="col-sm-6">
-                                    <input name="duration" type="text" class="form-control" placeholder="数字">
+                                    <input id="duration-field" name="duration" type="text" class="form-control"
+                                           placeholder="数字">
                                 </div>
                                 <div class="col-sm-6">
                                     天
@@ -95,12 +89,12 @@
 
 
                     <div class="control-group">
-                        <label>预警规则</label>
+                        <label class="control-label" for="target-field">预警规则</label>
 
                         <div class="row">
                             <div class="controls">
                                 <div class="col-sm-12">
-                                    <select name="target" class="form-control">
+                                    <select id="target-field" name="target" class="form-control">
                                         <option value={{ ForewarnTarget.ViewsTotal }}>阅读量</option>
                                         <option value={{ ForewarnTarget.LikesTotal }} disabled="disabled">点赞数</option>
                                     </select>
@@ -109,7 +103,7 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>阅读量增长量</label>
+                        <label class="control-label" for="value-field">阅读量增长量</label>
 
                         <div class="row">
                             <div class="controls">
@@ -120,7 +114,8 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input name="value" type="text" class="form-control" placeholder="数字">
+                                    <input id="value-field" name="value" type="text" class="form-control"
+                                           placeholder="数字">
                                 </div>
                                 <div class="col-sm-6">
                                     条
@@ -130,6 +125,12 @@
                     </div>
                     <div class="control-group">
                         <label></label>
+
+                        <div class="form-error-msg alert alert-danger alert-dismissible">
+                            <div></div>
+                            <button type="button" class="close" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        </div>
 
                         <div class="controls">
                             <button id="form-submit" type="submit" name="method" value="submit" class="btn btn-primary">
@@ -155,26 +156,17 @@
                             $("#error-msg").fadeOut();
                         });
                     });
-                    $("#form-submit").click(function (event) {
-                        if (!checkLegal()) return;
-                        event.preventDefault();
-                        var url = "{% url 'api/submit_rule' %}";
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: $("#rule-form").serialize(),
-                            success: function (data) {
+
+                    handleFormPost("#form-submit", "{% url 'api/submit_rule' %}", {
+                        brefore_callback:function(){
+                            if (!checkLegal()) return;
+                        }
+                        success_callback: function (data) {
                                 alert("创建成功");
                                 location.reload();
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                var msg = $("#error-msg");
-                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                console.log(xhr.responseText);
-                                msg.fadeIn();
-                            }
-                        });
+                        }
                     });
+
                 </script>
             </div>
         </div>
