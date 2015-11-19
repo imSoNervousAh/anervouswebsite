@@ -81,7 +81,7 @@ def build_test_db():
     admin_ytl = Admin.objects.create(username='ytl14', password='shenmegui', description=u'杨基龙', email='yangtianlong111@gmail.com')
     for id_suffix in ['417', '310', '434', '416']:
         id = '2014011%s' % id_suffix
-        backend.add_admin(id, '0', id_suffix)
+        backend.add_admin(id, '0', '', id_suffix)
 
     oa_mu = OfficialAccount.objects.create(name='Lab Mu', wx_id='mulab_thu')
     Application.objects.create(official_account=oa_mu, user_submit='FANG KUAI', status='not_submitted')
