@@ -351,12 +351,29 @@ def get_forewarn_rules():
     return ForewarnRule.objects.all()
 
 
+def email_to_admins(subject, content):
+    sendemail.send_mail(get_admin_emails(), subject, content)
+
+
+def report_forewarn_record(record):
+    subject = u'report_forewarn_record'
+    content = record.__unicode__()
+    print '%s: %s' % (subject, content)
+    # email_to_admins(get_admin_emails(), subject, content)
+
+
+def forewarn_record_from_rule(rule, account):
+    return ForewarnRecord.objects.create(
+        target=rule.target,
+        value=rule.value,
+        account=account
+    )
+
+
 def report_if(cond, rule, account):
     if cond:
-        subject = u"report_if"
-        content = u"report_if (%s, %s): True" % (rule, account)
-        print content
-        # sendemail.send_mail(get_admin_emails(), subject, content)
+        record = forewarn_record_from_rule(rule, account)
+        report_forewarn_record(record)
 
 
 def check_forewarn_rule_on_account(rule, account):

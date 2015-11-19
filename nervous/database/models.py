@@ -165,6 +165,24 @@ class ForewarnRule(models.Model):
         )
 
 
+class ForewarnRecord(models.Model):
+    datetime = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey(OfficialAccount)
+    target = models.IntegerField()
+    value = models.IntegerField()
+
+    def account_name(self):
+        return self.account.name
+
+    def __unicode__(self):
+        return u'[%s, %s] by %s at %s' % (
+            self.target,
+            self.value,
+            self.account_name(),
+            self.datetime
+        )
+
+
 # Add delegating attributes
 
 def add_delegate(cls, dest, key):
