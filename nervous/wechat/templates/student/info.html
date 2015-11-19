@@ -33,7 +33,7 @@
                                 <label class="control-label" for="manager-name-field">负责人姓名</label>
 
                                 <div class="controls">
-                                    <input id="manager-name-field" name="manager_name" type="text" class="form-control"
+                                    <input id="manager-name-field" name="real_name" type="text" class="form-control"
                                            value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                 <label class="control-label" for="manager-tel-field">负责人电话</label>
 
                                 <div class="controls">
-                                    <input id="manager-tel-field" name="manager_tel" type="text" class="form-control"
+                                    <input id="manager-tel-field" name="tel" type="text" class="form-control"
                                            value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                 <label class="control-label" for="manager-email-field">负责人邮箱</label>
 
                                 <div class="controls">
-                                    <input id="manager-email-field" name="manager_email" type="email"
+                                    <input id="manager-email-field" name="email" type="email"
                                            class="form-control"
                                            value="{% if type == 'change' %}{{ student.email }}{% endif %}">
                                 </div>
@@ -68,7 +68,7 @@
                         <label class="control-label" for="manager-dept-field">负责人院系</label>
 
                         <div class="controls">
-                            <select id="manager-dept-field" name="manager_dept" class="form-control">
+                            <select id="manager-dept-field" name="dept" class="form-control">
                                 <option value="计算机系">计算机系</option>
                                 <option value="人文学院">人文学院</option>
                                 <option value="隔壁">隔壁</option>
