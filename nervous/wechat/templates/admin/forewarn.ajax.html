@@ -146,26 +146,24 @@
                             alert('预警时限不合法');
                             return false;
                         }
+                        if (form['value'].value < 1 || form['value'].value > 365) {
+                            alert('阅读增长量不合法');
+                            return false;
+                        }
                         return true;
                     }
 
-                    $(function () {
-                        var msg = $("#error-msg");
-                        msg.fadeOut(0);
-                        msg.find("> button").click(function () {
-                            $("#error-msg").fadeOut();
-                        });
-                    });
-
-                    handleFormPost("#form-submit", "{% url 'api/submit_rule' %}", {
-                        brefore_callback:function(){
-                            if (!checkLegal()) return;
-                        }
-                        success_callback: function (data) {
+                    $("#form-submit").click(function () {
+                        if (!checkLegal()) return;
+                        handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
+                            success_callback: function (data) {
                                 alert("创建成功");
                                 location.reload();
-                        }
+                            }
+                        });
+
                     });
+
 
                 </script>
             </div>

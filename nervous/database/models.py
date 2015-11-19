@@ -23,7 +23,6 @@ class ForewarnTarget:
 class NotificationOption:
     Message, Email = xrange(2)
 
-
 # Models
 
 class Admin(models.Model):

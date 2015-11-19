@@ -408,6 +408,12 @@ def admin_forewarn(request):
     rules = backend.get_forewarn_rules()
     wx_name = map(lambda account: account.name, backend.get_official_accounts())
 
+    for rule in rules:
+        if rule.notification == NotificationOption.Email:
+            rule.notification="邮件"
+        if rule.notification == NotificationOption.Message:
+            rule.notification="站内通知"
+
     return render_ajax(request, 'admin/forewarn.html', {
         'rules': rules,
         'NotificationOption': NotificationOption,
