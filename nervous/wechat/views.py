@@ -82,7 +82,7 @@ def check_have_student_info(func):
     def wrapper(request, *args, **kw):
         student_id = session.get_username(request)
         if not backend.check_student_information_filled(student_id):
-            print 'no student info :',student_id
+            print 'no student info :', student_id
             return student_fill_info(request)
         return func(request, *args, **kw)
 
@@ -181,8 +181,9 @@ def student_add_applications(request):
     username = session.get_username(request)
     student = backend.get_student_by_id(username)
     return render_ajax(request, 'student/add_applications.html', {'student': student,
-                                                                  'student_id': username,
-                                                                  'username': student.real_name})
+                                                                     'student_id': username,
+                                                                     'username': student.real_name,
+                                                                      })
 
 
 @check_identity('student')
@@ -194,10 +195,11 @@ def student_modify_applications(request, id):
     app = backend.get_application_by_id(id)
     print 'in student_modify_applications..'
     print 'real_name is:', student.real_name
-    return render_ajax(request, 'student/modify_applications.html', {'student': student,
+    return render_ajax(request, 'student/add_applications.html', {'student': student,
                                                                      'student_id': username,
                                                                      'username': student.real_name,
-                                                                     'app': app})
+                                                                     'app': app,
+                                                                  'add_app': 'true',})
 
 
 @check_identity('student')
@@ -410,9 +412,9 @@ def admin_forewarn(request):
 
     for rule in rules:
         if rule.notification == NotificationOption.Email:
-            rule.notification="邮件"
+            rule.notification = "邮件"
         if rule.notification == NotificationOption.Message:
-            rule.notification="站内通知"
+            rule.notification = "站内通知"
 
     return render_ajax(request, 'admin/forewarn.html', {
         'rules': rules,

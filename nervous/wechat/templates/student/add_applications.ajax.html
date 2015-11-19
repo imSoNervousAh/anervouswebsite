@@ -7,29 +7,38 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>添加备案申请</h4>
+                {% if modify_app %}
+                    <h4>修改备案申请</h4>
+                {% else %}
+                    <h4>添加备案申请</h4>
+                {% endif %}
             </div>
 
             <div class="panel-body">
                 <form id="application-form" class="form form-vertical">
                     {% csrf_token %}
+                    {% if modify_app %}
+                        <input name="application_id" type="text" style="display:none" value="{{ app.id }}">
+                    {% endif %}
+
                     <div class="control-group">
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label class="control-label" for="name-field">公众号名称</label>
-                                <input id="name-field" name="name" type="text" class="form-control" placeholder="公众号名称">
+                                <input id="name-field" name="name" type="text" class="form-control" placeholder=""
+                                       required value="{{ app.name }}">
                             </div>
-                            <div class="col-sm-6 form-group">
+                            <div class=" col-sm-6 form-group">
                                 <label class="control-label" for="wx_id-field">公众号微信ID</label>
                                 <input id="wx_id-field" name="wx_id" type="text" class="form-control"
-                                       placeholder="公众号微信ID">
+                                       placeholder="" required value="{{ app.official_account.wx_id }}">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="description-field">公众号简介</label>
-                        <textarea id="description-field" name="description" class="form-control" placeholder="公众号简介"
-                                  style="resize: vertical;"></textarea>
+                        <textarea id="description-field" name="description" class="form-control" placeholder=""
+                                  style="resize: vertical;" value="{{ app.description }}"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="association-field">所属学生组织</label>
@@ -57,24 +66,27 @@
                     </div>
                     <div class="control-group">
                         <div class="row">
-                            <div class="col-sm-6 form-label">
+                            <div class="col-sm-6 form-group">
                                 <label class="control-label" for="manager_tel-field">负责人电话</label>
                                 <input id="manager_tel-field" readonly="readonly" name="manager_tel" type="text"
                                        class="form-control" value="{{ student.tel }}">
                             </div>
-                            <div class="col-sm-6 form-label">
+                            <div class="col-sm-6 form-group">
                                 <label class="control-label" for="manager_email-field">负责人邮箱</label>
                                 <input id="manager_email-field" readonly="readonly" name="manager_email" type="email"
-                                       class="form-control" value="{{ student.email }}">
+                                       class="form-control" value="{{ student.email }}" class="form-control"
+                                       value="{{ student.email }}">
                             </div>
                         </div>
                     </div>
-                    <div class="control-group">
+                    <div class="control-group form-group">
                         <div class="row">
                             <div class="col-sm-6">
                                 <label class="control-label" for="manager_dept-field">负责人院系</label>
                                 <input id="manager_dept-field" readonly="readonly" name="manager_dept" type="text"
-                                       class="form-control" value="{{ student.dept }}">
+                                       class="form-control" value="{{ student.dept }}" class="form-control"
+                                       value="{{ student.email }}">
+
                             </div>
                         </div>
                     </div>

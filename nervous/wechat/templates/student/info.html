@@ -29,7 +29,7 @@
 
                 <div class="control-group">
                     <div class="row">
-                        <div class="col-sm-12 form-group">
+                        <div class="col-sm-6 form-group">
                             <label class="control-label" for="manager-name-field">负责人姓名</label>
 
                             <div class="controls">
@@ -60,7 +60,7 @@
                             <div class="controls">
                                 <input id="manager-email-field" name="email" type="email"
                                        class="form-control"
-                                       value="{% if type == 'change' %}{{ student.email }}{% endif %}">
+                                       value="{% if type == 'change' %}{{ student.email }}{% endif %}" required>
                             </div>
                         </div>
                     </div>
