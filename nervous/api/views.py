@@ -5,6 +5,7 @@ from wechat import session
 
 from api.info_login import auth_by_info as tsinghua_login
 
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
@@ -52,7 +53,11 @@ def check_admin(username, password):
 
 
 def check_student(username, password):
-    return tsinghua_login(username, password) or check_admin(username, password)
+    if settings.DEBUG:
+        fake_student = check_admin(username, password)
+    else:
+        fake_student = False
+    return fake_student or tsinghua_login(username, password)
 
 
 def check_superuser(username, password):
