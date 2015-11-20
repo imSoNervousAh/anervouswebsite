@@ -40,9 +40,11 @@ function displayContent(data, params, container, callback) {
         container = "#main-page";
     main = $(container);
     var anim = true, scroll = true;
-    for (var prop in params) {
-        if (prop === "anim") anim = params.anim;
-        if (prop === "scroll") scroll = params.scroll;
+    if (typeof params !== "undefined") {
+        for (var prop in params) {
+            if (prop === "anim") anim = params.anim;
+            if (prop === "scroll") scroll = params.scroll;
+        }
     }
     main.queue(function () {
         main.html(data);
