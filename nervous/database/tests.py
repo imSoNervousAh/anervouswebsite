@@ -1,7 +1,8 @@
-from django.test import TestCase
 from database import backend, utils
 from models import *
 
+from django.test import TestCase
+from django.core.exceptions import ValidationError
 
 class StudentTestCase(TestCase):
     def test_student_without_info(self):
@@ -59,8 +60,9 @@ class ApplicationTestCase(TestCase):
             'wx_id': wx_id,
             'description': 'another description',
         }
-        self.assertTrue(backend.add_application(app))
-        self.assertFalse(backend.add_application(another_app))
+        backend.add_application(app)
+        with self.assertRaises(ValidationError):
+            backend.add_application(another_app)
 
     def test_get_application_by_user_submit(self):
         username = 'hdd'
@@ -68,7 +70,7 @@ class ApplicationTestCase(TestCase):
         app = {
             'name': acc_name,
             'wx_id': 'wx_id',
-            'description': '',
+            'description': 'description',
             'user_submit': username,
         }
         another_app = {
@@ -77,8 +79,8 @@ class ApplicationTestCase(TestCase):
             'description': 'by another user',
             'user_submit': 'not equal to hdd',
         }
-        self.assertTrue(backend.add_application(app))
-        self.assertTrue(backend.add_application(another_app))
+        backend.add_application(app)
+        backend.add_application(another_app)
         res = backend.get_applications_by_user(username)
         self.assertEqual(res.count(), 1)
         self.assertEqual(res.first().name(), acc_name)
