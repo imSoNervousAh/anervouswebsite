@@ -15,12 +15,16 @@ def get_date_object_before_n_days(n):
     return datetime.date.today() - datetime.timedelta(days=n)
 
 
+def django_admin(cmd):
+    call(['python', 'manage.py', cmd])
+
+
 def migrate():
-    call(["python", "manage.py", "migrate"])
+    django_admin('migrate')
 
 
 def make_migrations():
-    call(["python", "manage.py", "makemigrations"])
+    django_admin('makemigrations')
 
 
 def clean_test_db():
@@ -47,16 +51,16 @@ def update():
 def message_test_db(message_test_oa_id):
     assert (backend.add_message(
         MessageCategory.ToAdmin, message_test_oa_id,
-        'to_admin_title', 'to_admin_content'
+        'to_admin_content'
     ))
     assert (backend.add_message(
         MessageCategory.ToStudent, message_test_oa_id,
-        'to_student_title', 'to_student_content',
+        'to_student_content',
         'wyl8899'
     ))
     assert (backend.add_message(
         MessageCategory.ToAdmin, message_test_oa_id,
-        'yet_another_title', 'yet_another_content'
+        'yet_another_content'
     ))
 
 

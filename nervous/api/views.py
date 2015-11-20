@@ -22,6 +22,11 @@ def response_success():
 
 
 def response_from_validation_error(e, method=None):
+    if settings.DEBUG:
+        print '=============================='
+        print 'ValidationError: ', e
+        traceback.print_exc()
+        print '=============================='
     error_dict = e.message_dict
     key, value = error_dict.popitem()
     response = {
@@ -44,6 +49,19 @@ def response_from_exception(e):
         'error_message': e.__unicode__(),
     }
     return response
+
+
+def json_response_decorator(func):
+    def wrapper(request):
+        try:
+            func(request)
+            response = response_success()
+        except ValidationError as e:
+            response = response_from_validation_error(e)
+        except Exception as e:
+            response = response_from_exception(e)
+        return JsonResponse(response)
+    return wrapper
 
 
 # Views
@@ -91,32 +109,20 @@ def submit_student_info(request):
     return HttpResponseRedirect('/student')
 
 
+@json_response_decorator
 def submit_application(request):
-    try:
-        dic = request.POST.dict()
-        username = session.get_username(request)
-        dic['user_submit'] = username
-        backend.add_application(dic)
-        response = response_success()
-    except ValidationError as e:
-        response = response_from_validation_error(e)
-    except Exception as e:
-        response = response_from_exception(e)
-    return JsonResponse(response)
+    dic = request.POST.dict()
+    username = session.get_username(request)
+    dic['user_submit'] = username
+    backend.add_application(dic)
 
 
+@json_response_decorator
 def student_modify_application(request):
-    try:
-        dic = request.POST.dict()
-        username = session.get_username(request)
-        dic['user_submit'] = username
-        backend.student_modify_application(dic)
-        response = response_success()
-    except ValidationError as e:
-        response = response_from_validation_error(e)
-    except Exception as e:
-        response = response_from_exception(e)
-    return JsonResponse(response)
+    dic = request.POST.dict()
+    username = session.get_username(request)
+    dic['user_submit'] = username
+    backend.student_modify_application(dic)
 
 
 def modify_application(request):
@@ -160,17 +166,16 @@ def del_admin(request):
     return HttpResponseRedirect('/superuser')
 
 
+@json_response_decorator
 def add_message(request):
     dic = request.POST.dict()
     username = session.get_username(request)
     backend.add_message(
         dic['category'],
         dic['official_account_id'],
-        dic['title'],
         dic['content'],
         username
     )
-    return HttpResponse(request.POST)
 
 
 def process_message(request):

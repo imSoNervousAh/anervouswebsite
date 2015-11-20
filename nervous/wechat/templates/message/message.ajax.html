@@ -69,12 +69,12 @@
                                 <div class="row" style="margin-top: 30px">
                                     <div class="col-md-9  col-md-offset-4">
                                         {% csrf_token %}
-                                        <div class="input-group" style="margin-top: 20px;">
+                                        <div class="input-group form-group" style="margin-top: 20px;">
                                             <input name="category" style="display:none" value="{{ category }}">
                                             <input name="official_account_id" style="display:none"
                                                    value="{{ account.id }}">
                                             <input name="title" style="display: none;" value="">
-                                            <textarea name="content" type="text" class="form-control"
+                                            <textarea content-field" name="content" type="text" class="form-control"
                                                       placeholder="请输入回复"
                                                       style="height: 100px;width: 350px;margin-bottom: 5px"></textarea>
 
@@ -94,25 +94,15 @@
 
 
                             <script type="text/javascript">
-                                function submitFormCheck() {
-                                    var form = document.forms["reply-message-form"];
-                                    if (form['content'].value == '') {
-                                        alert('请填写正文');
-                                        return false;
-                                    }
-                                    form.submit();
-                                    loadContent('message/{{ official_account_id }}');
-                                    return true;
-
-                                }
-                                function postData() {
+                                function refresh_messages (data) {
                                     var category;
                                     {% if category == MessageCategory.ToStudent %}
                                         category = 'admin';
                                     {% else %}
                                         category = 'student';
                                     {% endif %}
-                                    loadContent("/message/" + category + "/{{ official_account_id }}",
+                                    if (data.status === "ok") {
+                                        loadContent("/message/" + category + "/{{ official_account_id }}",
                                             {}, undefined, function () {
                                                 $("html, body").delay(60).animate({
                                                     "scroll-top": $(document).height()
@@ -121,22 +111,20 @@
                                                     animate(item, "flash");
                                                 });
                                             }
-                                    );
-
+                                        );
+                                    }
                                 }
 
 
                                 $("#send-reply").click(function () {
-                                    console.log("send-reply...");
-                                    if (!submitFormCheck()) return;
                                     handleFormPost("#reply-message-form", "{% url 'api/add_message' %}", {
-                                        success_callback: postData,
+                                        success_callback: refresh_messages
                                     });
                                 });
 
                                 $("#mark-read").click(function () {
                                     handleFormPost("#reply-message-form", "{% url 'api/process_message' %}", {
-                                        success_callback: postData,
+                                        success_callback: refresh_messages,
                                     });
                                 });
                             </script>

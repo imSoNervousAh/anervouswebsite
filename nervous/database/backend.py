@@ -303,23 +303,18 @@ def process_all_messages(official_account_id):
     return True
 
 
-def add_message(category, official_account_id, title, content, admin_name=None):
-    try:
-        message = Message.objects.model()
-        message.category = category
-        if int(category) == MessageCategory.ToStudent:
-            process_all_messages(official_account_id)
-            admin = Admin.objects.get(pk=admin_name)
-            message.admin = admin
-        message.official_account = OfficialAccount.objects.get(pk=official_account_id)
-        message.title = title
-        message.content = content
-        message.processed = False
-        message.save()
-        return True
-    except ObjectDoesNotExist:
-        return False
-
+def add_message(category, official_account_id, content, admin_name=None):
+    message = Message.objects.model()
+    message.category = category
+    if int(category) == MessageCategory.ToStudent:
+        process_all_messages(official_account_id)
+        admin = Admin.objects.get(pk=admin_name)
+        message.admin = admin
+    message.official_account = OfficialAccount.objects.get(pk=official_account_id)
+    message.content = content
+    message.processed = False
+    message.full_clean()
+    message.save()
 
 # Account records
 

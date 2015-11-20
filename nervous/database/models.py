@@ -52,11 +52,15 @@ class Student(models.Model):
     tel = models.CharField(max_length=20)
     email = models.CharField(max_length=254)
 
+    class Meta:
+        verbose_name = u'学生'
+        verbose_name_plural = u'学生'
+
     def information_filled(self):
         return self.real_name != ""
 
     def __unicode__(self):
-        return "%s(%s)" % (self.student_id, self.real_name)
+        return u'%s(%s)' % (self.student_id, self.real_name)
 
 
 class OfficialAccount(models.Model):
@@ -126,7 +130,6 @@ class Article(models.Model):
 class Message(models.Model):
     official_account = models.ForeignKey(OfficialAccount)
     category = models.IntegerField()  # value should come from MessageCategory
-    title = models.CharField(max_length=30)
     content = models.CharField(max_length=140)
     processed = models.BooleanField()
     admin = models.ForeignKey(Admin, null=True)
@@ -150,7 +153,7 @@ class Message(models.Model):
         else:
             direction = 'to'
         return "%s under account %s %s %s, processed = %s" % (
-            self.title,
+            self.content,
             self.official_account.name,
             direction,
             self.official_account.application.user_submit,
