@@ -12,8 +12,16 @@ def get_date_object_before_n_days(n):
     return datetime.date.today() - datetime.timedelta(days=n)
 
 
-def clean_test_db():
+def migrate():
     call(["python", "manage.py", "migrate"])
+
+
+def make_migrations():
+    call(["python", "manage.py", "makemigrations"])
+
+
+def clean_test_db():
+    migrate()
     call(["python", "manage.py", "flush", "--noinput"])
     call(["python", "manage.py", "sqlsequencereset", "database"])
     cursor = connection.cursor()

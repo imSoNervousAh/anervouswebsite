@@ -1,11 +1,15 @@
 # -*-coding:utf-8
 
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
+
+from api.info_login import auth_by_info as tsinghua_login
+
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.core.exceptions import ValidationError
+
+import traceback
 
 # Utils
 
@@ -16,7 +20,7 @@ def response_success():
     return response
 
 
-def response_from_validation_error(e):
+def response_from_validation_error(e, method=None):
     error_dict = e.message_dict
     key, value = error_dict.popitem()
     response = {
@@ -24,9 +28,16 @@ def response_from_validation_error(e):
         'error_message': value,
         'error_field': key,
     }
+    if method:
+        response['submit_method'] = method
     return response
 
+
 def response_from_exception(e):
+    print '=============================='
+    print "Unexpected error: ", e
+    traceback.print_exc()
+    print '=============================='
     response = {
         'status': 'error',
         'error_message': e.__unicode__(),
@@ -76,17 +87,29 @@ def submit_student_info(request):
 
 
 def submit_application(request):
-    dic = request.POST.dict()
-    username = session.get_username(request)
-    dic['user_submit'] = username
     try:
-        print dic
+        dic = request.POST.dict()
+        username = session.get_username(request)
+        dic['user_submit'] = username
         backend.add_application(dic)
         response = response_success()
     except ValidationError as e:
         response = response_from_validation_error(e)
     except Exception as e:
-        print "Unexpected error: ", e
+        response = response_from_exception(e)
+    return JsonResponse(response)
+
+
+def student_modify_application(request):
+    try:
+        dic = request.POST.dict()
+        username = session.get_username(request)
+        dic['user_submit'] = username
+        backend.student_modify_application(dic)
+        response = response_success()
+    except ValidationError as e:
+        response = response_from_validation_error(e)
+    except Exception as e:
         response = response_from_exception(e)
     return JsonResponse(response)
 
@@ -97,19 +120,6 @@ def modify_application(request):
     dic['operator_admin'] = username
     backend.modify_application(dic)
     return HttpResponseRedirect('/admin')
-
-
-def student_modify_application(request):
-    try:
-        dic = request.POST.dict()
-        id = int(dic['application_id'])
-        backend.del_application(id)
-        submit_application(request)
-        res = 'success'
-    except (ValueError, AssertionError):
-        res = 'failed'
-    print res
-    return HttpResponse(res)
 
 
 def delete_application(request, id):

@@ -43,41 +43,43 @@ def application_from_dict(dic):
             'manager_dept', 'manager_tel', 'manager_email',
             'user_submit', 'association']:
         # invocation that lacks parameter can not happen with real POST
-        # so if you see '__placeholder__' in database, that's a bug
+        # so if you see '__placeholder__' in database, THAT INDICATES A BUG
         val = dic.get(attr, '__placeholder__')
         setattr(application, attr, val)
     application.clean_fields(exclude=['official_account'])
-
+    return application
 
 
 def official_account_from_dict(dic):
     oa = OfficialAccount.objects.model()
     for attr in ['name', 'description', 'wx_id']:
         setattr(oa, attr, dic[attr])
-    oa.full_clean()
+    oa.full_clean(validate_unique=False)
     return oa
 
 
 def add_application(dic):
-    # if dic['description'] == "":
-    #     return {
-    #         'status': 'error',
-    #         # 'submit_method': app['method'],
-    #         'error_message': u'请填写公众号描述！',
-    #         'error_field': 'description'
-    #     }
-
     application = application_from_dict(dic)
-    print application
     account = official_account_from_dict(dic)
+    account.full_clean()
+    account.save()
     application.official_account = account
     application.full_clean()
-    account.save()
     application.save()
-    # return {
-    #     'status': 'ok',
-    #     # 'submit_method': app['method'],
-    # }
+
+
+def student_modify_application(dic):
+    old_application_id = int(dic['application_id'])
+    application = application_from_dict(dic)
+    account = official_account_from_dict(dic)
+    print 'student_modify_application:', old_application_id
+    OfficialAccount.objects.get(pk=old_application_id).delete()
+    account.full_clean()
+    account.save()
+    application.official_account = account
+    # application.full_clean()
+    application.save()
+    print application
 
 
 def modify_application(app):
@@ -94,8 +96,8 @@ def modify_application(app):
 
 def del_application(id):
     try:
-        app = Application.objects.get(official_account__id__exact=id)
-        app.official_account.delete()
+        oa = OfficialAccount.objects.get(pk=id)
+        oa.delete()
         return True
     except ObjectDoesNotExist:
         return False
