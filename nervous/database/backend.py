@@ -42,7 +42,7 @@ def application_from_dict(dic):
             'manager_name', 'manager_student_id',
             'manager_dept', 'manager_tel', 'manager_email',
             'user_submit', 'association']:
-        # invocation that lacks parameter can not happen with real POST
+        # NOTE: invocation that lacks parameter can not happen with real POST
         # so if you see '__placeholder__' in database, THAT INDICATES A BUG
         val = dic.get(attr, '__placeholder__')
         setattr(application, attr, val)
@@ -69,15 +69,21 @@ def add_application(dic):
 
 
 def student_modify_application(dic):
-    old_application_id = int(dic['application_id'])
-    application = application_from_dict(dic)
     account = official_account_from_dict(dic)
-    print 'student_modify_application:', old_application_id
-    OfficialAccount.objects.get(pk=old_application_id).delete()
+    application = application_from_dict(dic)
+
+    old_application_id = int(dic['application_id'])
+    old_application = get_application_by_id(old_application_id)
+    old_wx_id = old_application.official_account_id
+
+    if old_wx_id != account.wx_id:
+        account.full_clean()
+
+    old_application.official_account.delete()
     account.full_clean()
     account.save()
     application.official_account = account
-    # application.full_clean()
+    application.full_clean()
     application.save()
     print application
 
