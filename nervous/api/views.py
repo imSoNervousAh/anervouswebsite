@@ -24,7 +24,6 @@ def response_success():
 def response_from_validation_error(e, method=None):
     if settings.DEBUG:
         print '=============================='
-        print 'ValidationError: ', e
         traceback.print_exc()
         print '=============================='
     error_dict = e.message_dict
@@ -41,7 +40,6 @@ def response_from_validation_error(e, method=None):
 
 def response_from_exception(e):
     print '=============================='
-    print "Unexpected error: ", e
     traceback.print_exc()
     print '=============================='
     response = {
@@ -100,13 +98,11 @@ def login(request, identity):
         return response
 
 
+@json_response_decorator
 def submit_student_info(request):
     dic = request.POST.dict()
-    print dic
     username = session.get_username(request)
     backend.set_student_information(username, dic)
-    print "submit_student_info: ", username," success"
-    return HttpResponseRedirect('/student')
 
 
 @json_response_decorator

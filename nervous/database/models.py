@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.core.validators import *
+from django.core.exceptions import ValidationError
 
 # Utils
 
@@ -33,6 +35,7 @@ class ForewarnTarget:
 class NotificationOption:
     Message, Email = xrange(2)
 
+
 # Models
 
 class Admin(models.Model):
@@ -49,15 +52,35 @@ class Student(models.Model):
     student_id = models.IntegerField(primary_key=True)
     real_name = models.CharField(max_length=20)
     dept = models.CharField(max_length=40)
-    tel = models.CharField(max_length=20)
-    email = models.CharField(max_length=254)
+    tel = models.CharField(
+        max_length=20,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{3,12}$',
+                message='请输入一个合法的电话号码'
+            )
+        ]
+    )
+    email = models.CharField(
+        max_length=254,
+        validators=[
+            EmailValidator(
+                message='请输入一个合法的邮件地址'
+            )
+        ]
+    )
 
     class Meta:
         verbose_name = u'学生'
         verbose_name_plural = u'学生'
 
     def information_filled(self):
-        return self.real_name != ""
+        try:
+            self.full_clean()
+            return True
+        except ValidationError:
+            return False
+
 
     def __unicode__(self):
         return u'%s(%s)' % (self.student_id, self.real_name)

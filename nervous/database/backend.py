@@ -206,7 +206,9 @@ def set_student_information(student_id, dic):
     except IntegrityError:
         student = Student.objects.get(pk=student_id)
     for attr in ['real_name', 'dept', 'tel', 'email']:
-        setattr(student, attr, dic.get(attr, ''))
+        # Again, __placeholder__ exists for the sake of database.tests
+        setattr(student, attr, dic.get(attr, '__placeholder__'))
+    student.full_clean()
     student.save()
 
 
