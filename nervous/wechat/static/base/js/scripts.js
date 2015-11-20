@@ -188,13 +188,13 @@ function loadContentOfItem(item, load_params, callback) {
 function handleFormPost(form_selector, post_url, params) {
     /*
      params = {
-     success_callback(data):
-     function to call when ajax POST returns success,
-     error_callback(xhr, textStatus, errorThrown):
-     function to call when ajax POST returns error,
-     success_msg(data):
-     function that returns message to display for success POST
-     note that though POST is successful, returned status maybe "error"
+        success_callback(data):
+            function to call when ajax POST returns success,
+        error_callback(xhr, textStatus, errorThrown):
+            function to call when ajax POST returns error,
+        success_msg(data):
+            function that returns message to display for success POST
+            note that though POST is successful, returned status maybe "error"
      }
      */
     var form = $(form_selector);
@@ -252,7 +252,7 @@ function handleFormPost(form_selector, post_url, params) {
                 url: post_url,
                 data: form.serialize(),
                 success: function (data) {
-                    console.log("post success");
+//                    console.log("post success");
                     msg.removeClass("alert-danger alert-success");
                     if (data.status === "ok") msg.addClass("alert-success");
                     else msg.addClass("alert-danger");
@@ -449,7 +449,6 @@ $(function () {
         var chevron = $(this).find("span.fa"),
             target = $($(this).data("target"));
         setTimeout(function () {
-            console.log(target);
             if (target.hasClass("in")) {
                 chevron.removeClass("fa-chevron-up").addClass("fa-chevron-down");
             } else {
