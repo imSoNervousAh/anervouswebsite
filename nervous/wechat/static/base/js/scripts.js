@@ -203,6 +203,11 @@ function handleFormPost(form_selector, post_url, params) {
         var msg_text = msg.find("> div");
         var form_groups = $(".form-group");
 
+        var method_input = form.find(".form-method");
+        form.find(".form-btn").click(function () {
+            method_input.attr("value", $(this).attr("value"));
+        });
+
         var success_callback = $.noop,
             error_callback = $.noop,
             success_msg = function (data) {
@@ -441,12 +446,16 @@ $(function () {
     left_column.find(".column-container > a").each(function () {
         $(this).append('<span class="fa fa-chevron-up pull-right"></span>');
     }).click(function () {
-        var chevron = $(this).find("span.fa");
-        if (chevron.hasClass("fa-chevron-up")) {
-            chevron.removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        } else {
-            chevron.removeClass("fa-chevron-down").addClass("fa-chevron-up");
-        }
+        var chevron = $(this).find("span.fa"),
+            target = $($(this).data("target"));
+        setTimeout(function () {
+            console.log(target);
+            if (target.hasClass("in")) {
+                chevron.removeClass("fa-chevron-up").addClass("fa-chevron-down");
+            } else {
+                chevron.removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            }
+        }, 400);
     });
 
     // hide scrolling indicators when reached top or bottom
