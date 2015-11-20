@@ -35,12 +35,26 @@ def get_application_by_id(id):
     return Application.objects.get(official_account__id__exact=id)
 
 
-def add_official_account(dic):
+def application_from_dict(dic):
+    application = Application.objects.model()
+    application.status = 'pending'
+    for attr in [
+            'manager_name', 'manager_student_id',
+            'manager_dept', 'manager_tel', 'manager_email',
+            'user_submit', 'association']:
+        # invocation that lacks parameter can not happen with real POST
+        # so if you see '__placeholder__' in database, that's a bug
+        val = dic.get(attr, '__placeholder__')
+        setattr(application, attr, val)
+    application.clean_fields(exclude=['official_account'])
+
+
+
+def official_account_from_dict(dic):
     oa = OfficialAccount.objects.model()
     for attr in ['name', 'description', 'wx_id']:
         setattr(oa, attr, dic[attr])
     oa.full_clean()
-    oa.save()
     return oa
 
 
@@ -53,17 +67,12 @@ def add_application(dic):
     #         'error_field': 'description'
     #     }
 
-    application = Application.objects.model()
-    account = add_official_account(dic)
+    application = application_from_dict(dic)
+    print application
+    account = official_account_from_dict(dic)
     application.official_account = account
-    application.status = 'pending'
-    for attr in [
-            'manager_name', 'manager_student_id',
-            'manager_dept', 'manager_tel', 'manager_email',
-            'user_submit', 'association']:
-        val = dic.get(attr, 'placeholder')
-        setattr(application, attr, val)
     application.full_clean()
+    account.save()
     application.save()
     # return {
     #     'status': 'ok',

@@ -26,6 +26,13 @@ def response_from_validation_error(e):
     }
     return response
 
+def response_from_exception(e):
+    response = {
+        'status': 'error',
+        'error_message': e.__unicode__(),
+    }
+    return response
+
 
 # Views
 
@@ -73,10 +80,14 @@ def submit_application(request):
     username = session.get_username(request)
     dic['user_submit'] = username
     try:
+        print dic
         backend.add_application(dic)
         response = response_success()
     except ValidationError as e:
         response = response_from_validation_error(e)
+    except Exception as e:
+        print "Unexpected error: ", e
+        response = response_from_exception(e)
     return JsonResponse(response)
 
 

@@ -60,9 +60,13 @@ class Student(models.Model):
 
 
 class OfficialAccount(models.Model):
-    wx_id = models.CharField(u'公众号ID', max_length=50, unique=True)
+    wx_id = models.CharField(u'公众号微信ID', max_length=50, unique=True)
     name = models.CharField(u'公众号名称', max_length=40)
-    description = models.CharField(u'公众号描述', max_length=300)
+    description = models.CharField(u'公众号简介', max_length=300)
+
+    class Meta:
+        verbose_name = u'微信公众号'
+        verbose_name_plural = u'微信公众号'
 
     def unprocessed_messages_count(self):
         return self.message_set.filter(processed__exact=False).count()
