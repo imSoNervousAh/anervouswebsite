@@ -294,10 +294,11 @@ def get_messages(category=None, official_account_id=None, only_unprocessed=None)
     return messages
 
 
-def process_all_messages(official_account_id):
+def process_all_messages(official_account_id, category):
     messages = get_messages(
         official_account_id=official_account_id,
-        only_unprocessed=True
+        only_unprocessed=True,
+        category=category
     )
     for message in messages:
         message.processed = True
@@ -307,9 +308,9 @@ def process_all_messages(official_account_id):
 
 def add_message(category, official_account_id, content, admin_name=None):
     message = Message.objects.model()
+    category = int(category)
     message.category = category
     if int(category) == MessageCategory.ToStudent:
-        process_all_messages(official_account_id)
         admin = Admin.objects.get(pk=admin_name)
         message.admin = admin
     else:
@@ -318,6 +319,8 @@ def add_message(category, official_account_id, content, admin_name=None):
     message.content = content
     message.processed = False
     message.full_clean(exclude=['admin'])
+    opposite_category = MessageCategory.ToAdmin + MessageCategory.ToStudent - category
+    process_all_messages(official_account_id, opposite_category)
     message.save()
 
 # Account records

@@ -136,28 +136,32 @@ def change_info(request):
         return HttpResponse(request, '...')
 
 
-@check_identity('student')
-@check_have_student_info
-def student(request):
+def student_get_offcial_accounts(request):
     username = session.get_username(request)
-    realname=get_realname(request)
-
     approved_applications = backend.get_applications_by_status('approved')
     official_accounts = []
     for app in approved_applications:
         if app.user_submit == username:
             official_accounts.append(app.official_account)
+    return official_accounts
+
+
+@check_identity('student')
+@check_have_student_info
+def student(request):
+    username = session.get_username(request)
+    realname = get_realname(request)
 
     return render(request, 'student/index.html', {
         'username': realname,
-        'official_accounts': official_accounts,
+        'official_accounts': student_get_offcial_accounts(request),
+        'unprocessed_category': MessageCategory.ToStudent,
     })
 
 
 @check_identity('student')
 @check_have_student_info
 def student_show_applications(request):
-
     glyphicons = {
         'approved': 'fa-check-circle',
         'rejected': 'fa-times-circle',
@@ -180,17 +184,12 @@ def student_show_applications(request):
         if app.status == 'pending':
             pending_count += 1
 
-    approved_applications = backend.get_applications_by_status('approved')
-    official_accounts = []
-    for app in approved_applications:
-        if app.user_submit == username:
-            official_accounts.append(app.official_account)
-
     return render_ajax(request, 'student/show_applications.html', {
         'username': get_realname(request),
-        'official_accounts': official_accounts,
         'applications': applications,
         'pending_count': pending_count,
+        'official_accounts': student_get_offcial_accounts(request),
+        'unprocessed_category': MessageCategory.ToStudent,
     }, 'my-applications-item')
 
 
@@ -202,7 +201,9 @@ def student_add_applications(request):
     return render_ajax(request, 'student/modify_applications.html', {
         'student': student,
         'student_id': username,
-        'username': student.real_name
+        'username': student.real_name,
+        'official_accounts': student_get_offcial_accounts(request),
+        'unprocessed_category': MessageCategory.ToStudent,
     }, 'add-application-item')
 
 
@@ -220,6 +221,8 @@ def student_modify_applications(request, id):
         'username': student.real_name,
         'app': app,
         'modify_app': 'true',
+        'official_accounts': student_get_offcial_accounts(request),
+        'unprocessed_category': MessageCategory.ToStudent,
     })
 
 
@@ -242,6 +245,8 @@ def student_change_info(request):
             'type': 'change',
             'username': student.real_name,
             'student': student,
+            'official_accounts': student_get_offcial_accounts(request),
+            'unprocessed_category': MessageCategory.ToStudent,
         })
     else:
         return HttpResponse(request, '...')
@@ -528,6 +533,8 @@ def message_detail_student(request, id):
         'MessageCategory': MessageCategory,
         'identity': 'student',
         'locate': 'student/index.html',
+        'official_accounts': student_get_offcial_accounts(request),
+        'unprocessed_category': MessageCategory.ToStudent,
     }, 'message-detail-' + str(id))
 
 

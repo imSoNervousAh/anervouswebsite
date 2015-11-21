@@ -131,24 +131,7 @@
                 <p>真的有这种东西吗</p>
             </div>
         </div>
-        <!--            
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>未读站内消息<span class="badge pull-right">{{ messages|length }}</span></h4></div>
-            <div class="panel-body">
-                {% for message in messages %}
-                    <p><a style="cursor:pointer;" class="message-link"
-                          data-url="{% url 'message/admin' message.official_account_id %}">{{ message.title }}</a>
-                    </p>
-                {% endfor %}
-            </div>
-            <script>
-                $(".message-link").click(function () {
-                    loadContent($(this).data("url"), {});
-                });
-            </script>
-        </div>
--->
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>未读站内消息</h4></div>
