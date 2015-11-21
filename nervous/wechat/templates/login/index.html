@@ -38,7 +38,6 @@
             var password = form['password'];
 
             {% if identity == 'student' %}
-                alert("studnet");
                 var re = /\d{10}/;
                 if (!re.test(account.value)) {
                     alert("请输入合法的学生号");
