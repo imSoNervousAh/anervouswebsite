@@ -1,3 +1,7 @@
+<a class="fake-link">
+    <strong><i class="fa fa-bell fa-fw"></i>　预警规则</strong>
+</a>
+<hr>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4>预警规则列表</h4>
@@ -40,7 +44,7 @@
         <h4>创建预警规则</h4>
     </div>
     <div class="panel-body">
-        <form id="rule-form" class="form form-vertical" data-toggle="validator" rule="form">
+        <form id="rule-form" class="form form-vertical" data-toggle="validator" role="form">
             {% csrf_token %}
 
             <div class="control-group">
@@ -80,7 +84,7 @@
                                placeholder="" pattern="^[1-9]|\d{0,2}$" required>
                             <span class="help-block with-errors"></span>
                     </div>
-                    <div class="col-sm-1 form-group">
+                    <div class="col-sm-1">
                         <h5>天</h5>
                     </div>
                 </div>
@@ -90,25 +94,25 @@
                 <label class="control-label" for="target-field">预警规则</label>
 
                 <div class="row">
-                    <div class="col-sm-6  form-group">
+                    <div class="col-sm-6 form-group">
                         <select id="target-field" name="target" class="form-control">
                             <option value={{ ForewarnTarget.ViewsTotal }}>阅读量</option>
                             <option value={{ ForewarnTarget.LikesTotal }} disabled="disabled">点赞数</option>
                         </select>
                     </div>
-                    <div class="col-sm-2  form-group">
+                    <div class="col-sm-2 form-group">
                         <select name="" class="form-control">
                             <option value="大于">大于</option>
                             <option value="小于" disabled="disabled">小于</option>
                         </select>
                     </div>
-                    <div class="col-sm-3  form-group">
+                    <div class="col-sm-3 form-group">
                         <input id="value-field" name="value" type="text" class="form-control"
                                data-error="请填写合法数字"
                                placeholder="" pattern="^[1-9]|\d{0,3}$" required>
                             <span class="help-block with-errors"></span>
                     </div>
-                    <div class="col-sm-1  form-group">
+                    <div class="col-sm-1">
                         <h5>条</h5>
                     </div>
                 </div>

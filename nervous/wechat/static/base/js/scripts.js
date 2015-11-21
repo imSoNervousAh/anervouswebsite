@@ -187,6 +187,12 @@ function loadContentOfItem(item, load_params, callback) {
     loadContent($(item).data("url"), {}, item, load_params, callback);
 }
 
+function removePx(str) {
+    console.log(str);
+    if (typeof str === "number") return str;
+    return parseInt(str.substr(0, str.length - 2));
+}
+
 function handleFormPost(form_selector, post_url, params) {
     /*
      params = {
@@ -209,6 +215,7 @@ function handleFormPost(form_selector, post_url, params) {
         form.find(".form-btn").click(function () {
             method_input.attr("value", $(this).attr("value"));
         });
+        form_groups.append('<span class="help-block with-errors"></span>');
 
         var success_callback = $.noop,
             error_callback = $.noop,
@@ -222,8 +229,7 @@ function handleFormPost(form_selector, post_url, params) {
                     return data.error_message;
                 return "提交出错，请再次检查您填写的信息。"
             },
-            before_callback = function () {
-            };
+            before_callback = $.noop;
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
         if (params.hasOwnProperty("error_callback")) {
@@ -234,7 +240,7 @@ function handleFormPost(form_selector, post_url, params) {
             success_callback = params.success_msg;
         }
         if (params.hasOwnProperty("before_callback")) {
-            before_callback = params.before_callback();
+            before_callback = params.before_callback;
         }
 
         msg.find("button").click(function () {
@@ -254,17 +260,30 @@ function handleFormPost(form_selector, post_url, params) {
                 url: post_url,
                 data: form.serialize(),
                 success: function (data) {
-//                    console.log("post success");
                     msg.removeClass("alert-danger alert-success");
                     if (data.status === "ok") msg.addClass("alert-success");
                     else msg.addClass("alert-danger");
                     msg_text.html(success_msg(data));
                     msg.fadeIn();
+                    console.log(data);
 
-                    if (data.hasOwnProperty("error_field")) {
-                        var field = form_groups.has("[name='" + data.error_field + "']");
-                        field.addClass("has-error");
-                        $.scrollTo(field, {offset: -200});
+                    if (data.hasOwnProperty("error_messages")) {
+                        var pos = -1;
+                        console.log(data.error_messages);
+                        for (var field_name in data.error_messages) {
+                            console.log(field_name);
+                            var field = form_groups.has("[name='" + field_name + "']");
+                            field.addClass("has-error");
+                            field.find("span").html(data.error_messages[field_name]);
+                            var top = field.position().top;
+                            if (pos === -1 || pos > top) pos = top;
+                        }
+
+                        if ($("html, body").css("scroll-top") > pos) {
+                            $("html, body").animate({
+                                "scroll-top": pos
+                            }, "fast");
+                        }
                     }
 
                     success_callback(data);

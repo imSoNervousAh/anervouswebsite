@@ -65,10 +65,10 @@
                                         $("#error-msg").fadeOut();
                                     });
 
-                                    $("#modify_{{app.id}}").click(function () {
+                                    $("#modify_{{ app.id }}").click(function () {
                                         loadContent("{% url 'student/modify-application' app.id %}");
                                     });
-                                    $("#delete_{{app.id}}").click(function (event) {
+                                    $("#delete_{{ app.id }}").click(function (event) {
                                         event.preventDefault();
                                         var url = "{% url 'api/delete_application' app.id %}";
                                         $.ajax({
@@ -87,7 +87,7 @@
                                             }
                                         });
                                     });
-                                    $("#recall_{{app.id}}").click(function (event) {
+                                    $("#recall_{{ app.id }}").click(function (event) {
                                         event.preventDefault();
                                         var url = "{% url 'api/recall_application' app.id %}";
                                         $.ajax({

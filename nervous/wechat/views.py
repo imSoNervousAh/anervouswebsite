@@ -62,6 +62,10 @@ def render_ajax(request, url, params, item_id=''):
         params['username'] = get_realname(request)
         if item_id != '':
             params['active_item'] = item_id
+        if session.get_identity(request) == 'admin':
+            params['pending_applications_count'] = len(backend.get_pending_applications())
+        elif session.get_identity(request) == 'student':
+            params['official_accounts'] = student_get_offcial_accounts(request)
 
     return render(request, url, params)
 
@@ -188,9 +192,8 @@ def student_show_applications(request):
         'username': get_realname(request),
         'applications': applications,
         'pending_count': pending_count,
-        'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
-        'status_name':status_name,
+        'status_name': status_name,
     }, 'my-applications-item')
 
 
@@ -203,7 +206,6 @@ def student_add_applications(request):
         'student': student,
         'student_id': username,
         'username': student.real_name,
-        'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
     }, 'add-application-item')
 
@@ -222,7 +224,6 @@ def student_modify_applications(request, id):
         'username': student.real_name,
         'app': app,
         'modify_app': 'true',
-        'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
     })
 
@@ -246,7 +247,6 @@ def student_change_info(request):
             'type': 'change',
             'username': student.real_name,
             'student': student,
-            'official_accounts': student_get_offcial_accounts(request),
             'unprocessed_category': MessageCategory.ToStudent,
         })
     else:

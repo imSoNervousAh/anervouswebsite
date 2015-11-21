@@ -30,7 +30,7 @@
             <li id="pending-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'pending' %}">
                 <a class="fake-link"><i class="fa fa-tasks fa-fw"></i>　待审批申请　<span
-                        class="badge badge-info">{{ pending_applications|length }}</span></a>
+                        class="badge badge-info">{{ pending_applications_count }}</span></a>
             </li>
             <li id="processed-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'processed' %}">
@@ -61,13 +61,22 @@
                 data-url="{% url 'admin/statistics' %}">
                 <a class="fake-link"><i class="fa fa-bar-chart fa-fw"></i>　统计信息</a>
             </li>
+        </ul>
+    </ul>
+    <hr>
+    <a class="fake-link" data-toggle="collapse" data-target="#forewan-menu">
+        <strong><i class="fa fa-bell fa-fw"></i>　数据预警</strong>
+    </a>
+    <ul class="nav nav-stacked collapse in" id="forewarn-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in nav-pills">
             <li id="forewarn-list-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/forewarn' %}">
-                <a class="fake-link"><i class="fa fa-bell fa-fw"></i>　预警规则</a>
+                <a class="fake-link"><i class="fa fa-sliders fa-fw"></i>　预警规则</a>
             </li>
             <li id="forewarn-detail-list-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/forewarn-list' %}">
-                <a class="fake-link"><i class="fa fa-file-text fa-fw"></i>　预警列表</a>
+                <a class="fake-link"><i class="fa fa-history fa-fw"></i>　预警记录</a>
             </li>
         </ul>
     </ul>

@@ -1,10 +1,9 @@
 {% load staticfiles %}
 
+<link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
 <script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
 
 <div id="message-area">
-    <link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
-
     <a style="text-decoration: none;" class="fake-link">
         <strong><i class="fa fa-comment fa-fw"></i>　站内消息</strong>
     </a>
@@ -74,7 +73,7 @@
                                             <input name="official_account_id" style="display:none"
                                                    value="{{ account.id }}">
                                             <input name="title" style="display: none;" value="">
-                                            <textarea content-field" name="content" type="text" class="form-control"
+                                            <textarea id="content-field" name="content" type="text" class="form-control"
                                                       placeholder="请输入回复"
                                                       style="height: 100px;width: 350px;margin-bottom: 5px"></textarea>
 
@@ -124,7 +123,7 @@
 
                                 $("#mark-read").click(function () {
                                     handleFormPost("#reply-message-form", "{% url 'api/process_message' %}", {
-                                        success_callback: refresh_messages,
+                                        success_callback: refresh_messages
                                     });
                                 });
                             </script>

@@ -14,18 +14,18 @@
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th style="width: 15%; min-width: 100px">公众号名称</th>
-                                <th style="width: 15%; min-width: 110px">公众号负责人</th>
-                                <th style="width: 10000px">公众号简介</th>
-                                <th>
-                                    <div style="width: 55px"></div>
-                                </th>
-                            </tr>
+                        <tr>
+                            <th style="width: 15%; min-width: 100px">公众号名称</th>
+                            <th style="width: 15%; min-width: 110px">公众号负责人</th>
+                            <th style="width: 10000px">公众号简介</th>
+                            <th>
+                                <div style="width: 55px"></div>
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <script>
-                            $(function() {
+                        <script>
+                            $(function () {
                                 $('body').popover({
                                     'html': true,
                                     'placement': 'auto right',
@@ -35,14 +35,15 @@
                                     'container': 'body'
                                 });
                             });
-                            </script>
-                            {% for app in pending_applications %}
+                        </script>
+                        {% for app in pending_applications %}
                             <tr>
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.manager_name }}</td>
                                 <td>{{ app.description|linebreaksbr|safe }}</td>
                                 <td>
-                                    <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link" data-toggle="popover" data-content="
+                                    <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
+                                       data-toggle="popover" data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
                                             {% csrf_token %}
                                             <button type='submit' name='status' value='rejected'
@@ -60,7 +61,7 @@
                                         <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
                                 </td>
                             </tr>
-                            {% endfor %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -75,41 +76,42 @@
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th style="width: 15%; min-width: 100px">公众号名称</th>
-                                <th style="width: 25%; min-width: 100px">文章标题</th>
-                                <th>文章简介</th>
-                                <th style="width: 85px"><span class="fa fa-eye fa-fw"></span> 阅览数</th>
-                                <th style="width: 85px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数</th>
-                            </tr>
+                        <tr>
+                            <th style="width: 15%; min-width: 100px">公众号名称</th>
+                            <th style="width: 25%; min-width: 100px">文章标题</th>
+                            <th>文章简介</th>
+                            <th style="width: 85px"><span class="fa fa-eye fa-fw"></span> 阅览数</th>
+                            <th style="width: 85px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for article in articles %}
-                                <tr>
-                                    <td><a style="cursor:pointer;" class="official-account-link" data-url="{% url 'admin/detail' article.official_account_id %}">
-                                        {{ article.official_account_name }}
-                                    </a></td>
-                                    <td>
-                                        <a target="_blank" href="{{ article.url }}">
-                                            <div>{{ article.title }}</div>
-                                        </a>
-                                    </td>
-                                    <td>{{ article.description|linebreaksbr|safe }}</td>
-                                    <td align="right">
-                                        {% if article.views != 100001 %}
-                                            {{ article.views }}
-                                        {% else %}
-                                            100000+
-                                        {% endif %}
-                                    </td>
-                                    <td align="right">{{ article.likes }}</td>
-                                </tr>
-                            {% endfor %}
+                        {% for article in articles %}
+                            <tr>
+                                <td><a style="cursor:pointer;" class="official-account-link"
+                                       data-url="{% url 'admin/detail' article.official_account_id %}">
+                                    {{ article.official_account_name }}
+                                </a></td>
+                                <td>
+                                    <a target="_blank" href="{{ article.url }}">
+                                        <div>{{ article.title }}</div>
+                                    </a>
+                                </td>
+                                <td>{{ article.description|linebreaksbr|safe }}</td>
+                                <td align="right">
+                                    {% if article.views != 100001 %}
+                                        {{ article.views }}
+                                    {% else %}
+                                        100000+
+                                    {% endif %}
+                                </td>
+                                <td align="right">{{ article.likes }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <script>
-                        $(".official-account-link").click(function() {
-                            loadContent($(this).data("url"), {});
-                        });
+                            $(".official-account-link").click(function () {
+                                loadContent($(this).data("url"), {});
+                            });
                         </script>
                     </table>
                 </div>
@@ -124,10 +126,12 @@
             </div>
             <div class="panel-body">
                 <div class="alert alert-info" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     一些<strong>不那么重要</strong>的通知
                 </div>
                 <p>站长给管理员的通知</p>
+
                 <p>真的有这种东西吗</p>
             </div>
         </div>
@@ -137,14 +141,17 @@
                 <h4>未读站内消息</h4></div>
             <div class="panel-body">
                 {% for account in unprocessed_account %}
-                <p><a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">{{ account.name }}</a><span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
-                </p>
+                    <p>
+                        <a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">
+                            {{ account.name }}</a>
+                        <span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
+                    </p>
                 {% endfor %}
             </div>
             <script>
-            $(".message-link").click(function() {
-                loadContent($(this).data("url"), {});
-            });
+                $(".message-link").click(function () {
+                    loadContent($(this).data("url"), {});
+                });
             </script>
         </div>
         <div class="panel panel-default">
@@ -155,22 +162,23 @@
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>名称</th>
-                                <th>关注人数</th>
-                            </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>名称</th>
+                            <th>关注人数</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for account in official_accounts %}
+                        {% for account in official_accounts %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td><a style="cursor:pointer;" class="official-account-link" data-url="{% url 'admin/detail' account.id %}">
+                                <td><a style="cursor:pointer;" class="official-account-link"
+                                       data-url="{% url 'admin/detail' account.id %}">
                                     {{ account.name }}
                                 </a></td>
                                 <td>{{ account.subscribers }}</td>
                             </tr>
-                            {% endfor %}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

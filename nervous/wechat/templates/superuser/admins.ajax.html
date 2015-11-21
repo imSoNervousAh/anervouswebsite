@@ -26,7 +26,7 @@
                                     'container': 'body',
                                     'selector': '.delete-admin-link',
                                     'title': "确认删除账号？",
-                                    'trigger': 'focus',
+                                    'trigger': 'focus'
                                 });
                             });
                         </script>
@@ -38,13 +38,13 @@
                                 <td>
                                     <a style="cursor: pointer;" href="#/" class="delete-admin-link"
                                        data-toggle="popover" data-content="
-                                <form method='post' action='{% url 'api/del_admin' %}'>
-                                    {% csrf_token %}
-                                    <div class='btn btn-info'>取消</div>
-                                    <input style='display:none' name='username' value='{{ admin.username }}'>
-                                    <span>　</span>
-                                    <input type='submit' value='删除' class='btn btn-danger'>
-                                </form>">
+                                        <form method='post' action='{% url 'api/del_admin' %}'>
+                                            {% csrf_token %}
+                                            <div class='btn btn-info'>取消</div>
+                                            <input style='display:none' name='username' value='{{ admin.username }}'>
+                                            <span>　</span>
+                                            <input type='submit' value='删除' class='btn btn-danger'>
+                                        </form>">
                                         <span class="fa fa-user-times"></span> 删除
                                     </a>
                                 </td>
@@ -66,7 +66,8 @@
 <div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add-admin-form" class="form form-vertical" role="form" data-toggle="validator" action="{% url 'api/add_admin' %}" method="post">
+            <form id="add-admin-form" class="form form-vertical" role="form" data-toggle="validator"
+                  action="{% url 'api/add_admin' %}" method="post">
                 {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -100,9 +101,9 @@
     </div>
 </div>
 <script>
-    $("#add-admin-button").click(function(){
-        var form=document.forms['add-admin-form'];
-        form['password-input'].value=hex_md5(form['password-input'].value);
+    $("#add-admin-button").click(function () {
+        var form = document.forms['add-admin-form'];
+        form['password-input'].value = hex_md5(form['password-input'].value);
     });
 </script>
 <!-- /Modals -->

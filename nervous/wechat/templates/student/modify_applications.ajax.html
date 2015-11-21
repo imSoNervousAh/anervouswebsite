@@ -18,7 +18,7 @@
                 <form id="application-form" class="form form-vertical" data-toggle="validator" role="form">
                     {% csrf_token %}
                     {% if modify_app %}
-                        <input name="application_id" type="text" style="display:none" value="{{ app.id }}">
+                        <input name="application_id" type="text" style="display: none;" value="{{ app.id }}">
                     {% endif %}
 
                     <div class="control-group">
@@ -27,7 +27,6 @@
                                 <label class="control-label" for="name-field">公众号名称</label>
                                 <input id="name-field" name="name" type="text" class="form-control"
                                        value="{{ app.name }}" required>
-
                             </div>
                             <div class=" col-sm-6 form-group">
                                 <label class="control-label" for="wx_id-field">公众号微信ID</label>
@@ -75,8 +74,7 @@
                             <div class="col-sm-6 form-group">
                                 <label class="control-label" for="manager_email-field">负责人邮箱</label>
                                 <input id="manager_email-field" readonly="readonly" name="manager_email" type="email"
-                                       class="form-control" value="{{ student.email }}" class="form-control"
-                                       value="{{ student.email }}">
+                                       class="form-control" value="{{ student.email }}">
                             </div>
                         </div>
                     </div>
@@ -85,8 +83,7 @@
                             <div class="col-sm-6">
                                 <label class="control-label" for="manager_dept-field">负责人院系</label>
                                 <input id="manager_dept-field" readonly="readonly" name="manager_dept" type="text"
-                                       class="form-control" value="{{ student.dept }}" class="form-control"
-                                       value="{{ student.email }}">
+                                       class="form-control" value="{{ student.dept }}">
 
                             </div>
                         </div>
@@ -113,22 +110,22 @@
                 </form>
                 <script>
                     {% if modify_app %}
-                        handleFormPost("#application-form", "{% url 'api/student_modify_application' %}", {
+                        var url = "{% url 'api/student_modify_application' %}";
                     {% else %}
-                        handleFormPost("#application-form", "{% url 'api/submit_application' %}", {
+                        var url = "{% url 'api/submit_application' %}";
                     {% endif %}
-                    success_callback: function (data) {
-                        if (data.status === "ok") {
-                            setTimeout(function () {
-                                loadContentOfItem("#my-applications-item", function () {
-                                    var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
-                                    animate(item, "flash");
-                                });
-                            }, 1500);
+                    handleFormPost("#application-form", url, {
+                        success_callback: function (data) {
+                            if (data.status === "ok") {
+                                setTimeout(function () {
+                                    loadContentOfItem("#my-applications-item", function () {
+                                        var item = $("#application-list").find("tbody").find("tr:nth-last-of-type(1)");
+                                        animate(item, "flash");
+                                    });
+                                }, 1500);
+                            }
                         }
-                    }
                     });
-
                 </script>
             </div>
         </div>
