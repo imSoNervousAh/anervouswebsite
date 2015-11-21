@@ -35,13 +35,12 @@ def get_application_by_id(id):
     return Application.objects.get(official_account__id__exact=id)
 
 
-def application_from_dict(dic):
-    application = Application.objects.model()
-    application.status = 'pending'
+def application_from_dict(dic, base=None):
+    application = base or Application.objects.model()
     for attr in [
             'manager_name', 'manager_student_id',
             'manager_dept', 'manager_tel', 'manager_email',
-            'user_submit', 'association']:
+            'user_submit', 'association', 'status']:
         # NOTE: invocation that lacks parameter can not happen with real POST
         # so if you see '__placeholder__' in database, THAT INDICATES A BUG
         val = dic.get(attr, '__placeholder__')
@@ -69,23 +68,20 @@ def add_application(dic):
 
 
 def student_modify_application(dic):
+    print dic
+    application_id = int(dic['application_id'])
+    application = get_application_by_id(application_id)
+    old_account = application.official_account
     account = official_account_from_dict(dic)
-    application = application_from_dict(dic)
-
-    old_application_id = int(dic['application_id'])
-    old_application = get_application_by_id(old_application_id)
-    old_wx_id = old_application.official_account_id
-
-    if old_wx_id != account.wx_id:
+    application = application_from_dict(dic, base=application)
+    if old_account.wx_id != account.wx_id:
         account.full_clean()
-
-    old_application.official_account.delete()
+    old_account.delete()
     account.full_clean()
     account.save()
     application.official_account = account
     application.full_clean()
     application.save()
-    print application
 
 
 def modify_application(app):
@@ -312,10 +308,12 @@ def add_message(category, official_account_id, content, admin_name=None):
         process_all_messages(official_account_id)
         admin = Admin.objects.get(pk=admin_name)
         message.admin = admin
+    else:
+        message.admin = None
     message.official_account = OfficialAccount.objects.get(pk=official_account_id)
     message.content = content
     message.processed = False
-    message.full_clean()
+    message.full_clean(exclude=['admin'])
     message.save()
 
 # Account records
@@ -345,13 +343,14 @@ def add_forewarn_rule(dic):
     try:
         rule = ForewarnRule.objects.model()
         account_name = dic['account_name']
-        if account_name != "":
+        if account_name != '':
             account = OfficialAccount.objects.get(name__exact=account_name)
         else:
             account = None
         rule.account = account
         for attr in ['duration', 'notification', 'target', 'value']:
             setattr(rule, attr, int(dic[attr]))
+        rule.full_clean(exclude=['account'])
         rule.save()
         return True
     except (ObjectDoesNotExist, ValueError):

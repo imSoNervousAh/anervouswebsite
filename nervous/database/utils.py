@@ -28,7 +28,6 @@ def make_migrations():
 
 
 def clean_test_db():
-    migrate()
     call(["python", "manage.py", "flush", "--noinput"])
     call(["python", "manage.py", "sqlsequencereset", "database"])
     cursor = connection.cursor()
@@ -38,6 +37,7 @@ def clean_test_db():
         print command
         cursor.execute(command)
     connection.commit()
+    migrate()
 
 
 # test gsdata
@@ -49,19 +49,19 @@ def update():
 # build a db for testing
 
 def message_test_db(message_test_oa_id):
-    assert (backend.add_message(
+    backend.add_message(
         MessageCategory.ToAdmin, message_test_oa_id,
         'to_admin_content'
-    ))
-    assert (backend.add_message(
+    )
+    backend.add_message(
         MessageCategory.ToStudent, message_test_oa_id,
         'to_student_content',
         'wyl8899'
-    ))
-    assert (backend.add_message(
+    )
+    backend.add_message(
         MessageCategory.ToAdmin, message_test_oa_id,
         'yet_another_content'
-    ))
+    )
 
 
 def forewarn_test_db(name):

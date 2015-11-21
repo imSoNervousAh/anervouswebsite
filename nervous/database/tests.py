@@ -11,13 +11,17 @@ class StudentTestCase(TestCase):
 
     def test_student_with_unfinished_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, {'real_name':''})
         self.assertFalse(backend.check_student_information_filled(student_id))
 
 
     def test_student_with_info(self):
         student_id = 2014000
-        backend.set_student_information(student_id, {'real_name':'doge'})
+        backend.set_student_information(student_id, {
+            'real_name':'doge',
+            'tel': '110',
+            'dept': 'dept',
+            'email': 'a@bc.com',
+        })
         self.assertTrue(backend.check_student_information_filled(student_id))
 
 
