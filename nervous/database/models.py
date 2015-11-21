@@ -95,8 +95,14 @@ class OfficialAccount(models.Model):
         verbose_name = u'微信公众号'
         verbose_name_plural = u'微信公众号'
 
-    def unprocessed_messages_count(self):
-        return self.message_set.filter(processed__exact=False).count()
+
+    def unprocessed_messages_count(self, category):
+        return self.message_set\
+            .filter(
+                processed__exact=False,
+                category__exact=category
+            ).count()
+
 
     def __unicode__(self):
         return "%s(%s)" % (self.name, self.wx_id)

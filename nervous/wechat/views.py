@@ -254,13 +254,15 @@ def admin_dashboard(request):
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
-    unprocessed_account = backend.get_official_accounts_with_unprocessed_messages()
+    category = MessageCategory.ToAdmin
+    unprocessed_account = backend.get_official_accounts_with_unprocessed_messages(category)
     return render_ajax(request, 'admin/dashboard.html', {
         'pending_applications': pending_applications,
         'official_accounts': official_accounts,
         'articles': articles,
         'articles_count': articles_count,
         'unprocessed_account': unprocessed_account,
+        'category': category,
     }, 'dashboard-item')
 
 

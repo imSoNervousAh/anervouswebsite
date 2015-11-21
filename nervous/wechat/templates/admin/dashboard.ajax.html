@@ -1,3 +1,5 @@
+{% load model_extras %}
+
 <a class="fake-link">
     <strong><i class="fa fa-dashboard fa-fw"></i>　信息概览</strong>
 </a>
@@ -152,7 +154,7 @@
                 <h4>未读站内消息</h4></div>
             <div class="panel-body">
                 {% for account in unprocessed_account %}
-                <p><a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">{{ account.name }}</a><span class="badge pull-right">{{ account.unprocessed_messages_count }}</span>
+                <p><a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">{{ account.name }}</a><span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
                 </p>
                 {% endfor %}
             </div>

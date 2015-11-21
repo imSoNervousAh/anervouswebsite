@@ -119,8 +119,12 @@ def get_official_account_by_id(id):
     return OfficialAccount.objects.get(pk=id)
 
 
-def get_official_accounts_with_unprocessed_messages():
-    return OfficialAccount.objects.filter(message__processed__exact=False).distinct()
+def get_official_accounts_with_unprocessed_messages(category):
+    return OfficialAccount.objects \
+        .filter(
+            message__processed__exact=False,
+            message__category__exact=category
+        ).distinct()
 
 
 def del_official_account(id):
