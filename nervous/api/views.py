@@ -168,10 +168,15 @@ def modify_application(request):
     return HttpResponseRedirect('/admin')
 
 
-@json_response_general_exception_decorator
+# @json_response_general_exception_decorator
 def delete_application(request, id):
     backend.del_application(id)
-    return HttpResponseRedirect('/admin')
+    return HttpResponse(request)
+
+# @json_response_general_exception_decorator
+def recall_application(request, id):
+    print 'recall'
+    return HttpResponse(request)
 
 
 @json_response_general_exception_decorator

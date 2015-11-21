@@ -36,12 +36,25 @@
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
                                     <a id="modify_{{ app.id }}" class="fake-link">
-                                        <span class="glyphicon glyphicon-check"></span> 修改
+                                        {% if app.status_name == status_name.pending %}
+                                            <span class="glyphicon glyphicon-check"></span> 修改
+                                        {% elif app.status_name == status_name.not_submitted %}
+                                            <span class="glyphicon glyphicon-check"></span> 修改
+                                        {% endif %}
                                     </a>
                                 </td>
                                 <td>
-                                    <a id="delete_{{ app.id }}" class="fake-link">
-                                        <span class="glyphicon glyphicon-check"></span> 删除</a>
+                                    {% if app.status_name == status_name.pending %}
+                                        <a id="recall_{{ app.id }}" class="fake-link">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                            撤回
+                                        </a>
+                                    {% elif app.status_name == status_name.not_submitted %}
+                                        <a id="delete_{{ app.id }}" class="fake-link">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                            删除
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             <script>
@@ -64,6 +77,25 @@
                                             data: "{{app.in}}",
                                             success: function (data) {
                                                 alert('删除成功!');
+                                                loadContent("/student");
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
+                                            }
+                                        });
+                                    });
+                                    $("#recall_{{app.id}}").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/recall_application' app.id %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: "{{app.in}}",
+                                            success: function (data) {
+                                                alert('撤回成功!');
                                                 loadContent("/student");
                                             },
                                             error: function (xhr, textStatus, errorThrown) {

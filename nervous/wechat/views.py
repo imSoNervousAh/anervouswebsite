@@ -190,6 +190,7 @@ def student_show_applications(request):
         'pending_count': pending_count,
         'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
+        'status_name':status_name,
     }, 'my-applications-item')
 
 
