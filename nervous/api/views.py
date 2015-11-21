@@ -26,12 +26,10 @@ def response_from_validation_error(e, method=None):
         print '=============================='
         traceback.print_exc()
         print '=============================='
-    error_dict = e.message_dict
-    key, value = error_dict.popitem()
+    e.message_dict
     response = {
         'status': 'error',
-        'error_message': value,
-        'error_field': key,
+        'error_messages': e.message_dict,
     }
     if method:
         response['submit_method'] = method
