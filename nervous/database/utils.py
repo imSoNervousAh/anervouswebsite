@@ -9,7 +9,9 @@ from django.conf import settings
 
 from subprocess import call
 import datetime
+import hashlib
 
+# Utils
 
 def get_date_object_before_n_days(n):
     return datetime.date.today() - datetime.timedelta(days=n)
@@ -26,6 +28,14 @@ def migrate():
 def make_migrations():
     django_admin('makemigrations')
 
+
+def md5_hash(s):
+    m = hashlib.md5()
+    m.update(s)
+    return m.hexdigest()
+
+
+# Test DB
 
 def clean_test_db():
     call(["python", "manage.py", "flush", "--noinput"])
@@ -91,13 +101,13 @@ def forewarn_test_db(name):
 def build_test_db():
     clean_test_db()
 
-    admin_w = Admin.objects.create(username='w', password='x', description='www', email='huzecong@163.com')
-    admin_wyl = Admin.objects.create(username='wyl8899', password='xxxxxxxx', description=u'韦毅龙', email='wyl8899k@gmail.com')
-    admin_ytl = Admin.objects.create(username='ytl14', password='shenmegui', description=u'杨基龙', email='yangtianlong111@gmail.com')
+    admin_w = Admin.objects.create(username='w', password=md5_hash('x'), description='www', email='huzecong@163.com')
+    admin_wyl = Admin.objects.create(username='wyl8899', password=md5_hash('xxxxxxxx'), description=u'韦毅龙', email='wyl8899k@gmail.com')
+    admin_ytl = Admin.objects.create(username='ytl14', password=md5_hash('shenmegui'), description=u'杨基龙', email='yangtianlong111@gmail.com')
     if settings.DEBUG:
         for id_suffix in ['417', '310', '434', '416']:
             id = '2014011%s' % id_suffix
-            backend.add_admin(id, '0', 'fake_student@nervous.gq', id_suffix)
+            backend.add_admin(id, md5_hash('0'), 'fake_student@nervous.gq', id_suffix)
 
     oa_mu = OfficialAccount.objects.create(name='Lab Mu', wx_id='mulab_thu')
     Application.objects.create(official_account=oa_mu, user_submit='FANG KUAI', status='not_submitted')
