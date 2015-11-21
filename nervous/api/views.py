@@ -2,15 +2,13 @@
 
 from database import backend
 from wechat import session
-
 from api.info_login import auth_by_info as tsinghua_login
-
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
-
 import traceback
+
 
 # Utils
 
@@ -97,14 +95,16 @@ def check_student(username, password):
 
 
 def check_superuser(username, password):
-    return (username == 'root') and (password == '123456')
+    return (username == 'root') and (password == 'e10adc3949ba59abbe56e057f20f883e')  # hex_md5('123456')
 
 
 # Views
 
 def login(request, identity):
-    print 'identity: ', identity
     username, password = request.POST['account'], request.POST['password']
+    print '[', identity, '] is trying to login...'
+    print '[account] ', username
+    print '[password] ', password
     if identity in ['student', 'admin', 'superuser']:
         if globals()['check_%s' % identity](username, password):
             session.add_session(request, identity=identity, username=username)
@@ -183,6 +183,9 @@ def delete_official_account(request):
 @json_response_general_exception_decorator
 def add_admin(request):
     dic = request.POST.dict()
+    print 'add admin...'
+    print '[account] ',dic['username']
+    print '[password]',dic['password']
     backend.add_admin(
         dic['username'],
         dic['password'],

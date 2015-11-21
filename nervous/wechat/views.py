@@ -42,7 +42,7 @@ def get_pagination(item_total, item_per_page, cur):
 
 def index(request):
     # 默认返回学生登录界面
-    return render(request, 'login/index.html', {'identity': 'student'})
+    return login(request, 'student')
 
 
 def render_ajax(request, url, params, item_id=''):
@@ -59,7 +59,6 @@ def render_ajax(request, url, params, item_id=''):
 # login/logout
 
 def login(request, identity='student'):
-    print 'login/'
     if identity in ['student', 'admin', 'superuser']:
         response = render(request, 'login/index.html', {'identity': identity})
         return response
@@ -451,14 +450,12 @@ def admin_forewarn(request):
     }, 'forewarn-list-item')
 
 
-
 @check_identity('admin')
 def admin_forewarn_list(request):
     recordlist = backend.get_forewarn_records()
     return render_ajax(request, 'admin/forewarn_list.html', {
-        'recordlist':recordlist,
+        'recordlist': recordlist,
     }, 'forewarn-detail-list-item')
-
 
 
 # message
