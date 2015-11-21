@@ -36,11 +36,11 @@
                             <div class="form-group">
                                 <label class="control-label" for="manager-tel-field">负责人电话</label>
                                 <input id="manager-tel-field" name="tel" type="text" class="form-control"
-                                       value="{{ student.tel }}" required>
+                                       value="{{ student.tel }}" required data-pattern="\d{7,13}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="manager-email-field">负责人邮箱</label>
-                                <input id="manager-email-field" name="email" type="text"
+                                <input id="manager-email-field" name="email" type="email"
                                        class="form-control"
                                        value="{{ student.email }}" required>
                             </div>
@@ -56,7 +56,7 @@
                                 <label></label>
 
                                 <div class="controls">
-                                    <button id="save-button" value="submit" class="btn btn-info">
+                                    <button id="save-button" type="submit" value="submit" class="btn btn-info">
                                         保存
                                     </button>
                                 </div>
