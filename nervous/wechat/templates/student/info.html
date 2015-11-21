@@ -31,18 +31,18 @@
                                 <label class="control-label" for="manager-name-field">负责人姓名</label>
                                 <input id="manager-name-field" name="real_name" type="text"
                                        class="form-control"
-                                       value="{% if type == 'change' %}{{ student.real_name }}{% endif %}">
+                                       value="{% if type == 'change' %}{{ student.real_name }}{% endif %}" required>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="manager-tel-field">负责人电话</label>
                                 <input id="manager-tel-field" name="tel" type="text" class="form-control"
-                                       value="{% if type == 'change' %}{{ student.tel }}{% endif %}">
+                                       value="{% if type == 'change' %}{{ student.tel }}{% endif %}" required>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="manager-email-field">负责人邮箱</label>
                                 <input id="manager-email-field" name="email" type="text"
                                        class="form-control"
-                                       value="{% if type == 'change' %}{{ student.email }}{% endif %}">
+                                       value="{% if type == 'change' %}{{ student.email }}{% endif %}" required>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="manager-dept-field">负责人院系</label>
@@ -54,12 +54,6 @@
                             </div>
                             <div class="control-group">
                                 <label></label>
-
-                                <div class="form-error-msg alert alert-danger alert-dismissible">
-                                    <div></div>
-                                    <button type="button" class="close" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                </div>
 
                                 <div class="controls">
                                     <button id="save-button" value="submit" class="btn btn-info">

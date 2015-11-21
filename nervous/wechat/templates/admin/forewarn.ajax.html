@@ -40,9 +40,8 @@
         <h4>创建预警规则</h4>
     </div>
     <div class="panel-body">
-        <form id="rule-form" class="form form-vertical">
+        <form id="rule-form" class="form form-vertical" data-toggle="validator" rule="form">
             {% csrf_token %}
-
 
             <div class="control-group">
                 <div class="row">
@@ -75,10 +74,11 @@
                 <label class="control-label" for="duration-field">预警时限</label>
 
                 <div class="row">
-                    <div class="col-sm-6 form-group">
+                    <div class="col-sm-6 form-group has-feedback">
                         <input id="duration-field" name="duration" type="text" class="form-control"
-                               placeholder="" pattern="^[1-9]|\d{2,3}$" required>
-                        <span class="help-block">1-365</span>
+                               data-error="请填写合法数字"
+                               placeholder="" pattern="^[1-9]|\d{0,2}$" required>
+                            <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1 form-group">
                         <h5>天</h5>
@@ -104,8 +104,9 @@
                     </div>
                     <div class="col-sm-3  form-group">
                         <input id="value-field" name="value" type="text" class="form-control"
-                               placeholder="" pattern="^[1-9]|\d{2,4}$" required>
-                        <!--<span class="help-block">1-5000</span>-->
+                               data-error="请填写合法数字"
+                               placeholder="" pattern="^[1-9]|\d{0,3}$" required>
+                            <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1  form-group">
                         <h5>条</h5>
@@ -114,13 +115,6 @@
             </div>
             <div class="control-group">
                 <label></label>
-
-                <div class="form-error-msg alert alert-danger alert-dismissible">
-                    <div></div>
-                    <button type="button" class="close" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-
                 <div class="controls">
                     <button id="form-submit" type="submit" name="method" value="submit"
                             class="btn btn-primary">
@@ -128,6 +122,13 @@
                     </button>
                 </div>
             </div>
+
+                <div class="form-error-msg alert alert-danger alert-dismissible">
+                    <div></div>
+                    <button type="button" class="close" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+
         </form>
         <script>
             function checkLegal() {
@@ -145,8 +146,7 @@
 
             handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
                 success_callback: function (data) {
-                    alert("创建成功");
-                    location.reload();
+                    loadContent("{% url 'admin/forewarn' %}",{},undefined,{'replace':true});
                 }
             });
 

@@ -15,7 +15,7 @@
             </div>
 
             <div class="panel-body">
-                <form id="application-form" class="form form-vertical">
+                <form id="application-form" class="form form-vertical" data-toggle="validator" role="form">
                     {% csrf_token %}
                     {% if modify_app %}
                         <input name="application_id" type="text" style="display:none" value="{{ app.id }}">
@@ -25,8 +25,9 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label class="control-label" for="name-field">公众号名称</label>
-                                <input id="name-field" name="name" type="text" class="form-control" placeholder=""
+                                <input id="name-field" name="name" type="text" class="form-control"
                                        value="{{ app.name }}" required>
+
                             </div>
                             <div class=" col-sm-6 form-group">
                                 <label class="control-label" for="wx_id-field">公众号微信ID</label>
@@ -37,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="description-field">公众号简介</label>
-                        <textarea id="description-field" name="description" class="form-control" placeholder=""
+                        <textarea id="description-field" name="description" class="form-control"
                                   style="resize: vertical;">{{ app.description }}</textarea>
                     </div>
                     <div class="form-group">
