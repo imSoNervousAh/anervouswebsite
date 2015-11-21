@@ -38,6 +38,16 @@ def get_pagination(item_total, item_per_page, cur):
     return page
 
 
+def get_realname(request):
+    username = session.get_username(request)
+    identity = session.get_identity(request)
+    if identity == 'student':
+        realname = backend.get_student_by_id(username).real_name
+    else:
+        realname = username
+    return realname
+
+
 # index
 
 def index(request):
@@ -49,7 +59,7 @@ def render_ajax(request, url, params, item_id=''):
     if request.is_ajax():
         url = url.split('.')[0] + '.ajax.html'
     else:
-        params['username'] = session.get_username(request)
+        params['username'] = get_realname(request)
         if item_id != '':
             params['active_item'] = item_id
 
@@ -123,34 +133,30 @@ def change_info(request):
             'student': student,
         })
     else:
-        return HttpResponse(request, '还没有写...')
+        return HttpResponse(request, '...')
 
 
 @check_identity('student')
 @check_have_student_info
 def student(request):
     username = session.get_username(request)
-    student = backend.get_student_by_id(username)
+    realname=get_realname(request)
 
     approved_applications = backend.get_applications_by_status('approved')
     official_accounts = []
-    student = backend.get_student_by_id(username)
     for app in approved_applications:
         if app.user_submit == username:
             official_accounts.append(app.official_account)
 
     return render(request, 'student/index.html', {
-        'username': student.real_name,
+        'username': realname,
         'official_accounts': official_accounts,
-        'student': student,
     })
 
 
 @check_identity('student')
 @check_have_student_info
 def student_show_applications(request):
-    username = session.get_username(request)
-    student = backend.get_student_by_id(username)
 
     glyphicons = {
         'approved': 'fa-check-circle',
@@ -165,6 +171,7 @@ def student_show_applications(request):
         'not_submitted': '尚未提交',
     }
 
+    username = session.get_username(request)
     applications = backend.get_applications_by_user(username)
     pending_count = 0
     for app in applications:
@@ -173,8 +180,15 @@ def student_show_applications(request):
         if app.status == 'pending':
             pending_count += 1
 
+    approved_applications = backend.get_applications_by_status('approved')
+    official_accounts = []
+    for app in approved_applications:
+        if app.user_submit == username:
+            official_accounts.append(app.official_account)
+
     return render_ajax(request, 'student/show_applications.html', {
-        'username': student.real_name,
+        'username': get_realname(request),
+        'official_accounts': official_accounts,
         'applications': applications,
         'pending_count': pending_count,
     }, 'my-applications-item')
@@ -230,7 +244,7 @@ def student_change_info(request):
             'student': student,
         })
     else:
-        return HttpResponse(request, '还没有写...')
+        return HttpResponse(request, '...')
 
 
 # admin
