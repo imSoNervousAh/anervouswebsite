@@ -1,0 +1,20 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for account in items %}
+        <tr>
+            <td><a style="cursor:pointer;" class="official-account-link"
+                   data-url="{% url 'admin/detail' account.id %}">
+                {{ account.name }}
+            </a></td>
+            <td>{{ account.description }}</td>
+            <td>{{ account.subscribers }}</td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+    </script>
+{% endblock content %}

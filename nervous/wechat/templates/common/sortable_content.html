@@ -1,0 +1,20 @@
+{% if items %}
+    {% block content %}
+    {% endblock content %}
+{% else %}
+    <tr>
+        <td colspan="100" style="text-align: center">无数据</td>
+    </tr>
+{% endif %}
+
+<tr>
+    <td colspan="100">
+        {% include 'common/pagination.html' %}
+    </td>
+</tr>
+
+<script>
+    $(function () {
+        $(".item-count-badge").html("{{ item_count }}");
+    })
+</script>

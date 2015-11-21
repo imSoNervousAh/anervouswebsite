@@ -1,5 +1,5 @@
 <nav>
-    <ul id="pager" class="pagination">
+    <ul class="pagination">
         {% if page.current > 1 %}
             <li class="pager-link" data-page="{{ page.current|add:'-1' }}">
                 <a class="fake-link" aria-label="Previous">
@@ -14,33 +14,35 @@
             </li>
         {% endif %}
 
-        {% if page.pages|first > 1 %}
-            {% if page.pages|last > 2 %}
-                <li class="pager-link" data-page="1">
-                    <a class="fake-link">1</a>
-                </li>
+        {% if page.pages %}
+            {% if page.pages|first > 1 %}
+                {% if page.pages|last > 2 %}
+                    <li class="pager-link" data-page="1">
+                        <a class="fake-link">1</a>
+                    </li>
+                {% endif %}
+                <li class="disabled"><a>...</a></li>
             {% endif %}
-            <li class="disabled"><a>...</a></li>
-        {% endif %}
 
-        {% for p in page.pages %}
-            {% if p == page.current %}
-                <li class="active pager-link" data-page="{{ p }}">
-                    <a class="fake-link">{{ p }}</a>
-                </li>
-            {% else %}
-                <li class="pager-link" data-page="{{ p }}">
-                    <a class="fake-link">{{ p }}</a>
-                </li>
-            {% endif %}
-        {% endfor %}
+            {% for p in page.pages %}
+                {% if p == page.current %}
+                    <li class="active pager-link" data-page="{{ p }}">
+                        <a class="fake-link">{{ p }}</a>
+                    </li>
+                {% else %}
+                    <li class="pager-link" data-page="{{ p }}">
+                        <a class="fake-link">{{ p }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
 
-        {% if page.pages|last < page.count %}
-            <li class="disabled"><a>...</a></li>
-            {% if page.pages|last < page.count|add:'-1' %}
-                <li class="pager-link" data-page="{{ page.count }}">
-                    <a class="fake-link">{{ page.count }}</a>
-                </li>
+            {% if page.pages|last < page.count %}
+                <li class="disabled"><a>...</a></li>
+                {% if page.pages|last < page.count|add:'-1' %}
+                    <li class="pager-link" data-page="{{ page.count }}">
+                        <a class="fake-link">{{ page.count }}</a>
+                    </li>
+                {% endif %}
             {% endif %}
         {% endif %}
 
@@ -60,14 +62,13 @@
     </ul>
 
     <script>
-        $("#pager").ready(function () {
+        $(".pagination").ready(function () {
             $(".pager-link").click(function () {
-                loadContentOn("#articles-list-container",
-                        "{% url 'admin/detail/articles-list' official_account_id %}", {
-                            'sort_by': "{{ sort_by }}",
-                            'sort_order': "{{ sort_order }}",
-                            'page': $(this).data("page")
-                        }, {anim: false, scroll: false});
+                var this_params = params;
+                this_params['page'] = $(this).data("page");
+                loadContentOn("tbody", url, this_params, {anim: false, scroll: false}, function () {
+                    $.scrollTo($(".sortable"), {offset: -removePx($(".main").css("padding-top"))});
+                });
             });
         });
     </script>

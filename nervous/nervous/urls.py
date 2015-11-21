@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^logout', 'wechat.views.logout', name='logout'),
 
     #   home
-    url(r'^home/?$','wechat.views.home',name='home'),
+    url(r'^home/?$', 'wechat.views.home', name='home'),
 
     #   message
     url(r'^message/[^/]+/?$', 'wechat.views.message_jump', name='message/jump'),
@@ -34,13 +34,14 @@ urlpatterns = [
     #   student
     url(r'^student/my_applications', 'wechat.views.student_show_applications', name='student/my-applications'),
     url(r'^student/add_application', 'wechat.views.student_add_applications', name='student/add-application'),
-    url(r'^student/modify_application/([0-9]+)/?$', 'wechat.views.student_modify_applications', name='student/modify-application'),
-    url(r'^student/fill_info','wechat.views.student_fill_info',name='student/fill-info'),
-    url(r'^student/change_info','wechat.views.student_change_info',name='student/change-info'),
+    url(r'^student/modify_application/([0-9]+)/?$', 'wechat.views.student_modify_applications',
+        name='student/modify-application'),
+    url(r'^student/fill_info', 'wechat.views.student_fill_info', name='student/fill-info'),
+    url(r'^student/change_info', 'wechat.views.student_change_info', name='student/change-info'),
     url(r'^student', 'wechat.views.student', name='student'),
 
     #   admin
-    url(r'^admin/detail/([0-9]+)/articles_list/?$', 'wechat.views.admin_show_official_account_articles_list',
+    url(r'^admin/detail/([0-9]+)/articles/list/?$', 'wechat.views.admin_show_official_account_articles_list',
         name='admin/detail/articles-list'),
     url(r'^admin/detail/([0-9]+)/statistics/?$', 'wechat.views.admin_show_official_account_statistics',
         name='admin/detail/statistics'),
@@ -48,13 +49,18 @@ urlpatterns = [
         name='admin/detail/articles'),
     url(r'^admin/detail/([0-9]+)/?$', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
     url(r'^admin/applications/(\w+)/?$', 'wechat.views.admin_show_applications', name='admin/applications'),
+    url(r'^admin/applications/(\w+)/list/?$', 'wechat.views.admin_show_applications_list',
+        name='admin/applications-list'),
     url(r'^admin/official_accounts/?$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
+    url(r'^admin/official_accounts/list/?$', 'wechat.views.admin_show_official_accounts_list',
+        name='admin/official-accounts-list'),
     url(r'^admin/statistics/?$', 'wechat.views.admin_show_statistics', name='admin/statistics'),
     url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
+    url(r'^admin/articles/list/?$', 'wechat.views.admin_show_articles_list', name='admin/articles-list'),
     url(r'^admin/dashboard/?$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
     url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
-    url(r'^admin/forewarn/?$','wechat.views.admin_forewarn',name='admin/forewarn'),
-    url(r'^admin/forewarn_list/?$','wechat.views.admin_forewarn_list',name='admin/forewarn-list'),
+    url(r'^admin/forewarn/?$', 'wechat.views.admin_forewarn', name='admin/forewarn'),
+    url(r'^admin/forewarn_list/?$', 'wechat.views.admin_forewarn_list', name='admin/forewarn-list'),
     url(r'^admin', 'wechat.views.admin', name='admin'),
 
     #   superuser
@@ -69,15 +75,14 @@ urlpatterns = [
     url(r'^api/delete_application/([0-9]+)/?$', 'api.views.delete_application', name='api/delete_application'),
     url(r'^api/recall_application/([0-9]+)/?$', 'api.views.recall_application', name='api/recall_application'),
     url(r'^api/submit_student_info/?$', 'api.views.submit_student_info', name='api/submit_student_info'),
-    url(r'^api/student_modify_application/?$', 'api.views.student_modify_application', name='api/student_modify_application'),
+    url(r'^api/student_modify_application/?$', 'api.views.student_modify_application',
+        name='api/student_modify_application'),
     url(r'^api/delete_official_account/?$', 'api.views.delete_official_account', name='api/delete_official_account'),
     url(r'^api/add_admin/?$', 'api.views.add_admin', name='api/add_admin'),
     url(r'^api/del_admin/?$', 'api.views.del_admin', name='api/del_admin'),
     url(r'^api/add_message/?$', 'api.views.add_message', name='api/add_message'),
     url(r'^api/process_message/?$', 'api.views.process_message', name='api/process_message'),
     url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
-
-
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),

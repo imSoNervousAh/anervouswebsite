@@ -38,9 +38,9 @@ def get_application_by_id(id):
 def application_from_dict(dic, base=None):
     application = base or Application.objects.model()
     for attr in [
-            'manager_name', 'manager_student_id',
-            'manager_dept', 'manager_tel', 'manager_email',
-            'user_submit', 'association', 'status']:
+        'manager_name', 'manager_student_id',
+        'manager_dept', 'manager_tel', 'manager_email',
+        'user_submit', 'association', 'status']:
         # NOTE: invocation that lacks parameter can not happen with real POST
         # so if you see '__placeholder__' in database, THAT INDICATES A BUG
         val = dic.get(attr, '__placeholder__')
@@ -122,9 +122,9 @@ def get_official_account_by_id(id):
 def get_official_accounts_with_unprocessed_messages(category):
     return OfficialAccount.objects \
         .filter(
-            message__processed__exact=False,
-            message__category__exact=category
-        ).distinct()
+        message__processed__exact=False,
+        message__category__exact=category
+    ).distinct()
 
 
 def del_official_account(id):
@@ -322,6 +322,7 @@ def add_message(category, official_account_id, content, admin_name=None):
     opposite_category = MessageCategory.ToAdmin + MessageCategory.ToStudent - category
     process_all_messages(official_account_id, opposite_category)
     message.save()
+
 
 # Account records
 

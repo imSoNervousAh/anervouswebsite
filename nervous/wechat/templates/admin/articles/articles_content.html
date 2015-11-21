@@ -1,0 +1,30 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for article in items %}
+        <tr>
+            <td><a style="cursor:pointer;" class="official-account-link"
+                   data-url="{% url 'admin/detail' article.official_account_id %}">
+                {{ article.official_account_name }}
+            </a></td>
+            <td><a target="_blank" href="{{ article.url }}">
+                <div>{{ article.title }}</div>
+            </a></td>
+            <td>{{ article.description|linebreaksbr|safe }}</td>
+            <td align="right">
+                {% if article.views != 100001 %}
+                    {{ article.views }}
+                {% else %}
+                    100000+
+                {% endif %}
+            </td>
+            <td align="right">{{ article.likes }}</td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+    </script>
+{% endblock content %}

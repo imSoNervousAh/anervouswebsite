@@ -24,7 +24,8 @@ def to_notfound(request):
 
 
 def get_pagination(item_total, item_per_page, cur):
-    page_count = (item_total + item_per_page + 1) // item_per_page
+    page_count = (item_total + item_per_page - 1) // item_per_page
+
     l = max(1, cur - 1)
     r = min(page_count, cur + 2)
     if l <= 2:
@@ -36,6 +37,44 @@ def get_pagination(item_total, item_per_page, cur):
             'current': cur,
             'pages': pages}
     return page
+
+
+def render_sortable(request, items, url, params=None):
+    if not params:
+        params = {}
+    items_per_page = params.get("items_per_page", 10)
+
+    page_current = int(request.GET.get('page', '1'))
+
+    sort_order_keyword = request.GET.get('sort_order', 'desc')
+    sort_order = {
+        'asc': '',
+        'desc': '-'
+    }[sort_order_keyword]
+
+    sort_by_keyword = request.GET.get('sort_by', '')
+
+    set_filter = {}
+    search_keyword = request.GET.get('search_keyword', '').strip()
+    search_field = request.GET.get('search_field')
+    if search_field and search_keyword:
+        set_filter[search_field + '__contains'] = search_keyword
+
+    start_from = (page_current - 1) * items_per_page
+
+    items = items.filter(**set_filter).order_by(sort_order + sort_by_keyword)
+    item_count = items.count()
+    items = items[start_from:(start_from + items_per_page)]
+
+    page = get_pagination(item_count, items_per_page, page_current)
+
+    return render(request, url, {
+        'items': items,
+        'item_count': item_count,
+        'page': page,
+        'sort_by': sort_by_keyword,
+        'sort_order': sort_order_keyword
+    })
 
 
 def get_realname(request):
@@ -57,7 +96,7 @@ def index(request):
 
 def render_ajax(request, url, params, item_id=''):
     if request.is_ajax():
-        url = url.split('.')[0] + '.ajax.html'
+        url = '.'.join(url.split('.')[:-1]) + '.ajax.html'
     else:
         params['username'] = get_realname(request)
         if item_id != '':
@@ -288,11 +327,13 @@ def admin_dashboard(request):
 
 @check_identity('admin')
 def admin_show_official_accounts(request):
-    official_accounts = backend.get_official_accounts()
-
-    return render_ajax(request, 'admin/official_accounts.html', {
-        'official_accounts': official_accounts
+    return render_ajax(request, 'admin/official_accounts/official_accounts.html', {
     }, 'official-accounts-list-item')
+
+
+def admin_show_official_accounts_list(request):
+    return render_sortable(request, backend.get_official_accounts(),
+                           'admin/official_accounts/official_accounts_content.html')
 
 
 @check_identity('admin')
@@ -306,39 +347,48 @@ def admin_show_statistics(request):
 
 @check_identity('admin')
 def admin_show_articles(request):
-    articles_count, articles = backend.get_articles()
+    return render_ajax(request, 'admin/articles/articles.html', {
+    }, 'articles-list-item')
 
-    return render_ajax(request, 'admin/articles.html', {
-        'articles': articles,
-        'articles_count': articles_count,
-    })
+
+def admin_show_articles_list(request):
+    return render_sortable(request, backend.Article.objects.all(), 'admin/articles/articles_content.html')
 
 
 @check_identity('admin')
 def admin_show_applications(request, type):
     if type == 'pending':
-        applications = backend.get_pending_applications()
         type_name = u'待审批申请'
         type_icon = 'fa-tasks'
     elif type == 'processed':
-        username = session.get_username(request)
-        applications = backend.get_applications_by_admin(username)
         type_name = u'我处理的申请'
         type_icon = 'fa-check'
     elif type == 'all':
-        applications = backend.get_applications()
         type_name = u'所有申请'
         type_icon = 'fa-list-alt'
     else:
-        applications = []
         type_name = ''
+        type_icon = ''
     item_id = type + '-applications-item'
 
-    return render_ajax(request, 'admin/applications.html', {
-        'applications': applications,
+    return render_ajax(request, 'admin/applications/applications.html', {
+        'type': type,
         'application_type': type_name,
         'application_icon': type_icon
     }, item_id)
+
+
+def admin_show_applications_list(request, type):
+    if type == 'pending':
+        applications = backend.get_pending_applications()
+    elif type == 'processed':
+        username = session.get_username(request)
+        applications = backend.get_applications_by_admin(username)
+    elif type == 'all':
+        applications = backend.get_applications()
+    else:
+        applications = []
+    return render_sortable(request, applications, 'admin/applications/applications_content.html')
 
 
 @check_identity('admin')
@@ -350,7 +400,7 @@ def admin_show_official_account_detail(request, id):
 
     articles_count, articles = backend.get_articles(filter={'official_account_id': id})
 
-    return render_ajax(request, 'admin/detail.html', {
+    return render_ajax(request, 'admin/detail/detail.html', {
         'account': official_account,
         'official_account_id': id,
         'articles_count': articles_count,
@@ -400,7 +450,7 @@ def admin_show_official_account_statistics(request, id):
 
     chart_json = json.dumps(chart_data)
 
-    return render(request, 'admin/detail_statistics.html', {
+    return render(request, 'admin/detail/detail_statistics.html', {
         'account': official_account,
         'chart_json': chart_json
     })
@@ -408,48 +458,14 @@ def admin_show_official_account_statistics(request, id):
 
 @check_identity('admin')
 def admin_show_official_account_articles(request, id):
-    return render(request, 'admin/detail_articles.html', {'official_account_id': id});
+    return render(request, 'admin/detail/detail_articles.html', {'official_account_id': id})
 
 
 @check_identity('admin')
 def admin_show_official_account_articles_list(request, id):
-    articles_on_one_page = 10
-    page_current = int(request.GET.get('page', '1'))
-
-    sort_order_keyword = request.GET.get('sort_order', 'desc')
-    sort_order = {
-        'asc': SortOrder.Ascending,
-        'desc': SortOrder.Descending
-    }[sort_order_keyword]
-
-    sort_by_keyword = request.GET.get('sort_by', 'posttime')
-    sort_by = {
-        'posttime': SortBy.Time,
-        'likes': SortBy.Likes,
-        'views': SortBy.Views
-    }[sort_by_keyword]
-
-    article_filter = {}
-    keyword = request.GET.get('article_title_keyword', '').strip()
-    if keyword:
-        article_filter['article_title_keyword'] = keyword
-    article_filter['official_account_id'] = id
-
-    articles_count, articles = backend.get_articles(start_from=(page_current - 1) * articles_on_one_page,
-                                                    count=articles_on_one_page,
-                                                    filter=article_filter,
-                                                    sortby=sort_by,
-                                                    order=sort_order)
-
-    page = get_pagination(articles_count, articles_on_one_page, page_current)
-
-    return render(request, 'admin/detail_articles_list.html', {
-        'articles': articles,
-        'articles_count': articles_count,
-        'official_account_id': id,
-        'page': page,
-        'sort_by': sort_by_keyword,
-        'sort_order': sort_order_keyword
+    set = backend.get_articles_by_official_account_id(id)
+    return render_sortable(request, set, 'admin/detail/detail_articles_content.html', {
+        'official_account_id': id
     })
 
 

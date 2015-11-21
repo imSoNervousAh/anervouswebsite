@@ -1,0 +1,98 @@
+{% load tz %}
+
+<div class="sortable panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <h4 class="col-xs-6">{% block title %}列表标题{% endblock title %}</h4>
+
+            <div class="col-xs-6">
+                <div style="vertical-align: text-top">
+                    <div class="sortable-search-box left-inner-addon col-xs-10"
+                         style="margin-top: 3px; margin-left: 15px">
+                        <i class="fa fa-search fa-fw"></i>
+                        <input class="sortable-search-input form-control" name="keyword" type="text"
+                               placeholder="搜索关键字……"/>
+                    </div>
+                </div>
+                <span class="badge item-count-badge pull-right" style="margin-top: 10px;"></span>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-sortable">
+                <thead>
+                <tr>
+                    {% block head %}
+                    {% endblock head %}
+                </tr>
+                </thead>
+                <tbody>
+                {% block body %}
+                {% endblock body %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        var defaults = {
+            {% block defaults %}
+            {% endblock defaults %}
+        };
+        var param_keys = ["url", "sort_by", "sort_order", "search_field"];
+        for (var param_id in param_keys) {
+            var param = param_keys[param_id];
+            if (!defaults.hasOwnProperty(param))
+                console.log("SorTable usage error: ", param);
+        }
+        var url = defaults.url, params = defaults;
+        delete defaults.url;
+
+        loadContentOn("tbody", url, defaults, {anim: true, scroll: false});
+
+        $(".sortable-search-input").ready(function () {
+            $(".sortable-search-input").on("input propertychange paste", function () {
+                params['search_keyword'] = $(this).val();
+                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+            });
+        });
+
+        $(".table-sortable").find("thead").ready(function () {
+            var th = $("th.th-sortable");
+
+            th.html(function (index, old) {
+                return old + ' <span class="sort-label pull-right fa fa-unsorted"></span>';
+            });
+
+            var allClasses = "fa-unsorted fa-sort-asc fa-sort-desc";
+            var icons = $(this).find("th span.sort-label");
+
+            th.each(function () {
+                if ($(this).data("key") === defaults.sort_by) {
+                    $(this).find("span.sort-label")
+                            .removeClass(allClasses).addClass("fa-sort-" + defaults.sort_order);
+                }
+            });
+
+            th.click(function () {
+                var icon = $(this).find("span.sort-label");
+                if ($(this).data("key") !== params.sort_by) {
+                    params.sort_by = $(this).data("key");
+                    params.sort_order = defaults.sort_order;
+                } else {
+                    if (params.sort_order === "desc") {
+                        params.sort_order = "asc";
+                    } else {
+                        params.sort_order = "desc";
+                    }
+                }
+
+                icons.removeClass(allClasses).addClass("fa-unsorted");
+                icon.removeClass(allClasses).addClass("fa-sort-" + params.sort_order);
+
+                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+            });
+        });
+    </script>
+</div>

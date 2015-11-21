@@ -1,0 +1,25 @@
+{% extends 'common/sortable.html' %}
+
+{% block title %}{{ application_type }}{% endblock title %}
+
+{% block defaults %}
+    url: "{% url 'admin/applications-list' type %}",
+    sort_by: "official_account__name",
+    sort_order: "asc",
+    search_field: "official_account__name"
+{% endblock defaults %}
+
+{% block head %}
+    <th class="th-sortable" data-key="official_account__name" style="width: 15%; min-width: 110px">
+        公众号名称
+    </th>
+    <th style="width: 15%; min-width: 110px">公众号负责人</th>
+    <th style="width: 10000px">公众号简介</th>
+    <th>
+        <div style="width: 60px"></div>
+    </th>
+{% endblock head %}
+
+{% block body %}
+    {% include 'admin/applications/applications_content.html' %}
+{% endblock body %}

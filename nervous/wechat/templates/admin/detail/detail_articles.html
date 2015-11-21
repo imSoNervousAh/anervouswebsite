@@ -1,0 +1,31 @@
+{% extends 'common/sortable.html' %}
+
+{% block title %}最近文章{% endblock title %}
+
+{% block defaults %}
+    url: "{% url 'admin/detail/articles-list' official_account_id %}",
+    sort_by: "posttime",
+    sort_order: "desc",
+    search_field: "title"
+{% endblock defaults %}
+
+{% block head %}
+    <th></th>
+    <th class="hidden-sm" data-key="title" style="width: 25%; min-width: 100px">
+        文章标题
+    </th>
+    <th>文章简介</th>
+    <th class="th-sortable" data-key="views"
+        style="width: 100px"><span class="fa fa-eye fa-fw"></span> 阅览数
+    </th>
+    <th class="th-sortable" data-key="likes"
+        style="width: 100px"><span class="fa fa-thumbs-o-up fa-fw"></span> 点赞数
+    </th>
+    <th class="th-sortable" data-key="posttime"
+        style="width: 120px"><span class="fa fa-calendar fa-fw"></span> 发布日期
+    </th>
+{% endblock head %}
+
+{% block body %}
+    {% include 'admin/detail/detail_articles_content.html' %}
+{% endblock body %}

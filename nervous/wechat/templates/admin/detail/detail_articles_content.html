@@ -1,0 +1,36 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for article in items %}
+        <tr>
+            <td class="hidden-sm">
+                <div class="article-avatar" data-src="{{ article.avatar_url }}"
+                     data-alt="{{ article.title }}"></div>
+            </td>
+            <td><a target="_blank" href="{{ article.url }}">
+                <div>{{ article.title }}</div>
+            </a></td>
+            <td>{{ article.description|linebreaksbr|safe }}</td>
+            <td align="right">
+                {% if article.views != 100001 %}
+                    {{ article.views }}
+                {% else %}
+                    100000+
+                {% endif %}
+            </td>
+            <td align="right">{{ article.likes }}</td>
+            <td align="right">{{ article.posttime|date:"Y年m月d日" }}</td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        $(".article-avatar").each(function (index) {
+            var obj = $(this);
+            setTimeout(function () {
+                obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
+                    "alt": obj.data("alt")
+                }));
+            }, index * 200);
+        });
+    </script>
+{% endblock content %}
