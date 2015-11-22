@@ -1,17 +1,16 @@
 {% if items %}
     {% block content %}
     {% endblock content %}
+    <tr>
+        <td colspan="10000" style="background-color: white">
+            {% include 'common/pagination.html' %}
+        </td>
+    </tr>
 {% else %}
     <tr>
-        <td colspan="100" style="text-align: center">无数据</td>
+        <td colspan="10000" style="text-align: center">无数据</td>
     </tr>
 {% endif %}
-
-<tr>
-    <td colspan="100">
-        {% include 'common/pagination.html' %}
-    </td>
-</tr>
 
 <script>
     $(function () {

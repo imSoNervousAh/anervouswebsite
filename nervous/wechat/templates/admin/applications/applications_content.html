@@ -41,6 +41,9 @@
     {% endfor %}
 
     <script>
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
         $(function () {
             $("body").popover({
                 html: true,

@@ -76,7 +76,7 @@ a > span.badge-info {
 */
 
 .column-container {
-    overflow: scroll !important;
+    overflow: scroll;
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
     margin-top: -20px;
