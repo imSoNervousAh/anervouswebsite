@@ -33,11 +33,11 @@
                 <li id="message-detail-{{ account.id }}" class="left-column-item"
                     data-url="{% url 'message/student' account.id %}">
                     <a class="fake-link"><i class="fa fa-comment fa-fw"></i>　站内信 - {{ account.name|truncatechars:6 }}
-                        <span class="badge pull-right">
                             {% if account|unprocessed_messages_count:unprocessed_category != 0 %}
+                        <span class="badge pull-right">
                                 {{ account|unprocessed_messages_count:unprocessed_category }}
-                            {% endif %}
                         </span>
+                            {% endif %}
                     </a>
                 </li>
             {% endfor %}
