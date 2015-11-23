@@ -67,7 +67,8 @@ urlpatterns = [
     url(r'^admin/forewarn_rules/?$', 'wechat.views.admin_forewarn_rules', name='admin/forewarn-rules'),
     url(r'^admin/forewarn_rules/list/?$', 'wechat.views.admin_forewarn_rules_list', name='admin/forewarn-rules-list'),
     url(r'^admin/forewarn_records/?$', 'wechat.views.admin_forewarn_records', name='admin/forewarn-records'),
-    url(r'^admin/forewarn_records/list/?$', 'wechat.views.admin_forewarn_records_list', name='admin/forewarn-records-list'),
+    url(r'^admin/forewarn_records/list/?$', 'wechat.views.admin_forewarn_records_list',
+        name='admin/forewarn-records-list'),
 
     url(r'^admin', 'wechat.views.admin', name='admin'),
 

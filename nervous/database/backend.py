@@ -1,12 +1,13 @@
 # coding=utf-8
-from models import *
-from django.db import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils import timezone
-from django.conf import settings
 from datetime import datetime
-from api import sendemail
+
 import pytz
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+
+from api import sendemail
+from models import *
 
 
 # Applications

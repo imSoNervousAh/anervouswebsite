@@ -1,21 +1,28 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" >
-<html xmlns="#">
-<head>
+﻿{% load staticfiles %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <title>404 not found 哟</title>
     <meta http-equiv="refresh" content="10;url=/login">
     <!-- content="60，即60秒后返回主页，可根据需要修改或者删除这段代码 -->
-    <link href="static/notfound/css/error.css" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'notfound/css/error.css' %}" rel="stylesheet" type="text/css"/>
 </head>
+
 <body>
 
-<div id="container"><img class="png" src="static/notfound/images/404.png"/> <img class="png msg"
-                                                                                 src="static/notfound/images/404_msg.png"/>
+<div id="container">
+    <img class="png" src="{% static 'notfound/images/404.png' %}"/>
+    <img class="png msg" src="{% static 'notfound/images/404_msg.png' %}"/>
 
-    <p><a href="login/" target="_blank"><img class="png" src="static/notfound/images/404_to_index.png"/></a> </p>
+    <p>
+        <a href="login/" target="_blank">
+            <img class="png" src="{% static 'notfound/images/404_to_index.png' %}"/>
+        </a>
+    </p>
 </div>
-<div id="cloud" class="png"></div>
 
+<div id="cloud" class="png"></div>
 
 </body>
 </html>

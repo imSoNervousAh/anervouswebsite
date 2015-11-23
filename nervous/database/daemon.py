@@ -1,18 +1,19 @@
 import datetime
 import time
-
 import api.update as api_update
 import backend
+
 
 def update_all():
     api_update.update_all()
     backend.check_all_forewarn_rules()
 
+
 def daemon():
     while True:
         update_all()
         now = datetime.datetime.now()
-        delta_day = datetime.timedelta(days = 1)
+        delta_day = datetime.timedelta(days=1)
         tomorrow = now + delta_day
         target_time = tomorrow.replace(
             hour=0,

@@ -1,23 +1,22 @@
-from database import backend, utils
+from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from database import backend
 from models import *
 
-from django.test import TestCase
-from django.core.exceptions import ValidationError
 
 class StudentTestCase(TestCase):
     def test_student_without_info(self):
         self.assertFalse(backend.check_student_information_filled(1))
 
-
     def test_student_with_unfinished_info(self):
         student_id = 2014000
         self.assertFalse(backend.check_student_information_filled(student_id))
 
-
     def test_student_with_info(self):
         student_id = 2014000
         backend.set_student_information(student_id, {
-            'real_name':'doge',
+            'real_name': 'doge',
             'tel': '110',
             'dept': 'dept',
             'email': 'a@bc.com',
@@ -38,13 +37,11 @@ class AdminTestCase(TestCase):
         self.assertEqual(admin.password, password)
         self.assertEqual(admin.description, description)
 
-
     def test_admins_with_same_name(self):
         username = 'wyl'
         email = 'test_email@nervous.com'
         self.assertTrue(backend.add_admin(username, 'xxx', email, 'des'))
         self.assertFalse(backend.add_admin(username, 'another', email, '?'))
-
 
     def test_check_admin_password(self):
         username = 'wyl8899'
@@ -72,7 +69,6 @@ class ApplicationTestCase(TestCase):
         with self.assertRaises(ValidationError):
             backend.add_application(another_app)
 
-
     def test_get_application_by_user_submit(self):
         username = 'hdd'
         acc_name = 'acc_name'
@@ -94,7 +90,6 @@ class ApplicationTestCase(TestCase):
         self.assertEqual(res.count(), 1)
         self.assertEqual(res.first().name(), acc_name)
 
-
     def test_admin_modify_application(self):
         admin_name = 'admin'
         status = 'accepted'
@@ -113,7 +108,6 @@ class ApplicationTestCase(TestCase):
         app = Application.objects.get()
         self.assertEqual(app.status, status)
         self.assertEqual(app.operator_admin, admin_name)
-
 
     def test_get_application_by_status(self):
         user = 'user'

@@ -1,13 +1,15 @@
 # -*-coding:utf-8
 
+import traceback
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
+
+from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
-from api.info_login import auth_by_info as tsinghua_login
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from django.core.exceptions import ValidationError
-import traceback
 
 
 # Utils
@@ -56,6 +58,7 @@ def json_response_general_exception_decorator(func):
 
         This is intended to be the outer-most decorator of all view functions.
     """
+
     def wrapper(request, *args, **kwargs):
         ret = None
         try:
@@ -65,6 +68,7 @@ def json_response_general_exception_decorator(func):
             response = response_from_exception(e)
         print 'json_response_general_exception_decorator: ', ret, response
         return ret or JsonResponse(response)
+
     return wrapper
 
 
@@ -81,6 +85,7 @@ def json_response_validation_error_decorator(func):
         Generally we should decorate all view functions that create something in
         the database using this decorator.
     """
+
     def wrapper(request, *args, **kwargs):
         ret = None
         method = request.POST.dict().get('method', None)
@@ -91,6 +96,7 @@ def json_response_validation_error_decorator(func):
             response = response_from_validation_error(e, method)
         print 'json_response_wrapper_with_submit_method: ', method, response
         return ret or JsonResponse(response)
+
     return wrapper
 
 
@@ -206,8 +212,8 @@ def delete_official_account(request):
 def add_admin(request):
     dic = request.POST.dict()
     print 'add admin...'
-    print '[account] ',dic['username']
-    print '[password]',dic['password']
+    print '[account] ', dic['username']
+    print '[password]', dic['password']
     backend.add_admin(
         dic['username'],
         dic['password'],

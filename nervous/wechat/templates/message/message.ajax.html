@@ -10,7 +10,6 @@
     <hr>
 
     <div class="row">
-        <!-- center left-->
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -39,8 +38,8 @@
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
                                                 <!--
-                                                    [DEBUG]processed:{{ message.processed }}-->
-
+                                                    [DEBUG]processed:{{ message.processed }}
+                                                -->
                                                 <p>{{ message.content }}</p>
                                             </div>
                                         </div>
@@ -52,8 +51,7 @@
                                                 <p class="user-name">{{ message.from_real_name }}
                                                     于 {{ message.datetime }}</p>
                                                 <!--
-
-                                                [DEBUG]processed:{{ message.processed }}
+                                                    [DEBUG]processed:{{ message.processed }}
                                                 -->
                                                 <p>{{ message.content }}</p>
                                             </div>
@@ -91,9 +89,8 @@
                                 </div>
                             </form>
 
-
                             <script type="text/javascript">
-                                function refresh_messages (data) {
+                                function refresh_messages(data) {
                                     var category;
                                     {% if category == MessageCategory.ToStudent %}
                                         category = 'admin';
@@ -102,18 +99,17 @@
                                     {% endif %}
                                     if (data.status === "ok") {
                                         loadContent("/message/" + category + "/{{ official_account_id }}",
-                                            {}, undefined, function () {
-                                                $("html, body").delay(60).animate({
-                                                    "scroll-top": $(document).height()
-                                                }, function () {
-                                                    var item = $(".message-body:nth-last-of-type(1)");
-                                                    animate(item, "flash");
-                                                });
-                                            }
+                                                {}, undefined, function () {
+                                                    $("html, body").delay(60).animate({
+                                                        "scroll-top": $(document).height()
+                                                    }, function () {
+                                                        var item = $(".message-body:nth-last-of-type(1)");
+                                                        animate(item, "flash");
+                                                    });
+                                                }
                                         );
                                     }
                                 }
-
 
                                 $("#send-reply").click(function () {
                                     handleFormPost("#reply-message-form", "{% url 'api/add_message' %}", {
@@ -127,15 +123,12 @@
                                     });
                                 });
                             </script>
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- right column-->
-        <!--/col-->
+
         <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">

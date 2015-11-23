@@ -1,5 +1,6 @@
 # identity=['student','admin','superuser']
 
+
 def add_session(request, *args, **kw):
     # request.session.set_expiry()
     print 'add_session: ', kw
@@ -16,12 +17,12 @@ def del_session(request):
 
 
 def get_username(request):
-    if (request.session.has_key('username')):
+    if request.session.has_key('username'):
         return request.session['username']
     return 'none'
 
 
 def get_identity(request):
-    if (request.session.has_key('identity')):
+    if request.session.has_key('identity'):
         return request.session['identity']
     return 'none'

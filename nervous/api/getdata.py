@@ -1,9 +1,8 @@
-import urllib
-import urllib2
+import base64
 import copy
 import hashlib
-import base64
 import json
+import urllib2
 
 basicURL = 'http://open.gsdata.cn/api/'
 APP_ID = 'PycD3O1YpDHA1pU0yG7t'

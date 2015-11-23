@@ -3,13 +3,12 @@
 import backend
 import daemon
 from models import *
-
 from django.db import connection
 from django.conf import settings
-
 from subprocess import call
 import datetime
 import hashlib
+
 
 # Utils
 
@@ -102,8 +101,10 @@ def build_test_db():
     clean_test_db()
 
     admin_w = Admin.objects.create(username='w', password=md5_hash('x'), description='www', email='huzecong@163.com')
-    admin_wyl = Admin.objects.create(username='wyl8899', password=md5_hash('xxxxxxxx'), description=u'韦毅龙', email='wyl8899k@gmail.com')
-    admin_ytl = Admin.objects.create(username='ytl14', password=md5_hash('shenmegui'), description=u'杨基龙', email='yangtianlong111@gmail.com')
+    admin_wyl = Admin.objects.create(username='wyl8899', password=md5_hash('xxxxxxxx'), description=u'韦毅龙',
+                                     email='wyl8899k@gmail.com')
+    admin_ytl = Admin.objects.create(username='ytl14', password=md5_hash('shenmegui'), description=u'杨基龙',
+                                     email='yangtianlong111@gmail.com')
     if settings.DEBUG:
         for id_suffix in ['417', '310', '434', '416']:
             id = '2014011%s' % id_suffix

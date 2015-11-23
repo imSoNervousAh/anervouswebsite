@@ -96,4 +96,4 @@ def update_wci(account):
     paras['wx_name'] = account
     d = get_dict('wx/opensearchapi/nickname_order_now', paras)
     return d['returnData']['items']
-    #d['returnData']['items'][wci]
+    # d['returnData']['items'][wci]
