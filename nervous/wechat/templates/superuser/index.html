@@ -7,6 +7,12 @@
     <a class="navbar-brand" href="{% url 'superuser' %}">超级管理员后台</a>
 {% endblock subtitle %}
 
+{% block user-menu %}
+    <li role="separator" class="divider"></li>
+    <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
+{% endblock user-menu %}
+
+
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
         <strong><i class="fa fa-wrench fa-fw"></i>　管理员账户</strong>

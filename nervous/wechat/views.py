@@ -572,7 +572,7 @@ def message_detail_student(request, id):
 
 @check_identity('superuser')
 def superuser(request):
-    return render(request, 'superuser/index.html', {'username': u'超级管理员'})
+    return render(request, 'superuser/index.html', {'username': get_realname(request)})
 
 
 @check_identity('superuser')
@@ -580,7 +580,8 @@ def superuser_show_admins(request):
     admins = backend.get_admins()
 
     return render_ajax(request, 'superuser/admins.html', {
-        'admins': admins
+        'admins': admins,
+        'username':get_realname(request),
     }, 'admins-list-item')
 
 
