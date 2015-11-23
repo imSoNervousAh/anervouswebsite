@@ -35,14 +35,16 @@
                                 });
                             });
                         </script>
-                        {% for app in pending_applications %}
-                            <tr>
-                                <td>{{ app.name }}</td>
-                                <td>{{ app.manager_name }}</td>
-                                <td>{{ app.description|linebreaksbr|safe }}</td>
-                                <td>
-                                    <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
-                                       data-toggle="popover" data-content="
+                        {% if pending_applications %}
+                            {% for app in pending_applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.manager_name }}</td>
+                                    <td>{{ app.description|linebreaksbr|safe }}</td>
+                                    <td>
+                                        <a style="cursor:pointer;" href="javascript:void(0)"
+                                           class="change-app-status-link"
+                                           data-toggle="popover" data-content="
                                         <form method='post' action='{% url 'api/modify_application' %}'>
                                             {% csrf_token %}
                                             <button type='submit' name='status' value='rejected'
@@ -57,10 +59,15 @@
                                                 <span class='fa fa-check-circle fa-fw'></span> 通过
                                             </button>
                                         </form>">
-                                        <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
-                                </td>
+                                            <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10000" style="text-align: center">无待审批申请</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -84,28 +91,34 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for article in articles %}
+                        {% if articles %}
+                            {% for article in articles %}
+                                <tr>
+                                    <td><a style="cursor:pointer;" class="official-account-link"
+                                           data-url="{% url 'admin/detail' article.official_account_id %}">
+                                        {{ article.official_account_name }}
+                                    </a></td>
+                                    <td>
+                                        <a target="_blank" href="{{ article.url }}">
+                                            <div>{{ article.title }}</div>
+                                        </a>
+                                    </td>
+                                    <td>{{ article.description|linebreaksbr|safe }}</td>
+                                    <td align="right">
+                                        {% if article.views != 100001 %}
+                                            {{ article.views }}
+                                        {% else %}
+                                            100000+
+                                        {% endif %}
+                                    </td>
+                                    <td align="right">{{ article.likes }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td><a style="cursor:pointer;" class="official-account-link"
-                                       data-url="{% url 'admin/detail' article.official_account_id %}">
-                                    {{ article.official_account_name }}
-                                </a></td>
-                                <td>
-                                    <a target="_blank" href="{{ article.url }}">
-                                        <div>{{ article.title }}</div>
-                                    </a>
-                                </td>
-                                <td>{{ article.description|linebreaksbr|safe }}</td>
-                                <td align="right">
-                                    {% if article.views != 100001 %}
-                                        {{ article.views }}
-                                    {% else %}
-                                        100000+
-                                    {% endif %}
-                                </td>
-                                <td align="right">{{ article.likes }}</td>
+                                <td colspan="10000" style="text-align: center">暂无文章</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                         </tbody>
                         <script>
                             $(".official-account-link").click(function () {
@@ -138,15 +151,22 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>未读站内消息</h4></div>
-            <div class="panel-body">
-                {% for account in unprocessed_account %}
-                    <p>
-                        <a style="cursor:pointer;" class="message-link" data-url="{% url 'message/admin' account.id %}">
-                            {{ account.name }}</a>
-                        <span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
-                    </p>
-                {% endfor %}
-            </div>
+            {% if unprocessed_account %}
+                <div class="panel-body">
+                    {% for account in unprocessed_account %}
+                        <p>
+                            <a style="cursor:pointer;" class="message-link"
+                               data-url="{% url 'message/admin' account.id %}">
+                                {{ account.name }}</a>
+                            <span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
+                        </p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="panel-body" style="text-align: center">
+                    无未读消息
+                </div>
+            {% endif %}
             <script>
                 $(".message-link").click(function () {
                     loadContent($(this).data("url"), {});

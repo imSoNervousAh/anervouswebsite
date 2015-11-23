@@ -244,7 +244,8 @@ def add_message(request):
 @json_response_general_exception_decorator
 def process_message(request):
     account_id = request.POST['official_account_id']
-    backend.process_all_messages(account_id)
+    category = request.POST['category']
+    backend.process_all_messages(account_id, category)
     # return HttpResponse(request.POST)
 
 

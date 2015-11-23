@@ -501,7 +501,9 @@ def admin_forewarn_records(request):
 @check_identity('admin')
 def admin_forewarn_records_list(request):
     return render_sortable(request, backend.get_forewarn_records(),
-                           'admin/forewarn/forewarn_records_content.html')
+                           'admin/forewarn/forewarn_records_content.html', {
+                               'items_per_page': 20
+                           })
 
 
 # message
@@ -513,6 +515,7 @@ def message_jump(request, id):
 def check_processed(messages, category):
     for message in messages:
         if (message.category != category) and (not message.processed):
+            print message
             return False
     return True
 
@@ -532,11 +535,11 @@ def message_detail_admin(request, id):
         'account': official_account,
         'messages': messages,
         'category': category,
+        'opposite_category': MessageCategory.ToAdmin,
         'official_account_id': id,
-        'processed': check_processed(messages, MessageCategory.ToStudent),
-        'MessageCategory': MessageCategory,
-        'identity': 'identity',
+        'processed': check_processed(messages, category),
         'locate': 'admin/index.html',
+        'MessageCategory': MessageCategory,
     })
 
 
@@ -553,13 +556,13 @@ def message_detail_student(request, id):
         'account': official_account,
         'messages': messages,
         'category': category,
+        'opposite_category': MessageCategory.ToStudent,
         'official_account_id': id,
-        'processed': check_processed(messages, MessageCategory.ToAdmin),
+        'processed': check_processed(messages, category),
         'MessageCategory': MessageCategory,
-        'identity': 'student',
-        'locate': 'student/index.html',
         'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
+        'locate': 'student/index.html'
     }, 'message-detail-' + str(id))
 
 

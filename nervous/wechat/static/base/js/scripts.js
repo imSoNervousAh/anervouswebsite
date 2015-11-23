@@ -188,7 +188,6 @@ function loadContentOfItem(item, load_params, callback) {
 }
 
 function removePx(str) {
-    console.log(str);
     if (typeof str === "number") return str;
     return parseInt(str.substr(0, str.length - 2));
 }
@@ -234,7 +233,7 @@ function handleFormPost(form_selector, post_url, params) {
             success_callback = params.success_callback;
         if (params.hasOwnProperty("error_callback")) {
             success_callback = params.error_callback;
-            console.log("own error_callback");
+//            console.log("own error_callback");
         }
         if (params.hasOwnProperty("success_msg")) {
             success_callback = params.success_msg;
@@ -265,13 +264,10 @@ function handleFormPost(form_selector, post_url, params) {
                     else msg.addClass("alert-danger");
                     msg_text.html(success_msg(data));
                     msg.fadeIn();
-                    console.log(data);
 
                     if (data.hasOwnProperty("error_messages")) {
                         var pos = -1;
-                        console.log(data.error_messages);
                         for (var field_name in data.error_messages) {
-                            console.log(field_name);
                             var field = form_groups.has("[name='" + field_name + "']");
                             field.addClass("has-error");
                             field.find("span").html(data.error_messages[field_name]);

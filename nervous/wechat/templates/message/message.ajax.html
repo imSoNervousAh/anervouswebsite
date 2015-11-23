@@ -29,9 +29,7 @@
                         <div class="col-md-offset-1">
                             <!-- comment -->
                             {% for message in messages %}
-
                                 {% if message.category != category %}
-
                                     <div class="message-body row" style="margin-top: 30px">
                                         <div class="col-md-7 ">
                                             <div class="ds-comment-body">
@@ -67,7 +65,7 @@
                                     <div class="col-md-9  col-md-offset-4">
                                         {% csrf_token %}
                                         <div class="input-group form-group" style="margin-top: 20px;">
-                                            <input name="category" style="display:none" value="{{ category }}">
+                                            <input name="category" style="display:none" value="{{ opposite_category }}">
                                             <input name="official_account_id" style="display:none"
                                                    value="{{ account.id }}">
                                             <input name="title" style="display: none;" value="">
@@ -98,8 +96,7 @@
                                         category = 'student';
                                     {% endif %}
                                     if (data.status === "ok") {
-                                        loadContent("/message/" + category + "/{{ official_account_id }}",
-                                                {}, undefined, function () {
+                                        loadContent(window.location.href, {}, undefined, function () {
                                                     $("html, body").delay(60).animate({
                                                         "scroll-top": $(document).height()
                                                     }, function () {
