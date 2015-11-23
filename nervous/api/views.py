@@ -48,10 +48,18 @@ def response_from_exception(e):
 
 
 def json_response_general_exception_decorator(func):
-    def wrapper(request):
+    """
+        If a function ...
+            throws an exception: return a JSON request indicating the error
+            returns None: return a JSON request indicating success
+            returns something other than None: decorated function will return that value
+
+        This is intended to be the outer-most decorator of all view functions.
+    """
+    def wrapper(request, *args, **kwargs):
         ret = None
         try:
-            ret = func(request)
+            ret = func(request, *args, **kwargs)
             response = response_success()
         except Exception as e:
             response = response_from_exception(e)
@@ -61,11 +69,23 @@ def json_response_general_exception_decorator(func):
 
 
 def json_response_validation_error_decorator(func):
-    def wrapper(request):
+    """
+        If a function ...
+            throws an ValidationError: return a JSON request indicating the error
+            returns None: return a JSON request indicating success
+            returns something other than None: return that value
+
+        Also the function extract the 'method' value from request.POST to remind
+        the front-end of the method through which the error was triggered.
+
+        Generally we should decorate all view functions that create something in
+        the database using this decorator.
+    """
+    def wrapper(request, *args, **kwargs):
         ret = None
         method = request.POST.dict().get('method', None)
         try:
-            ret = func(request)
+            ret = func(request, *args, **kwargs)
             response = response_success(method)
         except ValidationError as e:
             response = response_from_validation_error(e, method)
@@ -166,15 +186,14 @@ def modify_application(request):
     return HttpResponseRedirect('/admin')
 
 
-# @json_response_general_exception_decorator
+@json_response_general_exception_decorator
 def delete_application(request, id):
     backend.del_application(id)
-    return HttpResponse(request)
 
-# @json_response_general_exception_decorator
+
+@json_response_general_exception_decorator
 def recall_application(request, id):
-    print 'recall'
-    return HttpResponse(request)
+    backend.recall_application(id)
 
 
 @json_response_general_exception_decorator

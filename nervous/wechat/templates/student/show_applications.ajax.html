@@ -35,13 +35,11 @@
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
+                                    {% if app.status_name == status_name.not_submitted %}
                                     <a id="modify_{{ app.id }}" class="fake-link">
-                                        {% if app.status_name == status_name.pending %}
                                             <span class="glyphicon glyphicon-check"></span> 修改
-                                        {% elif app.status_name == status_name.not_submitted %}
-                                            <span class="glyphicon glyphicon-check"></span> 修改
-                                        {% endif %}
                                     </a>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {% if app.status_name == status_name.pending %}
@@ -74,9 +72,11 @@
                                         $.ajax({
                                             type: "POST",
                                             url: url,
-                                            data: "{{app.in}}",
+                                            data: "",
                                             success: function (data) {
-                                                alert('删除成功!');
+                                                if (data["status"] === "ok") {
+                                                    alert('删除成功!');
+                                                }
                                                 loadContent("/student");
                                             },
                                             error: function (xhr, textStatus, errorThrown) {
@@ -93,9 +93,11 @@
                                         $.ajax({
                                             type: "POST",
                                             url: url,
-                                            data: "{{app.in}}",
+                                            data: "",
                                             success: function (data) {
-                                                alert('撤回成功!');
+                                                if (data["status"] === "ok") {
+                                                    alert('撤回成功!');
+                                                }
                                                 loadContent("/student");
                                             },
                                             error: function (xhr, textStatus, errorThrown) {

@@ -105,6 +105,13 @@ def del_application(id):
         return False
 
 
+def recall_application(id):
+    account = OfficialAccount.objects.get(pk=id)
+    application = account.application
+    application.status = 'not_submitted'
+    application.save()
+
+
 # Official Accounts
 
 def get_official_accounts():
