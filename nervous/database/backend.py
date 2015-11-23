@@ -12,6 +12,7 @@ from django.conf import settings
 
 import pytz
 import datetime
+import time
 
 
 # Applications
@@ -403,11 +404,30 @@ def check_all_forewarn_rules():
         check_forewarn_rule(rule, pending_check_accounts)
 
 
-def __release__():
+def save_account_update_status(account, status):
+    account.update_status = status
+    account.save(update_fields=['update_status'])
+
+
+def release():
     accounts = OfficialAccount.objects.all()
     for account in accounts:
-        account.update_status = OfficialAccount.NORMAL_STATUS
-        account.save(update_fields=['update_status'])
+        save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
+
+
+def update_progress():
+    pending = OfficialAccount.objects.filter(
+        update_status=OfficialAccount.PENDING_UPDATE_STATUS
+    ).count()
+    total = OfficialAccount.objects.exclude(
+        update_status=OfficialAccount.NORMAL_STATUS
+    ).count()
+    updated = total - pending
+    print updated, total
+    if total == 0:
+        return 0
+    else:
+        return updated * 100 / total
 
 
 def update_all():
@@ -419,28 +439,35 @@ def update_all():
             print "Aborted"
             return
 
-    # Acquire the "lock"
-    for account in accounts:
-        account.update_status = OfficialAccount.PENDING_UPDATE_STATUS
-        # NOTE: this attribute will not be saved into the database
-        account.lastest_record_date = get_lastest_record_date(account)
-        print "lastest: ", account, account.lastest_record_date
-        account.save(update_fields=['update_status'])
+    try:
+        # Acquire the "lock"
+        for account in accounts:
+            account.update_status = OfficialAccount.PENDING_UPDATE_STATUS
+            # NOTE: this attribute will not be saved into the database
+            account.lastest_record_date = get_lastest_record_date(account)
+            print "lastest: ", account, account.lastest_record_date
+            save_account_update_status(account, OfficialAccount.PENDING_UPDATE_STATUS)
 
-    api_update.update_all()
+        for account in accounts:
+            save_account_update_status(account, OfficialAccount.UPDATING_STATUS)
+            api_update.update_all(account)
+            save_account_update_status(account, OfficialAccount.UPDATED_STATUS)
+            print update_progress()
 
-    for account in accounts:
-        new_lastest_record_date = get_lastest_record_date(account)
-        print "new_lastest: ", account, new_lastest_record_date
-        if account.lastest_record_date != new_lastest_record_date:
-            account.update_status = OfficialAccount.PENDING_CHECK_STATUS
-        else:
-            account.update_status = OfficialAccount.FINISHED_STATUS
-        account.save(update_fields=['update_status'])
+        for account in accounts:
+            new_lastest_record_date = get_lastest_record_date(account)
+            print "new_lastest: ", account, new_lastest_record_date
+            if account.lastest_record_date != new_lastest_record_date:
+                status = OfficialAccount.PENDING_CHECK_STATUS
+            else:
+                status = OfficialAccount.FINISHED_STATUS
+            save_account_update_status(account, status)
 
-    check_all_forewarn_rules()
+        check_all_forewarn_rules()
+    finally:
+        # Wait for front-end
+        time.sleep(10)
 
-    # Release the "lock"
-    for account in accounts:
-        account.update_status = OfficialAccount.NORMAL_STATUS
-        account.save(update_fields=['update_status'])
+        # Release the "lock"
+        for account in accounts:
+            save_account_update_status(account, OfficialAccount.NORMAL_STATUS)

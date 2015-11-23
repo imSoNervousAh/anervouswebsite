@@ -89,11 +89,9 @@ def update_official_account_nums(account):
         update_official_account_nums_before_n_days(account, i)
 
 
-def update_all():
-    lists = database.gsdata_utils.get_official_accounts_wx_name()
-    for account in lists:
-        update_official_account(account)
-        update_official_account_nums(account)
+def update_all(account):
+    update_official_account(account)
+    update_official_account_nums(account)
 
 
 def update_wci(account):

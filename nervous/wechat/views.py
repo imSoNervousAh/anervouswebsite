@@ -607,7 +607,7 @@ def superuser_update_database(request):
 
 @check_identity('superuser')
 def superuser_progress_item(request):
-    import time
-    progress = int(time.time()*10)%100
+    # import time
+    # progress = int(time.time()*10)%100
+    progress = backend.update_progress()
     return HttpResponse(str(progress));
-

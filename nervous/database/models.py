@@ -103,13 +103,15 @@ class OfficialAccount(models.Model):
     NORMAL_STATUS = 0
     PENDING_UPDATE_STATUS = 1
     UPDATING_STATUS = 2
-    PENDING_CHECK_STATUS = 3
-    FINISHED_STATUS = 4
+    UPDATED_STATUS = 3
+    PENDING_CHECK_STATUS = 4
+    FINISHED_STATUS = 5
 
     UPDATING_STATUS_CHOICES = (
         (NORMAL_STATUS, 'normal'),
         (PENDING_UPDATE_STATUS, 'pending_update'),
         (UPDATING_STATUS, 'updating'),
+        (UPDATED_STATUS, 'updated'),
         (PENDING_CHECK_STATUS, 'pending_check'),
         (FINISHED_STATUS, 'finished')
     )

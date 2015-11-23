@@ -256,9 +256,9 @@ def submit_rule(request):
     backend.add_forewarn_rule(dic)
 
 
+@json_response_general_exception_decorator
 def update_start(request):
-    print 'update-start'
-    return HttpResponse('')
+    backend.update_all()
 
 
 @json_response_general_exception_decorator
