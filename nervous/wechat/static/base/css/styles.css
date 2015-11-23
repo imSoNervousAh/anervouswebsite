@@ -186,20 +186,28 @@ a > span.badge-info {
 }
 
 /* sortable tables */
+.sortable.no-search .sortable-search-box {
+    display: none;
+}
+
 th.th-sortable {
     cursor: pointer;
     font-weight: bold;
 }
 
-.left-inner-addon {
+.th-sortable > span.sort-label {
+    margin-left: 10px;
+}
+
+.sortable-search-box {
     position: relative;
 }
 
-.left-inner-addon input {
+.sortable-search-box input {
     padding-left: 30px;
 }
 
-.left-inner-addon i {
+.sortable-search-box i {
     position: absolute;
     padding: 10px 12px;
     pointer-events: none;

@@ -1,0 +1,19 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for record in items %}
+        <tr>
+            <td><a style="cursor: pointer;" class="official-account-link"
+                       data-url="{% url 'admin/detail' record.account.id %}">
+                        {{ record.account }}</a></td>
+            <td>于&nbsp;&nbsp;{{ record.datetime }}</td>
+            <td>阅读量 大于 {{ record.value }}条</td>
+            <td align="right">{{ record.value }}条</td>
+        </tr>
+    {% endfor %}
+    <script>
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+    </script>
+{% endblock content %}

@@ -4,6 +4,7 @@ from django.db import models
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 
+
 # Utils
 
 def get_field(model_instance, field_name):
@@ -81,7 +82,6 @@ class Student(models.Model):
         except ValidationError:
             return False
 
-
     def __unicode__(self):
         return u'%s(%s)' % (self.student_id, self.real_name)
 
@@ -95,17 +95,15 @@ class OfficialAccount(models.Model):
         verbose_name = u'微信公众号'
         verbose_name_plural = u'微信公众号'
 
-
     def unprocessed_messages_count(self, category):
-        return self.message_set\
+        return self.message_set \
             .filter(
-                processed__exact=False,
-                category__exact=category
-            ).count()
-
+            processed__exact=False,
+            category__exact=category
+        ).count()
 
     def __unicode__(self):
-        return "%s(%s)" % (self.name, self.wx_id)
+        return "%s (%s)" % (self.name, self.wx_id)
 
 
 class AccountRecord(models.Model):
@@ -202,6 +200,12 @@ class ForewarnRule(models.Model):
             return self.account.name
         else:
             return u'所有公众号'
+
+    def notification_name(self):
+        if self.notification == NotificationOption.Email:
+            return u'邮件'
+        elif self.notification == NotificationOption.Message:
+            return u'站内通知'
 
     def __unicode__(self):
         return u"[%s, %s] for %s" % (

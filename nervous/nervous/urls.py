@@ -48,19 +48,27 @@ urlpatterns = [
     url(r'^admin/detail/([0-9]+)/articles/?$', 'wechat.views.admin_show_official_account_articles',
         name='admin/detail/articles'),
     url(r'^admin/detail/([0-9]+)/?$', 'wechat.views.admin_show_official_account_detail', name='admin/detail'),
+
     url(r'^admin/applications/(\w+)/?$', 'wechat.views.admin_show_applications', name='admin/applications'),
     url(r'^admin/applications/(\w+)/list/?$', 'wechat.views.admin_show_applications_list',
         name='admin/applications-list'),
+
     url(r'^admin/official_accounts/?$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
     url(r'^admin/official_accounts/list/?$', 'wechat.views.admin_show_official_accounts_list',
         name='admin/official-accounts-list'),
+
     url(r'^admin/statistics/?$', 'wechat.views.admin_show_statistics', name='admin/statistics'),
+
     url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
     url(r'^admin/articles/list/?$', 'wechat.views.admin_show_articles_list', name='admin/articles-list'),
+
     url(r'^admin/dashboard/?$', 'wechat.views.admin_dashboard', name='admin/dashboard'),
-    url(r'^admin/articles/?$', 'wechat.views.admin_show_articles', name='admin/articles'),
-    url(r'^admin/forewarn/?$', 'wechat.views.admin_forewarn', name='admin/forewarn'),
-    url(r'^admin/forewarn_list/?$', 'wechat.views.admin_forewarn_list', name='admin/forewarn-list'),
+
+    url(r'^admin/forewarn_rules/?$', 'wechat.views.admin_forewarn_rules', name='admin/forewarn-rules'),
+    url(r'^admin/forewarn_rules/list/?$', 'wechat.views.admin_forewarn_rules_list', name='admin/forewarn-rules-list'),
+    url(r'^admin/forewarn_records/?$', 'wechat.views.admin_forewarn_records', name='admin/forewarn-records'),
+    url(r'^admin/forewarn_records/list/?$', 'wechat.views.admin_forewarn_records_list', name='admin/forewarn-records-list'),
+
     url(r'^admin', 'wechat.views.admin', name='admin'),
 
     #   superuser

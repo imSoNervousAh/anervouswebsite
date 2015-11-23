@@ -1,5 +1,66 @@
 {% load tz %}
 
+<script>
+    $(".sortable").ready(function () {
+        var defaults = {
+            {% block defaults %}
+            {% endblock defaults %}
+        };
+        if (!defaults.hasOwnProperty("url"))
+            console.log("SorTable usage error: ", "url");
+        if (!defaults.hasOwnProperty("search_field"))
+            $(".sortable").addClass("no-search");
+        var url = defaults.url, params = defaults;
+        delete defaults.url;
+
+        loadContentOn("tbody", url, defaults, {anim: true, scroll: false});
+
+        $(".sortable-search-input").ready(function () {
+            $(".sortable-search-input").on("input propertychange paste", function () {
+                params['search_keyword'] = $(this).val();
+                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+            });
+        });
+
+        $(".table-sortable").find("thead").ready(function () {
+            var th = $("th.th-sortable");
+
+            th.html(function (index, old) {
+                return old + ' <span class="sort-label fa fa-unsorted"></span>';
+            });
+
+            var allClasses = "fa-unsorted fa-sort-asc fa-sort-desc";
+            var icons = $(this).find("th span.sort-label");
+
+            th.each(function () {
+                if ($(this).data("key") === defaults.sort_by) {
+                    $(this).find("span.sort-label")
+                            .removeClass(allClasses).addClass("fa-sort-" + defaults.sort_order);
+                }
+            });
+
+            th.click(function () {
+                var icon = $(this).find("span.sort-label");
+                if ($(this).data("key") !== params.sort_by) {
+                    params.sort_by = $(this).data("key");
+                    params.sort_order = defaults.sort_order;
+                } else {
+                    if (params.sort_order === "desc") {
+                        params.sort_order = "asc";
+                    } else {
+                        params.sort_order = "desc";
+                    }
+                }
+
+                icons.removeClass(allClasses).addClass("fa-unsorted");
+                icon.removeClass(allClasses).addClass("fa-sort-" + params.sort_order);
+
+                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+            });
+        });
+    });
+</script>
+
 <div class="sortable panel panel-default">
     <div class="panel-heading">
         <div class="row">
@@ -34,65 +95,4 @@
             </table>
         </div>
     </div>
-
-    <script>
-        var defaults = {
-            {% block defaults %}
-            {% endblock defaults %}
-        };
-        var param_keys = ["url", "sort_by", "sort_order", "search_field"];
-        for (var param_id in param_keys) {
-            var param = param_keys[param_id];
-            if (!defaults.hasOwnProperty(param))
-                console.log("SorTable usage error: ", param);
-        }
-        var url = defaults.url, params = defaults;
-        delete defaults.url;
-
-        loadContentOn("tbody", url, defaults, {anim: true, scroll: false});
-
-        $(".sortable-search-input").ready(function () {
-            $(".sortable-search-input").on("input propertychange paste", function () {
-                params['search_keyword'] = $(this).val();
-                loadContentOn("tbody", url, params, {anim: false, scroll: false});
-            });
-        });
-
-        $(".table-sortable").find("thead").ready(function () {
-            var th = $("th.th-sortable");
-
-            th.html(function (index, old) {
-                return old + ' <span class="sort-label pull-right fa fa-unsorted"></span>';
-            });
-
-            var allClasses = "fa-unsorted fa-sort-asc fa-sort-desc";
-            var icons = $(this).find("th span.sort-label");
-
-            th.each(function () {
-                if ($(this).data("key") === defaults.sort_by) {
-                    $(this).find("span.sort-label")
-                            .removeClass(allClasses).addClass("fa-sort-" + defaults.sort_order);
-                }
-            });
-
-            th.click(function () {
-                var icon = $(this).find("span.sort-label");
-                if ($(this).data("key") !== params.sort_by) {
-                    params.sort_by = $(this).data("key");
-                    params.sort_order = defaults.sort_order;
-                } else {
-                    if (params.sort_order === "desc") {
-                        params.sort_order = "asc";
-                    } else {
-                        params.sort_order = "desc";
-                    }
-                }
-
-                icons.removeClass(allClasses).addClass("fa-unsorted");
-                icon.removeClass(allClasses).addClass("fa-sort-" + params.sort_order);
-
-                loadContentOn("tbody", url, params, {anim: false, scroll: false});
-            });
-        });
-    </script>
 </div>

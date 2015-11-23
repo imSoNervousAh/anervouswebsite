@@ -1,0 +1,27 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for rule in items %}
+        <tr>
+            <td>{{ rule.id }}</td>
+            <td>
+                {% if rule.account %}
+                    <a style="cursor: pointer;" class="official-account-link"
+                       data-url="{% url 'admin/detail' rule.account.id %}">
+                        {{ rule.account_name }}</a>
+                {% else %}
+                    {{ rule.account_name }}
+                {% endif %}
+            </td>
+            <td>{{ rule.duration }}天</td>
+            <td>{{ rule.notification_name }}</td>
+            <td>阅读增长量大于{{ rule.value }}条</td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+    </script>
+{% endblock content %}

@@ -1,43 +1,10 @@
 <a class="fake-link">
-    <strong><i class="fa fa-bell fa-fw"></i>　预警规则</strong>
+    <strong><i class="fa fa-sliders fa-fw"></i>　预警规则</strong>
 </a>
 <hr>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>预警规则列表</h4>
-    </div>
-    <div class="panel-body">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>预警条目</th>
-                    <th>预警公众号范围</th>
-                    <th>预警时限</th>
-                    <th>通知方式</th>
-                    <th>具体规则</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rule in rules %}
-                    <tr>
-                        <td>{{ rule.id }}</td>
-                        <td>{{ rule.account_name }} </td>
-                        <td>{{ rule.duration }}天</td>
-                        <td>{{ rule.notification }}</td>
-                        <td>阅读增长量大于{{ rule.value }}条</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                <script>
-                    $(".official-account-link").click(function () {
-                        loadContent($(this).data("url"), {});
-                    });
-                </script>
-            </table>
-        </div>
-    </div>
-</div>
+
+{% include 'admin/forewarn/forewarn_rules_list.html' %}
+
 <hr>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -51,7 +18,6 @@
                 <div class="row">
                     <div class="col-sm-6 form-group">
                         <label class="control-label" for="account-name-field">预警公众号账号</label>
-
 
                         <input id="account-name-field" type="text" name="account_name"
                                list="account-name-list" class="form-control" placeholder="">
@@ -73,7 +39,6 @@
                 </div>
             </div>
 
-
             <div class="control-group">
                 <label class="control-label" for="duration-field">预警时限</label>
 
@@ -82,7 +47,7 @@
                         <input id="duration-field" name="duration" type="text" class="form-control"
                                data-error="请填写合法数字"
                                placeholder="" pattern="^[1-9]|\d{0,2}$" required>
-                            <span class="help-block with-errors"></span>
+                        <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1">
                         <h5>天</h5>
@@ -110,15 +75,17 @@
                         <input id="value-field" name="value" type="text" class="form-control"
                                data-error="请填写合法数字"
                                placeholder="" pattern="^[1-9]|\d{0,3}$" required>
-                            <span class="help-block with-errors"></span>
+                        <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1">
                         <h5>条</h5>
                     </div>
                 </div>
             </div>
+
             <div class="control-group">
                 <label></label>
+
                 <div class="controls">
                     <button id="form-submit" type="submit" name="method" value="submit"
                             class="btn btn-primary">
@@ -127,12 +94,11 @@
                 </div>
             </div>
 
-                <div class="form-error-msg alert alert-danger alert-dismissible">
-                    <div></div>
-                    <button type="button" class="close" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-
+            <div class="form-error-msg alert alert-danger alert-dismissible">
+                <div></div>
+                <button type="button" class="close" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
         </form>
         <script>
             function checkLegal() {
@@ -150,11 +116,9 @@
 
             handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
                 success_callback: function (data) {
-                    loadContent("{% url 'admin/forewarn' %}",{},undefined,{'replace':true});
+                    loadContent("{% url 'admin/forewarn-rules' %}", {}, undefined, {'replace': true});
                 }
             });
-
-
         </script>
     </div>
 </div>

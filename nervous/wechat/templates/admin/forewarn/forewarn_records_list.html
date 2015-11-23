@@ -1,0 +1,20 @@
+{% extends 'common/sortable.html' %}
+
+{% block title %}预警记录{% endblock title %}
+
+{% block defaults %}
+    url: "{% url 'admin/forewarn-records-list' %}",
+    sort_by: "datetime",
+    sort_order: "asc"
+{% endblock defaults %}
+
+{% block head %}
+    <th>公众号</th>
+    <th class="th-sortable" data-key="datetime">时间</th>
+    <th>条件</th>
+    <th class="th-sortable" data-key="value">实际数值</th>
+{% endblock head %}
+
+{% block body %}
+    {% include 'admin/forewarn/forewarn_rules_content.html' %}
+{% endblock body %}

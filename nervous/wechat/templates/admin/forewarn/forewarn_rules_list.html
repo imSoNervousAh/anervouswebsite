@@ -1,0 +1,21 @@
+{% extends 'common/sortable.html' %}
+
+{% block title %}预警规则列表{% endblock title %}
+
+{% block defaults %}
+    url: "{% url 'admin/forewarn-rules-list' %}",
+    sort_by: "id",
+    sort_order: "asc"
+{% endblock defaults %}
+
+{% block head %}
+    <th class="th-sortable" data-key="id">预警条目</th>
+    <th>预警公众号范围</th>
+    <th>预警时限</th>
+    <th>通知方式</th>
+    <th>具体规则</th>
+{% endblock head %}
+
+{% block body %}
+    {% include 'admin/forewarn/forewarn_rules_content.html' %}
+{% endblock body %}

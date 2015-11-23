@@ -331,6 +331,7 @@ def admin_show_official_accounts(request):
     }, 'official-accounts-list-item')
 
 
+@check_identity('admin')
 def admin_show_official_accounts_list(request):
     return render_sortable(request, backend.get_official_accounts(),
                            'admin/official_accounts/official_accounts_content.html')
@@ -351,8 +352,10 @@ def admin_show_articles(request):
     }, 'articles-list-item')
 
 
+@check_identity('admin')
 def admin_show_articles_list(request):
-    return render_sortable(request, backend.Article.objects.all(), 'admin/articles/articles_content.html')
+    return render_sortable(request, backend.Article.objects.all(),
+                           'admin/articles/articles_content.html')
 
 
 @check_identity('admin')
@@ -378,6 +381,7 @@ def admin_show_applications(request, type):
     }, item_id)
 
 
+@check_identity('admin')
 def admin_show_applications_list(request, type):
     if type == 'pending':
         applications = backend.get_pending_applications()
@@ -388,7 +392,8 @@ def admin_show_applications_list(request, type):
         applications = backend.get_applications()
     else:
         applications = []
-    return render_sortable(request, applications, 'admin/applications/applications_content.html')
+    return render_sortable(request, applications,
+                           'admin/applications/applications_content.html')
 
 
 @check_identity('admin')
@@ -464,36 +469,39 @@ def admin_show_official_account_articles(request, id):
 @check_identity('admin')
 def admin_show_official_account_articles_list(request, id):
     set = backend.get_articles_by_official_account_id(id)
-    return render_sortable(request, set, 'admin/detail/detail_articles_content.html', {
-        'official_account_id': id
-    })
+    return render_sortable(request, set,
+                           'admin/detail/detail_articles_content.html', {
+                               'official_account_id': id
+                           })
 
 
 @check_identity('admin')
-def admin_forewarn(request):
-    rules = backend.get_forewarn_rules()
+def admin_forewarn_rules(request):
     wx_name = map(lambda account: account.name, backend.get_official_accounts())
 
-    for rule in rules:
-        if rule.notification == NotificationOption.Email:
-            rule.notification = "邮件"
-        if rule.notification == NotificationOption.Message:
-            rule.notification = "站内通知"
-
-    return render_ajax(request, 'admin/forewarn.html', {
-        'rules': rules,
+    return render_ajax(request, 'admin/forewarn/forewarn_rules.html', {
         'NotificationOption': NotificationOption,
         'ForewarnTarget': ForewarnTarget,
         'wx_name': wx_name,
-    }, 'forewarn-list-item')
+    }, 'forewarn-rules-item')
 
 
 @check_identity('admin')
-def admin_forewarn_list(request):
-    recordlist = backend.get_forewarn_records()
-    return render_ajax(request, 'admin/forewarn_list.html', {
-        'recordlist': recordlist,
-    }, 'forewarn-detail-list-item')
+def admin_forewarn_rules_list(request):
+    return render_sortable(request, backend.get_forewarn_rules(),
+                           'admin/forewarn/forewarn_rules_content.html')
+
+
+@check_identity('admin')
+def admin_forewarn_records(request):
+    return render_ajax(request, 'admin/forewarn/forewarn_records.html', {
+    }, 'forewarn-records-item')
+
+
+@check_identity('admin')
+def admin_forewarn_records_list(request):
+    return render_sortable(request, backend.get_forewarn_records(),
+                           'admin/forewarn/forewarn_records_content.html')
 
 
 # message
