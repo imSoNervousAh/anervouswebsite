@@ -1,12 +1,10 @@
 # -*-coding:utf-8
 
 import traceback
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse,HttpResponse
 from django.shortcuts import render
-
 from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
@@ -255,3 +253,8 @@ def process_message(request):
 def submit_rule(request):
     dic = request.POST.dict()
     backend.add_forewarn_rule(dic)
+
+
+def update_start(request):
+    print 'update-start'
+    return HttpResponse('')

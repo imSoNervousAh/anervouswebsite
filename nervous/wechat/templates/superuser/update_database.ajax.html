@@ -21,6 +21,10 @@
 </div>
 <script>
     $("#update-button").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'api/update-start' %}",
+        });
         console.log(document.getElementById("progress-item").style.display);
         document.getElementById("update-button").innerText = "更新中...";
         document.getElementById("progress-item").style.display = "block";
