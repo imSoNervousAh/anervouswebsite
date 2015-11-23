@@ -34,27 +34,32 @@ def add_items(dic):
 
 
 def update_official_account(account):
-    print 'updating official account: %s' % account
+    try:
+        print 'updating official account: %s' % account
 
-    paras = {
-        'wx_name': account,
-        'datestart': get_time_string_before_month(),
-        'dateend': get_time_string_now()
-    }
+        paras = {
+            'wx_name': account,
+            'datestart': get_time_string_before_month(),
+            'dateend': get_time_string_now()
+        }
 
-    d = getdata.get_dict('wx/opensearchapi/content_list', paras)
-    totnum = d['returnData']['total']
-    ind = (d['returnData'])['items']
-    add_items(ind)
-    totnum -= 10
-    cnt = 10
-    while totnum > 0:
-        paras['start'] = cnt
         d = getdata.get_dict('wx/opensearchapi/content_list', paras)
-        d1 = (d['returnData'])['items']
-        add_items(d1)
+
+        totnum = d['returnData']['total']
+        ind = (d['returnData'])['items']
+        add_items(ind)
         totnum -= 10
-        cnt += 10
+        cnt = 10
+        while totnum > 0:
+            paras['start'] = cnt
+            d = getdata.get_dict('wx/opensearchapi/content_list', paras)
+            d1 = (d['returnData'])['items']
+            add_items(d1)
+            totnum -= 10
+            cnt += 10
+    except KeyError:
+        print u'updating of account %s failed due to gsdata error'\
+                % account
 
 
 def update_official_account_nums_before_n_days(account, n):
@@ -67,7 +72,7 @@ def update_official_account_nums_before_n_days(account, n):
     }
     d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
 
-    res = d['returnData']
+    res = d.get('returnData', {})
     dic = {
         'date': get_date_object_before_n_days(n),
         'likes': res.get('likenum_total', 0),
