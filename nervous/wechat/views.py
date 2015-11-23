@@ -577,3 +577,29 @@ def superuser_show_admins(request):
     return render_ajax(request, 'superuser/admins.html', {
         'admins': admins
     }, 'admins-list-item')
+
+
+@check_identity('superuser')
+def superuser_modify_message(request):
+    return render_ajax(request, 'superuser/modify_message.html', {
+    }, 'modify-announcement-item')
+
+
+@check_identity('superuser')
+def superuser_manage_database(request):
+    return render_ajax(request, 'superuser/manage_database.html', {
+    }, 'database-info-item')
+
+
+@check_identity('superuser')
+def superuser_update_database(request):
+    return render_ajax(request, 'superuser/update_database.html', {
+    }, 'update-data-item')
+
+
+@check_identity('superuser')
+def superuser_progress_item(request):
+    import time
+    progress = int(time.time()*10)%100
+    return HttpResponse(str(progress));
+

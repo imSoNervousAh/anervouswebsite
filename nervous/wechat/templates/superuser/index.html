@@ -18,7 +18,8 @@
                 data-url="{% url 'superuser/admins' %}">
                 <a class="fake-link"><i class="fa fa-user fa-fw"></i>　管理员账户列表</a>
             </li>
-            <li id="modify-announcement-item" class="nav-header left-column-item">
+            <li id="modify-announcement-item" class="nav-header left-column-item"
+                data-url="{% url 'superuser/modify-message' %}">
                 <a class="fake-link"><i class="fa fa-bullhorn fa-fw"></i>　修改管理员公告</a>
             </li>
         </ul>
@@ -30,10 +31,12 @@
     <ul class="nav nav-stacked collapse in" id="analyse-menu">
         <hr>
         <ul class="nav nav-stacked collapse in nav-pills" id="userMenu">
-            <li id="database-info-item" class="nav-header left-column-item">
+            <li id="database-info-item" class="nav-header left-column-item"
+                data-url="{% url 'superuser/manage-database' %}">
                 <a class="fake-link"><i class="fa fa-th-large fa-fw"></i>　数据库信息概览</a>
             </li>
-            <li id="update-data-item" class="nav-header left-column-item">
+            <li id="update-data-item" class="nav-header left-column-item"
+                data-url="{% url 'superuser/update-database' %}">
                 <a class="fake-link"><i class="fa fa-cloud-download fa-fw"></i>　数据更新</a>
             </li>
         </ul>

@@ -1,0 +1,50 @@
+<a class="fake-link">
+    <strong><i class="fa fa-user fa-fw"></i>　管理员账号列表</strong>
+</a>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>更新进度</h4></div>
+            <div class="panel-body">
+                <button id="update-button" type="button" class="btn btn-success" style="margin-bottom: 20px">更新</button>
+                <div class="progress" id="progress-item" style="display: none">
+                    <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped active"
+                         role="progressbar"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 0 %">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#update-button").click(function () {
+        console.log(document.getElementById("progress-item").style.display);
+        document.getElementById("update-button").innerText = "更新中...";
+        document.getElementById("progress-item").style.display = "block";
+        timeToQuery();
+    });
+    function timeToQuery() {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'superuser/progress-item' %}",
+            success: function (data) {
+                if (data < 95) {
+                    update_progress(data);
+                    setTimeout("timeToQuery()", 500);
+                } else {
+                    document.getElementById("update-button").innerText = "已更新";
+                    document.getElementById("progress-bar").className="progress-bar progress-bar-success progress-bar-striped";
+                    update_progress(100);
+                }
+            },
+        });
+    }
+    function update_progress(progress) {
+        document.getElementById("progress-bar").style.width = progress + "%";
+    }
+
+</script>
+

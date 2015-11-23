@@ -74,6 +74,10 @@ urlpatterns = [
 
     #   superuser
     url(r'^superuser/admin_list/?$', 'wechat.views.superuser_show_admins', name='superuser/admins'),
+    url(r'^superuser/modify_message/?$', 'wechat.views.superuser_modify_message', name='superuser/modify-message'),
+    url(r'^superuser/manage_database/?$', 'wechat.views.superuser_manage_database', name='superuser/manage-database'),
+    url(r'^superuser/update_database/?$', 'wechat.views.superuser_update_database', name='superuser/update-database'),
+    url(r'^superuser/progress_item/?$', 'wechat.views.superuser_progress_item', name='superuser/progress-item'),
     url(r'^superuser', 'wechat.views.superuser', name='superuser'),
 
     # api part
