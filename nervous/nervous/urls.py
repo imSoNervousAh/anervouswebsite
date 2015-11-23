@@ -74,7 +74,7 @@ urlpatterns = [
 
     #   superuser
     url(r'^superuser/admin_list/?$', 'wechat.views.superuser_show_admins', name='superuser/admins'),
-    url(r'^superuser/modify_message/?$', 'wechat.views.superuser_modify_message', name='superuser/modify-message'),
+    url(r'^superuser/modify_announce/?$', 'wechat.views.superuser_modify_announce', name='superuser/modify-announce'),
     url(r'^superuser/manage_database/?$', 'wechat.views.superuser_manage_database', name='superuser/manage-database'),
     url(r'^superuser/update_database/?$', 'wechat.views.superuser_update_database', name='superuser/update-database'),
     url(r'^superuser/progress_item/?$', 'wechat.views.superuser_progress_item', name='superuser/progress-item'),
@@ -97,6 +97,8 @@ urlpatterns = [
     url(r'^api/process_message/?$', 'api.views.process_message', name='api/process_message'),
     url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
     url(r'^api/update_start/?$', 'api.views.update_start', name='api/update-start'),
+    url(r'^api/modify_announce/?$', 'api.views.modify_announce', name='api/modify_announce'),
+
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),
