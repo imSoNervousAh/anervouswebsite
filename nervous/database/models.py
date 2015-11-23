@@ -91,6 +91,33 @@ class OfficialAccount(models.Model):
     name = models.CharField(u'公众号名称', max_length=40)
     description = models.CharField(u'公众号简介', max_length=300)
 
+    """
+        NOTE: Any account in a state other than NORMAL will prevent the
+        whole table from being modified. At least we hope so, to get rid
+        of concurrency problems.
+
+        PENDING_CHECK state indicates the update actually changed
+        something, may it be WCI, likesnum or other information.
+        The account should enter FINISHED state otherwise.
+    """
+    NORMAL_STATUS = 0
+    PENDING_UPDATE_STATUS = 1
+    UPDATING_STATUS = 2
+    PENDING_CHECK_STATUS = 3
+    FINISHED_STATUS = 4
+
+    UPDATING_STATUS_CHOICES = (
+        (NORMAL_STATUS, 'normal'),
+        (PENDING_UPDATE_STATUS, 'pending_update'),
+        (UPDATING_STATUS, 'updating'),
+        (PENDING_CHECK_STATUS, 'pending_check'),
+        (FINISHED_STATUS, 'finished')
+    )
+    update_status = models.IntegerField(
+        choices=UPDATING_STATUS_CHOICES,
+        default=NORMAL_STATUS
+    )
+
     class Meta:
         verbose_name = u'微信公众号'
         verbose_name_plural = u'微信公众号'

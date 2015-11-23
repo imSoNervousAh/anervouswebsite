@@ -1,4 +1,4 @@
-from database import backend
+import database.gsdata_utils
 from api import getdata
 import time
 import datetime
@@ -30,7 +30,7 @@ def add_items(dic):
         temp['likes'] = temp['likenum']
         temp['avatar_url'] = temp['picurl']
         temp['update_time'] = get_time_string_now()
-        backend.add_article(temp)
+        database.gsdata_utils.add_article(temp)
 
 
 def update_official_account(account):
@@ -76,7 +76,7 @@ def update_official_account_nums_before_n_days(account, n):
     }
     # Maybe gsdata hasn't got the data ...
     if dic['views'] > 0:
-        backend.add_account_record(account, dic)
+        database.gsdata_utils.add_account_record(account, dic)
 
 
 def update_official_account_nums(account):
@@ -85,7 +85,7 @@ def update_official_account_nums(account):
 
 
 def update_all():
-    lists = backend.get_official_accounts_wx_name()
+    lists = database.gsdata_utils.get_official_accounts_wx_name()
     for account in lists:
         update_official_account(account)
         update_official_account_nums(account)

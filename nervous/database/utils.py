@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import backend
-import daemon
 from models import *
 from django.db import connection
 from django.conf import settings
@@ -52,7 +51,7 @@ def clean_test_db():
 # test gsdata
 
 def update():
-    daemon.update_all()
+    backend.update_all()
 
 
 # build a db for testing

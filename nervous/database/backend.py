@@ -1,13 +1,17 @@
 # coding=utf-8
-from datetime import datetime
 
-import pytz
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
+from models import *
 
 from api import sendemail
-from models import *
+import api.update as api_update
+
+from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+from django.conf import settings
+
+import pytz
+import datetime
 
 
 # Applications
@@ -119,10 +123,6 @@ def get_official_accounts():
     return OfficialAccount.objects.all().filter(application__status__exact='approved')
 
 
-def get_official_accounts_wx_name():
-    return map(lambda account: account.wx_id, get_official_accounts())
-
-
 def get_official_account_by_id(id):
     return OfficialAccount.objects.get(pk=id)
 
@@ -142,24 +142,6 @@ def del_official_account(id):
         return True
     except ObjectDoesNotExist:
         return False
-
-
-# Account Record
-
-def add_account_record(wx_id, dic):
-    account = OfficialAccount.objects.get(wx_id__exact=wx_id)
-    date = dic['date']
-    try:
-        old_record = account.accountrecord_set.get(date__exact=date)
-        old_record.delete()
-    except ObjectDoesNotExist:
-        pass
-    record = AccountRecord.objects.model()
-    record.account = account
-    record.date = date
-    for attr in ['likes', 'views', 'articles']:
-        setattr(record, attr, dic.get(attr, -1))
-    record.save()
 
 
 # Admins
@@ -261,30 +243,6 @@ def get_articles(sortby=SortBy.Time, order=SortOrder.Descending, start_from=0, c
     return articles_count, articles[start_from:(start_from + count)]
 
 
-def add_article(dic):
-    acc_wx_name = dic['wx_name']
-    try:
-        acc = OfficialAccount.objects.get(wx_id__exact=acc_wx_name)
-    except ObjectDoesNotExist:
-        acc_name = dic['name']
-        acc = OfficialAccount.objects.create(
-            wx_id=acc_wx_name,
-            name=acc_name,
-            description=acc_name
-        )
-    art = Article.objects.model()
-    art.official_account_id = acc.id
-    naive_time = datetime.strptime(dic['posttime'], "%Y-%m-%d %H:%M:%S")
-    art.posttime = pytz.timezone(settings.TIME_ZONE).localize(naive_time, is_dst=None)
-    for attr in ['title', 'description', 'avatar_url', 'url', 'likes', 'views']:
-        setattr(art, attr, dic[attr])
-    try:
-        art.save()
-        return True
-    except IntegrityError:
-        return False
-
-
 def get_articles_by_official_account_id(id):
     return Article.objects.filter(official_account_id__exact=id)
 
@@ -352,7 +310,7 @@ def get_latest_record(official_account_id):
         .order_by('-date')[0]
 
 
-# Forewarning
+# Forewarn rules
 
 def add_forewarn_rule(dic):
     print dic
@@ -379,6 +337,15 @@ def get_forewarn_rules():
 
 def get_forewarn_records():
     return ForewarnRecord.objects.all()
+
+
+# Forewarning
+
+def get_lastest_record_date(account):
+    try:
+        return get_latest_record(account.id).date
+    except IndexError:
+        return datetime.date.fromtimestamp(0)
 
 
 def email_to_admins(subject, content):
@@ -416,16 +383,64 @@ def check_forewarn_rule_on_account(rule, account):
         pass
 
 
-def check_forewarn_rule(rule):
-    if rule.account:
-        accounts = [rule.account]
+def check_forewarn_rule(rule, pending_check_accounts):
+    account = rule.account
+    if account:
+        if account.update_status == OfficialAccount.PENDING_CHECK_STATUS:
+            check_forewarn_rule_on_account(rule, account)
     else:
-        accounts = get_official_accounts()
-    for account in accounts:
-        check_forewarn_rule_on_account(rule, account)
+        for account in pending_check_accounts:
+            check_forewarn_rule_on_account(rule, account)
 
 
 def check_all_forewarn_rules():
     rules = get_forewarn_rules()
+    pending_check_accounts = OfficialAccount.objects.filter(
+        update_status__exact=OfficialAccount.PENDING_CHECK_STATUS
+    )
+    print pending_check_accounts
     for rule in rules:
-        check_forewarn_rule(rule)
+        check_forewarn_rule(rule, pending_check_accounts)
+
+
+def __release__():
+    accounts = OfficialAccount.objects.all()
+    for account in accounts:
+        account.update_status = OfficialAccount.NORMAL_STATUS
+        account.save(update_fields=['update_status'])
+
+
+def update_all():
+    accounts = get_official_accounts()
+
+    for account in accounts:
+        # Another update already in progress, abort
+        if account.update_status != OfficialAccount.NORMAL_STATUS:
+            print "Aborted"
+            return
+
+    # Acquire the "lock"
+    for account in accounts:
+        account.update_status = OfficialAccount.PENDING_UPDATE_STATUS
+        # NOTE: this attribute will not be saved into the database
+        account.lastest_record_date = get_lastest_record_date(account)
+        print "lastest: ", account, account.lastest_record_date
+        account.save(update_fields=['update_status'])
+
+    api_update.update_all()
+
+    for account in accounts:
+        new_lastest_record_date = get_lastest_record_date(account)
+        print "new_lastest: ", account, new_lastest_record_date
+        if account.lastest_record_date != new_lastest_record_date:
+            account.update_status = OfficialAccount.PENDING_CHECK_STATUS
+        else:
+            account.update_status = OfficialAccount.FINISHED_STATUS
+        account.save(update_fields=['update_status'])
+
+    check_all_forewarn_rules()
+
+    # Release the "lock"
+    for account in accounts:
+        account.update_status = OfficialAccount.NORMAL_STATUS
+        account.save(update_fields=['update_status'])
