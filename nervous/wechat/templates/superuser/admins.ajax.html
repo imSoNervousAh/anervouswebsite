@@ -39,15 +39,24 @@
                                 <td>{{ admin.description }}</td>
                                 <td>{{ admin.email }}</td>
                                 <td>
-                                    <a style="cursor: pointer;" href="javascript:void;" class="delete-admin-link"
+                                    <a style="cursor: pointer;" href="javascript:void(0)" class="delete-admin-link"
                                        data-toggle="popover" data-content="
-                                        <form method='post' action='{% url 'api/del_admin' %}'>
+                                        <form method='post' id='delete-admin-{{ forloop.counter }}-popover'>
                                             {% csrf_token %}
-                                            <div class='btn btn-info'>取消</div>
-                                            <input style='display:none' name='username' value='{{ admin.username }}'>
+                                            <button class='btn btn-info'>取消</button>
+                                            <input style='display: none;' name='username' value='{{ admin.username }}'>
                                             <span>　</span>
-                                            <input type='submit' value='删除' class='btn btn-danger'>
-                                        </form>">
+                                            <button type='submit' class='btn btn-danger form-btn'>删除</button>
+                                        </form>
+                                        <script>
+                                            handleFormPost('#delete-admin-{{ forloop.counter }}-popover', '{% url 'api/del_admin' %}', {
+                                                success_callback: function (data) {
+                                                    if (data.status === 'ok') {
+                                                        loadContentOfItem('#admins-list-item', {replace: true});
+                                                    }
+                                                }
+                                            });
+                                        </script>">
                                         <span class="fa fa-user-times"></span> 删除
                                     </a>
                                 </td>
@@ -66,7 +75,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modals -->
-
-<!-- /Modals -->

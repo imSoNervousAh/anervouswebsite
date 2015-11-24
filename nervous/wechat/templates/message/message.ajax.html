@@ -4,7 +4,9 @@
 <script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
 
 <div class="top-row">
-    <a>&nbsp</a>
+    <a class="fake-link" onclick="History.back()">
+        <strong><i class="fa fa-chevron-left fa-fw"></i>　返回</strong>
+    </a>
     <a class="fake-link pull-right">
         <strong>站内消息　<i class="fa fa-comment fa-fw"></i></strong>
     </a>
@@ -99,7 +101,7 @@
                                         category = 'student';
                                     {% endif %}
                                     if (data.status === "ok") {
-                                        loadContent(window.location.href, {}, undefined, function () {
+                                        loadContent(window.location.href, {}, undefined, {replace: true}, function () {
                                                     $("html, body").delay(60).animate({
                                                         "scroll-top": $(document).height()
                                                     }, function () {

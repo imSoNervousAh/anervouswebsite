@@ -1,8 +1,7 @@
 <div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="add-admin-form" class="form form-vertical" role="form" data-toggle="validator"
-                  action="{% url 'api/add_admin' %}" method="post">
+            <form id="add-admin-form" class="form form-vertical" role="form" data-toggle="validator" method="post">
                 {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -29,15 +28,23 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id="add-admin-button" type="submit" class="btn btn-primary">添加</button>
+                    <button id="add-admin-button" type="submit" class="btn btn-primary form-btn">添加</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-    $("#add-admin-button").click(function () {
-        var form = document.forms['add-admin-form'];
-        form['password-input'].value = hex_md5(form['password-input'].value);
+    handleFormPost("#add-admin-form", "{% url 'api/add_admin' %}", {
+        before_submit: function () {
+            var form = document.forms['add-admin-form'];
+            form['password-input'].value = hex_md5(form['password-input'].value);
+        },
+        success_callback: function (data) {
+            if (data.status === 'ok') {
+                $("#add-admin-modal").modal('hide');
+                loadContentOfItem("#admins-list-item", {replace: true});
+            }
+        }
     });
 </script>

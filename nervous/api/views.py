@@ -218,14 +218,12 @@ def add_admin(request):
         dic['email'],
         dic['description']
     )
-    return HttpResponseRedirect('/superuser')
 
 
 @json_response_general_exception_decorator
 def del_admin(request):
     print "del %s" % request.POST['username']
     backend.del_admin(request.POST['username'])
-    return HttpResponseRedirect('/superuser')
 
 
 @json_response_general_exception_decorator

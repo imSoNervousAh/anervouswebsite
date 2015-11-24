@@ -89,7 +89,7 @@ function loadContent(url, params, item_selector, load_params, callback) {
         replace = load_params["replace"];
     }
 
-//    console.log(url);
+    console.log(url);
 
     main.stop(true).animate({
         opacity: 0,
@@ -208,7 +208,7 @@ function handleFormPost(form_selector, post_url, params) {
     form.ready(function () {
         var msg = form.find(".form-error-msg");
         var msg_text = msg.find("> div");
-        var form_groups = $(".form-group");
+        var form_groups = form.find(".form-group");
 
         var method_input = form.find(".form-method");
         form.find(".form-btn").click(function () {
@@ -228,7 +228,7 @@ function handleFormPost(form_selector, post_url, params) {
                     return data.error_message;
                 return "提交出错，请再次检查您填写的信息。"
             },
-            before_callback = $.noop;
+            before_submit = $.noop;
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
         if (params.hasOwnProperty("error_callback")) {
@@ -238,8 +238,8 @@ function handleFormPost(form_selector, post_url, params) {
         if (params.hasOwnProperty("success_msg")) {
             success_callback = params.success_msg;
         }
-        if (params.hasOwnProperty("before_callback")) {
-            before_callback = params.before_callback;
+        if (params.hasOwnProperty("before_submit")) {
+            before_submit = params.before_submit;
         }
 
         msg.find("button").click(function () {
@@ -250,7 +250,7 @@ function handleFormPost(form_selector, post_url, params) {
         });
 
         form.submit(function (event) {
-            before_callback();
+            before_submit(event);
             event.preventDefault();
             form_groups.removeClass("has-error");
 
