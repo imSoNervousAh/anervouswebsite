@@ -262,6 +262,10 @@ class ForewarnRecord(models.Model):
         )
 
 
+class Globals(models.Model):
+    announcement = models.CharField(max_length=256, default='')
+
+
 # Add delegating attributes
 
 def add_delegate(cls, dest, key):

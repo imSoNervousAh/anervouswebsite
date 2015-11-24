@@ -319,7 +319,7 @@ def admin_dashboard(request):
     })
     category = MessageCategory.ToAdmin
     unprocessed_account = backend.get_official_accounts_with_unprocessed_messages(category)
-    announcement = "  哇,听说公告终于不再是摆设了"
+    announcement = backend.get_announcement()
     return render_ajax(request, 'admin/dashboard.html', {
         'pending_applications': pending_applications,
         'official_accounts': official_accounts,
@@ -591,7 +591,8 @@ def superuser_show_admins(request):
 
 @check_identity('superuser')
 def superuser_modify_announcement(request):
-    announcement = "  哇,听说公告终于不再是摆设了!"
+    # announcement = "  哇,听说公告终于不再是摆设了!"
+    announcement = backend.get_announcement()
     return render_ajax(request, 'superuser/modify_announcement.html', {
         'announcement': announcement,
     }, 'modify-announcement-item')

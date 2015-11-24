@@ -261,5 +261,5 @@ def update_start(request):
 
 @json_response_general_exception_decorator
 def modify_announcement(request):
-    print '!!!!!!!!!'
-    print request.POST['content'], '!!!!'
+    announcement = request.POST['content']
+    backend.modify_announcement(announcement)

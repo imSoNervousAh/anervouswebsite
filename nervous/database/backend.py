@@ -474,3 +474,22 @@ def update_all():
         # Release the "lock"
         for account in accounts:
             save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
+
+# Global
+
+def get_globals():
+    try:
+        return Globals.objects.get()
+    except ObjectDoesNotExist:
+        return Globals.objects.create()
+
+
+def modify_announcement(announcement):
+    g = get_globals()
+    g.announcement = announcement
+    g.save()
+
+
+def get_announcement():
+    g = get_globals()
+    return g.announcement
