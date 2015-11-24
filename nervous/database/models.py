@@ -150,6 +150,7 @@ class Application(models.Model):
     official_account = models.OneToOneField(OfficialAccount, primary_key=True)
     user_submit = models.CharField(max_length=32)
     operator_admin = models.CharField(max_length=32, blank=True)
+    reject_reason = models.CharField(max_length=140, blank=True)
     status = models.CharField(max_length=20)
     manager_name = models.CharField(max_length=30)
     manager_student_id = models.CharField(max_length=15)

@@ -92,15 +92,13 @@ def student_modify_application(dic):
 
 
 def modify_application(app):
-    print app
-    try:
-        account = OfficialAccount.objects.get(pk=app['account_id'])
-        application = Application.objects.get(pk=account)
-        for attr in ['status', 'operator_admin']:
-            setattr(application, attr, app.get(attr, "unknown"))
-        application.save()
-    except ObjectDoesNotExist:
-        return False
+    account = OfficialAccount.objects.get(pk=app['account_id'])
+    application = Application.objects.get(pk=account)
+    for attr in ['status', 'operator_admin']:
+        setattr(application, attr, app.get(attr, '__unknown__'))
+    if app['status'] == 'rejected':
+        app.reject_reason = app.get('reject_reason', '__unknown_reason__')
+    application.save()
 
 
 def del_application(id):

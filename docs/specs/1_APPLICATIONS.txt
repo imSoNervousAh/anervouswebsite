@@ -4,9 +4,9 @@ THE MODEL
 
    1. Original Fields
 
-      official_account, user_submit, operator_admin, status
+      official_account, user_submit, operator_admin, reject_reason,
       manager_name, manager_student_id, manager_dept, manager_tel,
-      manager_email, association
+      manager_email, association, status
 
       The fields, except "official_account", which is a foreign key, are
       all char fields. See database/models.py for their length limits.
@@ -101,7 +101,8 @@ ACCESSING THE APPLICATIONS
 
          Administrator approve or reject applications through this API.
          Values "operator_admin" and "status" are written to the
-         application with id "account_id".
+         application with id "account_id". If the action is a rejection,
+         "reject_reason" parameter is mandatory.
 
       2c.
 
