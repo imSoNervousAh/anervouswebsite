@@ -1,5 +1,5 @@
 body {
-    min-width: 480px;
+    min-width: 320px;
 }
 
 .navbar-static-top {
@@ -69,11 +69,19 @@ a > span.badge-info {
     padding-top: 10px;
 }
 
+.table, .pagination {
+    margin-bottom: 0;
+}
+
 /*
     put modal windows in center
         for readability concerns, only apply to large screens
     hide left-column on small screens
 */
+
+#left-column .left-column-menu {
+    display: block;
+}
 
 .column-container {
     overflow: scroll;

@@ -108,7 +108,12 @@ def render_ajax(request, url, params, item_id=''):
         if session.get_identity(request) == 'admin':
             params['pending_applications_count'] = len(backend.get_pending_applications())
         elif session.get_identity(request) == 'student':
-            params['official_accounts'] = student_get_offcial_accounts(request)
+            username = session.get_username(request)
+            applications = backend.get_applications_by_user(username)
+            official_accounts = applications.filter(status__exact='approved')
+            pending_count = applications.filter(status__exact='pending').count()
+            params['pending_count'] = pending_count
+            params['official_accounts'] = official_accounts
 
     return render(request, url, params)
 
@@ -183,26 +188,13 @@ def change_info(request):
         return HttpResponse(request, '...')
 
 
-def student_get_offcial_accounts(request):
-    username = session.get_username(request)
-    approved_applications = backend.get_applications_by_status('approved')
-    official_accounts = []
-    for app in approved_applications:
-        if app.user_submit == username:
-            official_accounts.append(app.official_account)
-    return official_accounts
-
-
 @check_identity('student')
 @check_have_student_info
 def student(request):
-    username = session.get_username(request)
     realname = get_realname(request)
 
     return render(request, 'student/index.html', {
-        'username': realname,
-        'official_accounts': student_get_offcial_accounts(request),
-        'unprocessed_category': MessageCategory.ToStudent,
+        'username': realname
     })
 
 
@@ -224,17 +216,10 @@ def student_show_applications(request):
 
     username = session.get_username(request)
     applications = backend.get_applications_by_user(username)
-    pending_count = 0
-    for app in applications:
-        app.status_glyphicon = glyphicons[app.status]
-        app.status_name = status_name[app.status]
-        if app.status == 'pending':
-            pending_count += 1
 
     return render_ajax(request, 'student/show_applications.html', {
         'username': get_realname(request),
         'applications': applications,
-        'pending_count': pending_count,
         'unprocessed_category': MessageCategory.ToStudent,
         'status_name': status_name,
     }, 'my-applications-item')
@@ -566,7 +551,6 @@ def message_detail_student(request, id):
         'official_account_id': id,
         'processed': check_processed(messages, category),
         'MessageCategory': MessageCategory,
-        'official_accounts': student_get_offcial_accounts(request),
         'unprocessed_category': MessageCategory.ToStudent,
         'locate': 'student/index.html'
     }, 'message-detail-' + str(id))
@@ -591,7 +575,6 @@ def superuser_show_admins(request):
 
 @check_identity('superuser')
 def superuser_modify_announcement(request):
-    # announcement = "  哇,听说公告终于不再是摆设了!"
     announcement = backend.get_announcement()
     return render_ajax(request, 'superuser/modify_announcement.html', {
         'announcement': announcement,

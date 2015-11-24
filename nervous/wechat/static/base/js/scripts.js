@@ -89,11 +89,16 @@ function loadContent(url, params, item_selector, load_params, callback) {
         replace = load_params["replace"];
     }
 
-    console.log(url);
-
+//    console.log(url);
+/*
     main.stop(true).animate({
         opacity: 0,
         height: height
+    }, 250);
+*/
+    main.stop(true).animate({
+        opacity: 0,
+        height: main.height()
     }, 250);
     $(".left-column-item").removeClass("active");
     if (item_selector != false) {
@@ -114,13 +119,13 @@ function loadContent(url, params, item_selector, load_params, callback) {
                     data: data,
                     item: item_selector,
                     callback: callback
-                }, null, url);
+                }, document.title, url);
             } else {
                 History.pushState({
                     data: data,
                     item: item_selector,
                     callback: callback
-                }, null, url);
+                }, document.title, url);
             }
             initAjaxPage("#main-page");
         },
@@ -402,9 +407,15 @@ $(function () {
 
         if (!__manualStateChange) {
             var height = $("#left-column").height();
-            main.animate({
+            /*
+            main.stop(true).animate({
                 opacity: 0,
                 height: height
+            }, 250);
+            */
+            main.stop(true).animate({
+                opacity: 0,
+                height: main.height()
             }, 250);
             $(".left-column-item").removeClass("active");
             if (state.data.item != false) {
@@ -456,34 +467,6 @@ $(function () {
                 backdrop.remove();
             }, 500);
         }
-    });
-
-    // bind left column items to ajax calls
-    $(".left-column-item").click(function () {
-        if (!$(this).hasClass("active")) {
-            loadContentOfItem("#" + this.id);
-        }
-    });
-    $(".fake-link-scroll").click(function (e) {
-        e.preventDefault();
-        $("html, body").animate({
-            "scroll-top": 0
-        }, "fast");
-        column_container.animate({
-            "scroll-top": 0
-        }, "fast");
-    });
-
-    // activate fixer for left column
-    left_column.fixer({
-        gap: 70
-    });
-
-    // set page min height according to left column
-    var height = left_column.outerHeight(true);
-    $("html, body").css("min-height", height);
-    $("#main-page").css({
-        "min-height": height
     });
 
     // spinning effect for chevrons
@@ -549,6 +532,34 @@ $(function () {
                 "scroll-top": column_container[0].scrollHeight - left_column.outerHeight()
             }, "fast");
         });
+    });
+
+    // bind left column items to ajax calls
+    $(".left-column-item").click(function () {
+        if (!$(this).hasClass("active")) {
+            loadContentOfItem("#" + this.id);
+        }
+    });
+    $(".fake-link-scroll").click(function (e) {
+        e.preventDefault();
+        $("html, body").animate({
+            "scroll-top": 0
+        }, "fast");
+        column_container.animate({
+            "scroll-top": 0
+        }, "fast");
+    });
+
+    // activate fixer for left column
+    left_column.fixer({
+        gap: removePx($(".main").css("padding-top"))
+    });
+
+    // set page min height according to left column
+    var height = left_column.outerHeight(true);
+    $("html, body").css("min-height", height);
+    $("#main-page").css({
+        "min-height": height
     });
 
     initAjaxPage();

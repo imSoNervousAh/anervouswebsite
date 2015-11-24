@@ -38,11 +38,12 @@
                 $this = $(this),
                 $parent = $this.parent();
 
+            /*
             if (supportSticky(this)) {
                 style[cssPos] = options.gap + 'px';
                 return;
             }
-
+            */
             $win.on('scroll', function () {
 
                 // Added: tweak for small windows
@@ -56,12 +57,13 @@
                     elemSize = $this[hori ? 'outerWidth' : 'outerHeight'](),
                     parentPos = $parent.offset()[cssPos],
                     parentSize = $parent[hori ? 'outerWidth' : 'outerHeight']();
+                parentSize = Math.max(parentSize, elemSize);
 
                 if (scrollPos >= parentPos - options.gap && (parentSize + parentPos - options.gap) >= (scrollPos + elemSize)) {
                     style.position = 'fixed';
                     style[cssPos] = options.gap + 'px';
                     options.isFixed();
-                } else if (scrollPos < parentPos) {
+                } else if (scrollPos < parentPos - options.gap) {
                     style.position = 'absolute';
                     style[cssPos] = options.gap + 'px';
                 } else {
