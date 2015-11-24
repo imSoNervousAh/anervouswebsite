@@ -9,6 +9,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.conf import settings
+from django.db.models import Q
 
 import pytz
 import datetime
@@ -417,16 +418,17 @@ def release():
 
 
 def update_progress():
-    pending = OfficialAccount.objects.filter(
-        update_status=OfficialAccount.PENDING_UPDATE_STATUS
+    updated = OfficialAccount.objects.filter(
+        Q(update_status=OfficialAccount.UPDATED_STATUS) |
+        Q(update_status=OfficialAccount.PENDING_CHECK_STATUS) |
+        Q(update_status=OfficialAccount.FINISHED_STATUS)
     ).count()
     total = OfficialAccount.objects.exclude(
         update_status=OfficialAccount.NORMAL_STATUS
     ).count()
-    updated = total - pending
     print updated, total
     if total == 0:
-        return 0
+        return 100
     else:
         return updated * 100 / total
 
