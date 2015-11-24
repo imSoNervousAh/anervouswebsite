@@ -140,6 +140,7 @@ def del_official_account(id):
     try:
         account = OfficialAccount.objects.get(pk=id)
         account.delete()
+        get_articles_by_official_account_id(id).delete()
         return True
     except ObjectDoesNotExist:
         return False
