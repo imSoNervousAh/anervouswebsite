@@ -1,8 +1,11 @@
 {% load model_extras %}
 
-<a class="fake-link">
-    <strong><i class="fa fa-dashboard fa-fw"></i>　信息概览</strong>
-</a>
+<div class="top-row">
+    <a>&nbsp</a>
+    <a class="fake-link pull-right">
+        <strong>信息概览　<i class="fa fa-dashboard fa-fw"></i></strong>
+    </a>
+</div>
 <hr>
 <div class="row">
     <div class="col-md-9">
@@ -136,13 +139,17 @@
             <div class="panel-heading">
                 <h4>公告</h4>
             </div>
-            <div class="panel-body">
-                <p>
-                    <a style="cursor:pointer;" class="message-link">
-                        {{ announce }}
-                    </a>
-                </p>
-            </div>
+            {% if announcement %}
+                <div class="panel-body">
+                    <div class="alert alert-info">
+                        {{ announcement|linebreaksbr }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="panel-body" style="text-align: center">
+                    暂无管理员公告
+                </div>
+            {% endif %}
         </div>
 
         <div class="panel panel-default">

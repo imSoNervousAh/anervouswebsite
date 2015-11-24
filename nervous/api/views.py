@@ -262,6 +262,6 @@ def update_start(request):
 
 
 @json_response_general_exception_decorator
-def modify_announce(request):
+def modify_announcement(request):
     print '!!!!!!!!!'
     print request.POST['content'], '!!!!'

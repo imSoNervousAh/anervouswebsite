@@ -10,15 +10,17 @@
             console.log("SorTable usage error: ", "url");
         if (!defaults.hasOwnProperty("search_field"))
             $(".sortable").addClass("no-search");
-        var url = defaults.url, params = defaults;
+        // declare global
+        sort_url = defaults.url;
         delete defaults.url;
+        sort_params = defaults;
 
-        loadContentOn("tbody", url, defaults, {anim: true, scroll: false});
+        loadContentOn("tbody", sort_url, defaults, {anim: true, scroll: false});
 
         $(".sortable-search-input").ready(function () {
             $(".sortable-search-input").on("input propertychange paste", function () {
-                params['search_keyword'] = $(this).val();
-                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+                sort_params['search_keyword'] = $(this).val();
+                loadContentOn("tbody", sort_url, sort_params, {anim: false, scroll: false});
             });
         });
 
@@ -41,21 +43,21 @@
 
             th.click(function () {
                 var icon = $(this).find("span.sort-label");
-                if ($(this).data("key") !== params.sort_by) {
-                    params.sort_by = $(this).data("key");
-                    params.sort_order = defaults.sort_order;
+                if ($(this).data("key") !== sort_params.sort_by) {
+                    sort_params.sort_by = $(this).data("key");
+                    sort_params.sort_order = defaults.sort_order;
                 } else {
-                    if (params.sort_order === "desc") {
-                        params.sort_order = "asc";
+                    if (sort_params.sort_order === "desc") {
+                        sort_params.sort_order = "asc";
                     } else {
-                        params.sort_order = "desc";
+                        sort_params.sort_order = "desc";
                     }
                 }
 
                 icons.removeClass(allClasses).addClass("fa-unsorted");
-                icon.removeClass(allClasses).addClass("fa-sort-" + params.sort_order);
+                icon.removeClass(allClasses).addClass("fa-sort-" + sort_params.sort_order);
 
-                loadContentOn("tbody", url, params, {anim: false, scroll: false});
+                loadContentOn("tbody", sort_url, sort_params, {anim: false, scroll: false});
             });
         });
     });

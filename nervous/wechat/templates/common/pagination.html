@@ -1,4 +1,4 @@
-<nav style="margin-bottom: -40px;">
+<nav>
     <ul class="pagination">
         {% if page.current > 1 %}
             <li class="pager-link" data-page="{{ page.current|add:'-1' }}">
@@ -64,9 +64,9 @@
     <script>
         $(".pagination").ready(function () {
             $(".pager-link").click(function () {
-                var this_params = params;
+                var this_params = sort_params;
                 this_params['page'] = $(this).data("page");
-                loadContentOn("tbody", url, this_params, {anim: false, scroll: false}, function () {
+                loadContentOn("tbody", sort_url, this_params, {anim: false, scroll: false}, function () {
                     $.scrollTo($(".sortable"), {offset: -removePx($(".main").css("padding-top"))});
                 });
             });

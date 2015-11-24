@@ -1,6 +1,9 @@
-<a class="fake-link">
-    <strong><i class="fa fa-user fa-fw"></i>　数据库</strong>
-</a>
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>数据更新　<i class="fa fa-cloud-download fa-fw"></i></strong>
+    </a>
+</div>
 <hr>
 <div class="row">
     <div class="col-md-12">
@@ -23,7 +26,7 @@
     $("#update-button").click(function () {
         $.ajax({
             type: "POST",
-            url: "{% url 'api/update-start' %}",
+            url: "{% url 'api/update-start' %}"
         });
         console.log(document.getElementById("progress-item").style.display);
         document.getElementById("update-button").innerText = "更新中...";
@@ -40,7 +43,7 @@
                     setTimeout("timeToQuery()", 500);
                 } else {
                     document.getElementById("update-button").innerText = "已更新";
-                    document.getElementById("progress-bar").className="progress-bar progress-bar-success progress-bar-striped";
+                    document.getElementById("progress-bar").className = "progress-bar progress-bar-success progress-bar-striped";
                     update_progress(100);
                 }
             },

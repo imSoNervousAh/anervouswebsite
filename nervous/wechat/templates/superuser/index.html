@@ -7,12 +7,6 @@
     <a class="navbar-brand" href="{% url 'superuser' %}">超级管理员后台</a>
 {% endblock subtitle %}
 
-{% block user-menu %}
-    <li role="separator" class="divider"></li>
-    <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
-{% endblock user-menu %}
-
-
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
         <strong><i class="fa fa-wrench fa-fw"></i>　管理员账户</strong>
@@ -25,7 +19,7 @@
                 <a class="fake-link"><i class="fa fa-user fa-fw"></i>　管理员账户列表</a>
             </li>
             <li id="modify-announcement-item" class="nav-header left-column-item"
-                data-url="{% url 'superuser/modify-announce' %}">
+                data-url="{% url 'superuser/modify-announcement' %}">
                 <a class="fake-link"><i class="fa fa-bullhorn fa-fw"></i>　修改管理员公告</a>
             </li>
         </ul>

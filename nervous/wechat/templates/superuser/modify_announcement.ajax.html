@@ -1,0 +1,35 @@
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>修改管理员公告　<i class="fa fa-bullhorn fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div id="heading" class="panel-heading">
+                <h4>修改管理员公告</h4></div>
+            <div class="panel-body">
+                <form id="modify-announcement-form">
+                    <div align="center">
+                        <textarea id="content-field" name="content" class="form-control" placeholder="请输入公告"
+                                  style="height: 250px; width: 400px; font-size:18px;
+                                         margin-bottom: 10px; margin-top: 30px;">{{ announcement }}</textarea>
+                    </div>
+                    <button id="update-button" class="btn btn-primary pull-right"
+                            style="margin-right: 10px">更新
+                    </button>
+                </form>
+                <script>
+                    handleFormPost("#modify-announcement-form", "{% url 'api/modify_announcement' %}", {
+                        success_callback: function (data) {
+                            alert("已更新");
+                        }
+                    });
+                </script>
+            </div>
+
+        </div>
+    </div>
+</div>

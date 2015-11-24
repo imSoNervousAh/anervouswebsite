@@ -1,8 +1,13 @@
-<a class="fake-link">
-    <strong><i class="fa fa-dashboard fa-fw"></i>　信息总览</strong>
-</a>
+<div class="top-row">
+    <a class="fake-link pull-right">
+        {% if modify_app %}
+            <strong>修改备案申请　<i class="fa fa-edit fa-fw"></i></strong>
+        {% else %}
+            <strong>添加备案申请　<i class="fa fa-plus-circle fa-fw"></i></strong>
+        {% endif %}
+    </a>
+</div>
 <hr>
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">

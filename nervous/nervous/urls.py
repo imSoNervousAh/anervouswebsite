@@ -74,11 +74,15 @@ urlpatterns = [
 
     #   superuser
     url(r'^superuser/admin_list/?$', 'wechat.views.superuser_show_admins', name='superuser/admins'),
-    url(r'^superuser/modify_announce/?$', 'wechat.views.superuser_modify_announce', name='superuser/modify-announce'),
+    url(r'^superuser/modify_announcement/?$', 'wechat.views.superuser_modify_announcement',
+        name='superuser/modify-announcement'),
     url(r'^superuser/manage_database/?$', 'wechat.views.superuser_manage_database', name='superuser/manage-database'),
     url(r'^superuser/update_database/?$', 'wechat.views.superuser_update_database', name='superuser/update-database'),
     url(r'^superuser/progress_item/?$', 'wechat.views.superuser_progress_item', name='superuser/progress-item'),
     url(r'^superuser', 'wechat.views.superuser', name='superuser'),
+
+    #   modals
+    url(r'^modals/(.+)/?$', 'wechat.views.show_modal', name='modals'),
 
     # api part
     url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),
@@ -97,8 +101,7 @@ urlpatterns = [
     url(r'^api/process_message/?$', 'api.views.process_message', name='api/process_message'),
     url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
     url(r'^api/update_start/?$', 'api.views.update_start', name='api/update-start'),
-    url(r'^api/modify_announce/?$', 'api.views.modify_announce', name='api/modify_announce'),
-
+    url(r'^api/modify_announcement/?$', 'api.views.modify_announcement', name='api/modify_announcement'),
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),

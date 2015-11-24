@@ -111,8 +111,8 @@ var ReferrerKiller = (function () {
 				scrolling="no" \
 				frameborder="no" \
 				allowtransparency="true" \
-				width="200" \
-				height="100" ' +
+				width="180" \
+				height="90" ' +
             'id="' + id + '" ' +
             '	src="javascript:\'\
             <!doctype html>\
@@ -126,18 +126,20 @@ var ReferrerKiller = (function () {
                  function resizeWindow() {\
                     var img = document.body.firstChild.firstChild;\
                     var width = img.naturalWidth,\
-                        height = img.naturalHeight;\
+                        height = img.naturalHeight,\
+                        desiredWidth = 180,\
+                        desiredHeight = 90;\
                     if (width == 0 || height == 0) {\
-                        img.width = 200;\
-                        img.height = 100;\
+                        img.width = desiredWidth;\
+                        img.height = desiredHeight;\
                     } else if (height * 2 > width) {\
-                        img.height = 200 * height / width;\
-                        img.width = 200;\
-                        img.style.marginTop = ((100 - img.height) / 2).toString() + \\\'px\\\';\
+                        img.height = desiredWidth * height / width;\
+                        img.width = desiredWidth;\
+                        img.style.marginTop = ((desiredHeight - img.height) / 2).toString() + \\\'px\\\';\
                     } else {\
-                        img.width = 100 * width / height;\
-                        img.height = 100;\
-                        img.style.marginLeft = ((200 - img.width) / 2).toString() + \\\'px\\\';\
+                        img.width = desiredHeight * width / height;\
+                        img.height = desiredHeight;\
+                        img.style.marginLeft = ((desiredWidth - img.width) / 2).toString() + \\\'px\\\';\
                     }\
                 }\
             </script>' +

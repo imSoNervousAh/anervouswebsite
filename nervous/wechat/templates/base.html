@@ -58,10 +58,9 @@
                 </a>
                 <ul id="g-account-menu" class="dropdown-menu" role="menu">
                     {% block user-menu %}
-                        <li><a href="{% url 'student/change-info' %}"><i class="glyphicon glyphicon-info-sign"></i>　账号信息</a>
+                        <li><a href="{% url 'logout' %}">
+                            <i class="glyphicon glyphicon-log-out"></i>　登出</a>
                         </li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i>　登出</a></li>
                     {% endblock user-menu %}
                 </ul>
             </li>

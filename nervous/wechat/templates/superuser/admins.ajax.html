@@ -1,6 +1,9 @@
-<a class="fake-link">
-    <strong><i class="fa fa-user fa-fw"></i>　管理员账号列表</strong>
-</a>
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>管理员账号列表　<i class="fa fa-user fa-fw"></i></strong>
+    </a>
+</div>
 <hr>
 <div class="row">
     <div class="col-md-12">
@@ -36,7 +39,7 @@
                                 <td>{{ admin.description }}</td>
                                 <td>{{ admin.email }}</td>
                                 <td>
-                                    <a style="cursor: pointer;" href="#/" class="delete-admin-link"
+                                    <a style="cursor: pointer;" href="javascript:void;" class="delete-admin-link"
                                        data-toggle="popover" data-content="
                                         <form method='post' action='{% url 'api/del_admin' %}'>
                                             {% csrf_token %}
@@ -54,8 +57,10 @@
                     </table>
                 </div>
                 <ul class="list-inline pull-right">
-                    <li><a title="Add Widget" data-toggle="modal" href="#add-admin-modal"><span
-                            class="fa fa-user-plus"></span> 添加管理员</a></li>
+                    <li><a title="Add Widget"
+                           href="javascript:showModal('{% url 'modals' 'superuser/add_admin_modal' %}', 'add-admin-modal')">
+                        <span class="fa fa-user-plus"></span> 添加管理员
+                    </a></li>
                 </ul>
             </div>
         </div>
@@ -63,47 +68,5 @@
 </div>
 
 <!-- Modals -->
-<div class="modal fade" id="add-admin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="add-admin-form" class="form form-vertical" role="form" data-toggle="validator"
-                  action="{% url 'api/add_admin' %}" method="post">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">添加管理员</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="username-input" class="control-label">用户名：</label>
-                        <input type="text" class="form-control" id="username-input" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password-input" class="control-label">密码：</label>
-                        <input type="password" class="form-control" id="password-input" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email-input" class="control-label">邮箱：</label>
-                        <input type="email" class="form-control" id="email-input" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description-text" class="control-label">备注：</label>
-                        <textarea class="form-control" id="description-text" name="description"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id="add-admin-button" type="submit" class="btn btn-primary">添加</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<script>
-    $("#add-admin-button").click(function () {
-        var form = document.forms['add-admin-form'];
-        form['password-input'].value = hex_md5(form['password-input'].value);
-    });
-</script>
+
 <!-- /Modals -->

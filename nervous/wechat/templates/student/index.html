@@ -13,6 +13,16 @@
     <a class="navbar-brand fake-link-scroll">学生备案申请</a>
 {% endblock subtitle %}
 
+{% block user-menu %}
+    <li><a href="{% url 'student/change-info' %}">
+        <i class="glyphicon glyphicon-info-sign"></i>　账号信息
+    </a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="{% url 'logout' %}">
+        <i class="glyphicon glyphicon-log-out"></i>　登出</a>
+    </li>
+{% endblock user-menu %}
+
 {% block left-column %}
     <a class="fake-link" data-toggle="collapse" data-target="#application-menu">
         <strong><i class="fa fa-wrench fa-fw"></i>　管理公众号申请</strong>
@@ -33,11 +43,11 @@
                 <li id="message-detail-{{ account.id }}" class="left-column-item"
                     data-url="{% url 'message/student' account.id %}">
                     <a class="fake-link"><i class="fa fa-comment fa-fw"></i>　站内信 - {{ account.name|truncatechars:6 }}
-                            {% if account|unprocessed_messages_count:unprocessed_category != 0 %}
-                        <span class="badge pull-right">
+                        {% if account|unprocessed_messages_count:unprocessed_category != 0 %}
+                            <span class="badge pull-right">
                                 {{ account|unprocessed_messages_count:unprocessed_category }}
                         </span>
-                            {% endif %}
+                        {% endif %}
                     </a>
                 </li>
             {% endfor %}

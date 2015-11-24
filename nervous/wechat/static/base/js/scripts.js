@@ -339,6 +339,33 @@ function showConfirmModal(title, message, callback) {
     modal.modal();
 }
 
+function showModal(url, id) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (data) {
+            $("body").append(data);
+            var modal = $("#" + id);
+
+            modal.on("hidden.bs.modal", function () {
+                modal.remove();
+            });
+            modal.modal();
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            displayContent('\
+                <div class="alert alert-danger" role="alert">\
+                    <strong>部件载入出错。</strong>\
+                    错误信息：' +
+                textStatus + ": " + xhr.status + " " + errorThrown
+                + xhr.responseText.replace(/\n/g, "<br>") +
+                '</div>',
+                {anim: true, scroll: true}, container);
+            console.log(xhr.responseText.substr(0, 500));
+        }
+    });
+}
+
 // call a function for a number of times with same time delta
 function callRepeated(callback, cycles, time) {
     var wrapper = function (x) {
@@ -460,18 +487,21 @@ $(function () {
     });
 
     // spinning effect for chevrons
+    var arrow_type = "angle-double",
+        arrow_up = "fa-" + arrow_type + "-up",
+        arrow_down = "fa-" + arrow_type + "-down";
     left_column.find(".column-container > a").each(function () {
-        $(this).append('<span class="fa fa-chevron-up pull-right"></span>');
+        $(this).append('<span class="fa ' + arrow_up + ' pull-right"></span>');
     }).click(function () {
         var chevron = $(this).find("span.fa"),
             target = $($(this).data("target"));
         setTimeout(function () {
-            if (target.hasClass("in")) {
-                chevron.removeClass("fa-chevron-up").addClass("fa-chevron-down");
+            if (!target.hasClass("in")) {
+                chevron.removeClass(arrow_up).addClass(arrow_down);
             } else {
-                chevron.removeClass("fa-chevron-down").addClass("fa-chevron-up");
+                chevron.removeClass(arrow_down).addClass(arrow_up);
             }
-        }, 400);
+        }, 500);
     });
 
     // hide scrolling indicators when reached top or bottom
