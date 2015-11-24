@@ -57,62 +57,62 @@
                                     {% endif %}
                                 </td>
                             </tr>
-                        {% endfor %}
-                        <script>
-                            $(function () {
-                                var msg = $("#error-msg");
-                                msg.fadeOut(0);
-                                msg.find("> button").click(function () {
-                                    $("#error-msg").fadeOut();
-                                });
+                            <script>
+                                $(function () {
+                                    var msg = $("#error-msg");
+                                    msg.fadeOut(0);
+                                    msg.find("> button").click(function () {
+                                        $("#error-msg").fadeOut();
+                                    });
 
-                                $("#modify_{{ app.id }}").click(function () {
-                                    loadContent("{% url 'student/modify-application' app.id %}");
-                                });
-                                $("#delete_{{ app.id }}").click(function (event) {
-                                    event.preventDefault();
-                                    var url = "{% url 'api/delete_application' app.id %}";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        data: "",
-                                        success: function (data) {
-                                            if (data["status"] === "ok") {
-                                                alert('删除成功!');
+                                    $("#modify_{{ app.id }}").click(function () {
+                                        loadContent("{% url 'student/modify-application' app.id %}");
+                                    });
+                                    $("#delete_{{ app.id }}").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/delete_application' app.id %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: "",
+                                            success: function (data) {
+                                                if (data["status"] === "ok") {
+                                                    alert('删除成功!');
+                                                }
+                                                loadContent("/student");
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
                                             }
-                                            loadContent("/student");
-                                        },
-                                        error: function (xhr, textStatus, errorThrown) {
-                                            var msg = $("#error-msg");
-                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                            console.log(xhr.responseText);
-                                            msg.fadeIn();
-                                        }
+                                        });
+                                    });
+                                    $("#recall_{{ app.id }}").click(function (event) {
+                                        event.preventDefault();
+                                        var url = "{% url 'api/recall_application' app.id %}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            data: "",
+                                            success: function (data) {
+                                                if (data["status"] === "ok") {
+                                                    alert('撤回成功!');
+                                                }
+                                                loadContent("/student");
+                                            },
+                                            error: function (xhr, textStatus, errorThrown) {
+                                                var msg = $("#error-msg");
+                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                                console.log(xhr.responseText);
+                                                msg.fadeIn();
+                                            }
+                                        });
                                     });
                                 });
-                                $("#recall_{{ app.id }}").click(function (event) {
-                                    event.preventDefault();
-                                    var url = "{% url 'api/recall_application' app.id %}";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        data: "",
-                                        success: function (data) {
-                                            if (data["status"] === "ok") {
-                                                alert('撤回成功!');
-                                            }
-                                            loadContent("/student");
-                                        },
-                                        error: function (xhr, textStatus, errorThrown) {
-                                            var msg = $("#error-msg");
-                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                            console.log(xhr.responseText);
-                                            msg.fadeIn();
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
+                            </script>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
