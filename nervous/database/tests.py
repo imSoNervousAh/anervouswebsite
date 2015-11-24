@@ -53,55 +53,50 @@ class AdminTestCase(TestCase):
 
 
 class ApplicationTestCase(TestCase):
+    def setUp(self):
+        self.default_name = 'name'
+        self.default_wx_id = 'wx_id'
+        self.default_description = 'description'
+        self.default_user_submit = 'user_submit'
+        default_app_dic = {
+            'name': self.default_name,
+            'wx_id': self.default_wx_id,
+            'description': self.default_description,
+            'user_submit': self.default_user_submit,
+        }
+        backend.add_application(default_app_dic)
+        self.default_app = Application.objects.all().get()
+
     def test_add_application_with_same_account_wx_id(self):
-        wx_id = 'test_wx_id'
-        app = {
+        app_dic = {
             'name': 'name',
-            'wx_id': wx_id,
+            'wx_id': self.default_wx_id,
             'description': 'description',
         }
-        another_app = {
-            'name': 'another_name',
-            'wx_id': wx_id,
-            'description': 'another description',
-        }
-        backend.add_application(app)
         with self.assertRaises(ValidationError):
-            backend.add_application(another_app)
+            backend.add_application(app_dic)
 
     def test_get_application_by_user_submit(self):
-        username = 'hdd'
-        acc_name = 'acc_name'
-        app = {
+        acc_name = 'another_acc_name'
+        user_submit = 'hdd'
+        app_dic = {
             'name': acc_name,
-            'wx_id': 'wx_id',
-            'description': 'description',
-            'user_submit': username,
-        }
-        another_app = {
-            'name': 'another account name',
             'wx_id': 'another_wx_id',
             'description': 'by another user',
-            'user_submit': 'not equal to hdd',
+            'user_submit': user_submit,
         }
-        backend.add_application(app)
-        backend.add_application(another_app)
-        res = backend.get_applications_by_user(username)
+        backend.add_application(app_dic)
+        res = backend.get_applications_by_user(user_submit)
         self.assertEqual(res.count(), 1)
-        self.assertEqual(res.first().name(), acc_name)
+        app = res.first()
+        self.assertEqual(app.name(), acc_name)
+        self.assertEqual(app.user_submit, user_submit)
 
     def test_admin_modify_application(self):
         admin_name = 'admin'
         status = 'accepted'
-        dic = {
-            'name': 'name',
-            'wx_id': 'wx_id',
-            'description': 'description',
-            'user_submit': 'user_submit',
-        }
-        backend.add_application(dic)
         backend.modify_application({
-            'account_id': Application.objects.get().id,
+            'account_id': self.default_app.id(),
             'operator_admin': admin_name,
             'status': status,
         })
@@ -110,27 +105,27 @@ class ApplicationTestCase(TestCase):
         self.assertEqual(app.operator_admin, admin_name)
 
     def test_get_application_by_status(self):
-        user = 'user'
         status = 'accepted'
+        backend.modify_application({
+            'account_id': self.default_app.id(),
+            'status': status,
+        })
         app_dic = {
-            'name': 'name',
-            'wx_id': 'wx_id',
-            'description': 'description',
-            'user_submit': user,
-        }
-        another_app_dic = {
             'name': 'name',
             'wx_id': 'another_wx_id',
             'description': 'description',
             'user_submit': 'another_user',
         }
         backend.add_application(app_dic)
-        backend.add_application(another_app_dic)
-        id = backend.get_applications_by_user(user)[0].id()
-        backend.modify_application({
-            'account_id': id,
-            'status': status,
-        })
+        id = self.default_app.id()
         res = backend.get_applications_by_status(status)
         self.assertEqual(res.count(), 1)
         self.assertEqual(res[0].id(), id)
+
+    def test_del_application(self):
+        id = Application.objects.get().id()
+        backend.del_application(id)
+        self.assertEqual(Application.objects.all().count(), 0)
+
+    def test_recall_application(self):
+        pass
