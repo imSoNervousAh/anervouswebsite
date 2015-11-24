@@ -1,4 +1,5 @@
 <div class="top-row">
+    <a>&nbsp;</a>
     <a class="fake-link pull-right">
         <strong>我的备案申请　<i class="fa fa-briefcase fa-fw"></i></strong>
     </a>
@@ -38,81 +39,84 @@
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
                                     {% if app.status_name == status_name.not_submitted %}
-                                        <a id="modify_{{ app.id }}" class="fake-link">
+                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
                                             <span class="glyphicon glyphicon-check"></span> 修改
                                         </a>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if app.status_name == status_name.pending %}
-                                        <a id="recall_{{ app.id }}" class="fake-link">
+                                        <a data-id="{{ app.id }}" class="fake-link recall-link">
                                             <span class="glyphicon glyphicon-check"></span>
                                             撤回
                                         </a>
                                     {% elif app.status_name == status_name.not_submitted %}
-                                        <a id="delete_{{ app.id }}" class="fake-link">
+                                        <a data-id="{{ app.id }}" class="fake-link delete-link">
                                             <span class="glyphicon glyphicon-check"></span>
                                             删除
                                         </a>
                                     {% endif %}
                                 </td>
                             </tr>
-                            <script>
-                                $(function () {
-                                    var msg = $("#error-msg");
-                                    msg.fadeOut(0);
-                                    msg.find("> button").click(function () {
-                                        $("#error-msg").fadeOut();
-                                    });
+                        {% endfor %}
+                        <script>
+                            $(function () {
+                                var msg = $("#error-msg");
+                                msg.fadeOut(0);
+                                msg.find("> button").click(function () {
+                                    $("#error-msg").fadeOut();
+                                });
 
-                                    $("#modify_{{ app.id }}").click(function () {
-                                        loadContent("{% url 'student/modify-application' app.id %}");
-                                    });
-                                    $("#delete_{{ app.id }}").click(function (event) {
-                                        event.preventDefault();
-                                        var url = "{% url 'api/delete_application' app.id %}";
-                                        $.ajax({
-                                            type: "POST",
-                                            url: url,
-                                            data: "",
-                                            success: function (data) {
-                                                if (data["status"] === "ok") {
-                                                    alert('删除成功!');
-                                                }
-                                                loadContent("/student");
-                                            },
-                                            error: function (xhr, textStatus, errorThrown) {
-                                                var msg = $("#error-msg");
-                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                                console.log(xhr.responseText);
-                                                msg.fadeIn();
+                                $(".modify-link").click(function () {
+                                    var id = $(this).data("id");
+                                    loadContent("/student/modify_application/" + id);
+                                });
+                                $(".delete-link").click(function (event) {
+                                    event.preventDefault();
+                                    var id = $(this).data("id");
+                                    var url = "/api/delete_application/" + id;
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: "",
+                                        success: function (data) {
+                                            if (data.status === "ok") {
+                                                alert('删除成功!');
+                                                loadContentOfItem("#my-applications-item", {replace: true});
                                             }
-                                        });
-                                    });
-                                    $("#recall_{{ app.id }}").click(function (event) {
-                                        event.preventDefault();
-                                        var url = "{% url 'api/recall_application' app.id %}";
-                                        $.ajax({
-                                            type: "POST",
-                                            url: url,
-                                            data: "",
-                                            success: function (data) {
-                                                if (data["status"] === "ok") {
-                                                    alert('撤回成功!');
-                                                }
-                                                loadContent("/student");
-                                            },
-                                            error: function (xhr, textStatus, errorThrown) {
-                                                var msg = $("#error-msg");
-                                                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                                                console.log(xhr.responseText);
-                                                msg.fadeIn();
-                                            }
-                                        });
+                                        },
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
                                     });
                                 });
-                            </script>
-                        {% endfor %}
+                                $(".recall-link").click(function (event) {
+                                    event.preventDefault();
+                                    var id = $(this).data("id");
+                                    var url = "/api/recall_application/" + id;
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: "",
+                                        success: function (data) {
+                                            if (data.status === "ok") {
+                                                alert('撤回成功!');
+                                                loadContentOfItem("#my-applications-item", {replace: true});
+                                            }
+                                        },
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                         </tbody>
                     </table>
                 </div>
