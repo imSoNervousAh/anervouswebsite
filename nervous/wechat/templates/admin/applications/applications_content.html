@@ -17,24 +17,10 @@
             <td>{{ app.description|linebreaksbr|safe }}</td>
             <td>
                 {% if app.status == 'pending' %}
-                    <a style="cursor:pointer;" href="javascript:void(0)" class="change-app-status-link"
-                       data-toggle="popover"
-                       data-content="
-                        <form method='post' action='{% url 'api/modify_application' %}'>
-                            {% csrf_token %}
-                            <button type='submit' name='status' value='rejected'
-                                class='btn btn-danger'>
-                                <span class='fa fa-times-circle fa-fw'></span> 拒绝
-                            </button>
-                            <input style='display:none' name='username' value='{{ admin.username }}'>
-                            <input style='display:none' name='account_id' value='{{ app.id }}'>
-                            <span>　</span>
-                            <button type='submit' name='status' value='approved'
-                                class='btn btn-success'>
-                                <span class='fa fa-check-circle fa-fw'></span> 通过
-                            </button>
-                        </form>">
-                        <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
+                    <a style="cursor:pointer;"
+                       href="javascript:showModal('{% url 'modals/admin/application-modal' app.official_account_id %}', 'application-modal')">
+                        <span class="fa fa-check-square-o fa-fw"></span> 审批
+                    </a>
                 {% endif %}
             </td>
         </tr>

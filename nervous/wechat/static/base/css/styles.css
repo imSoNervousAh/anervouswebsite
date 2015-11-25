@@ -65,7 +65,7 @@ a > span.badge-info {
 }
 
 /* add spaces between control-groups, ignore first and last (buttons) */
-.form > .control-group:nth-of-type(n+2):nth-last-of-type(n+2) {
+.control-group {
     padding-top: 10px;
 }
 
@@ -257,6 +257,6 @@ th.th-sortable {
     margin-bottom: 0;
 }
 
-.form-btn {
+.form-btn:nth-last-of-type(n+2) {
     margin-right: 20px;
 }

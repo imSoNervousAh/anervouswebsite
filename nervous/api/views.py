@@ -187,7 +187,6 @@ def modify_application(request):
     username = session.get_username(request)
     dic['operator_admin'] = username
     backend.modify_application(dic)
-    return HttpResponseRedirect('/admin')
 
 
 @json_response_general_exception_decorator
@@ -244,7 +243,6 @@ def process_message(request):
     account_id = request.POST['official_account_id']
     category = request.POST['category']
     backend.process_all_messages(account_id, category)
-    # return HttpResponse(request.POST)
 
 
 @json_response_general_exception_decorator

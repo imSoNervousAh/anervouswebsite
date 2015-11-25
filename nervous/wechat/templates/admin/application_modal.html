@@ -1,0 +1,176 @@
+<script>
+    /*
+    $().validator({
+        custom: {
+            'reject-reason': function ($el) {
+                console.log($el);
+                return false;
+            }
+        },
+        errors: {
+            'reject-reason': "请填写拒绝理由"
+        }
+    });
+    */
+</script>
+<div class="modal fade" id="application-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">审批申请</h4>
+            </div>
+            <div class="modal-body">
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="name-field">公众号名称</label>
+                        <input id="name-field" name="name" type="text" class="form-control"
+                               value="{{ app.name }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="wx_id-field">公众号微信ID</label>
+                        <input id="wx_id-field" name="wx_id" type="text" class="form-control"
+                               placeholder="" value="{{ app.official_account.wx_id }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label" for="description-field">公众号简介</label>
+                            <textarea id="description-field" name="description" class="form-control"
+                                      style="resize: vertical;" readonly>{{ app.description }}</textarea>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label" for="association-field">所属学生组织</label>
+                        <input id="association-field" name="association" type="text" class="form-control"
+                               placeholder="" value="{{ app.association }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_name-field">负责人姓名</label>
+                        <input id="manager_name-field" name="manager_name" type="text"
+                               class="form-control" value="{{ app.manager_name }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_student_id-field">负责人学号</label>
+                        <input id="manager_student_id-field" name="manager_student_id"
+                               type="text" class="form-control" value="{{ app.manager_student_id }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_tel-field">负责人电话</label>
+                        <input id="manager_tel-field" name="manager_tel" type="text"
+                               class="form-control" value="{{ app.manager_tel }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_email-field">负责人邮箱</label>
+                        <input id="manager_email-field" name="manager_email" type="email"
+                               class="form-control" value="{{ app.manager_email }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_dept-field">负责人院系</label>
+                        <input id="manager_dept-field" name="manager_dept" type="text"
+                               class="form-control" value="{{ app.manager_dept }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <form id="process-application-form" class="form form-vertical" role="form" data-toggle="validator">
+                    {% csrf_token %}
+                    <input name="status" value="none" type="text" style="display: none;">
+                    <input name="account_id" type="text" style="display: none;" value="{{ app.id }}">
+
+                    <div class="control-group" style="text-align: left;">
+                        <label class="control-label" for="process-buttons">选择审批结果</label>
+
+                        <div id="process-buttons" style="text-align: center;">
+                            <button type="button" id="reject-button" class="btn btn-default">
+                                <span class="fa fa-times-circle fa-lg"></span>
+
+                                <div>拒绝</div>
+                            </button>
+                            &nbsp;&nbsp;或
+                            <button type="button" id="approve-button" class="btn btn-default">
+                                <span class="fa fa-check-circle fa-lg"></span>
+
+                                <div>通过</div>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="reject-collapse" class="collapse row" style="text-align: left;">
+                        <div class="col-xs-12 form-group">
+                            <label class="control-label" for="reject_reason-field">拒绝理由</label>
+                            <textarea id="reject_reason-field" name="reject_reason" class="form-control"
+                                      style="resize: vertical;" data-reject-reason="aaa"></textarea>
+                        </div>
+                        <input class="form-control" required>
+                    </div>
+                    <div id="submit-button-field" class="collapse">
+                        <button type="submit" class="btn btn-primary form-btn">
+                            完成
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var modal = $("#application-modal");
+
+    var reject_button = modal.find("#reject-button");
+    var approve_button = modal.find("#approve-button");
+    var status_input = modal.find("input[name=status]");
+    var reject_collapse = modal.find("#reject-collapse");
+    var submit_button = modal.find("#submit-button-field");
+    var reason_field = modal.find("#reject-reason-field");
+
+    modal.ready(function () {
+        reject_button.click(function () {
+            approve_button.removeClass("btn-success").addClass("btn-default");
+            reject_button.removeClass("btn-default").addClass("btn-danger");
+            status_input.val("reject");
+            reject_collapse.collapse('show');
+            submit_button.collapse('show');
+        });
+
+        approve_button.click(function () {
+            reject_button.removeClass("btn-danger").addClass("btn-default");
+            approve_button.removeClass("btn-default").addClass("btn-success");
+            status_input.val("approve");
+            reject_collapse.collapse('hide');
+            submit_button.collapse('show');
+        });
+
+        modal.find(".collapse").on("show.bs.collapse", function () {
+            modal.animate({
+                'scroll-top': modal.innerHeight()
+            });
+        });
+
+        handleFormPost("#process-application-form", "{% url 'api/modify_application' %}", {
+            success_callback: function (data) {
+                console.log("success");
+                if (data.status === 'ok') {
+                    modal.modal('hide');
+                    loadContent(window.location.href, {}, undefined, {
+                        replace: true,
+                        anim: false,
+                        scroll: false
+                    });
+                }
+            }
+        });
+
+        $('#process-application-form').validator().on('validate.bs.validator', function (e) {
+            console.log(e);
+        });
+    });
+</script>

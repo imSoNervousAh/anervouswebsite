@@ -29,7 +29,14 @@ $(function () {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         }
-    })
+    });
+
+    // handle global ajaxError
+    $(document).ajaxError(function (e, jqXHR, ajaxSettings, thrownError) {
+        if (jqXHR.status == '403') {
+            window.location = '/login';
+        }
+    });
 });
 
 var __manualStateChange = false;
@@ -83,16 +90,24 @@ function displayContent(data, params, container, callback) {
 function loadContent(url, params, item_selector, load_params, callback) {
     var main = $("#main-page");
 
-    var replace = false;
+    var replace = false, anim = true;
     if (typeof load_params != "undefined") {
-        replace = load_params["replace"];
+        if (load_params.hasOwnProperty("replace"))
+            replace = load_params["replace"];
+        if (load_params.hasOwnProperty("anim"))
+            anim = load_params["anim"];
     }
 
 //    console.log(url);
-    main.stop(true).animate({
-        opacity: 0,
-        height: main.height()
-    }, 250);
+    main.stop(true);
+    if (anim) {
+        main.animate({
+            opacity: 0,
+            height: main.height()
+        }, 250);
+    } else {
+        main.css("height", main.height());
+    }
     $(".left-column-item").removeClass("active");
     if (item_selector != false) {
         var item = $(item_selector);
@@ -110,12 +125,14 @@ function loadContent(url, params, item_selector, load_params, callback) {
             if (replace) {
                 History.replaceState({
                     data: data,
+                    params: load_params,
                     item: item_selector,
                     callback: callback
                 }, document.title, url);
             } else {
                 History.pushState({
                     data: data,
+                    params: load_params,
                     item: item_selector,
                     callback: callback
                 }, document.title, url);
@@ -230,16 +247,12 @@ function handleFormPost(form_selector, post_url, params) {
             before_submit = $.noop;
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
-        if (params.hasOwnProperty("error_callback")) {
-            success_callback = params.error_callback;
-//            console.log("own error_callback");
-        }
-        if (params.hasOwnProperty("success_msg")) {
-            success_callback = params.success_msg;
-        }
-        if (params.hasOwnProperty("before_submit")) {
+        if (params.hasOwnProperty("error_callback"))
+            error_callback = params.error_callback;
+        if (params.hasOwnProperty("success_msg"))
+            success_msg = params.success_msg;
+        if (params.hasOwnProperty("before_submit"))
             before_submit = params.before_submit;
-        }
 
         form_groups.find("input, textarea").focus(function () {
             $(this).parent().removeClass("has-error");
@@ -357,7 +370,7 @@ function showModal(url, id) {
                 textStatus + ": " + xhr.status + " " + errorThrown
                 + xhr.responseText.replace(/\n/g, "<br>") +
                 '</div>',
-                {anim: true, scroll: true}, container);
+                {anim: true, scroll: true});
             console.log(xhr.responseText.substr(0, 500));
         }
     });
@@ -528,7 +541,11 @@ $(function () {
             }, 500);
         }
 
-        if (!__manualStateChange) {
+        if (__manualStateChange) {
+            __manualStateChange = false;
+            console.log("statechange", state.data.params);
+            displayContent(state.data.data, state.data.params, undefined, state.data.callback);
+        } else {
             main.stop(true).animate({
                 opacity: 0,
                 height: main.height()
@@ -540,17 +557,7 @@ $(function () {
                     $(item).addClass("active");
                 }
             }
-        } else {
-            __manualStateChange = false;
-        }
-
-        displayContent(state.data.data, {}, undefined, state.data.callback);
-    });
-
-    // handle global ajaxError
-    $(document).ajaxError(function (e, jqXHR, ajaxSettings, thrownError) {
-        if (jqXHR.status == '403' || jqXHR.status == '500') {
-            window.location = '/login';
+            displayContent(state.data.data, {}, undefined, state.data.callback);
         }
     });
 

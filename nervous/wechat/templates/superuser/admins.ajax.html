@@ -52,7 +52,11 @@
                                             handleFormPost('#delete-admin-{{ forloop.counter }}-popover', '{% url 'api/del_admin' %}', {
                                                 success_callback: function (data) {
                                                     if (data.status === 'ok') {
-                                                        loadContentOfItem('#admins-list-item', {replace: true});
+                                                        loadContentOfItem('#admins-list-item', {
+                                                            replace: true,
+                                                            anim: false,
+                                                            scroll: false
+                                                        });
                                                     }
                                                 }
                                             });
@@ -67,7 +71,7 @@
                 </div>
                 <ul class="list-inline pull-right">
                     <li><a title="Add Widget"
-                           href="javascript:showModal('{% url 'modals' 'superuser/add_admin_modal' %}', 'add-admin-modal')">
+                           href="javascript:showModal('{% url 'modals/superuser/add-admin-modal' %}', 'add-admin-modal')">
                         <span class="fa fa-user-plus"></span> 添加管理员
                     </a></li>
                 </ul>

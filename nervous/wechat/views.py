@@ -90,10 +90,6 @@ def get_realname(request):
     return realname
 
 
-def show_modal(request, modal_url):
-    return render(request, modal_url + '.html')
-
-
 # index
 
 def index(request):
@@ -481,6 +477,14 @@ def admin_forewarn_records_list(request):
                            })
 
 
+@check_identity('admin')
+def admin_show_application_modal(request, id):
+    application = backend.get_application_by_id(id)
+    return render(request, 'admin/application_modal.html', {
+        'app': application
+    })
+
+
 # message
 
 def message_jump(request, id):
@@ -586,3 +590,8 @@ def superuser_progress_item(request):
         'updating_account': updating_account,
     }
     return JsonResponse(response)
+
+
+@check_identity('superuser')
+def superuser_show_add_admin_modal(request):
+    return render(request, 'superuser/add_admin_modal.html')

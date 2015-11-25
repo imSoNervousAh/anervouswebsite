@@ -82,7 +82,10 @@ urlpatterns = [
     url(r'^superuser', 'wechat.views.superuser', name='superuser'),
 
     #   modals
-    url(r'^modals/(.+)/?$', 'wechat.views.show_modal', name='modals'),
+    url(r'^modals/superuser/add_admin_modal/?$', 'wechat.views.superuser_show_add_admin_modal',
+        name='modals/superuser/add-admin-modal'),
+    url(r'^modals/admin/application_modal/(\d+)/?$', 'wechat.views.admin_show_application_modal',
+        name='modals/admin/application-modal'),
 
     # api part
     url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),

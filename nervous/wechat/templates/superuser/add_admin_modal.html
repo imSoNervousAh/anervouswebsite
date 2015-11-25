@@ -43,7 +43,11 @@
         success_callback: function (data) {
             if (data.status === 'ok') {
                 $("#add-admin-modal").modal('hide');
-                loadContentOfItem("#admins-list-item", {replace: true});
+                loadContentOfItem("#admins-list-item", {
+                    replace: true,
+                    anim: false,
+                    scroll: false
+                });
             }
         }
     });

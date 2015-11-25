@@ -58,21 +58,20 @@
                                 <label></label>
 
                                 <div class="controls">
-                                    <button id="save-button" type="submit" value="submit" class="btn btn-info">
+                                    <button id="save-button" type="submit" class="btn btn-info">
                                         保存
                                     </button>
                                 </div>
                             </div>
                         </form>
                         <script>
-                            handleFormPost("#application-form", "/api/submit_student_info", {
+                            handleFormPost("#application-form", "{% url 'api/submit_student_info' %}", {
                                 success_callback: function (data) {
                                     if (data['status'] === 'ok') {
                                         window.location.href = '/student';
                                     }
-                                },
+                                }
                             });
-
                         </script>
                     </div>
                 </div>
