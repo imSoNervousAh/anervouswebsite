@@ -309,22 +309,21 @@ def get_latest_record(official_account_id):
 # Forewarn rules
 
 def add_forewarn_rule(dic):
-    print dic
-    try:
-        rule = ForewarnRule.objects.model()
-        account_name = dic['account_name']
-        if account_name != '':
-            account = OfficialAccount.objects.get(name__exact=account_name)
-        else:
-            account = None
-        rule.account = account
-        for attr in ['duration', 'notification', 'target', 'value']:
-            setattr(rule, attr, int(dic[attr]))
-        rule.full_clean(exclude=['account'])
-        rule.save()
-        return True
-    except (ObjectDoesNotExist, ValueError):
-        return False
+    rule = ForewarnRule.objects.model()
+    account_name = dic['account_name']
+    if account_name != '':
+        account = OfficialAccount.objects.get(name__exact=account_name)
+    else:
+        account = None
+    rule.account = account
+    for attr in ['duration', 'notification', 'target', 'value']:
+        setattr(rule, attr, int(dic[attr]))
+    rule.full_clean(exclude=['account'])
+    rule.save()
+
+def modify_forewarn_rule(dic):
+    rule = ForewarnRule.objects.get(dic['id'])
+
 
 
 def get_forewarn_rules():
@@ -409,11 +408,9 @@ def save_account_update_status(account, status):
 
 
 def release():
-    print 'release start'
     accounts = OfficialAccount.objects.all()
     for account in accounts:
         save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
-    print 'release end'
 
 
 def update_progress():
@@ -442,7 +439,6 @@ def updating_account_name():
 
 
 def update_all():
-    release()
     accounts = get_official_accounts()
 
     for account in accounts:

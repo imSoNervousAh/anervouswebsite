@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.db.models.fields import FieldDoesNotExist
 from django.core.validators import *
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist, MultipleObjectsReturned
+from django.conf import settings
 
+import traceback
 
 # Utils
 
@@ -14,6 +17,34 @@ def get_field(model_instance, field_name):
 def get_field_verbose_name(model_instance, field_name):
     return get_field(model_instance, field_name).verbose_name
 
+
+# Who knows
+
+class NervousModel(models.Model):
+    @classmethod
+    def from_dict(cls, dic):
+        manager = cls.objects
+        model = manager.model()
+        for (key, val) in dic.iteritems():
+            try:
+                keys = str(key).split('__', 1)
+                field_name = keys[0]
+                if len(keys) == 1:
+                    field_val = val
+                else:
+                    rel_cls = cls._meta.get_field(field_name).rel.to
+                    rel_manager = rel_cls.objects
+                    rel_key = keys[1]
+                    query_args = {rel_key: val}
+                    field_val = rel_manager.get(**query_args)
+                setattr(model, field_name, field_val)
+            except (FieldDoesNotExist,
+                    AttributeError,
+                    ObjectDoesNotExist,
+                    MultipleObjectsReturned):
+                if settings.DEBUG:
+                    traceback.print_exc()
+        return model
 
 # Enums
 
@@ -164,7 +195,7 @@ class Application(models.Model):
             raise ValidationError({
                 'status': 'Invalid status'
             })
-        if self.status == 'rejected' and len(self.reject_reason.encode('utf-8')) == 0:
+        if self.status == 'rejected' and len(self.reject_reason) == 0:
             raise ValidationError({
                 'reject_reason': 'Rejected application should have a reason'
             })
@@ -254,12 +285,26 @@ class Message(models.Model):
         )
 
 
-class ForewarnRule(models.Model):
+class ForewarnRule(NervousModel):
     account = models.ForeignKey(OfficialAccount, null=True)
     duration = models.IntegerField()
     notification = models.IntegerField()
     target = models.IntegerField()
     value = models.IntegerField()
+
+    def clean(self):
+        if not self.notification in [
+                NotificationOption.Email,
+                NotificationOption.Message]:
+            raise ValidationError({
+                'notification': 'Invalid notification option',
+            })
+        if not self.target in [
+                ForewarnTarget.LikesTotal,
+                ForewarnTarget.ViewsTotal]:
+            raise ValidationError({
+                'target': 'Invalid forewarn target',
+            })
 
     def account_name(self):
         if self.account:
