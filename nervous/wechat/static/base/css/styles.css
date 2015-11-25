@@ -99,6 +99,7 @@ a > span.badge-info {
 }
 
 #left-column {
+    height: auto;
     position: fixed;
     margin-top: -20px;
     padding-top: 20px;

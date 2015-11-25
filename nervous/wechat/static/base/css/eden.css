@@ -45,7 +45,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", sans-serif;
     font-weight: 900;
     line-height: 1.1;
     color: inherit;
@@ -755,7 +755,7 @@ pre code {
 /** Buttons **/
 
 .btn {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", sans-serif;
     -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
     text-transform: uppercase;
@@ -1803,7 +1803,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
     background-color: #ffffff;
     border-color: transparent;
     padding: 20px;
-    font-family: Montserrat, san-serif;
+    font-family: Montserrat, 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", san-serif;
     text-transform: uppercase;
 }
 

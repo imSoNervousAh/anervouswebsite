@@ -241,11 +241,9 @@ function handleFormPost(form_selector, post_url, params) {
             before_submit = params.before_submit;
         }
 
-        msg.find("button").click(function () {
-            msg.fadeOut();
-        });
         form_groups.find("input, textarea").focus(function () {
             $(this).parent().removeClass("has-error");
+            msg.fadeOut();
         });
 
         form.submit(function (event) {
@@ -496,13 +494,17 @@ function initLeftColumn() {
     left_column.fixer({
         gap: removePx($(".main").css("padding-top"))
     });
+}
 
+function resizeComponents() {
+    var left_column = $("#left-column");
     // set page min height according to left column
     var height = left_column.outerHeight(true);
     $("html, body").css("min-height", height);
     $("#main-page").css({
         "min-height": height
     });
+    $(".column-container").scroll();
 }
 
 // on document ready
@@ -557,6 +559,8 @@ $(function () {
         axis: 'y',
         duration: 250
     });
+
+    $(window).on('resize', resizeComponents);
 
     initLeftColumn();
 
