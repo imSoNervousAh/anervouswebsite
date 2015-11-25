@@ -27,49 +27,66 @@
 </div>
 
 <script>
+    StateEnum = Object.freeze({
+        NOT_STARTED: '__not_started__',
+        UPDATING: '__updating__',
+        FINISHED: '__finished__',
+    });
+
+    var gState;
+    var gProgress;
+    var gUpdatingAccount;
+
     $(function () {
+        gState = StateEnum.NOT_STARTED;
+        gProgress = 0;
+        gUpdatingAccount = '';
         timeToQuery();
     });
+
     $("#update-button").click(function () {
         $.post("{% url 'api/update-start' %}", "", function () {
-            document.getElementById("update-button").innerText = "更新中...";
-            document.getElementById("progress-item").style.display = "block";
-            $("#update-status").css("display", "block");
+            gState = StateEnum.UPDATING;
+            gProgress = 1;
             timeToQuery();
         });
     });
+
     function timeToQuery() {
         $.ajax({
             type: "GET",
             url: "{% url 'superuser/progress-item' %}",
             success: function (data) {
-                console.log(data);
-                var progress = Math.max(1, data.progress);
-                var updating_account = data.updating_account;
-                if (updating_account === '') {
-
+                gProgress = data.progress;
+                gUpdatingAccount = data.updating_account;
+                if (gProgress < 100) {
+                    gState = StateEnum.UPDATING;
+                    setTimeout("timeToQuery()", 500);
                 } else {
-                    var progress_bar = $("#progress-item");
-                    if (progress_bar.css("display") === "none") {
-                        document.getElementById("update-button").innerText = "更新中...";
-                        document.getElementById("progress-item").style.display = "block";
-                        $("#update-status").css("display", "block");
-                    }
-                    update_progress(progress, updating_account);
-                    if (progress < 100) {
-                        setTimeout("timeToQuery()", 500);
-                    } else {
-                        document.getElementById("update-button").innerText = "已更新";
-                        document.getElementById("progress-bar").className = "progress-bar progress-bar-success progress-bar-striped";
-                        $("#update-status").css("display", "none");
+                    if (gState == StateEnum.UPDATING) {
+                        gState = StateEnum.FINISHED;
                     }
                 }
+                if (gState == StateEnum.UPDATING) {
+                    gProgress = Math.max(1, gProgress);
+                }
+                updateUI();
             }
         });
     }
-    function update_progress(progress, updating_account) {
-        document.getElementById("progress-bar").style.width = progress + "%";
-        console.log(updating_account);
-        $("#updating-account").html(updating_account);
+
+    function updateUI() {
+        if (gState != StateEnum.NOT_STARTED) {
+            document.getElementById("update-button").innerText = "更新中...";
+            document.getElementById("progress-item").style.display = "block";
+            $("#update-status").css("display", "block");
+        }
+        if (gState == StateEnum.FINISHED) {
+            document.getElementById("update-button").innerText = "已更新";
+            document.getElementById("progress-bar").className = "progress-bar progress-bar-success progress-bar-striped";
+            $("#update-status").css("display", "none");
+        }
+        document.getElementById("progress-bar").style.width = gProgress + "%";
+        $("#updating-account").html(gUpdatingAccount);
     }
 </script>
