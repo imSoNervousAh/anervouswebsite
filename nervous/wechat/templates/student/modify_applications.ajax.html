@@ -27,71 +27,65 @@
                         <input name="application_id" type="text" style="display: none;" value="{{ app.id }}">
                     {% endif %}
 
-                    <div class="control-group">
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="name-field">公众号名称</label>
-                                <input id="name-field" name="name" type="text" class="form-control"
-                                       value="{{ app.name }}" required>
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="wx_id-field">公众号微信ID</label>
-                                <input id="wx_id-field" name="wx_id" type="text" class="form-control"
-                                       placeholder="" value="{{ app.official_account.wx_id }}" required>
-                            </div>
+                    <div class="control-group row">
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="name-field">公众号名称</label>
+                            <input id="name-field" name="name" type="text" class="form-control"
+                                   value="{{ app.name }}" required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="wx_id-field">公众号微信ID</label>
+                            <input id="wx_id-field" name="wx_id" type="text" class="form-control"
+                                   placeholder="" value="{{ app.official_account.wx_id }}" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" for="description-field">公众号简介</label>
-                        <textarea id="description-field" name="description" class="form-control"
-                                  style="resize: vertical;">{{ app.description }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="association-field">所属学生组织</label>
-                        <select id="association-field" name="association" class="form-control">
-                            <option value="校学生会">校学生会</option>
-                            <option value="校科协">校科协</option>
-                            <option value="校团委">校团委</option>
-                            <option value="计算机系学生会">计算机系学生会</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="manager_name-field">负责人姓名</label>
-                                <input id="manager_name-field" readonly="readonly" name="manager_name" type="text"
-                                       class="form-control" value="{{ student.real_name }}">
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="manager_student_id-field">负责人学号</label>
-                                <input id="manager_student_id-field" readonly="readonly" name="manager_student_id"
-                                       type="text" class="form-control" value="{{ student_id }}">
-                            </div>
+                    <div class="control-group row">
+                        <div class="col-sm-12 form-group">
+                            <label class="control-label" for="description-field">公众号简介</label>
+                            <textarea id="description-field" name="description" class="form-control"
+                                      style="resize: vertical;">{{ app.description }}</textarea>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="manager_tel-field">负责人电话</label>
-                                <input id="manager_tel-field" readonly="readonly" name="manager_tel" type="text"
-                                       class="form-control" value="{{ student.tel }}">
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <label class="control-label" for="manager_email-field">负责人邮箱</label>
-                                <input id="manager_email-field" readonly="readonly" name="manager_email" type="email"
-                                       class="form-control" value="{{ student.email }}">
-                            </div>
+                    <div class="control-group row">
+                        <div class="col-sm-12 form-group">
+                            <label class="control-label" for="association-field">所属学生组织</label>
+                            <select id="association-field" name="association" class="form-control">
+                                <option value="校学生会">校学生会</option>
+                                <option value="校科协">校科协</option>
+                                <option value="校团委">校团委</option>
+                                <option value="计算机系学生会">计算机系学生会</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="control-group form-group">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label class="control-label" for="manager_dept-field">负责人院系</label>
-                                <input id="manager_dept-field" readonly="readonly" name="manager_dept" type="text"
-                                       class="form-control" value="{{ student.dept }}">
-
-                            </div>
+                    <div class="control-group row">
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="manager_name-field">负责人姓名</label>
+                            <input id="manager_name-field" readonly="readonly" name="manager_name" type="text"
+                                   class="form-control" value="{{ student.real_name }}">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="manager_student_id-field">负责人学号</label>
+                            <input id="manager_student_id-field" readonly="readonly" name="manager_student_id"
+                                   type="text" class="form-control" value="{{ student_id }}">
+                        </div>
+                    </div>
+                    <div class="control-group row">
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="manager_tel-field">负责人电话</label>
+                            <input id="manager_tel-field" readonly="readonly" name="manager_tel" type="text"
+                                   class="form-control" value="{{ student.tel }}">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="manager_email-field">负责人邮箱</label>
+                            <input id="manager_email-field" readonly="readonly" name="manager_email" type="email"
+                                   class="form-control" value="{{ student.email }}">
+                        </div>
+                    </div>
+                    <div class="control-group row">
+                        <div class="col-sm-6 form-group">
+                            <label class="control-label" for="manager_dept-field">负责人院系</label>
+                            <input id="manager_dept-field" readonly="readonly" name="manager_dept" type="text"
+                                   class="form-control" value="{{ student.dept }}">
                         </div>
                     </div>
                     <div class="control-group">

@@ -17,28 +17,26 @@
         <form id="rule-form" class="form form-vertical" data-toggle="validator" role="form">
             {% csrf_token %}
 
-            <div class="control-group">
-                <div class="row">
-                    <div class="col-sm-6 form-group">
-                        <label class="control-label" for="account-name-field">预警公众号账号</label>
+            <div class="control-group row">
+                <div class="col-sm-6 form-group">
+                    <label class="control-label" for="account-name-field">预警公众号账号</label>
 
-                        <input id="account-name-field" type="text" name="account_name"
-                               list="account-name-list" class="form-control" placeholder="">
-                        <span class="help-block">  不填写默认为所有公众号</span>
-                        <datalist id="account-name-list">
-                            {% for id in wx_name %}
-                                <option value="{{ id }}">
-                            {% endfor %}
-                        </datalist>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <label class="control-label" for="notification-field">通知方式</label>
+                    <input id="account-name-field" type="text" name="account_name"
+                           list="account-name-list" class="form-control" placeholder="">
+                    <span class="help-block with-errors">不填写默认为所有公众号</span>
+                    <datalist id="account-name-list">
+                        {% for id in wx_name %}
+                            <option value="{{ id }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label class="control-label" for="notification-field">通知方式</label>
 
-                        <select id="notification-field" name="notification" class="form-control">
-                            <option value={{ NotificationOption.Email }}>邮件</option>
-                            <option value={{ NotificationOption.Message }}>站内通知</option>
-                        </select>
-                    </div>
+                    <select id="notification-field" name="notification" class="form-control">
+                        <option value={{ NotificationOption.Email }}>邮件</option>
+                        <option value={{ NotificationOption.Message }}>站内通知</option>
+                    </select>
                 </div>
             </div>
 
@@ -46,20 +44,19 @@
                 <label class="control-label" for="duration-field">预警时限</label>
 
                 <div class="row">
-                    <div class="col-sm-6 form-group has-feedback">
+                    <div class="col-sm-6 form-group">
                         <input id="duration-field" name="duration" type="text" class="form-control"
                                data-error="请填写合法数字"
                                placeholder="" pattern="^[1-9]|\d{0,2}$" required>
-                        <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1">
-                        <h5>天</h5>
+                        <p class="form-control-static">天</p>
                     </div>
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="target-field">预警规则</label>
+                <label class="control-label" for="value-field">预警规则</label>
 
                 <div class="row">
                     <div class="col-sm-6 form-group">
@@ -78,10 +75,9 @@
                         <input id="value-field" name="value" type="text" class="form-control"
                                data-error="请填写合法数字"
                                placeholder="" pattern="^[1-9]|\d{0,3}$" required>
-                        <span class="help-block with-errors"></span>
                     </div>
                     <div class="col-sm-1">
-                        <h5>条</h5>
+                        <p class="form-control-static">条</p>
                     </div>
                 </div>
             </div>

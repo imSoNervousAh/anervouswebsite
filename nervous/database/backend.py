@@ -1,19 +1,15 @@
 # coding=utf-8
 
-from models import *
-
-from api import sendemail
-import api.update as api_update
-
-from django.db import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils import timezone
-from django.conf import settings
-from django.db.models import Q
-
-import pytz
 import datetime
 import time
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+from django.db.models import Q
+
+import api.update as api_update
+from api import sendemail
+from models import *
 
 
 # Applications
@@ -463,7 +459,7 @@ def update_all():
             save_account_update_status(account, OfficialAccount.UPDATING_STATUS)
             # Wait for front-end
             time.sleep(2)
-            api_update.update_all(account)
+            api_update.update_all(account.wx_id)
             save_account_update_status(account, OfficialAccount.UPDATED_STATUS)
             print update_progress()
 
@@ -484,6 +480,7 @@ def update_all():
         # Release the "lock"
         for account in accounts:
             save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
+
 
 # Global
 

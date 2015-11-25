@@ -81,7 +81,6 @@ function displayContent(data, params, container, callback) {
 
 // load page content using ajax
 function loadContent(url, params, item_selector, load_params, callback) {
-    var height = $("#left-column").height();
     var main = $("#main-page");
 
     var replace = false;
@@ -90,12 +89,6 @@ function loadContent(url, params, item_selector, load_params, callback) {
     }
 
 //    console.log(url);
-/*
-    main.stop(true).animate({
-        opacity: 0,
-        height: height
-    }, 250);
-*/
     main.stop(true).animate({
         opacity: 0,
         height: main.height()
@@ -219,7 +212,8 @@ function handleFormPost(form_selector, post_url, params) {
         form.find(".form-btn").click(function () {
             method_input.attr("value", $(this).attr("value"));
         });
-        form_groups.append('<span class="help-block with-errors"></span>');
+        form_groups.not(form_groups.has("span.help-block.with-errors"))
+            .append('<span class="help-block with-errors"></span>');
 
         var success_callback = $.noop,
             error_callback = $.noop,
@@ -384,59 +378,7 @@ function callRepeated(callback, cycles, time) {
     wrapper(cycles);
 }
 
-// on document ready
-$(function () {
-    var body = $("body");
-
-    // bind History.js
-    $(window).unbind('statechange');
-    History.Adapter.bind(window, 'statechange', function () {
-        var state = History.getState();
-//        console.log('statechange: ' + state.url);
-        var main = $("#main-page");
-
-        if ($(window).width() < 768) {
-//            console.log("mobile");
-            $("#left-column").removeClass("expanded");
-            var backdrop = $("#left-column-backdrop");
-            backdrop.removeClass("in");
-            setTimeout(function () {
-                backdrop.remove();
-            }, 500);
-        }
-
-        if (!__manualStateChange) {
-            var height = $("#left-column").height();
-            /*
-            main.stop(true).animate({
-                opacity: 0,
-                height: height
-            }, 250);
-            */
-            main.stop(true).animate({
-                opacity: 0,
-                height: main.height()
-            }, 250);
-            $(".left-column-item").removeClass("active");
-            if (state.data.item != false) {
-                var item = $(state.data.item);
-                if (typeof item != typeof undefined) {
-                    $(item).addClass("active");
-                }
-            }
-        } else {
-            __manualStateChange = false;
-        }
-
-        displayContent(state.data.data, {}, undefined, state.data.callback);
-    });
-
-    // configure scrollto.js
-    $.extend($.scrollTo.defaults, {
-        axis: 'y',
-        duration: 250
-    });
-
+function initLeftColumn() {
     // bind toggle left column button (visible in xs)
     var left_column = $("#left-column");
     var column_container = $(".column-container");
@@ -561,6 +503,62 @@ $(function () {
     $("#main-page").css({
         "min-height": height
     });
+}
+
+// on document ready
+$(function () {
+    var body = $("body");
+
+    // bind History.js
+    $(window).unbind('statechange');
+    History.Adapter.bind(window, 'statechange', function () {
+        var state = History.getState();
+//        console.log('statechange: ' + state.url);
+        var main = $("#main-page");
+
+        if ($(window).width() < 768) {
+//            console.log("mobile");
+            $("#left-column").removeClass("expanded");
+            var backdrop = $("#left-column-backdrop");
+            backdrop.removeClass("in");
+            setTimeout(function () {
+                backdrop.remove();
+            }, 500);
+        }
+
+        if (!__manualStateChange) {
+            main.stop(true).animate({
+                opacity: 0,
+                height: main.height()
+            }, 250);
+            $(".left-column-item").removeClass("active");
+            if (state.data.item != false) {
+                var item = $(state.data.item);
+                if (typeof item != typeof undefined) {
+                    $(item).addClass("active");
+                }
+            }
+        } else {
+            __manualStateChange = false;
+        }
+
+        displayContent(state.data.data, {}, undefined, state.data.callback);
+    });
+
+    // handle global ajaxError
+    $(document).ajaxError(function (e, jqXHR, ajaxSettings, thrownError) {
+        if (jqXHR.status == '403' || jqXHR.status == '500') {
+            window.location = '/login';
+        }
+    });
+
+    // configure scrollto.js
+    $.extend($.scrollTo.defaults, {
+        axis: 'y',
+        duration: 250
+    });
+
+    initLeftColumn();
 
     initAjaxPage();
 });

@@ -17,12 +17,12 @@ def del_session(request):
 
 
 def get_username(request):
-    if request.session.has_key('username'):
+    if 'username' in request.session:
         return request.session['username']
     return 'none'
 
 
 def get_identity(request):
-    if request.session.has_key('identity'):
+    if 'identity' in request.session:
         return request.session['identity']
     return 'none'

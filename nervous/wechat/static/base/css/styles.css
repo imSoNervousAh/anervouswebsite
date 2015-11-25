@@ -251,3 +251,11 @@ th.th-sortable {
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 }
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-btn {
+    margin-right: 20px;
+}

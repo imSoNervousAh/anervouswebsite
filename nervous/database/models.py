@@ -159,6 +159,24 @@ class Application(models.Model):
     manager_email = models.CharField(max_length=254)
     association = models.CharField(max_length=30)
 
+    def status_icon(self):
+        glyphicons = {
+            'approved': 'fa-check-circle',
+            'rejected': 'fa-times-circle',
+            'pending': 'fa-question-circle',
+            'not_submitted': 'fa-info-circle',
+        }
+        return glyphicons[str(self.status)]
+
+    def status_name(self):
+        name = {
+            'approved': '已通过审批',
+            'rejected': '审批被拒绝',
+            'pending': '待审批',
+            'not_submitted': '尚未提交',
+        }
+        return name[str(self.status)]
+
     def __unicode__(self):
         return u"Application for %s from user %s, status: %s" % (
             self.official_account,

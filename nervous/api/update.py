@@ -34,28 +34,28 @@ def add_items(dic):
 
 
 def update_official_account(account):
-        print 'updating official account: %s' % account
+    print 'updating official account: %s' % account
 
-        paras = {
-            'wx_name': account,
-            'datestart': get_time_string_before_month(),
-            'dateend': get_time_string_now()
-        }
+    paras = {
+        'wx_name': account,
+        'datestart': get_time_string_before_month(),
+        'dateend': get_time_string_now()
+    }
 
+    d = getdata.get_dict('wx/opensearchapi/content_list', paras)
+
+    totnum = d['returnData']['total']
+    ind = (d['returnData'])['items']
+    add_items(ind)
+    totnum -= 10
+    cnt = 10
+    while totnum > 0:
+        paras['start'] = cnt
         d = getdata.get_dict('wx/opensearchapi/content_list', paras)
-
-        totnum = d['returnData']['total']
-        ind = (d['returnData'])['items']
-        add_items(ind)
+        d1 = (d['returnData'])['items']
+        add_items(d1)
         totnum -= 10
-        cnt = 10
-        while totnum > 0:
-            paras['start'] = cnt
-            d = getdata.get_dict('wx/opensearchapi/content_list', paras)
-            d1 = (d['returnData'])['items']
-            add_items(d1)
-            totnum -= 10
-            cnt += 10
+        cnt += 10
 
 
 def update_official_account_nums_before_n_days(account, n):
@@ -94,8 +94,7 @@ def update_all(account):
 
 
 def update_wci(account):
-    paras = {}
-    paras['wx_name'] = account
+    paras = {'wx_name': account}
     d = get_dict('wx/opensearchapi/nickname_order_now', paras)
     return d['returnData']['items']
     # d['returnData']['items'][wci]

@@ -34,23 +34,23 @@
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.description|linebreaksbr|safe }}</td>
                                 <td>
-                                    <span class="fa {{ app.status_glyphicon }} fa-fw"></span> {{ app.status_name }}
+                                    <span class="fa {{ app.status_icon }} fa-fw"></span> {{ app.status_name }}
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
-                                    {% if app.status_name == status_name.not_submitted %}
+                                    {% if app.status == 'not_submitted' %}
                                         <a data-id="{{ app.id }}" class="fake-link modify-link">
                                             <span class="glyphicon glyphicon-check"></span> 修改
                                         </a>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if app.status_name == status_name.pending %}
+                                    {% if app.status == 'pending' %}
                                         <a data-id="{{ app.id }}" class="fake-link recall-link">
                                             <span class="glyphicon glyphicon-check"></span>
                                             撤回
                                         </a>
-                                    {% elif app.status_name == status_name.not_submitted %}
+                                    {% elif app.status == 'not_submitted' %}
                                         <a data-id="{{ app.id }}" class="fake-link delete-link">
                                             <span class="glyphicon glyphicon-check"></span>
                                             删除

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
-from django.http import HttpResponse
-from django.http import JsonResponse
+import json
+from datetime import timedelta
+
+from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
+
 from database import backend
-from wechat import session
-from database.models import SortBy, SortOrder, MessageCategory
 from database.models import ForewarnTarget, NotificationOption
-import json
+from database.models import SortBy, MessageCategory
+from wechat import session
 
 
 # misc
@@ -157,7 +159,10 @@ def check_identity(identity):
     def decorator(func):
         def wrapper(request, *args, **kw):
             if session.get_identity(request) != identity:
-                return login(request, identity)
+                if request.is_ajax():
+                    return HttpResponseForbidden()
+                else:
+                    return login(request, identity)
             return func(request, *args, **kw)
 
         return wrapper
@@ -176,17 +181,13 @@ def home(request):
 
 @check_identity('student')
 def change_info(request):
-    identity = session.get_identity(request)
-    if identity == 'student':
-        username = session.get_username(request)
-        student = backend.get_student_by_id(username)
-        return render(request, 'student/info.html', {
-            'type': 'change',
-            'username': student.real_name,
-            'student': student,
-        })
-    else:
-        return HttpResponse(request, '...')
+    username = session.get_username(request)
+    student = backend.get_student_by_id(username)
+    return render(request, 'student/info.html', {
+        'type': 'change',
+        'username': student.real_name,
+        'student': student,
+    })
 
 
 @check_identity('student')
@@ -202,27 +203,13 @@ def student(request):
 @check_identity('student')
 @check_have_student_info
 def student_show_applications(request):
-    glyphicons = {
-        'approved': 'fa-check-circle',
-        'rejected': 'fa-times-circle',
-        'pending': 'fa-question-circle',
-        'not_submitted': 'fa-info-circle',
-    }
-    status_name = {
-        'approved': '已通过审批',
-        'rejected': '审批被拒绝',
-        'pending': '待审批',
-        'not_submitted': '尚未提交',
-    }
-
     username = session.get_username(request)
     applications = backend.get_applications_by_user(username)
 
     return render_ajax(request, 'student/show_applications.html', {
         'username': get_realname(request),
         'applications': applications,
-        'unprocessed_category': MessageCategory.ToStudent,
-        'status_name': status_name,
+        'unprocessed_category': MessageCategory.ToStudent
     }, 'my-applications-item')
 
 
@@ -268,18 +255,14 @@ def student_fill_info(request):
 @check_identity('student')
 @check_have_student_info
 def student_change_info(request):
-    identity = session.get_identity(request)
-    if identity == 'student':
-        username = session.get_username(request)
-        student = backend.get_student_by_id(username)
-        return render(request, 'student/info.html', {
-            'type': 'change',
-            'username': student.real_name,
-            'student': student,
-            'unprocessed_category': MessageCategory.ToStudent,
-        })
-    else:
-        return HttpResponse(request, '...')
+    username = session.get_username(request)
+    student = backend.get_student_by_id(username)
+    return render(request, 'student/info.html', {
+        'type': 'change',
+        'username': student.real_name,
+        'student': student,
+        'unprocessed_category': MessageCategory.ToStudent,
+    })
 
 
 # admin
