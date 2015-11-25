@@ -182,6 +182,7 @@ def student_modify_application(request):
 
 
 @json_response_general_exception_decorator
+@json_response_validation_error_decorator
 def modify_application(request):
     dic = request.POST.dict()
     username = session.get_username(request)

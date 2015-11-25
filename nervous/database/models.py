@@ -160,7 +160,7 @@ class Application(models.Model):
     association = models.CharField(max_length=30)
 
     def clean(self):
-        if not self.status in ['approved', 'rejected', 'pending', 'not_submitted']:
+        if self.status not in ['approved', 'rejected', 'pending', 'not_submitted']:
             raise ValidationError({
                 'status': 'Invalid status'
             })

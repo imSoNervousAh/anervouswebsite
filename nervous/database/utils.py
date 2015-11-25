@@ -119,12 +119,22 @@ def build_test_db():
         'wx_id': 'jiujingzixun',
         'user_submit': '2014011416',
         'status': 'pending',
+        'manager_name': u'黄大大',
+        'manager_student_id': '2014011416',
+        'manager_dept': u'贵系',
+        'manager_tel': '12345678901',
+        'association': u'贵系学生会'
     })
     backend.add_application({
         'name': u'清华研读间',
         'wx_id': 'qinghuayandujian',
         'description': 'description',
-        'status': 'pending'
+        'status': 'pending',
+        'manager_name': u'黄大大',
+        'manager_student_id': '2014011416',
+        'manager_dept': u'贵系',
+        'manager_tel': '12345678901',
+        'association': u'贵校'
     })
 
     oa = OfficialAccount.objects.get(wx_id='jiujingzixun')
