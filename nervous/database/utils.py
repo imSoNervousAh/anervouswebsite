@@ -115,7 +115,7 @@ def build_test_db():
     Application.objects.create(official_account=oa_mz, user_submit='2014011417', status='rejected')
     oa_zx = OfficialAccount.objects.create(name=u'酒井资讯', wx_id='jiujingzixun')
     Application.objects.create(official_account=oa_zx, user_submit='2014011416', status='pending')
-    backend.add_application({'name': u'清华研读间', 'wx_id': 'qinghuayandujian', 'description': 'description'})
+    backend.add_application({'name': u'清华研读间', 'wx_id': 'qinghuayandujian', 'description': 'description', 'status': 'pending'})
 
     message_test_db(oa_zx.id)
     forewarn_test_db(oa_zx.name)

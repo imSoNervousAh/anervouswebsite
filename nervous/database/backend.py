@@ -431,6 +431,16 @@ def update_progress():
         return updated * 100 / total
 
 
+def updating_account_name():
+    try:
+        account = OfficialAccount.objects.get(
+            update_status=OfficialAccount.UPDATING_STATUS
+        )
+        return account.name
+    except ObjectDoesNotExist:
+        return ''
+
+
 def update_all():
     accounts = get_official_accounts()
 
@@ -451,6 +461,8 @@ def update_all():
 
         for account in accounts:
             save_account_update_status(account, OfficialAccount.UPDATING_STATUS)
+            # Wait for front-end
+            time.sleep(2)
             api_update.update_all(account)
             save_account_update_status(account, OfficialAccount.UPDATED_STATUS)
             print update_progress()
@@ -467,7 +479,7 @@ def update_all():
         check_all_forewarn_rules()
     finally:
         # Wait for front-end
-        time.sleep(10)
+        time.sleep(2)
 
         # Release the "lock"
         for account in accounts:

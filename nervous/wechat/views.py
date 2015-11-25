@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
@@ -595,7 +596,10 @@ def superuser_update_database(request):
 
 @check_identity('superuser')
 def superuser_progress_item(request):
-    # import time
-    # progress = int(time.time()*10)%100
     progress = backend.update_progress()
-    return HttpResponse(str(progress));
+    updating_account = backend.updating_account_name()
+    response = {
+        'progress': progress,
+        'updating_account': updating_account,
+    }
+    return JsonResponse(response)

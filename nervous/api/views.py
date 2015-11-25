@@ -8,6 +8,7 @@ from django.shortcuts import render
 from api.info_login import auth_by_info as tsinghua_login
 from database import backend
 from wechat import session
+from multiprocessing import Process
 
 
 # Utils
@@ -256,7 +257,10 @@ def submit_rule(request):
 
 @json_response_general_exception_decorator
 def update_start(request):
-    backend.update_all()
+    def worker():
+        backend.update_all()
+    p = Process(target=worker)
+    p.start()
 
 
 @json_response_general_exception_decorator

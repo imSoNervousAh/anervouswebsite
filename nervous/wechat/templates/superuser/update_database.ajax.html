@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>更新进度</h4></div>
+                <h4>数据更新</h4></div>
             <div class="panel-body">
                 <button id="update-button" type="button" class="btn btn-success" style="margin-bottom: 20px">更新</button>
                 <div class="progress" id="progress-item" style="display: none">
@@ -18,39 +18,44 @@
                          aria-valuemin="0" aria-valuemax="100" style="width: 0 %">
                     </div>
                 </div>
+                <div id="update-status" style="display: none">
+                    正在更新：<span id="updating-account"></span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
     $("#update-button").click(function () {
-        $.ajax({
-            type: "POST",
-            url: "{% url 'api/update-start' %}"
+        $.post("{% url 'api/update-start' %}", "", function() {
+            document.getElementById("update-button").innerText = "更新中...";
+            document.getElementById("progress-item").style.display = "block";
+            $("#update-status").css("display", "block")
+            timeToQuery();
         });
-        console.log(document.getElementById("progress-item").style.display);
-        document.getElementById("update-button").innerText = "更新中...";
-        document.getElementById("progress-item").style.display = "block";
-        timeToQuery();
     });
     function timeToQuery() {
         $.ajax({
             type: "GET",
             url: "{% url 'superuser/progress-item' %}",
             success: function (data) {
-                if (data < 95) {
-                    update_progress(data);
+                var progress = data.progress;
+                var updating_account = data.updating_account;
+                update_progress(progress, updating_account);
+                if (progress < 100) {
                     setTimeout("timeToQuery()", 500);
                 } else {
                     document.getElementById("update-button").innerText = "已更新";
                     document.getElementById("progress-bar").className = "progress-bar progress-bar-success progress-bar-striped";
-                    update_progress(100);
+                    $("#update-status").css("display", "none");
                 }
             },
         });
     }
-    function update_progress(progress) {
+    function update_progress(progress, updating_account) {
         document.getElementById("progress-bar").style.width = progress + "%";
+        console.log(updating_account);
+        $("#updating-account").html(updating_account);
     }
 
 </script>
