@@ -486,6 +486,8 @@ function initLeftColumn() {
             if (top_space === 0) top.stop(true).fadeOut(150);
             else top.stop(true).fadeIn(150);
         });
+        top.css("opacity", "");
+        bottom.css("opacity", "");
         top.fadeOut(0);
         bottom.fadeOut(0);
         column_container.scroll();

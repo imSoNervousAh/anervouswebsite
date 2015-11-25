@@ -84,8 +84,10 @@ urlpatterns = [
     #   modals
     url(r'^modals/superuser/add_admin_modal/?$', 'wechat.views.superuser_show_add_admin_modal',
         name='modals/superuser/add-admin-modal'),
-    url(r'^modals/admin/application_modal/(\d+)/?$', 'wechat.views.admin_show_application_modal',
-        name='modals/admin/application-modal'),
+    url(r'^modals/admin/application_modal/process/(?P<id>\d+)/?$', 'wechat.views.admin_show_application_modal',
+        {'type': 'process'}, name='modals/admin/process-application-modal'),
+    url(r'^modals/admin/application_modal/view/(?P<id>\d+)/?$', 'wechat.views.admin_show_application_modal',
+        {'type': 'view'}, name='modals/admin/view-application-modal'),
 
     #   badges
     url(r'^badges/student/pending_count/?$', 'wechat.views.student_badge_pending_count',

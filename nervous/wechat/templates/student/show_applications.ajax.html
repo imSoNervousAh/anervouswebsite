@@ -40,19 +40,19 @@
                                 <td>
                                     {% if app.status == 'not_submitted' %}
                                         <a data-id="{{ app.id }}" class="fake-link modify-link">
-                                            <span class="glyphicon glyphicon-check"></span> 修改
+                                            <span class="fa fa-edit fa-fw"></span> 修改
                                         </a>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if app.status == 'pending' %}
                                         <a data-id="{{ app.id }}" class="fake-link recall-link">
-                                            <span class="glyphicon glyphicon-check"></span>
+                                            <span class="fa fa-share-square-o fa-fw"></span>
                                             撤回
                                         </a>
                                     {% elif app.status == 'not_submitted' %}
                                         <a data-id="{{ app.id }}" class="fake-link delete-link">
-                                            <span class="glyphicon glyphicon-check"></span>
+                                            <span class="fa fa-minus-square-o fa-fw"></span>
                                             删除
                                         </a>
                                     {% endif %}

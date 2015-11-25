@@ -8,9 +8,9 @@
                 {{ article.official_account_name }}
             </a></td>
             <td><a target="_blank" href="{{ article.url }}">
-                <div>{{ article.title }}</div>
+                <div>{{ article.title|truncatechars:100 }}</div>
             </a></td>
-            <td>{{ article.description|linebreaksbr|safe }}</td>
+            <td>{{ article.description|linebreaksbr|truncatechars:150 }}</td>
             <td align="right">
                 {% if article.views != 100001 %}
                     {{ article.views }}

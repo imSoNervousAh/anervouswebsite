@@ -268,7 +268,7 @@ def student_badge_pending_count(request):
 @check_identity('student')
 def student_badge_account_unprocessed_message_count(request, id):
     account = backend.get_official_account_by_id(id)
-    message_count = account.unprocessed_messages_count(category)
+    message_count = account.unprocessed_messages_count(MessageCategory.ToStudent)
     if message_count == 0:
         return HttpResponse()
     return HttpResponse(message_count)
@@ -491,10 +491,11 @@ def admin_forewarn_records_list(request):
 
 
 @check_identity('admin')
-def admin_show_application_modal(request, id):
+def admin_show_application_modal(request, type, id):
     application = backend.get_application_by_id(id)
     return render(request, 'admin/application_modal.html', {
-        'app': application
+        'app': application,
+        'type': type
     })
 
 

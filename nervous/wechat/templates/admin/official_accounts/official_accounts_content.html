@@ -7,8 +7,9 @@
                    data-url="{% url 'admin/detail' account.id %}">
                 {{ account.name }}
             </a></td>
-            <td>{{ account.description }}</td>
-            <td>{{ account.subscribers }}</td>
+            <td>{{ account.wx_id }}</td>
+            <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
+            <td>{{ account.wci }}</td>
         </tr>
     {% endfor %}
 

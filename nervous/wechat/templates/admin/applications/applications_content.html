@@ -14,15 +14,20 @@
                 {% endif %}
             </td>
             <td>{{ app.manager_name }}</td>
-            <td>{{ app.description|linebreaksbr|safe }}</td>
+            <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
             <td>
                 <span class="fa {{ app.status_icon }} fa-fw"></span> {{ app.status_name }}
             </td>
             <td>
                 {% if app.status == 'pending' %}
                     <a style="cursor:pointer;"
-                       href="javascript:showModal('{% url 'modals/admin/application-modal' app.official_account_id %}', 'application-modal')">
+                       href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.official_account_id %}', 'application-modal')">
                         <span class="fa fa-check-square-o fa-fw"></span> 审批
+                    </a>
+                {% else %}
+                    <a style="cursor:pointer;"
+                       href="javascript:showModal('{% url 'modals/admin/view-application-modal' app.official_account_id %}', 'application-modal')">
+                        <span class="fa fa-external-link fa-fw"></span> 详情
                     </a>
                 {% endif %}
             </td>

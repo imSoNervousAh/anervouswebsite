@@ -43,26 +43,12 @@
                                 <tr>
                                     <td>{{ app.name }}</td>
                                     <td>{{ app.manager_name }}</td>
-                                    <td>{{ app.description|linebreaksbr|safe }}</td>
+                                    <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
                                     <td>
-                                        <a style="cursor:pointer;" href="javascript:void(0)"
-                                           class="change-app-status-link"
-                                           data-toggle="popover" data-content="
-                                        <form method='post' action='{% url 'api/modify_application' %}'>
-                                            {% csrf_token %}
-                                            <button type='submit' name='status' value='rejected'
-                                                class='btn btn-danger'>
-                                                <span class='fa fa-times-circle fa-fw'></span> 拒绝
-                                            </button>
-                                            <input style='display:none' name='username' value='{{ admin.username }}'>
-                                            <input style='display:none' name='account_id' value='{{ app.id }}'>
-                                            <span>　</span>
-                                            <button type='submit' name='status' value='approved'
-                                                class='btn btn-success'>
-                                                <span class='fa fa-check-circle fa-fw'></span> 通过
-                                            </button>
-                                        </form>">
-                                            <span class="fa fa-check-square-o fa-fw"></span> 审批</a>
+                                        <a style="cursor:pointer;"
+                                           href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.official_account_id %}', 'application-modal')">
+                                            <span class="fa fa-check-square-o fa-fw"></span> 审批
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -103,10 +89,10 @@
                                     </a></td>
                                     <td>
                                         <a target="_blank" href="{{ article.url }}">
-                                            <div>{{ article.title }}</div>
+                                            <div>{{ article.title|truncatechars:100 }}</div>
                                         </a>
                                     </td>
-                                    <td>{{ article.description|linebreaksbr|safe }}</td>
+                                    <td>{{ article.description|linebreaksbr|truncatechars:150 }}</td>
                                     <td align="right">
                                         {% if article.views != 100001 %}
                                             {{ article.views }}
@@ -123,11 +109,6 @@
                             </tr>
                         {% endif %}
                         </tbody>
-                        <script>
-                            $(".official-account-link").click(function () {
-                                loadContent($(this).data("url"), {});
-                            });
-                        </script>
                     </table>
                 </div>
             </div>
@@ -179,7 +160,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>公众号关注排行</h4>
+                <h4>公众号影响力排行</h4>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -188,7 +169,7 @@
                         <tr>
                             <th>#</th>
                             <th>名称</th>
-                            <th>关注人数</th>
+                            <th>WCI</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -199,7 +180,7 @@
                                        data-url="{% url 'admin/detail' account.id %}">
                                     {{ account.name }}
                                 </a></td>
-                                <td>{{ account.subscribers }}</td>
+                                <td>{{ account.wci }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -209,3 +190,8 @@
         </div>
     </div>
 </div>
+<script>
+    $(".official-account-link").click(function () {
+        loadContent($(this).data("url"), {});
+    });
+</script>
