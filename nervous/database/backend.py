@@ -91,7 +91,7 @@ def modify_application(app):
     for attr in ['status', 'operator_admin']:
         setattr(application, attr, app.get(attr, '__unknown__'))
     if app['status'] == 'rejected':
-        app.reject_reason = app.get('reject_reason', '__unknown_reason__')
+        application.reject_reason = app.get('reject_reason', '__unknown_reason__')
     application.save()
 
 

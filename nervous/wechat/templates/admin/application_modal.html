@@ -93,8 +93,8 @@
                         <div id="reject-collapse" class="collapse row" style="text-align: left;">
                             <div class="col-xs-12 form-group">
                                 <label class="control-label" for="reject_reason-field">拒绝理由</label>
-                            <textarea id="reject_reason-field" name="reject_reason" class="form-control"
-                                      style="resize: vertical;"></textarea>
+                                <textarea id="reject_reason-field" name="reject_reason" class="form-control"
+                                          style="resize: vertical;"></textarea>
                             </div>
                         </div>
                         <div id="submit-button-field" class="collapse">
@@ -146,7 +146,6 @@
 
             handleFormPost("#process-application-form", "{% url 'api/modify_application' %}", {
                 success_callback: function (data) {
-                    console.log("success");
                     if (data.status === 'ok') {
                         modal.modal('hide');
                         loadContent(window.location.href, {}, undefined, {
