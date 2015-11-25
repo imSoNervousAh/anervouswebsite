@@ -159,6 +159,16 @@ class Application(models.Model):
     manager_email = models.CharField(max_length=254)
     association = models.CharField(max_length=30)
 
+    def clean(self):
+        if not self.status in ['approved', 'rejected', 'pending', 'not_submitted']:
+            raise ValidationError({
+                'status': 'Invalid status'
+            })
+        if self.status == 'rejected' and len(self.reject_reason.encode('utf-8')) == 0:
+            raise ValidationError({
+                'reject_reason': 'Rejected application should have a reason'
+            })
+
     def status_icon(self):
         glyphicons = {
             'approved': 'fa-check-circle',

@@ -63,6 +63,7 @@ class ApplicationTestCase(TestCase):
             'wx_id': self.default_wx_id,
             'description': self.default_description,
             'user_submit': self.default_user_submit,
+            'status': 'pending',
         }
         backend.add_application(default_app_dic)
         self.default_app = Application.objects.all().get()
@@ -72,6 +73,7 @@ class ApplicationTestCase(TestCase):
             'name': 'name',
             'wx_id': self.default_wx_id,
             'description': 'description',
+            'status': 'pending',
         }
         with self.assertRaises(ValidationError):
             backend.add_application(app_dic)
@@ -84,6 +86,7 @@ class ApplicationTestCase(TestCase):
             'wx_id': 'another_wx_id',
             'description': 'by another user',
             'user_submit': user_submit,
+            'status': 'pending'
         }
         backend.add_application(app_dic)
         res = backend.get_applications_by_user(user_submit)
@@ -94,7 +97,7 @@ class ApplicationTestCase(TestCase):
 
     def test_admin_modify_application(self):
         admin_name = 'admin'
-        status = 'accepted'
+        status = 'approved'
         backend.modify_application({
             'account_id': self.default_app.id(),
             'operator_admin': admin_name,
@@ -105,7 +108,7 @@ class ApplicationTestCase(TestCase):
         self.assertEqual(app.operator_admin, admin_name)
 
     def test_get_application_by_status(self):
-        status = 'accepted'
+        status = 'approved'
         backend.modify_application({
             'account_id': self.default_app.id(),
             'status': status,
@@ -115,6 +118,7 @@ class ApplicationTestCase(TestCase):
             'wx_id': 'another_wx_id',
             'description': 'description',
             'user_submit': 'another_user',
+            'status': 'pending',
         }
         backend.add_application(app_dic)
         id = self.default_app.id()

@@ -53,7 +53,7 @@ def application_from_dict(dic, base=None):
 def official_account_from_dict(dic):
     oa = OfficialAccount.objects.model()
     for attr in ['name', 'description', 'wx_id']:
-        setattr(oa, attr, dic[attr])
+        setattr(oa, attr, dic.get(attr, '__placeholder__'))
     oa.full_clean(validate_unique=False)
     return oa
 
@@ -91,7 +91,8 @@ def modify_application(app):
     for attr in ['status', 'operator_admin']:
         setattr(application, attr, app.get(attr, '__unknown__'))
     if app['status'] == 'rejected':
-        application.reject_reason = app.get('reject_reason', '__unknown_reason__')
+        application.reject_reason = app['reject_reason']
+    application.full_clean()
     application.save()
 
 

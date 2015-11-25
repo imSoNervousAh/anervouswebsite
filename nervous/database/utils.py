@@ -109,15 +109,26 @@ def build_test_db():
             id = '2014011%s' % id_suffix
             backend.add_admin(id, '0', 'fake_student@nervous.gq', id_suffix)
 
-    oa_mu = OfficialAccount.objects.create(name='Lab Mu', wx_id='mulab_thu')
-    Application.objects.create(official_account=oa_mu, user_submit='FANG KUAI', status='not_submitted')
-    oa_mz = OfficialAccount.objects.create(name=u'谜之公众号', description=u'有换行的哦\n啊\n', wx_id='mizhigongzhonghao')
-    Application.objects.create(official_account=oa_mz, user_submit='2014011417', status='rejected')
-    oa_zx = OfficialAccount.objects.create(name=u'酒井资讯', wx_id='jiujingzixun')
-    Application.objects.create(official_account=oa_zx, user_submit='2014011416', status='pending')
-    backend.add_application({'name': u'清华研读间', 'wx_id': 'qinghuayandujian', 'description': 'description', 'status': 'pending'})
+    backend.add_application({
+        'name': 'Lab Mu',
+        'wx_id': 'mulab_thu',
+        'status': 'not_submitted',
+    })
+    backend.add_application({
+        'name': u'酒井资讯',
+        'wx_id': 'jiujingzixun',
+        'user_submit': '2014011416',
+        'status': 'pending',
+    })
+    backend.add_application({
+        'name': u'清华研读间',
+        'wx_id': 'qinghuayandujian',
+        'description': 'description',
+        'status': 'pending'
+    })
 
-    message_test_db(oa_zx.id)
-    forewarn_test_db(oa_zx.name)
+    oa = OfficialAccount.objects.get(wx_id='jiujingzixun')
+    message_test_db(oa.id)
+    forewarn_test_db(oa.name)
 
     update()
