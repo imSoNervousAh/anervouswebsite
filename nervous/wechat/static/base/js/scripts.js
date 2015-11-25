@@ -116,6 +116,8 @@ function loadContent(url, params, item_selector, load_params, callback) {
         }
     }
 
+    refreshBadges();
+
     $.ajax({
         type: "GET",
         url: url,
@@ -175,6 +177,8 @@ function loadContentOn(container, url, params, load_params, callback) {
             height: 0
         }, 250);
     }
+
+    refreshBadges();
 
     $.ajax({
         type: "GET",
@@ -304,6 +308,22 @@ function handleFormPost(form_selector, post_url, params) {
                 }
             });
         });
+    });
+}
+
+// refresh badges with data-source
+function refreshBadges() {
+    $(".badge").each(function () {
+        var $this = $(this),
+            url = $this.data("source");
+        if (typeof url === "undefined") return;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                $this.html(data.toString());
+            }
+        })
     });
 }
 
@@ -543,7 +563,6 @@ $(function () {
 
         if (__manualStateChange) {
             __manualStateChange = false;
-            console.log("statechange", state.data.params);
             displayContent(state.data.data, state.data.params, undefined, state.data.callback);
         } else {
             main.stop(true).animate({
@@ -570,6 +589,8 @@ $(function () {
     $(window).on('resize', resizeComponents);
 
     initLeftColumn();
+
+    refreshBadges();
 
     initAjaxPage();
 });

@@ -16,6 +16,9 @@
             <td>{{ app.manager_name }}</td>
             <td>{{ app.description|linebreaksbr|safe }}</td>
             <td>
+                <span class="fa {{ app.status_icon }} fa-fw"></span> {{ app.status_name }}
+            </td>
+            <td>
                 {% if app.status == 'pending' %}
                     <a style="cursor:pointer;"
                        href="javascript:showModal('{% url 'modals/admin/application-modal' app.official_account_id %}', 'application-modal')">

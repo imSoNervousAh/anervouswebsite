@@ -82,7 +82,11 @@
                                         success: function (data) {
                                             if (data.status === "ok") {
                                                 alert('删除成功!');
-                                                loadContentOfItem("#my-applications-item", {replace: true});
+                                                loadContentOfItem("#my-applications-item", {
+                                                    replace: true,
+                                                    anim: false,
+                                                    scroll: false
+                                                });
                                             }
                                         },
                                         error: function (xhr, textStatus, errorThrown) {
@@ -104,7 +108,11 @@
                                         success: function (data) {
                                             if (data.status === "ok") {
                                                 alert('撤回成功!');
-                                                loadContentOfItem("#my-applications-item", {replace: true});
+                                                loadContentOfItem("#my-applications-item", {
+                                                    replace: true,
+                                                    anim: false,
+                                                    scroll: false
+                                                });
                                             }
                                         },
                                         error: function (xhr, textStatus, errorThrown) {

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import timedelta
+from django.http import HttpResponse
 
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect
@@ -110,8 +111,6 @@ def render_ajax(request, url, params, item_id=''):
             username = session.get_username(request)
             applications = backend.get_applications_by_user(username)
             official_accounts = applications.filter(status__exact='approved')
-            pending_count = applications.filter(status__exact='pending').count()
-            params['pending_count'] = pending_count
             params['official_accounts'] = official_accounts
 
     return render(request, url, params)
@@ -205,7 +204,6 @@ def student_show_applications(request):
     return render_ajax(request, 'student/show_applications.html', {
         'username': get_realname(request),
         'applications': applications,
-        'unprocessed_category': MessageCategory.ToStudent
     }, 'my-applications-item')
 
 
@@ -218,7 +216,6 @@ def student_add_applications(request):
         'student': student,
         'student_id': username,
         'username': student.real_name,
-        'unprocessed_category': MessageCategory.ToStudent,
     }, 'add-application-item')
 
 
@@ -236,7 +233,6 @@ def student_modify_applications(request, id):
         'username': student.real_name,
         'app': app,
         'modify_app': 'true',
-        'unprocessed_category': MessageCategory.ToStudent,
     })
 
 
@@ -259,6 +255,23 @@ def student_change_info(request):
         'student': student,
         'unprocessed_category': MessageCategory.ToStudent,
     })
+
+
+@check_identity('student')
+def student_badge_pending_count(request):
+    username = session.get_username(request)
+    applications = backend.get_applications_by_user(username)
+    pending_count = applications.filter(status__exact='pending').count()
+    return HttpResponse(pending_count)
+
+
+@check_identity('student')
+def student_badge_account_unprocessed_message_count(request, id):
+    account = backend.get_official_account_by_id(id)
+    message_count = account.unprocessed_messages_count(category)
+    if message_count == 0:
+        return HttpResponse()
+    return HttpResponse(message_count)
 
 
 # admin
@@ -360,7 +373,7 @@ def admin_show_applications_list(request, type):
         username = session.get_username(request)
         applications = backend.get_applications_by_admin(username)
     elif type == 'all':
-        applications = backend.get_applications()
+        applications = backend.get_applications().exclude(status='not_submitted')
     else:
         applications = []
     return render_sortable(request, applications,
@@ -483,6 +496,12 @@ def admin_show_application_modal(request, id):
     return render(request, 'admin/application_modal.html', {
         'app': application
     })
+
+
+@check_identity('admin')
+def admin_badge_pending_count(request):
+    pending_count = backend.get_applications_by_status('pending').count()
+    return HttpResponse(pending_count)
 
 
 # message

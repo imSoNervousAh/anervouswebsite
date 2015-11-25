@@ -87,6 +87,14 @@ urlpatterns = [
     url(r'^modals/admin/application_modal/(\d+)/?$', 'wechat.views.admin_show_application_modal',
         name='modals/admin/application-modal'),
 
+    #   badges
+    url(r'^badges/student/pending_count/?$', 'wechat.views.student_badge_pending_count',
+        name='badges/student/pending-count'),
+    url(r'^badges/admin/pending_count/?$', 'wechat.views.admin_badge_pending_count', name='badges/admin/pending-count'),
+    url(r'^badges/student/account-unprocessed-message-count/(\d+)/?$',
+        'wechat.views.student_badge_account_unprocessed_message_count',
+        name='badges/student/account-unprocessed-message-count'),
+
     # api part
     url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),
 

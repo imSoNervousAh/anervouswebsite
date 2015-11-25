@@ -29,8 +29,9 @@
         <ul class="nav nav-stacked collapse in nav-pills">
             <li id="pending-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'pending' %}">
-                <a class="fake-link"><i class="fa fa-tasks fa-fw"></i>　待审批申请　<span
-                        class="badge badge-info pull-right">{{ pending_applications_count }}</span></a>
+                <a class="fake-link"><i class="fa fa-tasks fa-fw"></i>　待审批申请
+                    <span class="badge badge-info pull-right" data-source="{% url 'badges/admin/pending-count' %}"></span>
+                </a>
             </li>
             <li id="processed-applications-item" class="nav-header left-column-item"
                 data-url="{% url 'admin/applications' 'processed' %}">
