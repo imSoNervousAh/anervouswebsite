@@ -84,7 +84,7 @@
                             $("#statistics-link").click(function () {
                                 $("#articles-link").css("display", "");
                                 $(this).css("display", "none");
-                                loadContentOn("#detail-page-main",
+                                loadContentOn($("#detail-page-main"),
                                         "{% url 'admin/detail/statistics' official_account_id %}",
                                         {}, {anim: true, scroll: true});
                             });
@@ -92,7 +92,7 @@
                             $("#articles-link").click(function () {
                                 $("#statistics-link").css("display", "");
                                 $(this).css("display", "none");
-                                loadContentOn("#detail-page-main",
+                                loadContentOn($("#detail-page-main"),
                                         "{% url 'admin/detail/articles' official_account_id %}",
                                         {}, {anim: true, scroll: true});
                             });

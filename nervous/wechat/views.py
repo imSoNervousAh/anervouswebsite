@@ -2,13 +2,11 @@
 import json
 from datetime import timedelta
 from django.http import HttpResponse
-
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
-
 from database import backend
 from database.models import ForewarnTarget, NotificationOption
 from database.models import SortBy, MessageCategory
@@ -316,16 +314,16 @@ def admin_show_official_accounts(request):
 
 
 @check_identity('admin')
-def admin_show_official_accounts_list(request):
+def admin_show_official_accounts_list(request, folder):
     return render_sortable(request, backend.get_official_accounts(),
-                           'admin/official_accounts/official_accounts_content.html')
+                           'admin/' + folder + '/official_accounts_content.html')
 
 
 @check_identity('admin')
 def admin_show_statistics(request):
     official_accounts = backend.get_official_accounts()
 
-    return render_ajax(request, 'admin/statistics.html', {
+    return render_ajax(request, 'admin/statistics/statistics.html', {
         'official_accounts': official_accounts
     }, 'statistics-list-item')
 

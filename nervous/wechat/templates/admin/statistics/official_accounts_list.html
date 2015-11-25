@@ -1,9 +1,9 @@
 {% extends 'common/sortable.html' %}
 
-{% block title %}公众号{% endblock title %}
+{% block title %}选择公众号加入对比{% endblock title %}
 
 {% block defaults %}
-    url: "{% url 'admin/official-accounts-list' 'official_accounts' %}",
+    url: "{% url 'admin/official-accounts-list' 'statistics' %}",
     sort_by: "wx_id",
     sort_order: "asc",
     search_field: "name"
@@ -18,8 +18,11 @@
     </th>
     <th>公众号简介</th>
     <th class="th-sortable" data-key="wci">WCI</th>
+    <th>
+        <div style="width: 60px"></div>
+    </th>
 {% endblock head %}
 
 {% block body %}
-    {% include 'admin/official_accounts/official_accounts_content.html' %}
+    {% include 'admin/statistics/official_accounts_content.html' %}
 {% endblock body %}

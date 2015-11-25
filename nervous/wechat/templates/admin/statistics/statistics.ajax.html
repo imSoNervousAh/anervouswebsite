@@ -1,0 +1,55 @@
+{% load staticfiles %}
+
+<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.js' %}"></script>
+<script type="text/javascript" src="{% static 'fusioncharts/themes/fusioncharts.theme.zune.js' %}"></script>
+<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts-jquery-plugin.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'base/js/charts.js' %}"></script>
+
+<div class="top-row">
+    <a>&nbsp</a>
+    <a class="fake-link pull-right">
+        <strong>统计信息　<i class="fa fa-bar-chart fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>已选公众号</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 15%; min-width: 120px">公众号名称</th>
+                    <th style="width: 15%; min-width: 110px">微信ID</th>
+                    <th>公众号简介</th>
+                    <th>WCI</th>
+                    <th>
+                        <div style="width: 60px"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="chosen-list">
+                </tbody>
+                <script>
+                    $(".official-account-link").click(function () {
+                        loadContent($(this).data("url"), {});
+                    });
+                </script>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'admin/statistics/official_accounts_list.html' %}
+
+<script>
+    function chosen_names() {
+        var ret = [];
+        $("#chosen-list").find("tr").find("td:nth-child(2)").each(function(){
+            ret.push($(this).html());
+        });
+        return ret;
+    }
+</script>

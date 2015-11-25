@@ -66,7 +66,7 @@
             $(".pager-link").click(function () {
                 var this_params = sort_params;
                 this_params['page'] = $(this).data("page");
-                loadContentOn("tbody", sort_url, this_params, {anim: false, scroll: false}, function () {
+                loadContentOn($(".sortable tbody"), sort_url, this_params, {anim: false, scroll: false}, function () {
                     $.scrollTo($(".sortable"), {offset: -removePx($(".main").css("padding-top"))});
                 });
             });

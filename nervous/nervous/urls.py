@@ -54,7 +54,7 @@ urlpatterns = [
         name='admin/applications-list'),
 
     url(r'^admin/official_accounts/?$', 'wechat.views.admin_show_official_accounts', name='admin/official-accounts'),
-    url(r'^admin/official_accounts/list/?$', 'wechat.views.admin_show_official_accounts_list',
+    url(r'^admin/official_accounts/list/(\w+)/?$', 'wechat.views.admin_show_official_accounts_list',
         name='admin/official-accounts-list'),
 
     url(r'^admin/statistics/?$', 'wechat.views.admin_show_statistics', name='admin/statistics'),

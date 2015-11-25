@@ -1,0 +1,69 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block content %}
+    {% for account in items %}
+        <tr>
+            <td><a style="cursor: pointer;" class="official-account-link"
+                   data-url="{% url 'admin/detail' account.id %}">
+                {{ account.name }}
+            </a></td>
+            <td>{{ account.wx_id }}</td>
+            <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
+            <td>{{ account.wci }}</td>
+            <td>
+                <a style="cursor: pointer;" class="add-to-list-link" data-item='
+                    <tr id="chosen-item-{{ account.id }}">
+                        <td><a style="cursor:pointer;" class="official-account-link"
+                               data-url="{% url 'admin/detail' account.id %}">
+                            {{ account.name }}
+                        </a></td>
+                        <td>{{ account.wx_id }}</td>
+                        <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
+                        <td>{{ account.wci }}</td>
+                        <td>
+                            <a style="cursor:pointer;" data-id="chosen-item-{{ account.id }}"
+                               class="remove-from-list-link">
+                                <span class="fa fa-minus-square fa-fw"></span> 删除</a>
+                        </td>
+                    </tr>'>
+                    <span class="fa fa-plus-square fa-fw"></span> 添加
+                </a>
+
+                <div style="display: none;" class="already-added-label">
+                    <span class="fa fa-check-square fa-fw"></span> 已添加
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+
+    <script>
+        function toggleStatusDisplay(name, obj) {
+            var names = chosen_names();
+            console.log(name, names, obj);
+            if ($.inArray(name, names) !== -1) {
+                obj.find(".already-added-label").css("display", "");
+                obj.find(".add-to-list-link").css("display", "none").data("item", "");
+            }
+        }
+
+        $(".sortable tbody tr").has(".add-to-list-link").each(function () {
+            var name = $(this).find("td:nth-child(2)").html();
+            toggleStatusDisplay(name, $(this).find(":last-child"));
+        });
+
+        $(".official-account-link").click(function () {
+            loadContent($(this).data("url"), {});
+        });
+
+        $(".add-to-list-link").click(function () {
+            $("#chosen-list").append($(this).data("item"));
+            var td = $(this).parent(), tr = td.parent();
+            var name = tr.find("td:nth-child(2)").html();
+            toggleStatusDisplay(name, td);
+            $(".remove-from-list-link").click(function () {
+                $("#" + $(this).data("id")).remove();
+                refreshTable();
+            });
+        });
+    </script>
+{% endblock content %}

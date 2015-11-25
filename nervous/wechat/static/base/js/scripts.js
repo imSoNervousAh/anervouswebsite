@@ -165,7 +165,7 @@ function initAjaxPage(container) {
 
 function loadContentOn(container, url, params, load_params, callback) {
 //    console.log("on: " + url);
-    var main = $(container);
+    var main = container;
 
     var anim = false;
     for (var prop in load_params) {
