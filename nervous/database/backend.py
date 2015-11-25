@@ -2,11 +2,9 @@
 
 import datetime
 import time
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
-
 import api.update as api_update
 from api import sendemail
 from models import *
@@ -406,9 +404,11 @@ def save_account_update_status(account, status):
 
 
 def release():
+    print 'release start'
     accounts = OfficialAccount.objects.all()
     for account in accounts:
         save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
+    print 'release end'
 
 
 def update_progress():
@@ -420,7 +420,6 @@ def update_progress():
     total = OfficialAccount.objects.exclude(
         update_status=OfficialAccount.NORMAL_STATUS
     ).count()
-    print updated, total
     if total == 0:
         return 100
     else:
@@ -438,6 +437,7 @@ def updating_account_name():
 
 
 def update_all():
+    release()
     accounts = get_official_accounts()
 
     for account in accounts:
@@ -478,8 +478,7 @@ def update_all():
         time.sleep(2)
 
         # Release the "lock"
-        for account in accounts:
-            save_account_update_status(account, OfficialAccount.NORMAL_STATUS)
+        release()
 
 
 # Global

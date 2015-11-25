@@ -5,7 +5,7 @@ import datetime
 
 
 def get_time_string_before_n_days(n):
-    seconds_of_day = 60 * 60 * 24;
+    seconds_of_day = 60 * 60 * 24
     target_time = time.localtime(time.time() - n * seconds_of_day)
     return time.strftime('%Y-%m-%d', target_time)
 
@@ -95,6 +95,6 @@ def update_all(account):
 
 def update_wci(account):
     paras = {'wx_name': account}
-    d = get_dict('wx/opensearchapi/nickname_order_now', paras)
+    d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
     return d['returnData']['items']
     # d['returnData']['items'][wci]

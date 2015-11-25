@@ -27,7 +27,6 @@ def response_from_validation_error(e, method=None):
         print '=============================='
         traceback.print_exc()
         print '=============================='
-    e.message_dict
     response = {
         'status': 'error',
         'error_messages': e.message_dict,
@@ -258,7 +257,11 @@ def submit_rule(request):
 @json_response_general_exception_decorator
 def update_start(request):
     def worker():
-        backend.update_all()
+        try:
+            backend.update_all()
+        except Exception as e:
+            traceback.print_exc()
+
     p = Process(target=worker)
     p.start()
 
