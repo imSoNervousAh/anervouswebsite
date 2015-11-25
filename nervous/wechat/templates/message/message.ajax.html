@@ -1,6 +1,6 @@
 {% load staticfiles %}
 
-<link href="{% static 'bubble/comment.css' %}" rel="stylesheet">
+<link href="{% static 'base/css/comment.css' %}" rel="stylesheet">
 <script src="{% static 'jquery/jquery.scrollto.js' %}"></script>
 
 <div class="top-row">
@@ -65,7 +65,7 @@
                             <!-- send message-->
 
                             <div class="row">
-                                <form id="reply-message-form" class="col-sm-7 col-sm-offset-4 col-xs-offset-2 col-xs-9"
+                                <form id="reply-message-form" class="col-sm-7 col-sm-offset-4 col-xs-11"
                                       style="margin-right: 30px;">
                                     {% csrf_token %}
                                     <div class="input-group form-group" style="margin-top: 20px; width: 100%;">

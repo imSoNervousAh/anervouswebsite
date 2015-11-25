@@ -411,8 +411,9 @@ function callRepeated(callback, cycles, time) {
 
 function initLeftColumn() {
     // bind toggle left column button (visible in xs)
-    var left_column = $("#left-column");
-    var column_container = $(".column-container");
+    var body = $("body"),
+        left_column = $("#left-column"),
+        column_container = $(".column-container");
 
     $("#left-column-toggle").click(function (e) {
         e.preventDefault();
