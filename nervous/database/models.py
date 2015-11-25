@@ -22,29 +22,63 @@ def get_field_verbose_name(model_instance, field_name):
 
 class NervousModel(models.Model):
     @classmethod
-    def from_dict(cls, dic):
+    def from_dict(cls, dic, base=None):
+        """
+            Construct a model instance from a python dict, using the fields
+            given in the dict and do not set other fields, or, if `base`
+            given, override the corresponding fields of the existing model
+            instance `base`.
+
+            If an invalid field name is given (i.e. no such field), the
+            proposed value of that field is ignored.
+
+            Every field that is to be written will be validated, this is
+            done by calling `clean_fields` excluding the fields untouched.
+
+            Note that in order to handle ForeignKeys properly, we adopted
+            the approach used by Django: if the dict has an element {
+            'model_key__name': 'some_name'}, the field `model_key` will
+            be become the value of `Model.get(name='some_name')`, where
+            `Model` is the model class to which `model_key` the ForeignKey
+            referencing.
+        """
+
         manager = cls.objects
-        model = manager.model()
+        meta = cls._meta
+        model = base or manager.model()
+        exclude = [field.name for field in meta.fields]
         for (key, val) in dic.iteritems():
             try:
+                # extract the field name and leave the rest as kwargs passed
+                # to Django in case '__' presents
                 keys = str(key).split('__', 1)
                 field_name = keys[0]
+                field = cls._meta.get_field(field_name)
                 if len(keys) == 1:
-                    field_val = val
+                    # ordinary field
+                    raw_val = val
                 else:
+                    # ForeignKey
                     rel_cls = cls._meta.get_field(field_name).rel.to
                     rel_manager = rel_cls.objects
                     rel_key = keys[1]
                     query_args = {rel_key: val}
-                    field_val = rel_manager.get(**query_args)
-                setattr(model, field_name, field_val)
-            except (FieldDoesNotExist,
-                    AttributeError,
-                    ObjectDoesNotExist,
-                    MultipleObjectsReturned):
+                    raw_val = rel_manager.get(**query_args)
+                setattr(model, field_name, raw_val)
+                exclude.remove(field_name)
+            except (FieldDoesNotExist,          # invalid field name
+                    AttributeError,             # not a ForeignKey
+                    ObjectDoesNotExist,         # `get` fails
+                    MultipleObjectsReturned):   # `get` fails
                 if settings.DEBUG:
                     traceback.print_exc()
+        # let caller function handle ValidationErrors
+        model.clean_fields(exclude=exclude)
         return model
+
+    class Meta:
+        abstract = True
+
 
 # Enums
 
