@@ -26,6 +26,7 @@
 
         $this.find(".sortable-search-input").ready(function () {
             $(".sortable-search-input").on("input propertychange paste", function () {
+                sort_params['page'] = 1
                 sort_params['search_keyword'] = $(this).val();
                 refreshTable();
             });

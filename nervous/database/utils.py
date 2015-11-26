@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import backend
-from models import *
-from django.db import connection
-from django.conf import settings
-from subprocess import call
 import datetime
 import hashlib
+import random
+import time
+from subprocess import call
+
+from django.conf import settings
+from django.db import connection
+
+import backend
+import gsdata_utils
+from models import *
 
 
 # Utils
@@ -178,3 +183,29 @@ def build_large_test_db():
             backend.add_application(app)
 
         print 'done', status
+
+    n_articles = 10000
+    genres = ['abstract', 'animals', 'business', 'cats', 'city', 'food', 'nightlife',
+              'fashion', 'people', 'nature', 'sports', 'technics', 'transport']
+    n_genres = len(genres)
+    for i in range(0, n_articles):
+        article = {
+            'official_account_name': u'第1个approved公众号',
+            'wx_name': 'approved1',
+            'title': u'第' + str(i + 1) + u'篇文章',
+            'description': u'第' + str(i + 1) + u'篇文章',
+            'views': random.randint(0, int(1e8)),
+            'likes': random.randint(0, int(1e8)),
+        }
+        width = random.randint(100, 1000)
+        height = random.randint(100, 1000)
+        genre = genres[random.randint(0, n_genres - 1)]
+        article['name'] = article['official_account_name']
+        article['avatar_url'] = ('http://lorempixel.com/%d/%d/%s/' % (width, height, genre)) + 'A R T I C L E ' + str(i + 1)
+        article['url'] = article['avatar_url']
+        article['posttime'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        article['update_time'] = article['posttime']
+        gsdata_utils.add_article(article)
+
+        if i % 1000 == 999:
+            print 'done article', i + 1
