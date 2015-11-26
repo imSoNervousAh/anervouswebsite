@@ -42,8 +42,9 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <input id="duration-field" name="duration" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]\d*$" required
+                                       data-error="请填写合法数字(1-365)" pattern="^[1-9]\d{0,2}$" required
                                        value="{{ rule.duration }}">
+                                <span class="help-block with-errors">1-365</span>
                             </div>
                             <div class="col-sm-1">
                                 <p class="form-control-static">天</p>
@@ -74,8 +75,9 @@
                             </div>
                             <div class="col-sm-3 form-group">
                                 <input id="value-field" name="value" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]\d*$" required
+                                       data-error="请填写合法数字(1-999)" pattern="^[1-9]|\d{0,3}$" required
                                        value="{{ rule.value }}">
+                                <span class="help-block with-errors">1-999</span>
                             </div>
                             <div class="col-sm-1">
                                 <p class="form-control-static">条</p>
