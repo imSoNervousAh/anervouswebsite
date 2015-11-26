@@ -32,19 +32,7 @@
             </div>
         </div>
         <script>
-            var containers = $(".tab-pane > object");
-            var first_container = $(".tab-pane:first > object");
-            var height = first_container.height(), width = first_container.width();
-
-            containers.each(function () {
-                var $this = $(this);
-                $this.ready(function () {
-                    renderChart("#" + $this.attr("id"), $this.data("type"), $this.data("json"), {
-                        width: width,
-                        height: height
-                    });
-                });
-            });
+            drawCharts();
         </script>
     </div>
 </div>

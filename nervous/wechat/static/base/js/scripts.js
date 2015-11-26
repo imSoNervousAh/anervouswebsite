@@ -565,9 +565,26 @@ function resizeComponents() {
     $(".column-container").scroll();
 
     var backdrop = $(".modal-backdrop");
-    if (backdrop) {
-        height = Math.max($("body").height(), $(window).height());
-        backdrop.height(height);
+    if (typeof backdrop !== "undefined") {
+        var backdrop_height = Math.max($("body").height(), $(window).height());
+        backdrop.height(backdrop_height);
+    }
+}
+
+function drawCharts() {
+    var charts = $(".tab-pane > object");
+    if (typeof charts !== "undefined") {
+        var active_container = $(".tab-pane.active > object");
+        var chart_height = active_container.height(), chart_width = active_container.width();
+        charts.each(function () {
+            var $this = $(this);
+            $this.ready(function () {
+                renderChart("#" + $this.attr("id"), $this.data("type"), $this.data("json"), {
+                    width: chart_width,
+                    height: chart_height
+                });
+            });
+        });
     }
 }
 
@@ -622,6 +639,15 @@ $(function () {
     });
 
     $(window).on('resize', resizeComponents);
+
+    var resizeTimer;
+    $(window).on('resize', function (e) {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            // resize end
+            drawCharts();
+        }, 250);
+    });
 
     initLeftColumn();
 
