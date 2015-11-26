@@ -282,4 +282,14 @@ th.th-sortable {
         margin-left: -20px;
         min-width: 35vw;
     }
+
+    nav {
+        text-align: left;
+    }
+
+    object {
+        min-width: 500px;
+        min-height: 500px;
+        overflow: scroll;
+    }
 }

@@ -114,6 +114,9 @@
                     {% endif %}
                     handleFormPost("#application-form", url, {
                         success_msg: function (data) {
+                            var method = "提交";
+                            if (data.hasOwnProperty("submit_method"))
+                                method = data.submit_method === "submit" ? "提交" : "保存";
                             if (data.status === "ok") return method + "成功！";
                             return "";
                         },

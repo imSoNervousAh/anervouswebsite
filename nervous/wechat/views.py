@@ -554,11 +554,10 @@ def message_detail_admin(request, id):
         'account': official_account,
         'messages': messages,
         'category': category,
-        'opposite_category': MessageCategory.ToAdmin,
         'official_account_id': id,
         'processed': check_processed(messages, category),
-        'locate': 'admin/index.html',
         'MessageCategory': MessageCategory,
+        'locate': 'admin/index.html',
     })
 
 
@@ -575,11 +574,9 @@ def message_detail_student(request, id):
         'account': official_account,
         'messages': messages,
         'category': category,
-        'opposite_category': MessageCategory.ToStudent,
         'official_account_id': id,
         'processed': check_processed(messages, category),
         'MessageCategory': MessageCategory,
-        'unprocessed_category': MessageCategory.ToStudent,
         'locate': 'student/index.html'
     }, 'message-detail-' + str(id))
 

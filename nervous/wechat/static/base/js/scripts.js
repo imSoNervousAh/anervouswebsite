@@ -247,10 +247,6 @@ function handleFormPost(form_selector, post_url, params) {
             .append('<span class="help-block with-errors"></span>');
 
         var native_success_msg = function (data) {
-            var method = "提交";
-            if (data.hasOwnProperty("submit_method"))
-                method = data.submit_method === "submit" ? "提交" : "保存";
-//            if (data.status === "ok") return method + "成功！";
             if (data.status === "ok") return "#no_message#";
 
             if (data.hasOwnProperty("error_message"))
