@@ -2,24 +2,31 @@
 import smtplib
 from email.mime.text import MIMEText
 
-mailto_list = ['360576743@qq.com']
-mail_host = "smtp.163.com"
-mail_user = "anervousemail"
-mail_pass = "ugaxgzionibwqhlv"
-mail_postfix = "163.com"
+
+#email_from
+mailfrom_host = "smtp.163.com"
+mailfrom_user = "anervousemail"
+mailfrom_pass = "ugaxgzionibwqhlv"
+mailfrom_postfix = "163.com"
+mailfrom_mail=mailfrom_user + "@" + mailfrom_postfix   # anervousemail@163.com
 
 
-def send_mail(to_list, sub, content):
-    me = mail_user + "@" + mail_postfix
-    msg = MIMEText(content, _subtype='plain', _charset='gb2312')
+#email_to
+mailto_mail = ['the@xx.com','list@xx.com','of@xx.com','receivers@xx.com']
+
+
+
+#function
+def send_singal_email(mailto_mail,mailto_name,sub,content):
+    msg = MIMEText(content, _subtype='html', _charset='utf-8')
     msg['Subject'] = sub
-    msg['From'] = me
-    msg['To'] = ";".join(to_list)
+    msg['From'] = u'清华大学微信公众号备案平台 <%s>' % mailfrom_mail
+    msg['To'] = u'%s <%s>' % (mailto_name,mailto_mail)
     try:
         server = smtplib.SMTP()
-        server.connect(mail_host)
-        server.login(mail_user, mail_pass)
-        server.sendmail(me, to_list, msg.as_string())
+        server.connect(mailfrom_host)
+        server.login(mailfrom_user, mailfrom_pass)
+        server.sendmail(mailfrom_mail, mailto_mail, msg.as_string())
         server.close()
         return True
     except Exception as e:
@@ -27,4 +34,23 @@ def send_mail(to_list, sub, content):
         return False
 
 
-'send_mail(mailto_list,"a mail from anervousemail","receive a email")'
+#make email
+mailto_mail = "wyl8899k@gmail.com" 
+mailto_name="HuangDaDa"
+sub="数据预警"
+content='''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+</body>
+<p><b>HaungDaDa</b> 管理员您好,</p>
+<p>&emsp;您在 <b><font color="green">清华大学微信公众号备案平台</font></b> 上设置的第 <b>5</b> 号预警规则触发了</p>
+<p>&emsp;请前往<a href="nervous.gq">nervous.gq</a>查看</p>
+
+<p>[THIS IS A TEST] =_= </p>
+</body>
+'''
+
+#[example] send email
+send_singal_email(mailto_mail,mailto_name,sub,content)
