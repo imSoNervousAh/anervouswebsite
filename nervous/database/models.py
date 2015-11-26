@@ -185,7 +185,7 @@ class Application(models.Model):
         classes = {
             'approved': 'success',
             'rejected': 'danger',
-            'pending': 'info',
+            'pending': 'warning',
             'not_submitted': 'default',
         }
         status = str(self.status)

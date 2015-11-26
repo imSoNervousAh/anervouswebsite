@@ -24,11 +24,13 @@
             </td>
             <td>{{ app.manager_name }}</td>
             <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
-            <td>
-                <span class="label label-{{ app.status_display.colorclass }}">
-                    <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
-                </span>
-            </td>
+            {% if params.type != 'pending' %}
+                <td>
+                    <span class="label label-{{ app.status_display.colorclass }}">
+                        <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                    </span>
+                </td>
+            {% endif %}
             <td>
                 {% if app.status == 'pending' %}
                     <a style="cursor:pointer;"

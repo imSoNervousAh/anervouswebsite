@@ -22,6 +22,7 @@
                 {% endif %}
             </td>
             <td align="right">{{ article.likes }}</td>
+            <td align="right">{{ article.posttime|date:"Y年m月d日" }}</td>
         </tr>
     {% endfor %}
 {% endblock content %}
