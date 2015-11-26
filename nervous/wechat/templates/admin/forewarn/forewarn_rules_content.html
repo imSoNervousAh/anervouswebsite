@@ -1,5 +1,9 @@
 {% extends 'common/sortable_content.html' %}
 
+{% block no-data-info %}
+    暂无预警规则
+{% endblock no-data-info %}
+
 {% block content %}
     {% for rule in items %}
         <tr>
@@ -21,10 +25,9 @@
                    href="javascript:showModal('{% url 'modals/admin/process-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
                     <span class="fa fa-edit fa-fw"></span> 修改
                 </a>
-
+                <span>&nbsp;&nbsp;</span>
                 <a data-id="{{ rule.id }}" class="fake-link delete-link">
-                    <span class="fa fa-minus-square-o fa-fw"></span>
-                    删除
+                    <span class="fa fa-minus-square-o fa-fw"></span> 删除
                 </a>
             </td>
         </tr>

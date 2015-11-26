@@ -1,5 +1,15 @@
 {% extends 'common/sortable_content.html' %}
 
+{% block no-data-info %}
+    {% if params.type == 'pending' %}
+        暂无待审批申请
+    {% elif params.type == 'processed' %}
+        尚未处理过申请
+    {% elif params.type == 'all' %}
+        暂无申请
+    {% endif %}
+{% endblock no-data-info %}
+
 {% block content %}
     {% for app in items %}
         <tr>

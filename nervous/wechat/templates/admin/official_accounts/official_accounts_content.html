@@ -1,5 +1,9 @@
 {% extends 'common/sortable_content.html' %}
 
+{% block no-data-info %}
+    暂无公众号
+{% endblock no-data-info %}
+
 {% block content %}
     {% for account in items %}
         <tr>

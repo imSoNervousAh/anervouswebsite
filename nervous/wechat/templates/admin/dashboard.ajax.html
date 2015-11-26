@@ -173,16 +173,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for account in official_accounts %}
+                        {% if official_accounts %}
+                            {% for account in official_accounts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td><a style="cursor:pointer;" class="official-account-link"
+                                           data-url="{% url 'admin/detail' account.id %}">
+                                        {{ account.name }}
+                                    </a></td>
+                                    <td>{{ account.wci }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td><a style="cursor:pointer;" class="official-account-link"
-                                       data-url="{% url 'admin/detail' account.id %}">
-                                    {{ account.name }}
-                                </a></td>
-                                <td>{{ account.wci }}</td>
+                                <td colspan="10000" style="text-align: center">暂无公众号</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>

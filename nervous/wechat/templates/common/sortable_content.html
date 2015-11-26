@@ -8,7 +8,11 @@
     </tr>
 {% else %}
     <tr>
-        <td colspan="10000" style="text-align: center">无数据</td>
+        <td colspan="10000" style="text-align: center">
+            {% block no-data-info %}
+                无数据
+            {% endblock no-data-info %}
+        </td>
     </tr>
 {% endif %}
 

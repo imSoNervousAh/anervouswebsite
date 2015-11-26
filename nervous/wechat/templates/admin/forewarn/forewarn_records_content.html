@@ -1,5 +1,9 @@
 {% extends 'common/sortable_content.html' %}
 
+{% block no-data-info %}
+    暂无预警记录
+{% endblock no-data-info %}
+
 {% block content %}
     {% for record in items %}
         <tr>

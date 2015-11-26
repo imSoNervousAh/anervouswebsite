@@ -44,7 +44,7 @@ def get_pagination(item_total, item_per_page, cur):
 def render_sortable(request, items, url, params=None):
     if not params:
         params = {}
-    items_per_page = params.get("items_per_page", 10)
+    items_per_page = params.pop("items_per_page", 10)
 
     page_current = int(request.GET.get('page', '1'))
 
@@ -75,7 +75,8 @@ def render_sortable(request, items, url, params=None):
         'item_count': item_count,
         'page': page,
         'sort_by': sort_by_keyword,
-        'sort_order': sort_order_keyword
+        'sort_order': sort_order_keyword,
+        'params': params
     })
 
 
@@ -375,7 +376,9 @@ def admin_show_applications_list(request, type):
     else:
         applications = []
     return render_sortable(request, applications,
-                           'admin/applications/applications_content.html')
+                           'admin/applications/applications_content.html', {
+                               'type': type
+                           })
 
 
 @check_identity('admin')
@@ -473,15 +476,15 @@ def admin_forewarn_rules_list(request):
     return render_sortable(request, backend.get_forewarn_rules(),
                            'admin/forewarn/forewarn_rules_content.html')
 
+
 @check_identity('admin')
 def admin_show_forewarn_rules_modal(request, type, id):
     application = backend.get_application_by_id(id)
-    #rule=
+    # rule=
     return render(request, 'admin/forewarn/forewarn_rules_modal.html', {
         'app': application,
         'type': type
     })
-
 
 
 @check_identity('admin')
