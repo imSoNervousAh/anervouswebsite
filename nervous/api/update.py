@@ -81,23 +81,35 @@ def update_official_account_nums_before_n_days(account, n):
         database.gsdata_utils.add_account_record(account, dic)
 
 
-def update_official_account_nums(account):
+def update_official_account_daily_nums(account):
     for i in xrange(1, 9):
         update_official_account_nums_before_n_days(account, i)
+
+
+def get_wci(account):
+    paras = {'wx_name': account}
+    d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
+    return d['returnData']['items']['wci']
+
+
+def update_official_account_nums(account):
+    paras = {'wx_name': account}
+    res_dic = {}
+    d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
+    res = d['returnData']
+    res_dic = {
+        'likes_total': res['likenum_total'],
+        'views_total': res['readnum_total'],
+        'wci': get_wci(account),
+    }
 
 
 def update_all(account):
     try:
         update_official_account(account)
         update_official_account_nums(account)
+        update_official_account_daily_nums(account)
     except KeyError:
         print u'update of account %s failed due to gsdata error' % account
     except socket.timeout:
         print u'update of account %s failed due to network error' % account
-
-
-def update_wci(account):
-    paras = {'wx_name': account}
-    d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
-    return d['returnData']['items']
-    # d['returnData']['items'][wci]

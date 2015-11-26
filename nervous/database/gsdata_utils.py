@@ -9,12 +9,12 @@ import pytz
 import datetime
 
 
-def get_official_accounts():
-    return OfficialAccount.objects.all().filter(application__status__exact='approved')
-
-
-def get_official_accounts_wx_name():
-    return map(lambda account: account.wx_id, get_official_accounts())
+# def get_official_accounts():
+#     return OfficialAccount.objects.all().filter(application__status__exact='approved')
+#
+#
+# def get_official_accounts_wx_name():
+#     return map(lambda account: account.wx_id, get_official_accounts())
 
 
 def add_article(dic):
@@ -55,3 +55,10 @@ def add_account_record(wx_id, dic):
     for attr in ['likes', 'views', 'articles']:
         setattr(record, attr, dic.get(attr, -1))
     record.save()
+
+
+def update_account_nums(wx_id, dic):
+    account = OfficialAccount.objects.get(wx_id=wx_id)
+    for attr in ['likes_total', 'views_total', 'wci']:
+        setattr(account, attr, dic[attr])
+    account.save()
