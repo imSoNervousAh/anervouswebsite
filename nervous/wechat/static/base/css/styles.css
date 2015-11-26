@@ -286,10 +286,4 @@ th.th-sortable {
     nav {
         text-align: left;
     }
-
-    object {
-        min-width: 500px;
-        min-height: 500px;
-        overflow: scroll;
-    }
 }

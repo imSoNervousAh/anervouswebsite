@@ -384,6 +384,7 @@ function showConfirmModal(title, message, callback) {
     });
     modal.modal();
 
+    resizeComponents();
     loadComplete();
 }
 
@@ -400,6 +401,7 @@ function showModal(url, id) {
             });
             modal.modal();
 
+            resizeComponents();
             loadComplete();
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -561,6 +563,12 @@ function resizeComponents() {
         "min-height": height
     });
     $(".column-container").scroll();
+
+    var backdrop = $(".modal-backdrop");
+    if (backdrop) {
+        height = Math.max($("body").height(), $(window).height());
+        backdrop.height(height);
+    }
 }
 
 // on document ready

@@ -414,8 +414,6 @@ def admin_show_official_account_statistics(request, id):
         'chart': {
             'caption': '公众号一周信息',
             'subCaption': official_account.name,
-            'theme': 'zune',
-            'exportEnabled': '1',
             'xAxisName': '日期',
             'pYAxisName': '阅读数',
             'sYAxisName': '点赞数',
