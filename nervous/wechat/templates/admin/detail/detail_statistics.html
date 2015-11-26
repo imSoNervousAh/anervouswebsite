@@ -5,34 +5,55 @@
 <script type="text/javascript" src="{% static 'fusioncharts/fusioncharts-jquery-plugin.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'base/js/charts.js' %}"></script>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>公众号数据分析</h4>
-    </div>
-    <div class="panel-body">
-        <ul class="nav nav-pills">
-            <li role="presentation" class="active">
-                <a href="#oa-chart" data-toggle="tab">公众号统计数据</a>
-            </li>
-            <li role="presentation">
-                <a href="#article-chart" data-toggle="tab">文章统计数据</a>
-            </li>
-            <li role="presentation">
-                <a href="#" data-toggle="tab">历史数据变化</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="oa-chart" class="tab-pane fade in active embed-responsive embed-responsive-16by9">
-                <object id="oa-chart-container" data-type="mscombidy2d"
-                        data-json='{{ chart_json }}'></object>
+<div class="row">
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>数据图表</h4>
             </div>
-            <div id="article-chart" class="tab-pane fade embed-responsive embed-responsive-16by9">
-                <object id="article-chart-container" data-type="mscombidy2d"
-                        data-json='{{ chart_json }}'></object>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active">
+                        <a href="#oa-chart" data-toggle="tab">公众号统计数据</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#article-chart" data-toggle="tab">文章统计数据</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#" data-toggle="tab">历史数据变化</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="oa-chart" class="tab-pane fade in active embed-responsive embed-responsive-16by9">
+                        <object id="oa-chart-container" data-type="mscombidy2d"
+                                data-json='{{ chart_json }}'></object>
+                    </div>
+                    <div id="article-chart" class="tab-pane fade embed-responsive embed-responsive-16by9">
+                        <object id="article-chart-container" data-type="mscombidy2d"
+                                data-json='{{ chart_json }}'></object>
+                    </div>
+                    <div class="pull-right" style="font-size: 8px;">
+                        数据来源：<a href="http://www.gsdata.cn/">新媒体指数</a>；无法获取到对应数据的日期不会在图表中显示。
+                    </div>
+                </div>
+                <script>
+                    drawCharts();
+                </script>
             </div>
         </div>
-        <script>
-            drawCharts();
-        </script>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>统计数据</h4>
+            </div>
+            <div class="panel-body">
+                <div style="line-height: 160%;">
+                    <b>发布文章数：</b>{{ account.association }}<br/>
+                    <b>文章总阅读数：</b>{{ account.association }}<br/>
+                    <b>文章总点赞数：</b>{{ account.manager_name }}<br/>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

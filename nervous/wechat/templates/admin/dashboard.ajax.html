@@ -68,6 +68,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th style="width: 15%; min-width: 100px">公众号名称</th>
                             <th style="width: 25%; min-width: 100px; max-width: 200px;">文章标题</th>
                             <th style="max-width: 500px;">文章简介</th>
@@ -79,6 +80,7 @@
                         {% if articles %}
                             {% for article in articles %}
                                 <tr>
+                                    <td>{{ forloop.counter }}</td>
                                     <td><a class="ajax-link"
                                            data-url="{% url 'admin/detail' article.official_account_id %}">
                                         {{ article.official_account_name }}
