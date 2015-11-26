@@ -40,7 +40,7 @@
                         </script>
                         {% if pending_applications %}
                             {% for app in pending_applications %}
-                                <atr>
+                                <tr>
                                     <td>{{ app.name }}</td>
                                     <td>{{ app.manager_name }}</td>
                                     <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
@@ -50,7 +50,7 @@
                                             <span class="fa fa-check-square-o fa-fw"></span> 审批
                                         </a>
                                     </td>
-                                </atr>
+                                </tr>
                             {% endfor %}
                         {% else %}
                             <tr>

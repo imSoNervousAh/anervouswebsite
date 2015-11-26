@@ -377,6 +377,8 @@ function showModal(url, id) {
             $("body").append(data);
             var modal = $("#" + id);
 
+            console.log(data);
+
             modal.on("hidden.bs.modal", function () {
                 modal.remove();
             });

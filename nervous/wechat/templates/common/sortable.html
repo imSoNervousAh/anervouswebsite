@@ -18,8 +18,8 @@
         var $this = $(".sortable");
         var tbody = $this.find("tbody");
 
-        refreshTable = function () {
-            loadContentOn(tbody, sort_url, sort_params, {anim: false, scroll: false});
+        refreshTable = function (callback) {
+            loadContentOn(tbody, sort_url, sort_params, {anim: false, scroll: false}, callback);
         };
 
         loadContentOn(tbody, sort_url, defaults, {anim: true, scroll: false});

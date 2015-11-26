@@ -21,8 +21,8 @@
                         <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
                         <td>{{ account.wci }}</td>
                         <td>
-                            <a style="cursor:pointer;" data-id="chosen-item-{{ account.id }}"
-                               class="remove-from-list-link">
+                            <a style="cursor:pointer;" data-id="{{ account.wx_id }}"
+                                data-item-id="chosen-item-{{ account.id }}" class="remove-from-list-link">
                                 <span class="fa fa-minus-square fa-fw"></span> 删除</a>
                         </td>
                     </tr>'>
@@ -38,9 +38,7 @@
 
     <script>
         function toggleStatusDisplay(name, obj) {
-            var names = chosen_names();
-            console.log(name, names, obj);
-            if ($.inArray(name, names) !== -1) {
+            if ($.inArray(name, chosen_names) !== -1) {
                 obj.find(".already-added-label").css("display", "");
                 obj.find(".add-to-list-link").css("display", "none").data("item", "");
             }
@@ -56,13 +54,29 @@
         });
 
         $(".add-to-list-link").click(function () {
-            $("#chosen-list").append($(this).data("item"));
+            $("#chosen-list").append($(this).data("item"))
+                    .find(":last-child").css("display", "none").fadeIn(200);
             var td = $(this).parent(), tr = td.parent();
             var name = tr.find("td:nth-child(2)").html();
+            chosen_names.push(name);
+            console.log(chosen_names);
+            toggleChosenListDisplay();
             toggleStatusDisplay(name, td);
-            $(".remove-from-list-link").click(function () {
-                $("#" + $(this).data("id")).remove();
-                refreshTable();
+
+            $(".remove-from-list-link").unbind().click(function () {
+                var id = "#" + $(this).data("item-id");
+                var name = $(this).data("id");
+                console.log("remove", name);
+                var index = $.inArray(name, chosen_names);
+                if (index > -1) {
+                    chosen_names.splice(index, 1);
+                    console.log(chosen_names);
+                    toggleChosenListDisplay();
+                    $(id).fadeOut(200, function () {
+                        $(this).remove();
+                        refreshTable();
+                    });
+                }
             });
         });
     </script>
