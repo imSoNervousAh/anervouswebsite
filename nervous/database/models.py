@@ -320,11 +320,17 @@ class Message(models.Model):
 
 
 class ForewarnRule(NervousModel):
-    account = models.ForeignKey(OfficialAccount, null=True)
-    duration = models.IntegerField()
+    account = models.ForeignKey(OfficialAccount, null=True, blank=True)
+    duration = models.IntegerField(validators=[
+        MinValueValidator(1, message=u'预警时限至少为1天'),
+        MaxValueValidator(365, message=u'预警时限至多为365天'),
+    ])
     notification = models.IntegerField()
     target = models.IntegerField()
-    value = models.IntegerField()
+    value = models.IntegerField(validators=[
+        MinValueValidator(1, message=u'该值应为正数'),
+        MaxValueValidator(2147483647, message=u'该值应在32位整数范围内'),
+    ])
 
     def clean(self):
         if not self.notification in [

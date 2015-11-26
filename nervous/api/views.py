@@ -273,4 +273,4 @@ def modify_announcement(request):
 
 @json_response_general_exception_decorator
 def delete_forewarn_rule(request, id):
-    print 'delte rule ', id
+    backend.del_forewarn_rule(id)

@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <input id="duration-field" name="duration" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,2}$" required
+                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]\d*$" required
                                        value="{{ rule.duration }}">
                             </div>
                             <div class="col-sm-1">
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-sm-3 form-group">
                                 <input id="value-field" name="value" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,3}$" required
+                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]\d*$" required
                                        value="{{ rule.value }}">
                             </div>
                             <div class="col-sm-1">

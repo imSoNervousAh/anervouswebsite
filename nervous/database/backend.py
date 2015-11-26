@@ -3,6 +3,7 @@
 import datetime
 import time
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
 import api.update as api_update
@@ -308,31 +309,40 @@ def get_latest_record(official_account_id):
 
 # Forewarn rules
 
-def add_forewarn_rule(dic):
-    rule = ForewarnRule.objects.model()
+def forewarn_rule_from_dict(dic, base=None):
+    rule = base or ForewarnRule.objects.model()
     account_name = dic['account_name']
     if account_name != '':
-        account = OfficialAccount.objects.get(name__exact=account_name)
+        try:
+            account = OfficialAccount.objects.get(name__exact=account_name)
+        except ObjectDoesNotExist:
+            raise ValidationError({
+                'account_name': u'数据库中没有此公众号',
+            })
     else:
         account = None
     rule.account = account
     for attr in ['duration', 'notification', 'target', 'value']:
-        setattr(rule, attr, int(dic[attr]))
-    rule.full_clean(exclude=['account'])
+        setattr(rule, attr, dic[attr])
+    rule.full_clean()
+    return rule
+
+def add_forewarn_rule(dic):
+    rule = forewarn_rule_from_dict(dic)
     rule.save()
 
 def modify_forewarn_rule(dic):
-    rule = ForewarnRule.objects.get(dic['id'])
-
-
+    rule = ForewarnRule.objects.get(pk=dic['id'])
+    forewarn_rule_from_dict(dic, rule).save()
 
 def get_forewarn_rules():
     return ForewarnRule.objects.all()
 
-
 def get_forewarn_rule_by_id(id):
     return ForewarnRule.objects.get(pk=id)
 
+def del_forewarn_rule(id):
+    get_forewarn_rule_by_id(id).delete()
 
 def get_forewarn_records():
     return ForewarnRecord.objects.all()
