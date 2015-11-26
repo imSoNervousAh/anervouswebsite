@@ -15,8 +15,7 @@
         <tr>
             <td>
                 {% if app.status == 'approved' %}
-                    <a style="cursor:pointer;" class="official-account-link"
-                       data-url="{% url 'admin/detail' app.official_account_id %}">
+                    <a class="ajax-link" data-url="{% url 'admin/detail' app.official_account_id %}">
                         {{ app.official_account.name }}
                     </a>
                 {% else %}
@@ -47,8 +46,6 @@
     {% endfor %}
 
     <script>
-        $(".official-account-link").click(function () {
-            loadContent($(this).data("url"), {});
-        });
+
     </script>
 {% endblock content %}

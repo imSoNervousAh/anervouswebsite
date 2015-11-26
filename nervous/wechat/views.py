@@ -464,11 +464,7 @@ def admin_show_official_account_articles_list(request, id):
 def admin_forewarn_rules(request):
     wx_name = map(lambda account: account.name, backend.get_official_accounts())
 
-    return render_ajax(request, 'admin/forewarn/forewarn_rules.html', {
-        'NotificationOption': NotificationOption,
-        'ForewarnTarget': ForewarnTarget,
-        'wx_name': wx_name,
-    }, 'forewarn-rules-item')
+    return render_ajax(request, 'admin/forewarn/forewarn_rules.html', {}, 'forewarn-rules-item')
 
 
 @check_identity('admin')
@@ -479,11 +475,18 @@ def admin_forewarn_rules_list(request):
 
 @check_identity('admin')
 def admin_show_forewarn_rules_modal(request, type, id):
-    application = backend.get_application_by_id(id)
-    # rule=
+    wx_name = map(lambda account: account.name, backend.get_official_accounts())
+    if type == 'modify':
+        rule = backend.get_forewarn_rule_by_id(id)
+    else:
+        rule = None
+    print rule
     return render(request, 'admin/forewarn/forewarn_rules_modal.html', {
-        'app': application,
-        'type': type
+        'rule': rule,
+        'type': type,
+        'NotificationOption': NotificationOption,
+        'ForewarnTarget': ForewarnTarget,
+        'wx_name': wx_name,
     })
 
 

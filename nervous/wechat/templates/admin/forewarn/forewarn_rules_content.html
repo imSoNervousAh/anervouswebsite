@@ -10,9 +10,9 @@
             <td>{{ rule.id }}</td>
             <td>
                 {% if rule.account %}
-                    <a style="cursor: pointer;" class="official-account-link"
-                       data-url="{% url 'admin/detail' rule.account.id %}">
-                        {{ rule.account_name }}</a>
+                    <a class="ajax-link" data-url="{% url 'admin/detail' rule.account.id %}">
+                        {{ rule.account_name }}
+                    </a>
                 {% else %}
                     {{ rule.account_name }}
                 {% endif %}
@@ -22,7 +22,7 @@
             <td>阅读增长量大于{{ rule.value }}条</td>
             <td>
                 <a style="cursor:pointer;"
-                   href="javascript:showModal('{% url 'modals/admin/process-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
+                   href="javascript:showModal('{% url 'modals/admin/modify-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
                     <span class="fa fa-edit fa-fw"></span> 修改
                 </a>
                 <span>&nbsp;&nbsp;</span>

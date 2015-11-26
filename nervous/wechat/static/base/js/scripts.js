@@ -116,8 +116,6 @@ function loadContent(url, params, item_selector, load_params, callback) {
         }
     }
 
-    refreshBadges();
-
     $.ajax({
         type: "GET",
         url: url,
@@ -140,6 +138,7 @@ function loadContent(url, params, item_selector, load_params, callback) {
                 }, document.title, url);
             }
             initAjaxPage("#main-page");
+            loadComplete();
         },
         error: function (xhr, textStatus, errorThrown) {
             displayContent('\
@@ -157,9 +156,9 @@ function loadContent(url, params, item_selector, load_params, callback) {
 
 function initAjaxPage(container) {
     $(container).ready(function () {
-        $(".ajax-link").click(function () {
+        $(".ajax-link").unbind().click(function () {
             loadContent($(this).data("url"));
-        })
+        });
     });
 }
 
@@ -178,15 +177,17 @@ function loadContentOn(container, url, params, load_params, callback) {
         }, 250);
     }
 
-    refreshBadges();
-
     $.ajax({
         type: "GET",
         url: url,
         data: params,
         success: function (data) {
-            displayContent(data, load_params, container, callback);
-            initAjaxPage(container);
+            displayContent(data, load_params, container, function () {
+                if (typeof callback === "function")
+                    callback();
+                initAjaxPage(container);
+                loadComplete();
+            });
         },
         error: function (xhr, textStatus, errorThrown) {
             displayContent('\
@@ -311,8 +312,9 @@ function handleFormPost(form_selector, post_url, params) {
     });
 }
 
-// refresh badges with data-source
-function refreshBadges() {
+// refresh certain parts of page after (re)load
+function loadComplete() {
+    // refresh badges with data-source
     $(".badge").each(function () {
         var $this = $(this),
             url = $this.data("source");
@@ -367,6 +369,8 @@ function showConfirmModal(title, message, callback) {
         modal.remove();
     });
     modal.modal();
+
+    loadComplete();
 }
 
 function showModal(url, id) {
@@ -383,6 +387,8 @@ function showModal(url, id) {
                 modal.remove();
             });
             modal.modal();
+
+            loadComplete();
         },
         error: function (xhr, textStatus, errorThrown) {
             displayContent('\
@@ -568,7 +574,12 @@ $(function () {
 
         if (__manualStateChange) {
             __manualStateChange = false;
-            displayContent(state.data.data, state.data.params, undefined, state.data.callback);
+            displayContent(state.data.data, state.data.params, undefined, function () {
+                if (typeof state.data.callback === "function")
+                    state.data.callback();
+                initAjaxPage("#main-page");
+                loadComplete();
+            });
         } else {
             main.stop(true).animate({
                 opacity: 0,
@@ -581,7 +592,12 @@ $(function () {
                     $(item).addClass("active");
                 }
             }
-            displayContent(state.data.data, {}, undefined, state.data.callback);
+            displayContent(state.data.data, {}, undefined, function () {
+                if (typeof state.data.callback === "function")
+                    state.data.callback();
+                initAjaxPage("#main-page");
+                loadComplete();
+            });
         }
     });
 
@@ -595,7 +611,7 @@ $(function () {
 
     initLeftColumn();
 
-    refreshBadges();
-
     initAjaxPage();
+
+    loadComplete();
 });

@@ -88,10 +88,10 @@ urlpatterns = [
         {'type': 'process'}, name='modals/admin/process-application-modal'),
     url(r'^modals/admin/application_modal/view/(?P<id>\d+)/?$', 'wechat.views.admin_show_application_modal',
         {'type': 'view'}, name='modals/admin/view-application-modal'),
-    url(r'^modals/admin/forewarn_rules_modal/process/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
-        {'type': 'process'}, name='modals/admin/process-forewarn-rules-modal'),
-    url(r'^modals/admin/forewarn_rules_modal/view/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
-        {'type': 'view'}, name='modals/admin/view-forewarn-rules-modal'),
+    url(r'^modals/admin/forewarn_rules_modal/modify/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
+        {'type': 'modify'}, name='modals/admin/modify-forewarn-rules-modal'),
+    url(r'^modals/admin/forewarn_rules_modal/add/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
+        {'type': 'add'}, name='modals/admin/add-forewarn-rules-modal'),
 
     #   badges
     url(r'^badges/student/pending_count/?$', 'wechat.views.student_badge_pending_count',

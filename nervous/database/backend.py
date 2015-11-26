@@ -331,6 +331,10 @@ def get_forewarn_rules():
     return ForewarnRule.objects.all()
 
 
+def get_forewarn_rule_by_id(id):
+    return ForewarnRule.objects.get(pk=id)
+
+
 def get_forewarn_records():
     return ForewarnRecord.objects.all()
 

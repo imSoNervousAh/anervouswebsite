@@ -7,8 +7,7 @@
 {% block content %}
     {% for article in items %}
         <tr>
-            <td><a style="cursor:pointer;" class="official-account-link"
-                   data-url="{% url 'admin/detail' article.official_account_id %}">
+            <td><a class="ajax-link" data-url="{% url 'admin/detail' article.official_account_id %}">
                 {{ article.official_account_name }}
             </a></td>
             <td><a target="_blank" href="{{ article.url }}">
@@ -25,10 +24,4 @@
             <td align="right">{{ article.likes }}</td>
         </tr>
     {% endfor %}
-
-    <script>
-        $(".official-account-link").click(function () {
-            loadContent($(this).data("url"), {});
-        });
-    </script>
 {% endblock content %}

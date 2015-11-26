@@ -13,7 +13,8 @@
                         <div class="col-sm-6 form-group">
                             <label class="control-label" for="account-name-field">预警公众号账号</label>
                             <input id="account-name-field" type="text" name="account_name" list="account-name-list"
-                                   class="form-control" placeholder="">
+                                   class="form-control" placeholder=""
+                                   {% if rule.account %}value="{{ rule.account_name }}"{% endif %}>
                             <span class="help-block with-errors">不填写默认为所有公众号</span>
                             <datalist id="account-name-list">
                                 {% for id in wx_name %}
@@ -24,8 +25,14 @@
                         <div class="col-sm-6 form-group">
                             <label class="control-label" for="notification-field">通知方式</label>
                             <select id="notification-field" name="notification" class="form-control">
-                                <option value={{ NotificationOption.Email }}>邮件</option>
-                                <option value={{ NotificationOption.Message }}>站内通知</option>
+                                <option value="{{ NotificationOption.Email }}"
+                                        {% if rule.notification == NotificationOption.Email %}selected{% endif %}>
+                                    邮件
+                                </option>
+                                <option value="{{ NotificationOption.Message }}"
+                                        {% if rule.notification == NotificationOption.Message %}selected{% endif %}>
+                                    站内通知
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -35,7 +42,8 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <input id="duration-field" name="duration" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,2}$" required>
+                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,2}$" required
+                                       value="{{ rule.duration }}">
                             </div>
                             <div class="col-sm-1">
                                 <p class="form-control-static">天</p>
@@ -48,19 +56,26 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <select id="target-field" name="target" class="form-control">
-                                    <option value={{ ForewarnTarget.ViewsTotal }}>阅读量</option>
-                                    <option value={{ ForewarnTarget.LikesTotal }} disabled="disabled">点赞数</option>
+                                    <option value="{{ ForewarnTarget.ViewsTotal }}"
+                                            {% if rule.target == ForewarnTarget.ViewsTotal %}selected{% endif %}>
+                                        阅读量
+                                    </option>
+                                    <option value="{{ ForewarnTarget.LikesTotal }}" disabled
+                                            {% if rule.target == ForewarnTarget.ViewsTotal %}selected{% endif %}>
+                                        点赞数
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-sm-2 form-group">
                                 <select name="" class="form-control">
                                     <option value="大于">大于</option>
-                                    <option value="小于" disabled="disabled">小于</option>
+                                    <option value="小于" disabled>小于</option>
                                 </select>
                             </div>
                             <div class="col-sm-3 form-group">
                                 <input id="value-field" name="value" type="text" class="form-control"
-                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,3}$" required>
+                                       data-error="请填写合法数字" placeholder="" pattern="^[1-9]|\d{0,3}$" required
+                                       value="{{ rule.value }}">
                             </div>
                             <div class="col-sm-1">
                                 <p class="form-control-static">条</p>

@@ -1,5 +1,9 @@
 {% extends 'common/sortable_content.html' %}
 
+{% block no-data-info %}
+    暂无文章
+{% endblock no-data-info %}
+
 {% block content %}
     {% for article in items %}
         <tr>
