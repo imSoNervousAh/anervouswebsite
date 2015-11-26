@@ -88,6 +88,10 @@ urlpatterns = [
         {'type': 'process'}, name='modals/admin/process-application-modal'),
     url(r'^modals/admin/application_modal/view/(?P<id>\d+)/?$', 'wechat.views.admin_show_application_modal',
         {'type': 'view'}, name='modals/admin/view-application-modal'),
+    url(r'^modals/admin/forewarn_rules_modal/process/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
+        {'type': 'process'}, name='modals/admin/process-forewarn-rules-modal'),
+    url(r'^modals/admin/forewarn_rules_modal/view/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
+        {'type': 'view'}, name='modals/admin/view-forewarn-rules-modal'),
 
     #   badges
     url(r'^badges/student/pending_count/?$', 'wechat.views.student_badge_pending_count',
@@ -115,6 +119,7 @@ urlpatterns = [
     url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
     url(r'^api/update_start/?$', 'api.views.update_start', name='api/update-start'),
     url(r'^api/modify_announcement/?$', 'api.views.modify_announcement', name='api/modify_announcement'),
+    url(r'^api/delete_forewarn_rule/([0-9]+)/?$', 'api.views.delete_forewarn_rule', name='api/delete_forewarn_rule'),
 
     # not found part
     url(r'^notfound', 'wechat.views.notfound', name='notfound'),

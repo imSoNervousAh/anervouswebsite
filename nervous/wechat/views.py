@@ -496,6 +496,14 @@ def admin_show_application_modal(request, type, id):
         'type': type
     })
 
+@check_identity('admin')
+def admin_show_forewarn_rules_modal(request, type, id):
+    application = backend.get_application_by_id(id)
+    return render(request, 'admin/forewarn/forewarn_rules_modal.html', {
+        'app': application,
+        'type': type
+    })
+
 
 @check_identity('admin')
 def admin_badge_pending_count(request):

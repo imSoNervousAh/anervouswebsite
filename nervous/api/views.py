@@ -269,3 +269,8 @@ def update_start(request):
 def modify_announcement(request):
     announcement = request.POST['content']
     backend.modify_announcement(announcement)
+
+
+@json_response_general_exception_decorator
+def delete_forewarn_rule(request, id):
+    print 'delte rule ', id

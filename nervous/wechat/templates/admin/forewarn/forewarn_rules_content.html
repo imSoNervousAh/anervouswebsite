@@ -16,12 +16,48 @@
             <td>{{ rule.duration }}天</td>
             <td>{{ rule.notification_name }}</td>
             <td>阅读增长量大于{{ rule.value }}条</td>
+            <td>
+                <!--
+                <a style="cursor:pointer;"
+                   href="javascript:showModal('{% url 'modals/admin/process-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
+                    <span class="fa fa-edit fa-fw"></span> 修改
+                </a>
+                -->
+
+                <a data-id="{{ rule.id }}" class="fake-link delete-link">
+                    <span class="fa fa-minus-square-o fa-fw"></span>
+                    删除
+                </a>
+            </td>
         </tr>
     {% endfor %}
 
     <script>
-        $(".official-account-link").click(function () {
-            loadContent($(this).data("url"), {});
+        $(".delete-link").click(function (event) {
+            event.preventDefault();
+            var id = $(this).data("id");
+            var url = "/api/delete_forewarn_rule/" + id;
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: "",
+                success: function (data) {
+                    if (data.status === "ok") {
+                        alert('删除成功!');
+                        loadContentOfItem("#my-applications-item", {
+                            replace: true,
+                            anim: false,
+                            scroll: false
+                        });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var msg = $("#error-msg");
+                    msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                    console.log(xhr.responseText);
+                    msg.fadeIn();
+                }
+            });
         });
     </script>
 {% endblock content %}
