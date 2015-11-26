@@ -67,7 +67,7 @@
                 var this_params = sort_params;
                 this_params['page'] = $(this).data("page");
                 loadContentOn($(".sortable tbody"), sort_url, this_params, {anim: false, scroll: false}, function () {
-                    $.scrollTo($(".sortable"), {offset: -removePx($(".main").css("padding-top"))});
+                    //$.scrollTo($(".sortable"), {offset: -removePx($(".main").css("padding-top"))});
                 });
             });
         });

@@ -142,3 +142,39 @@ def build_test_db():
     forewarn_test_db(oa.name)
 
     update()
+
+
+def build_large_test_db():
+    clean_test_db()
+
+    admin_w = Admin.objects.create(username='w', password=md5_hash('x'), description='www', email='huzecong@163.com')
+    if settings.DEBUG:
+        for id_suffix in ['417', '310', '434', '416']:
+            id = '2014011%s' % id_suffix
+            backend.add_admin(id, '0', 'fake_student@nervous.gq', id_suffix)
+
+    n_applications = {
+        'pending': 500,
+        'approved': 500,
+        'rejected': 500,
+        'not_submitted': 500,
+    }
+    for status, count in n_applications.items():
+        for i in range(0, count):
+            app = {
+                'name': u'第' + str(i + 1) + u'个' + status + u'公众号',
+                'description': u'第' + str(i + 1) + u'个' + status + u'公众号',
+                'wx_id': status + str(i + 1),
+                'user_submit': '2014011417',
+                'status': status,
+                'manager_name': u'黄大大',
+                'manager_student_id': '2014011416',
+                'manager_dept': u'贵系',
+                'manager_tel': '12345678901',
+                'association': u'贵校'
+            }
+            if status == 'rejected':
+                app['reject_reason'] = u'任性'
+            backend.add_application(app)
+
+        print 'done', status

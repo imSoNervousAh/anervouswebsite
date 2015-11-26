@@ -290,7 +290,12 @@ def admin(request):
 @check_identity('admin')
 def admin_dashboard(request):
     pending_applications = backend.get_pending_applications()
-    official_accounts = backend.get_official_accounts()
+    pending_count = pending_applications.count()
+    show_all_pending_applications = False
+    if pending_count > 0:
+        show_all_pending_applications = True
+        pending_applications = pending_applications[0:10]
+    official_accounts = backend.get_official_accounts()[0:10]
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
@@ -305,6 +310,7 @@ def admin_dashboard(request):
         'unprocessed_account': unprocessed_account,
         'category': category,
         'announcement': announcement,
+        'show_all_pending_applications': show_all_pending_applications
     }, 'dashboard-item')
 
 

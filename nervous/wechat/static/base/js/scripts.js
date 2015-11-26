@@ -53,6 +53,7 @@ function displayContent(data, params, container, callback) {
             if (prop === "scroll") scroll = params.scroll;
         }
     }
+
     main.queue(function () {
         main.html(data);
 
@@ -75,7 +76,7 @@ function displayContent(data, params, container, callback) {
                 var delta_str = $(".main").css("padding-top");
                 var delta = parseInt(delta_str.substr(0, delta_str.indexOf("px")), 10);
                 var pos = main.position().top + ((container === "#main-page") ? (-delta) : delta);
-                $("html, body").delay(50).animate({
+                $("html, body").stop(true).delay(50).animate({
                     "scroll-top": pos
                 });
             }
@@ -398,8 +399,6 @@ function showModal(url, id) {
             $("body").append(data);
             var modal = $("#" + id);
 
-            console.log(data);
-
             modal.on("hidden.bs.modal", function () {
                 modal.remove();
             });
@@ -616,12 +615,6 @@ $(function () {
                 loadComplete();
             });
         }
-    });
-
-    // configure scrollto.js
-    $.extend($.scrollTo.defaults, {
-        axis: 'y',
-        duration: 250
     });
 
     $(window).on('resize', resizeComponents);

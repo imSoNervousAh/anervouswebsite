@@ -41,7 +41,7 @@ def application_from_dict(dic, base=None):
     for attr in [
         'manager_name', 'manager_student_id',
         'manager_dept', 'manager_tel', 'manager_email',
-        'user_submit', 'association', 'status']:
+        'user_submit', 'association', 'status', 'reject_reason']:
         # NOTE: invocation that lacks parameter can not happen with real POST
         # so if you see '__placeholder__' in database, THAT INDICATES A BUG
         val = dic.get(attr, '__placeholder__')

@@ -24,10 +24,10 @@
 {% endblock body %}
 
 {% block content-after %}
-    <hr>
+    <hr style="margin-top: 0">
     <ul class="list-inline pull-right">
         <li><a href="javascript:showModal('{% url 'modals/admin/add-forewarn-rules-modal' %}', 'forewarn-rules-modal')">
-            <span class="fa fa-plus-square"></span> 添加预警规则
+            <span class="fa fa-plus-square fa-fw"></span> 添加预警规则
         </a></li>
     </ul>
 {% endblock content-after %}

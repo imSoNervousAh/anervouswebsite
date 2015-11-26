@@ -52,23 +52,21 @@
         });
 
         $(".add-to-list-link").click(function () {
-            $("#chosen-list").append($(this).data("item"))
-                    .find(":last-child").css("display", "none").fadeIn(200);
             var td = $(this).parent(), tr = td.parent();
             var name = tr.find("td:nth-child(2)").html();
+            $.scrollTo("+=" + td.outerHeight(true));
+            $("#chosen-list").append($(this).data("item"))
+                    .find(":last-child").css("display", "none").fadeIn(200);
             chosen_names.push(name);
-            console.log(chosen_names);
             toggleChosenListDisplay();
             toggleStatusDisplay(name, td);
 
             $(".remove-from-list-link").unbind().click(function () {
                 var id = "#" + $(this).data("item-id");
                 var name = $(this).data("id");
-                console.log("remove", name);
                 var index = $.inArray(name, chosen_names);
                 if (index > -1) {
                     chosen_names.splice(index, 1);
-                    console.log(chosen_names);
                     toggleChosenListDisplay();
                     $(id).fadeOut(200, function () {
                         $(this).remove();

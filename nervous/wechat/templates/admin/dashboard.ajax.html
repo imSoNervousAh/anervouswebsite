@@ -17,7 +17,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th style="width: 15%; min-width: 100px">公众号名称</th>
+                            <th style="width: 15%; min-width: 150px">公众号名称</th>
                             <th style="width: 15%; min-width: 110px">公众号负责人</th>
                             <th style="width: 10000px">公众号简介</th>
                             <th>
@@ -26,18 +26,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <script>
-                            $(function () {
-                                $('body').popover({
-                                    'html': true,
-                                    'placement': 'auto right',
-                                    'selector': '.change-app-status-link',
-                                    'title': "请选择审批结果",
-                                    'trigger': 'focus',
-                                    'container': 'body'
-                                });
-                            });
-                        </script>
                         {% if pending_applications %}
                             {% for app in pending_applications %}
                                 <tr>
@@ -60,6 +48,14 @@
                         </tbody>
                     </table>
                 </div>
+                {% if show_all_pending_applications %}
+                    <hr style="margin-top: 0">
+                    <ul class="list-inline pull-right">
+                        <li><a class="ajax-link" data-url="{% url 'admin/applications' 'pending' %}">
+                            <span class="fa fa-ellipsis-h fa-fw"></span> 查看所有
+                        </a></li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
         <hr>
@@ -83,7 +79,8 @@
                         {% if articles %}
                             {% for article in articles %}
                                 <tr>
-                                    <td><a class="ajax-link" data-url="{% url 'admin/detail' article.official_account_id %}">
+                                    <td><a class="ajax-link"
+                                           data-url="{% url 'admin/detail' article.official_account_id %}">
                                         {{ article.official_account_name }}
                                     </a></td>
                                     <td>
