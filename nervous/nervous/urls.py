@@ -90,7 +90,7 @@ urlpatterns = [
         {'type': 'view'}, name='modals/admin/view-application-modal'),
     url(r'^modals/admin/forewarn_rules_modal/modify/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
         {'type': 'modify'}, name='modals/admin/modify-forewarn-rules-modal'),
-    url(r'^modals/admin/forewarn_rules_modal/add/(?P<id>\d+)/?$', 'wechat.views.admin_show_forewarn_rules_modal',
+    url(r'^modals/admin/forewarn_rules_modal/add/?$', 'wechat.views.admin_show_forewarn_rules_modal',
         {'type': 'add'}, name='modals/admin/add-forewarn-rules-modal'),
 
     #   badges

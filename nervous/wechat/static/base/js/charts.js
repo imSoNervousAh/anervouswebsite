@@ -1,4 +1,4 @@
-function renderChart(container, data_json, params, callback) {
+function __renderChart(container, data_json, params, callback) {
     FusionCharts.ready(function () {
         var chart_data = {
             chart: {
@@ -31,13 +31,13 @@ function renderChart(container, data_json, params, callback) {
     });
 }
 
-function renderMultiChart(container, data, params, callback) {
+function renderChart(container, type, data, params, callback) {
     FusionCharts.ready(function () {
-        var chart_data = data;
+        data['chart']['baseFont'] = $("body").css("font-family");
         var chart_params = {
-            type: 'mscombidy2d',
+            type: type,
             dataFormat: 'json',
-            dataSource: chart_data
+            dataSource: data
         };
         $.extend(chart_params, params);
         var myChart = new FusionCharts(chart_params);

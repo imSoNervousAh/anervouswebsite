@@ -43,7 +43,7 @@ var __manualStateChange = false;
 
 function displayContent(data, params, container, callback) {
     var main;
-    if (typeof container === typeof undefined)
+    if (typeof container === "undefined")
         container = "#main-page";
     main = $(container);
     var anim = true, scroll = true;
@@ -65,8 +65,12 @@ function displayContent(data, params, container, callback) {
         if (anim) {
             var new_height = 0;
             main.children().each(function () {
-                new_height += $(this).outerHeight(true);
+                var $this = $(this);
+                if ($this.prop("tagName").toLowerCase() === "script"
+                    || $this.css("display") === "none") return;
+                new_height += $this.outerHeight(true);
             });
+            new_height = Math.max(new_height, removePx(main.css("min-height")));
             if (scroll) {
                 var delta_str = $(".main").css("padding-top");
                 var delta = parseInt(delta_str.substr(0, delta_str.indexOf("px")), 10);
@@ -164,6 +168,7 @@ function initAjaxPage(container) {
 
 function loadContentOn(container, url, params, load_params, callback) {
 //    console.log("on: " + url);
+    $(".main").css("height", "auto");
     var main = container;
 
     var anim = false;
@@ -216,12 +221,15 @@ function handleFormPost(form_selector, post_url, params) {
     /*
      params = {
         success_callback(data):
-            function to call when ajax POST returns success,
+            Function to call when ajax POST returns success.
         error_callback(xhr, textStatus, errorThrown):
-            function to call when ajax POST returns error,
+            Function to call when ajax POST returns error.
         success_msg(data):
-            function that returns message to display for success POST
-            note that though POST is successful, returned status maybe "error"
+            Function that returns message to display for success POST.
+            Note that though POST is successful, returned status maybe "error".
+            If returned message is empty, then the acutal message displayed
+                would be generated using "native_success_msg'. To override this
+                behavior, return "#no_message#" instead of empty string.
      }
      */
     var form = $(form_selector);
@@ -237,18 +245,21 @@ function handleFormPost(form_selector, post_url, params) {
         form_groups.not(form_groups.has("span.help-block.with-errors"))
             .append('<span class="help-block with-errors"></span>');
 
+        var native_success_msg = function (data) {
+            var method = "提交";
+            if (data.hasOwnProperty("submit_method"))
+                method = data.submit_method === "submit" ? "提交" : "保存";
+//            if (data.status === "ok") return method + "成功！";
+            if (data.status === "ok") return "#no_message#";
+
+            if (data.hasOwnProperty("error_message"))
+                return data.error_message;
+            return "提交出错，请再次检查您填写的信息。"
+        };
+
         var success_callback = $.noop,
             error_callback = $.noop,
-            success_msg = function (data) {
-                var method = "提交";
-                if (data.hasOwnProperty("submit_method"))
-                    method = data.submit_method === "submit" ? "提交" : "保存";
-                if (data.status === "ok") return method + "成功！";
-
-                if (data.hasOwnProperty("error_message"))
-                    return data.error_message;
-                return "提交出错，请再次检查您填写的信息。"
-            },
+            success_msg = native_success_msg,
             before_submit = $.noop;
         if (params.hasOwnProperty("success_callback"))
             success_callback = params.success_callback;
@@ -277,8 +288,14 @@ function handleFormPost(form_selector, post_url, params) {
                     msg.removeClass("alert-danger alert-success");
                     if (data.status === "ok") msg.addClass("alert-success");
                     else msg.addClass("alert-danger");
-                    msg_text.html(success_msg(data));
-                    msg.fadeIn();
+                    var message = success_msg(data);
+                    if (message === "") message = native_success_msg;
+                    if (message !== "" && message !== "#no_message#") {
+                        msg_text.html(message);
+                        msg.fadeIn();
+                    } else {
+                        msg.fadeOut();
+                    }
 
                     if (data.hasOwnProperty("error_messages")) {
                         var pos = -1;

@@ -113,6 +113,10 @@
                         var url = "{% url 'api/submit_application' %}";
                     {% endif %}
                     handleFormPost("#application-form", url, {
+                        success_msg: function (data) {
+                            if (data.status === "ok") return method + "成功！";
+                            return "";
+                        },
                         success_callback: function (data) {
                             if (data.status === "ok") {
                                 setTimeout(function () {

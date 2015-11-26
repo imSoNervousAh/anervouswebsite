@@ -10,14 +10,39 @@
         <h4>公众号数据分析</h4>
     </div>
     <div class="panel-body">
-        <div id="chart-container"></div>
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active">
+                <a href="#oa-chart" data-toggle="tab">公众号统计数据</a>
+            </li>
+            <li role="presentation">
+                <a href="#article-chart" data-toggle="tab">文章统计数据</a>
+            </li>
+            <li role="presentation">
+                <a href="#" data-toggle="tab">历史数据变化</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="oa-chart" class="tab-pane fade in active embed-responsive embed-responsive-16by9">
+                <object id="oa-chart-container" data-type="mscombidy2d"
+                        data-json='{{ chart_json }}'></object>
+            </div>
+            <div id="article-chart" class="tab-pane fade embed-responsive embed-responsive-16by9">
+                <object id="article-chart-container" data-type="mscombidy2d"
+                        data-json='{{ chart_json }}'></object>
+            </div>
+        </div>
         <script>
-            var container = $("#chart-container");
-            container.attr("height", container.width() * 0.618);
-            container.ready(function () {
-                renderMultiChart("#chart-container", {{ chart_json|safe }}, {
-                    width: container.width(),
-                    height: container.width() * 0.618
+            var containers = $(".tab-pane > object");
+            var first_container = $(".tab-pane:first > object");
+            var height = first_container.height(), width = first_container.width();
+
+            containers.each(function () {
+                var $this = $(this);
+                $this.ready(function () {
+                    renderChart("#" + $this.attr("id"), $this.data("type"), $this.data("json"), {
+                        width: width,
+                        height: height
+                    });
                 });
             });
         </script>

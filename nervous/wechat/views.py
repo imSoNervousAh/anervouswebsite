@@ -474,7 +474,7 @@ def admin_forewarn_rules_list(request):
 
 
 @check_identity('admin')
-def admin_show_forewarn_rules_modal(request, type, id):
+def admin_show_forewarn_rules_modal(request, type, id=None):
     wx_name = map(lambda account: account.name, backend.get_official_accounts())
     if type == 'modify':
         rule = backend.get_forewarn_rule_by_id(id)

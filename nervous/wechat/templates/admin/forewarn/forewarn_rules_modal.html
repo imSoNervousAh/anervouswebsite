@@ -109,9 +109,9 @@
     handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
         success_callback: function (data) {
             if (data.status === 'ok') {
-                modal.modal('hide');
+                $("#forewarn-rules-modal").modal('hide');
                 loadContent("{% url 'admin/forewarn-rules' %}", {}, undefined, {
-                    'replace': true,
+                    replace: true,
                     anim: false,
                     scroll: false
                 });
