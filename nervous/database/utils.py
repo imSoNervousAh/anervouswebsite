@@ -78,27 +78,27 @@ def message_test_db(message_test_oa_id):
 
 
 def forewarn_test_db(name):
-    assert (backend.add_forewarn_rule({
+    backend.add_forewarn_rule({
         'account_name': name,
         'duration': str(1),
         'notification': str(0),
         'target': str(0),
         'value': str(10000),
-    }))
-    assert (backend.add_forewarn_rule({
+    })
+    backend.add_forewarn_rule({
         'account_name': name,
         'duration': str(1),
         'notification': str(0),
         'target': str(0),
         'value': str(5),
-    }))
-    assert (backend.add_forewarn_rule({
+    })
+    backend.add_forewarn_rule({
         'account_name': '',
         'duration': str(1),
         'notification': str(0),
         'target': str(0),
         'value': str(5),
-    }))
+    })
 
 
 def build_test_db():
