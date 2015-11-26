@@ -2,6 +2,7 @@ import database.gsdata_utils
 from api import getdata
 import time
 import datetime
+import socket
 
 
 def get_time_string_before_n_days(n):
@@ -91,6 +92,8 @@ def update_all(account):
         update_official_account_nums(account)
     except KeyError:
         print u'update of account %s failed due to gsdata error' % account
+    except socket.timeout:
+        print u'update of account %s failed due to network error' % account
 
 
 def update_wci(account):

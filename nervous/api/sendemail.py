@@ -23,7 +23,7 @@ def send_singal_email(mailto_mail,mailto_name,sub,content):
     msg['From'] = u'清华大学微信公众号备案平台 <%s>' % mailfrom_mail
     msg['To'] = u'%s <%s>' % (mailto_name,mailto_mail)
     try:
-        server = smtplib.SMTP()
+        server = smtplib.SMTP(timeout=7)
         server.connect(mailfrom_host)
         server.login(mailfrom_user, mailfrom_pass)
         server.sendmail(mailfrom_mail, mailto_mail, msg.as_string())
@@ -35,7 +35,7 @@ def send_singal_email(mailto_mail,mailto_name,sub,content):
 
 
 #make email
-mailto_mail = "wyl8899k@gmail.com" 
+mailto_mail = "wyl8899k@gmail.com"
 mailto_name="HuangDaDa"
 sub="数据预警"
 content='''
@@ -53,4 +53,5 @@ content='''
 '''
 
 #[example] send email
-send_singal_email(mailto_mail,mailto_name,sub,content)
+if __name__ == '__main__':
+    send_singal_email(mailto_mail,mailto_name,sub,content)

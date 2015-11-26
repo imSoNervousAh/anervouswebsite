@@ -42,7 +42,7 @@ def call(url, data):
     post_string = json_encode(data_call.items())
     tmp_string = base64.encodestring(post_string)
     req = urllib2.Request(basicURL + url, tmp_string)
-    response = urllib2.urlopen(req)
+    response = urllib2.urlopen(req, timeout=7)
     the_page = response.read()
     return the_page
 
