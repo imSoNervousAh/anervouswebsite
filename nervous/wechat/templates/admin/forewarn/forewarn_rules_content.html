@@ -17,12 +17,10 @@
             <td>{{ rule.notification_name }}</td>
             <td>阅读增长量大于{{ rule.value }}条</td>
             <td>
-                <!--
                 <a style="cursor:pointer;"
                    href="javascript:showModal('{% url 'modals/admin/process-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
                     <span class="fa fa-edit fa-fw"></span> 修改
                 </a>
-                -->
 
                 <a data-id="{{ rule.id }}" class="fake-link delete-link">
                     <span class="fa fa-minus-square-o fa-fw"></span>
