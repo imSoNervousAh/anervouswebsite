@@ -16,7 +16,9 @@
             <td>{{ app.manager_name }}</td>
             <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
             <td>
-                <span class="fa {{ app.status_icon }} fa-fw"></span> {{ app.status_name }}
+                <span class="label label-{{ app.status_display.colorclass }}">
+                    <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                </span>
             </td>
             <td>
                 {% if app.status == 'pending' %}
@@ -37,16 +39,6 @@
     <script>
         $(".official-account-link").click(function () {
             loadContent($(this).data("url"), {});
-        });
-        $(function () {
-            $("body").popover({
-                html: true,
-                placement: "auto right",
-                selector: ".change-app-status-link",
-                title: "请选择审批结果",
-                trigger: "focus",
-                container: "body"
-            });
         });
     </script>
 {% endblock content %}

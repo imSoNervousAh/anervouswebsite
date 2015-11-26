@@ -104,7 +104,32 @@
                         </div>
                     </form>
                 {% else %}
-                    <button type="button" class="btn btn-default" data-dismiss="modal">完成</button>
+                    <div class="form-display">
+                        <div class="row control-group">
+                            <div class="col-xs-12 form-group">
+                                <label class="control-label" for="status-field">审批状态</label>
+                                <h3 style="text-align: center;">
+                                    <span id="status-field" class="label label-{{ app.status_display.colorclass }}">
+                                        <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        {% if app.status == 'rejected' %}
+                            <div class="row control-group">
+                                <div class="col-xs-12 form-group">
+                                    <label class="control-label" for="reject_reason-field">拒绝理由</label>
+                                    <textarea id="reject_reason-field" name="reject_reason" class="form-control"
+                                              style="resize: vertical;" readonly>{{ app.reject_reason }}</textarea>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="control-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            完成
+                        </button>
+                    </div>
                 {% endif %}
             </div>
         </div>

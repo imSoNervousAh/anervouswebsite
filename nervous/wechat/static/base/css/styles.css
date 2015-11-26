@@ -191,12 +191,17 @@ th.th-sortable {
     transition: all 0.5s ease-in-out;
 }
 
+/* tweaks for forms */
 .form-group {
     margin-bottom: 0;
 }
 
 .form-btn:nth-last-of-type(n+2) {
     margin-right: 20px;
+}
+
+.form-display {
+    text-align: left;
 }
 
 .form-display .form-control {

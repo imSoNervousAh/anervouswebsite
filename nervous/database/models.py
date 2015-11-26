@@ -169,23 +169,31 @@ class Application(models.Model):
                 'reject_reason': 'Rejected application should have a reason'
             })
 
-    def status_icon(self):
-        glyphicons = {
-            'approved': 'fa-check-circle',
-            'rejected': 'fa-times-circle',
-            'pending': 'fa-question-circle',
-            'not_submitted': 'fa-info-circle',
-        }
-        return glyphicons[str(self.status)]
-
-    def status_name(self):
-        name = {
+    def status_display(self):
+        names = {
             'approved': '已通过审批',
             'rejected': '审批被拒绝',
             'pending': '待审批',
             'not_submitted': '尚未提交',
         }
-        return name[str(self.status)]
+        icons = {
+            'approved': 'fa-check-circle',
+            'rejected': 'fa-times-circle',
+            'pending': 'fa-question-circle',
+            'not_submitted': 'fa-info-circle',
+        }
+        classes = {
+            'approved': 'success',
+            'rejected': 'danger',
+            'pending': 'info',
+            'not_submitted': 'default',
+        }
+        status = str(self.status)
+        return {
+            'icon': icons[status],
+            'name': names[status],
+            'colorclass': classes[status]
+        }
 
     def __unicode__(self):
         return u"Application for %s from user %s, status: %s" % (

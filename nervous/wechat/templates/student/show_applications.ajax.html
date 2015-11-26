@@ -34,7 +34,9 @@
                                 <td>{{ app.name }}</td>
                                 <td>{{ app.description|linebreaksbr|safe }}</td>
                                 <td>
-                                    <span class="fa {{ app.status_icon }} fa-fw"></span> {{ app.status_name }}
+                                    <span class="label label-{{ app.status_display.colorclass }}">
+                                        <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                                    </span>
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
