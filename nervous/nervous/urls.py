@@ -117,6 +117,7 @@ urlpatterns = [
     url(r'^api/add_message/?$', 'api.views.add_message', name='api/add_message'),
     url(r'^api/process_message/?$', 'api.views.process_message', name='api/process_message'),
     url(r'^api/submit_rule/?$', 'api.views.submit_rule', name='api/submit_rule'),
+    url(r'^api/modify_rule/?$', 'api.views.modify_rule', name='api/modify_rule'),
     url(r'^api/update_start/?$', 'api.views.update_start', name='api/update-start'),
     url(r'^api/modify_announcement/?$', 'api.views.modify_announcement', name='api/modify_announcement'),
     url(r'^api/delete_forewarn_rule/([0-9]+)/?$', 'api.views.delete_forewarn_rule', name='api/delete_forewarn_rule'),

@@ -61,7 +61,7 @@
                                         阅读量
                                     </option>
                                     <option value="{{ ForewarnTarget.LikesTotal }}" disabled
-                                            {% if rule.target == ForewarnTarget.ViewsTotal %}selected{% endif %}>
+                                            {% if rule.target == ForewarnTarget.LikesTotal %}selected{% endif %}>
                                         点赞数
                                     </option>
                                 </select>
@@ -100,13 +100,16 @@
                         </div>
                     </div>
                 </div>
+                <input style="display:none" name="id" value="{{ rule.id }}">
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    handleFormPost("#rule-form", "{% url 'api/submit_rule' %}", {
+    {% if type == "add" %} var url = "{% url 'api/submit_rule' %}" {% endif %}
+    {% if type == "modify" %} var url = "{% url 'api/modify_rule' %}" {% endif %}
+    handleFormPost("#rule-form", url, {
         success_callback: function (data) {
             if (data.status === 'ok') {
                 $("#forewarn-rules-modal").modal('hide');

@@ -254,6 +254,19 @@ def submit_rule(request):
 
 
 @json_response_general_exception_decorator
+@json_response_validation_error_decorator
+def modify_rule(request):
+    dic = request.POST.dict()
+    print dic
+    backend.modify_forewarn_rule(dic)
+
+
+@json_response_general_exception_decorator
+def delete_forewarn_rule(request, id):
+    backend.del_forewarn_rule(id)
+
+
+@json_response_general_exception_decorator
 def update_start(request):
     def worker():
         try:
@@ -269,8 +282,3 @@ def update_start(request):
 def modify_announcement(request):
     announcement = request.POST['content']
     backend.modify_announcement(announcement)
-
-
-@json_response_general_exception_decorator
-def delete_forewarn_rule(request, id):
-    backend.del_forewarn_rule(id)
