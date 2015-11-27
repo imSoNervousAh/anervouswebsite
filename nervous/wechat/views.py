@@ -295,7 +295,7 @@ def admin_dashboard(request):
     if pending_count > 0:
         show_all_pending_applications = True
         pending_applications = pending_applications[0:10]
-    official_accounts = backend.get_official_accounts()[0:10]
+    official_accounts = backend.get_official_accounts().order_by('-wci')[0:10]
     articles_count, articles = backend.get_articles(sortby=SortBy.Views, filter={
         'posttime_begin': timezone.now().date() - timedelta(days=7)
     })
