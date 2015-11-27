@@ -3,6 +3,8 @@ from api import getdata
 import time
 import datetime
 import socket
+import re
+import requests
 
 
 def get_time_string_before_n_days(n):
@@ -87,14 +89,20 @@ def update_official_account_daily_nums(account):
 
 
 def get_wci(account):
-    paras = {'wx_name': account}
-    d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
-    return d['returnData']['items'][0]['wci']
+    try:
+        paras = {'wx_name': account}
+        d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
+        return d['returnData']['items'][0]['wci']
+    except IndexError:
+        print 'WCI fetching for %s fails, trying brute force...' % account
+        url = 'http://www.gsdata.cn/query/wx?q=%s&search_field=2' % account
+        text = requests.get(url, timeout=7).text
+        g = re.search(r"class=\"hm\">\r\n(.*?)<", text)
+        return float(g.group(1))
 
 
 def update_official_account_nums(account):
     paras = {'wx_name': account}
-    res_dic = {}
     d = getdata.get_dict('wx/opensearchapi/nickname_order_total', paras)
     res = d['returnData']
     res_dic = {
