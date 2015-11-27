@@ -20,7 +20,7 @@
             <td>{{ rule.duration }}天</td>
             <td>{{ rule.notification_name }}</td>
             <td>阅读增长量大于{{ rule.value }}条</td>
-            <td>
+            <td style="text-align: right">
                 <a class="fake-link"
                    href="javascript:showModal('{% url 'modals/admin/modify-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
                     <span class="fa fa-edit fa-fw"></span> 修改

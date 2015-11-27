@@ -31,7 +31,7 @@
                     </span>
                 </td>
             {% endif %}
-            <td>
+            <td style="text-align: right">
                 {% if app.status == 'pending' %}
                     <a class="fake-link"
                        href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.id %}', 'application-modal')">
