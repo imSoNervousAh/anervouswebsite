@@ -25,6 +25,7 @@
             var password_field = form.find("input[name=password_display]");
             var account = account_field.val();
             var password = password_field.val();
+            var button = $("#signin-button");
             error_msg.html("");
             $("input").removeClass("form-error");
 
@@ -38,6 +39,9 @@
                 return;
             }
 
+            button.addClass("disabled");
+            button.val("登录中……");
+
             var re = /\d{10}/;
             if (!re.test(account)) {
                 form.find("input[name=password]").val(hex_md5(password));
@@ -50,6 +54,8 @@
                 url: "{% url 'api/login' %}",
                 data: form.serialize(),
                 success: function (data) {
+                    button.removeClass("disabled");
+                    button.val("登录");
                     if (data.status === "ok") {
                         window.location = '/' + data.identity;
                     } else {
@@ -57,6 +63,8 @@
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                    button.removeClass("disabled");
+                    button.val("登录");
                     $(".error-msg").html("无法登录：" + textStatus + ": " + errorThrown);
                 }
             });
@@ -91,9 +99,15 @@
                 <input name="password" type="password" style="display: none;">
 
                 <div class="error-msg"></div>
-                <input id="signin-button" type="button" class="rc-button rc-button-submit" onclick="form_submit()"
+                <input id="signin-button" type="submit" class="rc-button rc-button-submit"
                        value="登录">
             </form>
+            <script>
+                $("#login-form").submit(function (e) {
+                    e.preventDefault();
+                    form_submit();
+                })
+            </script>
         </div>
     </div>
 </div>

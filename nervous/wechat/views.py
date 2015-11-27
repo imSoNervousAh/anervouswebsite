@@ -135,10 +135,8 @@ def logout(request):
     if identity != 'none':
         print 'logout success!'
         session.del_session(request)
-        response = login(request)
-        return response
     print 'no cookies & logout success!'
-    return login(request)
+    return HttpResponseRedirect('/login')
 
 
 # student
@@ -162,7 +160,7 @@ def check_identity(identity):
                 if request.is_ajax():
                     return HttpResponseForbidden()
                 else:
-                    return login(request, identity)
+                    return HttpResponseRedirect('/login')
             return func(request, *args, **kw)
 
         return wrapper
@@ -298,7 +296,7 @@ def admin_dashboard(request):
     pending_applications = backend.get_pending_applications()
     pending_count = pending_applications.count()
     show_all_pending_applications = False
-    if pending_count > 0:
+    if pending_count > 10:
         show_all_pending_applications = True
         pending_applications = pending_applications[0:10]
     official_accounts = backend.get_official_accounts().order_by('-wci')[0:10]

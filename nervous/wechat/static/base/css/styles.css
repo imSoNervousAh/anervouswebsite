@@ -75,6 +75,10 @@ a > span.badge-info {
     margin-bottom: 5px;
 }
 
+.table-responsive {
+    margin-bottom: -20px;
+}
+
 /*
     put modal windows in center
         for readability concerns, only apply to large screens

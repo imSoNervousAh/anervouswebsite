@@ -1,10 +1,11 @@
-import database.gsdata_utils
-from api import getdata
-import time
 import datetime
-import socket
 import re
 import requests
+import socket
+import time
+
+import database.gsdata_utils
+from api import getdata
 
 
 def get_time_string_before_n_days(n):
