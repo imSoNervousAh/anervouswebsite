@@ -62,16 +62,13 @@
                         "{% static 'fusioncharts/fusioncharts.charts.js' %}",
                         "{% static 'fusioncharts/fusioncharts-jquery-plugin.min.js' %}",
                         "{% static 'fusioncharts/themes/fusioncharts.theme.zune.js' %}",
+                        "{% static 'fusioncharts/startrender.js' %}"
                     ].forEach(function (src) {
                         var script = document.createElement('script');
                         script.src = src;
                         script.async = false;
                         document.head.appendChild(script);
                     });
-                    var endscript = document.createElement('script');
-                    endscript.innerHTML = "setTimeout(loadChart, 500);";
-                    endscript.async = false;
-                    document.head.appendChild(endscript);
                 </script>
             </div>
         </div>
