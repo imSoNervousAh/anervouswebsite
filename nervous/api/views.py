@@ -116,7 +116,7 @@ def check_student(username, password):
 
 
 def check_superuser(username, password):
-    return (username == 'root') and (password == 'e10adc3949ba59abbe56e057f20f883e')  # hex_md5('123456')
+    return (username == settings.SUPERUSER_USERNAME) and (password == settings.SUPERUSER_PASSWORD)
 
 
 # Views

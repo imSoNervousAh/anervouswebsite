@@ -27,10 +27,13 @@ SECRET_KEY = '!yukn2^_)4q(dsgw(+nuft=9m1%(&cz*)+5^992(!c5h(**l2d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = []
+
+# site specific settings
 ALLOW_INVALID_WX_NAME = False
 UPDATE_UPON_APPROVING = True
-
-ALLOWED_HOSTS = []
+SUPERUSER_USERNAME = 'root'
+SUPERUSER_PASSWORD = 'e10adc3949ba59abbe56e057f20f883e'
 
 # Application definition
 
