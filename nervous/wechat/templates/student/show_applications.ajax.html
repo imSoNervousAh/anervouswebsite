@@ -51,6 +51,9 @@
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
+                                    {{ app.id  }}
+                                </td>
+                                <td>
                                     {% if app.status == 'not_submitted' %}
                                         <a data-id="{{ app.id }}" class="fake-link modify-link">
                                             <span class="fa fa-edit fa-fw"></span> 修改
@@ -77,6 +80,10 @@
                                                     .click(delete_app_callback);
                                             </script>">
                                             <span class="fa fa-minus-square-o fa-fw"></span> 删除
+                                        </a>
+                                    {% elif app.status == 'rejected' %}
+                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                            <span class="fa fa-edit fa-fw"></span> 修改
                                         </a>
                                     {% endif %}
                                 </td>

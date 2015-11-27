@@ -234,7 +234,7 @@ class Application(models.Model):
             })
         if self.status == 'rejected' and len(self.reject_reason) == 0:
             raise ValidationError({
-                'reject_reason': 'Rejected application should have a reason'
+                'reject_reason': '请填写拒绝理由'#'Rejected application should have a reason'
             })
 
     def status_display(self):
