@@ -122,24 +122,20 @@ def check_superuser(username, password):
 
 # Views
 
-def login(request, identity):
+def login(request):
     username, password = request.POST['account'], request.POST['password']
-    print '[', identity, '] is trying to login...'
-    print '[account] ', username
-    print '[password] ', password
-    if identity in ['student', 'admin', 'superuser']:
+    for identity in ['superuser', 'admin', 'student']:
         if globals()['check_%s' % identity](username, password):
             session.add_session(request, identity=identity, username=username)
-            response = HttpResponseRedirect('/%s' % identity)
-            return response
-        else:
-            response = render(request, 'login/index.html', {'identity': identity})
-            session.del_session(request)
-            return response
-    else:
-        response = HttpResponseRedirect('/index')
-        session.del_session(request)
-        return response
+            return JsonResponse({
+                'status': 'ok',
+                'identity': identity,
+            })
+    session.del_session(request)
+    return JsonResponse({
+        'status': 'error',
+        'error_message': u'用户名或密码错误！'
+    })
 
 
 @json_response_general_exception_decorator

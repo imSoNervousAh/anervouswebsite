@@ -102,7 +102,7 @@ urlpatterns = [
         name='badges/student/account-unprocessed-message-count'),
 
     # api part
-    url(r'^api/login/([^/]+)/?$', 'api.views.login', name='api_login'),
+    url(r'^api/login/?$', 'api.views.login', name='api_login'),
 
     url(r'^api/submit_application/?$', 'api.views.submit_application', name='api/submit_application'),
     url(r'^api/modify_application/?$', 'api.views.modify_application', name='api/modify_application'),
