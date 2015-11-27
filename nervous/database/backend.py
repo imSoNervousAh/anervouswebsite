@@ -53,17 +53,10 @@ def application_from_dict(dic, base=None):
 
 
 def official_account_from_dict(dic):
-    oa = OfficialAccount.objects.model()
+    account = OfficialAccount.objects.model()
     for attr in ['name', 'description', 'wx_id']:
-        setattr(oa, attr, dic.get(attr, '__placeholder__'))
-    oa.full_clean(validate_unique=False)
-    return oa
-
-
-def add_application(dic):
-    application = application_from_dict(dic)
-    account = official_account_from_dict(dic)
-    account.full_clean()
+        setattr(account, attr, dic.get(attr, '__placeholder__'))
+    account.full_clean(validate_unique=False)
     res = api.backend_utils.verify_wx_name(account.wx_id)
     if res == None:
         raise ValidationError({
@@ -73,6 +66,13 @@ def add_application(dic):
         raise ValidationError({
             'wx_id': u'请输入一个合法的公众号ID',
         })
+    return account
+
+
+def add_application(dic):
+    application = application_from_dict(dic)
+    account = official_account_from_dict(dic)
+    account.full_clean()
     account.save()
     application.official_account = account
     application.full_clean()
