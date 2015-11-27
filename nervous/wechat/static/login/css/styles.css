@@ -9,6 +9,7 @@ html, body {
     position: absolute;
     height: 100%;
     min-width: 100%;
+    max-width: 95vw;
     font-size: 13px;
     color: #404040;
     direction: ltr;
@@ -113,6 +114,14 @@ input.form-error {
     height: 70px;
 }
 
+.hidden-xs {
+    display: block !important;
+}
+
+.visible-xs {
+    display: none !important;
+}
+
 .header-bar {
     border: 0;
 }
@@ -129,9 +138,9 @@ input.form-error {
 
 .card {
     background-color: #f7f7f7;
-    padding: 20px 25px 30px;
+    padding: 40px;
     margin: 0 auto 25px;
-    width: 304px;
+    width: 274px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -240,15 +249,9 @@ input.form-error {
     margin-bottom: 20px;
 }
 
-.signin-card {
-    width: 274px;
-    padding: 40px 40px;
-}
-
-.signin-card input[type=email],
-.signin-card input[type=password],
-.signin-card input[type=text],
-.signin-card input[type=submit] {
+.card input[type=password],
+.card input[type=text],
+.card input[type=submit] {
     width: 100%;
     display: block;
     margin-bottom: 10px;
@@ -257,4 +260,41 @@ input.form-error {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+@media screen and (max-width: 767px) {
+    .main {
+        padding: 0 44px 100px;
+    }
+
+    .banner h1 {
+        font-family: 'Open Sans', arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: #555;
+        font-size: 25px;
+        font-weight: 300;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .hidden-xs {
+        display: none !important;
+    }
+
+    .visible-xs {
+        display: block !important;
+    }
+
+    .header .logo {
+        width: 200px;
+        height: 39px;
+        background-size: 200px 39px;
+    }
+
+    .card {
+        background-color: #f7f7f7;
+        margin: auto;
+        width: 70%;
+        padding: 30px;
+    }
 }
