@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
+from django.utils import timezone
 
 import datetime
 import time
@@ -347,25 +348,40 @@ def forewarn_rule_from_dict(dic, base=None):
     rule.full_clean()
     return rule
 
+
 def add_forewarn_rule(dic):
     rule = forewarn_rule_from_dict(dic)
     rule.save()
+
 
 def modify_forewarn_rule(dic):
     rule = ForewarnRule.objects.get(pk=dic['id'])
     forewarn_rule_from_dict(dic, rule).save()
 
+
 def get_forewarn_rules():
     return ForewarnRule.objects.all()
+
 
 def get_forewarn_rule_by_id(id):
     return ForewarnRule.objects.get(pk=id)
 
+
 def del_forewarn_rule(id):
     get_forewarn_rule_by_id(id).delete()
 
+
 def get_forewarn_records():
     return ForewarnRecord.objects.all()
+
+
+def delete_expired_rules():
+    records = get_forewarn_rules()
+    for record in records:
+        delta = datetime.timedelta(days=record.duration)
+        expire_time = record.time + delta
+        if expire_time < timezone.now():
+            record.delete()
 
 
 # Forewarning
@@ -511,6 +527,8 @@ def update_all():
         # Release the "lock"
         release()
 
+        delete_expired_rules()
+
 
 # Global
 
@@ -524,6 +542,7 @@ def get_globals():
 def modify_announcement(announcement):
     g = get_globals()
     g.announcement = announcement
+    g.full_clean()
     g.save()
 
 

@@ -341,6 +341,7 @@ class ForewarnRule(NervousModel):
         MinValueValidator(1, message=u'该值应为正数'),
         MaxValueValidator(2147483647, message=u'该值应在32位整数范围内'),
     ])
+    time = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
         if not self.notification in [
