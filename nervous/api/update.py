@@ -110,7 +110,7 @@ def update_all(account):
         update_official_account(account)
         update_official_account_nums(account)
         update_official_account_daily_nums(account)
-    except KeyError:
+    except (KeyError, IndexError):
         print u'update of account %s failed due to gsdata error' % account
     except socket.timeout:
         print u'update of account %s failed due to network error' % account
