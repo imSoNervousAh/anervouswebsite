@@ -89,7 +89,7 @@ def update_official_account_daily_nums(account):
 def get_wci(account):
     paras = {'wx_name': account}
     d = getdata.get_dict('wx/opensearchapi/nickname_order_now', paras)
-    return d['returnData']['items']['wci']
+    return d['returnData']['items'][0]['wci']
 
 
 def update_official_account_nums(account):
@@ -102,6 +102,7 @@ def update_official_account_nums(account):
         'views_total': res['readnum_total'],
         'wci': get_wci(account),
     }
+    database.gsdata_utils.update_account_nums(account, res_dic)
 
 
 def update_all(account):
