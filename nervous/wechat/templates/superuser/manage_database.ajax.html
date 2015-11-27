@@ -9,10 +9,68 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>数据库管理</h4></div>
+                <h4>数据库信息</h4></div>
             <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><b>超级管理员信息</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">帐号名 <b>{{ root_name }}</b></div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>公众号信息</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">公众号总数 <b>{{ count.OfficialAccount }}</b> 个</div>
+                            <div class="col-sm-6">公众号文章总数 <b>{{ count.Article }}</b> 条</div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>学生申请信息</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">已注册学生数 <b>{{ count.Student }}</b> 个</div>
+                            <div class="col-sm-6">学生申请总数 <b>{{ count.Application }}</b> 条</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">已审批申请总数 <b>{{ count.application_approved }}</b> 条</div>
+                            <div class="col-sm-6">被拒绝申请总数 <b>{{ count.application_rejected }}</b> 条</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">待审批申请总数 <b>{{ count.application_pending }}</b> 条</div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>管理员相关</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">管理员总数 <b>{{ count.Admin }}</b> 个</div>
+                            <div class="col-sm-6">站内信总数 <b>{{ count.Message }}</b> 条</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">数据预警总条数 <b>{{ count.ForewarnRule }}</b> 条</div>
+                            <div class="col-sm-6">数据预警总记录数 <b>{{ count.ForewarnRecord }}</b> 条</div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>数据库系统信息</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">数据库版本 <b>SQLite3</b></div>
+                            <div class="col-sm-6">数据库使用率 <b>8%</b></div>
+                        </div>
+                    </li>
+                </ul>
+
+
             </div>
         </div>
+
     </div>
 </div>
 

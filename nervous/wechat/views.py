@@ -8,8 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from database import backend
-from database.models import ForewarnTarget, NotificationOption
-from database.models import SortBy, MessageCategory
+from database.models import *
 from wechat import session
 
 
@@ -609,10 +608,26 @@ def superuser_modify_announcement(request):
         'announcement': announcement,
     }, 'modify-announcement-item')
 
-
 @check_identity('superuser')
 def superuser_manage_database(request):
+    def all_count(model):
+        return model.objects.all().count()
+
+    count={}
+
+    themodals = [OfficialAccount,Article,Student,Application,Admin,Message,ForewarnRule,ForewarnRecord]
+    for i in range(0,len(themodals)):
+        count[themodals[i].__name__]=all_count(themodals[i])
+
+    thestatus=['approved','rejected','pending','not_submitted']
+    for status in thestatus:
+        count['application_'+status]=len(backend.get_applications_by_status(status))
+
+    root_name='root'
+
     return render_ajax(request, 'superuser/manage_database.html', {
+        'count':count,
+        'root_name':root_name,
     }, 'database-info-item')
 
 
