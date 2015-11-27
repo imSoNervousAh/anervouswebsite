@@ -201,3 +201,65 @@ class ArticleTest(TestCase):
 class MessageTest(TestCase):
     def test_get_messages(self):
         backend.get_messages()
+    
+    def test_process_all_messages(self):
+        self.assertTrue(backend.process_all_messages(0, 0))
+    
+    def test_add_messages(self):
+        username = 'rsents'
+        password = '1231231'
+        email = 'a@bc.com'
+        description = 'no'
+        backend.add_admin(username, password, email, description)
+        x = OfficialAccount.objects.create(wx_id='jiujingzixun')
+        backend.add_message(MessageCategory.ToStudent, x.id, 'hahaha', 'rsents')
+
+
+class NervousTest(TestCase):
+    def test_get_lastest_record_date(self):
+        x = OfficialAccount.objects.create(wx_id='jiujingzixun')
+        backend.get_lastest_record_date(x)
+
+    def test_del_official_account(self):
+        test_account = OfficialAccount.objects.create(wx_id='jiujingzixun')
+        test_id = test_account.id
+        self.assertTrue(backend.del_official_account(test_id))
+        self.assertFalse(backend.del_official_account(test_id))
+
+    def test_check_forewarn_rule_on_account(self):
+        test_account = OfficialAccount.objects.create(wx_id='jiujingzixun')
+        x = ForewarnRule.objects.create(account=test_account,target=10,notification=10,value=10,duration=10)
+        backend.check_forewarn_rule_on_account(x, test_account)
+
+    def test_check_forewarn_rule(self):
+        test_account = OfficialAccount.objects.create(wx_id='jiujingzixun')
+        x = ForewarnRule.objects.create(account=test_account,target=10,notification=10,value=10,duration=10)
+        backend.check_forewarn_rule(x, test_account)
+
+    def test_forewarn_rule_from_dict(self):
+        dic = {}
+        ac_name = 'qwerty'
+        dic['account_name'] = ac_name
+        test_account = OfficialAccount.objects.create(name=ac_name)
+        dic['duration'] = 10
+        dic['notification'] = 1
+        dic['target'] = 0
+        dic['value'] = 1
+        x = backend.forewarn_rule_from_dict(dic)
+        self.assertEqual(x.account.name, dic['account_name'])
+        self.assertEqual(x.duration, dic['duration'])
+        self.assertEqual(x.notification, dic['notification'])
+        self.assertEqual(x.target, dic['target'])
+        self.assertEqual(x.value, dic['value'])
+
+    def test_check_all_forewarn_rules(self):
+        ac_name = 'qwerty'
+        test_account = OfficialAccount.objects.create(name=ac_name)
+        x = ForewarnRule.objects.create(account=test_account,target=10,notification=10,value=10,duration=10)
+        x.save()
+        x = ForewarnRule.objects.create(account=test_account,target=10,notification=5,value=10,duration=10)
+        x.save()
+        backend.check_all_forewarn_rules()
+
+    def test_updating_account_name(self):
+        backend.updating_account_name()
