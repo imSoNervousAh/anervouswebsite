@@ -54,6 +54,14 @@ function displayContent(data, params, container, callback) {
         }
     }
 
+    if (anim && main.css("opacity") > 0) {
+        main.animate({
+            opacity: 0
+        }, 250);
+    } else {
+        main.css("opacity", 0);
+    }
+
     main.queue(function () {
         main.html(data);
 
@@ -121,11 +129,24 @@ function loadContent(url, params, item_selector, load_params, callback) {
         }
     }
 
+    var loadSpinnerTimer;
+    loadSpinnerTimer = setTimeout(function () {
+        main.animate({
+            opacity: 50,
+            height: 100
+        }, 250);
+        main.html('\
+            <div style="width: 100%; text-align: center;">\
+                <span class="fa fa-spinner fa-pulse fa-4x"></span>\
+            </div>');
+    }, 1000);
+
     $.ajax({
         type: "GET",
         url: url,
         data: params,
         success: function (data) {
+            clearTimeout(loadSpinnerTimer);
             __manualStateChange = true;
             var state = {
                 data: data,
@@ -143,6 +164,7 @@ function loadContent(url, params, item_selector, load_params, callback) {
             loadComplete();
         },
         error: function (xhr, textStatus, errorThrown) {
+            clearTimeout(loadSpinnerTimer);
             displayContent('\
                 <div class="alert alert-danger" role="alert">\
                     <strong>页面载入出错。</strong>\
@@ -180,11 +202,33 @@ function loadContentOn(container, url, params, load_params, callback) {
         }, 250);
     }
 
+    var loadSpinnerTimer;
+    loadSpinnerTimer = setTimeout(function () {
+        main.animate({
+            opacity: 30,
+            height: 100
+        }, 250);
+        if (main.prop("tagName") == "TBODY") {
+            main.html('\
+                <tr style="background-color: white;"><td colspan="10000">\
+                    <p style="text-align: center">\
+                        <span class="fa fa-spinner fa-pulse fa-2x"></span>\
+                    </p>\
+                </td></tr>');
+        } else {
+            main.html('\
+                <div style="width: 100%; text-align: center;">\
+                    <span class="fa fa-spinner fa-pulse fa-3x"></span>\
+                </div>');
+        }
+    }, 1000);
+
     $.ajax({
         type: "GET",
         url: url,
         data: params,
         success: function (data) {
+            clearTimeout(loadSpinnerTimer);
             displayContent(data, load_params, container, function () {
                 if (typeof callback === "function")
                     callback();
@@ -193,6 +237,7 @@ function loadContentOn(container, url, params, load_params, callback) {
             });
         },
         error: function (xhr, textStatus, errorThrown) {
+            clearTimeout(loadSpinnerTimer);
             displayContent('\
                 <div class="alert alert-danger" role="alert">\
                     <strong>部件载入出错。</strong>\
