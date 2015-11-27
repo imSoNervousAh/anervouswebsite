@@ -44,7 +44,7 @@
                 data: "",
                 success: function (data) {
                     if (data.status === "ok") {
-                        alert('删除成功!');
+                        showConfirmModal("删除规则","删除成功!",true);
                         refreshTable();
                     }
                 },

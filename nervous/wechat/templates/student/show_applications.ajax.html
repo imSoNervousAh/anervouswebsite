@@ -83,7 +83,7 @@
                                         data: "",
                                         success: function (data) {
                                             if (data.status === "ok") {
-                                                alert('删除成功!');
+                                                showConfirmModal("删除申请","删除成功!",true);
                                                 loadContentOfItem("#my-applications-item", {
                                                     replace: true,
                                                     anim: false,
@@ -109,7 +109,7 @@
                                         data: "",
                                         success: function (data) {
                                             if (data.status === "ok") {
-                                                alert('撤回成功!');
+                                                showConfirmModal("撤回已提交申请","撤回成功!",true);
                                                 loadContentOfItem("#my-applications-item", {
                                                     replace: true,
                                                     anim: false,

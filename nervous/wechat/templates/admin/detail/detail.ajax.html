@@ -60,7 +60,8 @@
                                         loadContentOfItem("#official-accounts-list-item", {"replace": true});
                                     },
                                     error: function (xhr, textStatus, errorThrown) {
-                                        alert("删除公众号遇到错误：" + textStatus + ": " + errorThrown);
+                                        //alert("删除公众号遇到错误：" + textStatus + ": " + errorThrown);
+                                        showConfirmModal("删除公众号遇到错误：" + textStatus + ": " + errorThrown,true);
                                         console.log(xhr.responseText);
                                     }
                                 });
