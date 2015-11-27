@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
 import api.update as api_update
+import api.backend_utils
 from api import sendemail
 from models import *
 
@@ -63,6 +64,15 @@ def add_application(dic):
     application = application_from_dict(dic)
     account = official_account_from_dict(dic)
     account.full_clean()
+    res = api.backend_utils.verify_wx_name(account.wx_id)
+    if res == None:
+        raise ValidationError({
+            'wx_id': u'无法验证ID合法性，请稍后再试',
+        })
+    if res == False:
+        raise ValidationError({
+            'wx_id': u'请输入一个合法的公众号ID',
+        })
     account.save()
     application.official_account = account
     application.full_clean()
