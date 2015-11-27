@@ -1,15 +1,20 @@
 # coding=utf-8
 
-import datetime
-import time
+from models import *
+
+import api.update as api_update
+import api.backend_utils
+from api import sendemail
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
-import api.update as api_update
-import api.backend_utils
-from api import sendemail
-from models import *
+
+import datetime
+import time
+from multiprocessing import Process
+import traceback
 
 
 # Applications
@@ -108,6 +113,14 @@ def modify_application(app):
         application.reject_reason = app['reject_reason']
     application.full_clean()
     application.save()
+    if application.status == 'approved':
+        def worker():
+            try:
+                api_update.update_all(application.official_account.wx_id)
+            except Exception as e:
+                traceback.print_exc()
+        p = Process(target=worker)
+        p.start()
 
 
 def del_application(id):

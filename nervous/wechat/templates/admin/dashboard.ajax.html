@@ -178,7 +178,7 @@
                                     <td><a class="ajax-link" data-url="{% url 'admin/detail' account.id %}">
                                         {{ account.name }}
                                     </a></td>
-                                    <td>{{ account.wci }}</td>
+                                    <td>{{ account|wci }}</td>
                                 </tr>
                             {% endfor %}
                         {% else %}
