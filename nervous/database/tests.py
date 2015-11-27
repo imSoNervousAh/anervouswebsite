@@ -133,3 +133,41 @@ class ApplicationTestCase(TestCase):
 
     def test_recall_application(self):
         pass
+
+    def test_get_applications(self):
+        backend.get_applications()
+
+    def test_get_pending_applications(self):
+        backend.get_pending_applications()
+
+    def test_student_modify_application(self):
+        acc_name = 'acc_name_no2'
+        user_submit = 'hdd_2'
+        app_dic = {
+            'name': acc_name,
+            'wx_id': 'jiujiujiuwewewew',
+            'description': 'by another user',
+            'user_submit': user_submit,
+            'status': 'pending'
+        }
+        backend.add_application(app_dic)
+        res = backend.get_applications_by_status('pending')
+        backend.recall_application(res[0].id())
+        #res = backend.get_applications_by_status('not_submitted')
+        app_dic['application_id'] = res[0].id()
+        app_dic['status'] = 'not_submitted'
+        backend.student_modify_application(app_dic)
+
+    def test_get_applications_by_admin(self):
+        backend.get_applications_by_admin('rsents')
+
+
+class ArticleTest(TestCase):
+    def test_get_articles(self):
+        backend.get_articles()
+    def test_get_articles_by_official_account_id(self):
+        backend.get_articles_by_official_account_id(0)
+
+class MessageTest(TestCase):
+    def test_get_messages(self):
+        backend.get_messages()
