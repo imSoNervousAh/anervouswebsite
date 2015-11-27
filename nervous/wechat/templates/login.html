@@ -1,0 +1,103 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>清华大学微信公众号备案平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--[if lt IE 9]>
+        <script src="{% static 'ie/html5shiv.js' %}"></script>
+        <script src="{% static 'ie/jquery-1.11.3.min.js' %}"></script>
+        <script src="{% static 'ie/css3-mediaqueries.js' %}"></script>
+    <![endif]-->
+    <!-- stylesheets -->
+    <link href="{% static 'login/css/styles.css' %}" rel="stylesheet">
+    <!-- script references -->
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'md5/md5.min.js' %}"></script>
+    <script type="text/javascript">
+        function form_submit() {
+            var error_msg = $(".error-msg");
+            var form = $("#login-form");
+            var account_field = form.find("input[name=account]");
+            var password_field = form.find("input[name=password_display]");
+            var account = account_field.val();
+            var password = password_field.val();
+            error_msg.html("");
+            $("input").removeClass("form-error");
+
+            if (account === "") {
+                account_field.addClass("form-error");
+                error_msg.html("请输入学号");
+                return;
+            } else if (password === "") {
+                password_field.addClass("form-error");
+                error_msg.html("请输入密码");
+                return;
+            }
+
+            var re = /\d{10}/;
+            if (!re.test(account)) {
+                form.find("input[name=password]").val(hex_md5(password));
+            } else {
+                form.find("input[name=password]").val(password);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'api/login' %}",
+                data: form.serialize(),
+                success: function (data) {
+                    if (data.status === "ok") {
+                        window.location = '/' + data.identity;
+                    } else {
+                        error_msg.html(data.error_message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $(".error-msg").html("无法登录：" + textStatus + ": " + errorThrown);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="header-bar">
+        <div class="header content">
+            <div class="logo" style="background: url({% static 'image/logo.png' %})"></div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="banner">
+            <h1>清华大学微信公众号备案平台</h1>
+
+            <h2></h2>
+        </div>
+        <div class="card signin-card">
+            <div class="banner">
+                <h2>请使用<b>Info账号</b>登录</h2>
+            </div>
+
+            <form id="login-form">
+                {% csrf_token %}
+                <p></p>
+                <input id="username-field" name="account" type="text" placeholder="学号" class="">
+                <input id="password-field" name="password_display" type="password" placeholder="密码" class="">
+                <input name="password" type="password" style="display: none;">
+
+                <div class="error-msg"></div>
+                <input id="signin-button" type="button" class="rc-button rc-button-submit" onclick="form_submit()"
+                       value="登录">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

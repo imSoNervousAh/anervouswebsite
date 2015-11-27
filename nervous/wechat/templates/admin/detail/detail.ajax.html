@@ -23,14 +23,13 @@
                         <div style="margin-left: 105px; vertical-align: middle; line-height: 160%;">
                             <b>公众号名称：</b>{{ account.name }}<br/>
                             <b>微信ID：</b>{{ account.wx_id }}<br/>
-                            <b>订阅人数：</b>{{ account.subscribers }}<br/>
-                            <b>公众号描述：</b>{{ account.description }}<br/>
+                            <b>隶属组织：</b>{{ account.association }}<br/>
                             <b>审批管理员：</b>{{ account.application.operator_admin }}<br/>
+                            <b>公众号描述：</b>{{ account.description|linebreaksbr }}<br/>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div style="line-height: 160%;">
-                            <b>隶属组织：</b>{{ account.association }}<br/>
                             <b>负责人姓名：</b>{{ account.manager_name }}<br/>
                             <b>负责人学号：</b>{{ account.manager_student_id }}<br/>
                             <b>负责人院系：</b>{{ account.manager_dept }}<br/>

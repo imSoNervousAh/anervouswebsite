@@ -93,8 +93,17 @@ def get_realname(request):
 # index
 
 def index(request):
-    # 默认返回学生登录界面
-    return login(request, 'student')
+    identity = session.get_identity(request)
+    if identity == 'none':
+        return login(request)
+    elif identity == 'student':
+        return student(request)
+    elif identity == 'admin':
+        return admin(request)
+    elif identity == 'superuser':
+        return superuser(request)
+    else:
+        return notfound(request)
 
 
 def render_ajax(request, url, params, item_id=''):
@@ -117,11 +126,8 @@ def render_ajax(request, url, params, item_id=''):
 
 # login/logout
 
-def login(request, identity='student'):
-    if identity in ['student', 'admin', 'superuser']:
-        response = render(request, 'login/index.html', {'identity': identity})
-        return response
-    return to_notfound(request)
+def login(request):
+    return render(request, 'login.html')
 
 
 def logout(request):
@@ -129,10 +135,10 @@ def logout(request):
     if identity != 'none':
         print 'logout success!'
         session.del_session(request)
-        response = login(request, identity)
+        response = login(request)
         return response
     print 'no cookies & logout success!'
-    return login(request, 'student')
+    return login(request)
 
 
 # student

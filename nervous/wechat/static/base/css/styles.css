@@ -209,6 +209,10 @@ th.th-sortable {
     background-color: white;
 }
 
+.nav-tabs > li.active > a {
+    color: #18bc9c !important;
+}
+
 @media screen and (min-width: 768px) {
     .main {
         padding-top: 70px;
