@@ -155,9 +155,9 @@ class OfficialAccount(models.Model):
     wx_id = models.CharField(u'公众号微信ID', max_length=50, unique=True)
     name = models.CharField(u'公众号名称', max_length=40)
     description = models.CharField(u'公众号简介', max_length=300)
-    likes_total = models.IntegerField(null=True)
-    views_total = models.IntegerField(null=True)
-    wci = models.FloatField(null=True)
+    likes_total = models.IntegerField(null=True, blank=True)
+    views_total = models.IntegerField(null=True, blank=True)
+    wci = models.FloatField(null=True, blank=True)
 
     """
         NOTE: Any account in a state other than NORMAL will prevent the
