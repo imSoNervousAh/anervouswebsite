@@ -23,6 +23,17 @@ class StudentTestCase(TestCase):
         })
         self.assertTrue(backend.check_student_information_filled(student_id))
 
+    def test_get_student_by_id(self):
+        student_id = 2014000
+        backend.set_student_information(student_id, {
+            'real_name': 'doge',
+            'tel': '110',
+            'dept': 'dept',
+            'email': 'a@bc.com',
+        })
+        res = backend.get_student_by_id(2014000)
+        self.assertEqual(2014000, res.student_id)
+
 
 class AdminTestCase(TestCase):
     def test_add_admin(self):
@@ -50,6 +61,24 @@ class AdminTestCase(TestCase):
         backend.add_admin(username, password, email, 'description')
         self.assertTrue(backend.check_admin(username, password))
         self.assertFalse(backend.check_admin(username, 'wrong'))
+        self.assertFalse(backend.check_admin(username + 'asdasda', password))
+
+    def test_del_admin(self):
+        username = 'rsents'
+        password = 'correct'
+        email = 'test_email@nervous.com'
+        description = 'test description'
+        self.assertTrue(backend.add_admin(username, password, email, description))
+        self.assertEqual(backend.get_admins().count(), 1)
+        admin = Admin.objects.get()
+        self.assertEqual(admin.username, username)
+        self.assertEqual(admin.password, password)
+        self.assertEqual(admin.description, description)
+        self.assertTrue(backend.del_admin('rsents'))
+        self.assertFalse(backend.del_admin('rsents12321312312'))
+
+    def test_get_admin_emails(self):
+        backend.get_admin_emails()
 
 
 class ApplicationTestCase(TestCase):
@@ -130,6 +159,7 @@ class ApplicationTestCase(TestCase):
         id = Application.objects.get().id
         backend.del_application(id)
         self.assertEqual(Application.objects.all().count(), 0)
+        self.assertFalse(backend.del_application(id))
 
     def test_recall_application(self):
         pass
