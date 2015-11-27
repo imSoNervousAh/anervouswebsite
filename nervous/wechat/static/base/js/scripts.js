@@ -66,6 +66,7 @@ function displayContent(data, params, container, callback) {
         main.html(data);
 
         var final = function () {
+            main.css("opacity", 1.0);
             main.css("height", "auto");
             if (typeof callback === "function")
                 callback();
