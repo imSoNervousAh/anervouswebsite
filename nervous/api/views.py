@@ -109,11 +109,10 @@ def check_admin(username, password):
 
 
 def check_student(username, password):
-    if settings.DEBUG:
-        fake_student = check_admin(username, password)
+    if settings.DEBUG and check_admin(username, password):
+        return username.isdigit()
     else:
-        fake_student = False
-    return fake_student or tsinghua_login(username, password)
+        return tsinghua_login(username, password)
 
 
 def check_superuser(username, password):
@@ -122,9 +121,16 @@ def check_superuser(username, password):
 
 # Views
 
+@json_response_general_exception_decorator
 def login(request):
     username, password = request.POST['account'], request.POST['password']
-    for identity in ['superuser', 'admin', 'student']:
+    print username, password
+    if settings.DEBUG:
+        priority = ['superuser', 'student', 'admin']
+    else:
+        priority = ['superuser', 'admin', 'student']
+    for identity in priority:
+        print 'trying login with identity = %s' % identity
         if globals()['check_%s' % identity](username, password):
             session.add_session(request, identity=identity, username=username)
             return JsonResponse({
