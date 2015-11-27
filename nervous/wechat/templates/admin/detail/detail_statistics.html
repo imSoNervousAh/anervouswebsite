@@ -1,8 +1,5 @@
 {% load staticfiles %}
 
-<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusioncharts/themes/fusioncharts.theme.zune.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusioncharts/fusioncharts-jquery-plugin.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'base/js/charts.min.js' %}"></script>
 
 <div class="row">
@@ -23,7 +20,7 @@
                         <a href="#" data-toggle="tab">历史数据变化</a>
                     </li>
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content" data-loading="true">
                     <div id="oa-chart" class="tab-pane fade in active embed-responsive embed-responsive-16by9">
                         <object id="oa-chart-container" data-type="mscombidy2d"
                                 data-json='{{ chart_json }}'></object>
@@ -37,7 +34,44 @@
                     </div>
                 </div>
                 <script>
-                    drawCharts();
+                    var charts = $(".tab-pane > object");
+                    charts.html('\
+                        <div style="width: 100%; text-align: center; opacity: 50;">\
+                            <span class="fa fa-spinner fa-pulse fa-4x"></span>\
+                        </div>');
+
+                    var longLoadTimer = setTimeout(function () {
+                        charts.append('<p></p>' +
+                                        '<p class="wait-text" style="text-align: center; font-size: 10px;">图表控件需要较长时间载入，请耐心等待……</p>')
+                                .find(".wait-text").fadeOut(0).fadeIn(1000);
+                    }, 5000);
+
+                    var errorHandler = function () {
+                        charts.data("json", "");
+                        charts.html('<p style="text-align: center; color: red">图表载入出错</p>');
+                    };
+
+                    var loadChart = function () {
+                        clearTimeout(longLoadTimer);
+                        $(".tab-content").data("loading", "");
+                        drawCharts();
+                    };
+
+                    [
+                        "{% static 'fusioncharts/fusioncharts.js' %}",
+                        "{% static 'fusioncharts/fusioncharts.charts.js' %}",
+                        "{% static 'fusioncharts/fusioncharts-jquery-plugin.min.js' %}",
+                        "{% static 'fusioncharts/themes/fusioncharts.theme.zune.js' %}",
+                    ].forEach(function (src) {
+                        var script = document.createElement('script');
+                        script.src = src;
+                        script.async = false;
+                        document.head.appendChild(script);
+                    });
+                    var endscript = document.createElement('script');
+                    endscript.innerHTML = "setTimeout(loadChart, 500);";
+                    endscript.async = false;
+                    document.head.appendChild(endscript);
                 </script>
             </div>
         </div>

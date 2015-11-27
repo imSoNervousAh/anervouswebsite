@@ -26,6 +26,7 @@
     </th>
 {% endblock head %}
 
-{% block body %}
-    {% include 'admin/detail/detail_articles_content.html' %}
-{% endblock body %}
+{% block content-before %}
+    {% load staticfiles %}
+    <script src="{% static 'base/js/referrer-killer.min.js' %}"></script>
+{% endblock content-before %}

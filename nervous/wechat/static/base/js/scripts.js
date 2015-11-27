@@ -66,8 +66,10 @@ function displayContent(data, params, container, callback) {
         main.html(data);
 
         var final = function () {
-            main.css("opacity", 1.0);
-            main.css("height", "auto");
+            main.css({
+                height: "auto",
+                opacity: 1
+            });
             if (typeof callback === "function")
                 callback();
         };
@@ -212,6 +214,7 @@ function loadContentOn(container, url, params, load_params, callback) {
         if (main.prop("tagName") == "TBODY") {
             main.html('\
                 <tr style="background-color: white;"><td colspan="10000">\
+                    <p></p>\
                     <p style="text-align: center">\
                         <span class="fa fa-spinner fa-pulse fa-2x"></span>\
                     </p>\
@@ -614,7 +617,8 @@ function resizeComponents() {
     }
 }
 
-function drawCharts() {
+function drawCharts(callback) {
+    var load_status = $(".tab-content").data("loading");
     var charts = $(".tab-pane > object");
     if (typeof charts !== "undefined") {
         var active_container = $(".tab-pane.active > object");
@@ -622,10 +626,14 @@ function drawCharts() {
         charts.each(function () {
             var $this = $(this);
             $this.ready(function () {
-                renderChart("#" + $this.attr("id"), $this.data("type"), $this.data("json"), {
-                    width: chart_width,
-                    height: chart_height
-                });
+                var json = $this.data("json");
+                if (load_status !== true && json !== "") {
+                    charts.html("");
+                    renderChart("#" + $this.attr("id"), $this.data("type"), $this.data("json"), {
+                        width: chart_width,
+                        height: chart_height
+                    });
+                }
             });
         });
     }
