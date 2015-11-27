@@ -33,7 +33,7 @@
                                     <td>{{ app.manager_name }}</td>
                                     <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
                                     <td>
-                                        <a style="cursor:pointer;"
+                                        <a class="fake-link"
                                            href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.official_account_id %}', 'application-modal')">
                                             <span class="fa fa-check-square-o fa-fw"></span> 审批
                                         </a>

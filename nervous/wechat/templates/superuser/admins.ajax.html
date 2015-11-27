@@ -24,12 +24,12 @@
                         <tbody>
                         <script>
                             $(function () {
-                                $('body').popover({
-                                    'html': true,
-                                    'container': 'body',
-                                    'selector': '.delete-admin-link',
-                                    'title': "确认删除账号？",
-                                    'trigger': 'focus'
+                                $("body").popover({
+                                    html: true,
+                                    container: "body",
+                                    selector: ".delete-link",
+                                    title: "确认删除账号？",
+                                    trigger: "focus"
                                 });
                             });
                         </script>
@@ -39,14 +39,14 @@
                                 <td>{{ admin.description }}</td>
                                 <td>{{ admin.email }}</td>
                                 <td>
-                                    <a style="cursor: pointer;" href="javascript:void(0)" class="delete-admin-link"
-                                       data-toggle="popover" data-content="
-                                        <form method='post' id='delete-admin-{{ forloop.counter }}-popover'>
+                                    <a href="javascript:void(0)" class="fake-link delete-link"
+                                       data-toggle="popover" tabindex="-1" data-content="
+                                        <form id='delete-admin-{{ forloop.counter }}-popover'>
                                             {% csrf_token %}
-                                            <button class='btn btn-info'>取消</button>
+                                            <button class='btn btn-default'>取消</button>
                                             <input style='display: none;' name='username' value='{{ admin.username }}'>
                                             <span>　</span>
-                                            <button type='submit' class='btn btn-danger form-btn'>删除</button>
+                                            <button type='button' class='btn btn-danger form-btn'>删除</button>
                                         </form>
                                         <script>
                                             handleFormPost('#delete-admin-{{ forloop.counter }}-popover', '{% url 'api/del_admin' %}', {

@@ -21,40 +21,27 @@
             <td>{{ rule.notification_name }}</td>
             <td>阅读增长量大于{{ rule.value }}条</td>
             <td>
-                <a style="cursor:pointer;"
+                <a class="fake-link"
                    href="javascript:showModal('{% url 'modals/admin/modify-forewarn-rules-modal' rule.id %}', 'forewarn-rules-modal')">
                     <span class="fa fa-edit fa-fw"></span> 修改
                 </a>
                 <span>&nbsp;&nbsp;</span>
-                <a data-id="{{ rule.id }}" class="fake-link delete-link">
+                <a href="javascript:void(0)" tabindex="-1" class="fake-link delete-link"
+                   data-toggle="popover" data-content="
+                    <div id='delete-rule-{{ rule.id }}-popover'>
+                        {% csrf_token %}
+                        <button class='btn btn-default'>取消</button>
+                        <span>　</span>
+                        <button type='button' class='btn btn-danger form-btn'
+                            data-id='{{ rule.id }}'>删除</button>
+                    </div>
+                    <script>
+                        $('#delete-rule-{{ rule.id }}-popover').find('button.form-btn')
+                            .click(delete_rule_callback);
+                    </script>">
                     <span class="fa fa-minus-square-o fa-fw"></span> 删除
                 </a>
             </td>
         </tr>
     {% endfor %}
-
-    <script>
-        $(".delete-link").click(function (event) {
-            event.preventDefault();
-            var id = $(this).data("id");
-            var url = "/api/delete_forewarn_rule/" + id;
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: "",
-                success: function (data) {
-                    if (data.status === "ok") {
-                        showConfirmModal("删除规则","删除成功!",true);
-                        refreshTable();
-                    }
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    var msg = $("#error-msg");
-                    msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
-                    console.log(xhr.responseText);
-                    msg.fadeIn();
-                }
-            });
-        });
-    </script>
 {% endblock content %}

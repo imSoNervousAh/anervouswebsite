@@ -40,6 +40,8 @@ $(function () {
 });
 
 var __manualStateChange = false;
+var transTimeFast = 150,
+    transTime = 300;
 
 function displayContent(data, params, container, callback) {
     var main;
@@ -57,7 +59,7 @@ function displayContent(data, params, container, callback) {
     if (anim && main.css("opacity") > 0) {
         main.animate({
             opacity: 0
-        }, 250);
+        }, transTimeFast);
     } else {
         main.css("opacity", 0);
     }
@@ -89,12 +91,12 @@ function displayContent(data, params, container, callback) {
                 var pos = main.position().top + ((container === "#main-page") ? (-delta) : delta);
                 $("html, body").stop(true).delay(50).animate({
                     "scroll-top": pos
-                });
+                }, transTime);
             }
             main.delay(50).animate({
                 opacity: 1.0,
                 height: new_height
-            }, final);
+            }, transTime, final);
         } else {
             final();
         }
@@ -120,7 +122,7 @@ function loadContent(url, params, item_selector, load_params, callback) {
         main.animate({
             opacity: 0,
             height: main.height()
-        }, 250);
+        }, transTimeFast);
     } else {
         main.css("height", main.height());
     }
@@ -137,7 +139,7 @@ function loadContent(url, params, item_selector, load_params, callback) {
         main.animate({
             opacity: 50,
             height: 100
-        }, 250);
+        }, transTimeFast);
         main.html('\
             <div style="width: 100%; text-align: center;">\
                 <span class="fa fa-spinner fa-pulse fa-4x"></span>\
@@ -202,7 +204,7 @@ function loadContentOn(container, url, params, load_params, callback) {
         main.animate({
             opacity: 0,
             height: 0
-        }, 250);
+        }, transTimeFast);
     }
 
     var loadSpinnerTimer;
@@ -210,7 +212,7 @@ function loadContentOn(container, url, params, load_params, callback) {
         main.animate({
             opacity: 30,
             height: 100
-        }, 250);
+        }, transTimeFast);
         if (main.prop("tagName") == "TBODY") {
             main.html('\
                 <tr style="background-color: white;"><td colspan="10000">\
@@ -398,7 +400,7 @@ function animate(item, animation) {
 }
 
 // pop up an modal for confirmation (substitute for "alert()")
-function showConfirmModal(title, message,  one_button,callback) {
+function showConfirmModal(title, message, one_button, callback) {
     var raw_html_begin = '\
     <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label">\
         <div class="modal-dialog modal-sm" role="document">\
@@ -421,7 +423,7 @@ function showConfirmModal(title, message,  one_button,callback) {
     var no_button = '<button id="modal-no-button" class="btn btn-danger" data-dismiss="modal">取消</button>'
     var yes_button = '<button id="modal-yes-button" class="btn btn-success" data-dismiss="modal">确认</button>'
 
-    if (one_button===undefined) raw_html_begin += no_button;
+    if (one_button === undefined) raw_html_begin += no_button;
     raw_html_begin += yes_button;
     $("body").append(raw_html_begin + raw_html_end);
     var modal = $("#confirm-modal");
@@ -675,7 +677,7 @@ $(function () {
             main.stop(true).animate({
                 opacity: 0,
                 height: main.height()
-            }, 250);
+            }, transTimeFast);
             $(".left-column-item").removeClass("active");
             if (state.data.item != false) {
                 var item = $(state.data.item);
@@ -700,7 +702,7 @@ $(function () {
         resizeTimer = setTimeout(function () {
             // resize end
             drawCharts();
-        }, 250);
+        }, transTimeFast);
     });
 
     initLeftColumn();

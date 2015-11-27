@@ -19,6 +19,43 @@
     </th>
 {% endblock head %}
 
+{% block content-before %}
+<script>
+    $(function () {
+        $("body").popover({
+            html: true,
+            container: "body",
+            selector: ".delete-link",
+            title: "确认删除申请？",
+            trigger: "focus"
+        });
+    });
+
+    delete_rule_callback = function (event) {
+        event.preventDefault();
+        var id = $(this).data("id");
+        var url = "/api/delete_forewarn_rule/" + id;
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: "",
+            success: function (data) {
+                if (data.status === "ok") {
+                    showConfirmModal("删除规则", "删除成功!", true);
+                    refreshTable();
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                var msg = $("#error-msg");
+                msg.find("label").html("提交申请遇到错误：" + textStatus + ": " + errorThrown);
+                console.log(xhr.responseText);
+                msg.fadeIn();
+            }
+        });
+    };
+</script>
+{% endblock content-before %}
+
 {% block content-after %}
     <hr style="margin-top: 0">
     <ul class="list-inline pull-right">
