@@ -107,17 +107,16 @@
 </div>
 
 <script>
-    {% if type == "add" %} var url = "{% url 'api/submit_rule' %}" {% endif %}
-    {% if type == "modify" %} var url = "{% url 'api/modify_rule' %}" {% endif %}
+    {% if type == "add" %}
+        var url = "{% url 'api/submit_rule' %}";
+    {% elif type == "modify" %}
+        var url = "{% url 'api/modify_rule' %}";
+    {% endif %}
     handleFormPost("#rule-form", url, {
         success_callback: function (data) {
             if (data.status === 'ok') {
                 $("#forewarn-rules-modal").modal('hide');
-                loadContent("{% url 'admin/forewarn-rules' %}", {}, undefined, {
-                    replace: true,
-                    anim: false,
-                    scroll: false
-                });
+                refreshTable();
             }
         }
     });

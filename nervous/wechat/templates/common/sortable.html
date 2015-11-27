@@ -2,6 +2,9 @@
 
 <script>
     $(".sortable").ready(function () {
+        var $this = $(".sortable");
+        var tbody = $this.find("tbody");
+
         var defaults = {
             {% block defaults %}
             {% endblock defaults %}
@@ -9,14 +12,12 @@
         if (!defaults.hasOwnProperty("url"))
             console.log("SorTable usage error: ", "url");
         if (!defaults.hasOwnProperty("search_field"))
-            $(".sortable").addClass("no-search");
+            $this.addClass("no-search");
         // declare global
         sort_url = defaults.url;
         delete defaults.url;
         sort_params = defaults;
 
-        var $this = $(".sortable");
-        var tbody = $this.find("tbody");
 
         refreshTable = function (callback) {
             loadContentOn(tbody, sort_url, sort_params, {anim: false, scroll: false}, callback);

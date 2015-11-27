@@ -123,9 +123,9 @@ function loadContent(url, params, item_selector, load_params, callback) {
         main.css("height", main.height());
     }
     $(".left-column-item").removeClass("active");
-    if (item_selector != false) {
+    if (typeof item_selector !== "undefined") {
         var item = $(item_selector);
-        if (typeof item != typeof undefined) {
+        if (typeof item !== "undefined") {
             $(item).addClass("active");
         }
     }
@@ -633,8 +633,6 @@ function drawCharts() {
 
 // on document ready
 $(function () {
-    var body = $("body");
-
     // bind History.js
     $(window).unbind('statechange');
     History.Adapter.bind(window, 'statechange', function () {

@@ -45,11 +45,7 @@
                 success: function (data) {
                     if (data.status === "ok") {
                         alert('删除成功!');
-                        loadContentOfItem("#my-applications-item", {
-                            replace: true,
-                            anim: false,
-                            scroll: false
-                        });
+                        refreshTable();
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
