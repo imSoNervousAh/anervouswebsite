@@ -192,6 +192,12 @@ class OfficialAccount(models.Model):
         verbose_name = u'微信公众号'
         verbose_name_plural = u'微信公众号'
 
+    def latest_record(self):
+        try:
+            return self.accountrecord_set.order_by('-date')[0]
+        except ObjectDoesNotExist:
+            return None
+
     def unprocessed_messages_count(self, category):
         return self.message_set \
             .filter(
@@ -206,9 +212,10 @@ class OfficialAccount(models.Model):
 class AccountRecord(models.Model):
     account = models.ForeignKey(OfficialAccount)
     date = models.DateField()
-    articles = models.IntegerField()
     likes = models.IntegerField()
     views = models.IntegerField()
+    articles = models.IntegerField()
+    wci = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return "%s at %s" % (self.account.name, self.date)
