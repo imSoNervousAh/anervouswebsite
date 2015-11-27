@@ -71,7 +71,7 @@
                     <form id="process-application-form" class="form form-vertical" role="form" data-toggle="validator">
                         {% csrf_token %}
                         <input name="status" value="none" type="text" style="display: none;">
-                        <input name="account_id" type="text" style="display: none;" value="{{ app.id }}">
+                        <input name="id" type="text" style="display: none;" value="{{ app.id }}">
 
                         <div class="control-group" style="text-align: left;">
                             <label class="control-label" for="process-buttons">选择审批结果</label>

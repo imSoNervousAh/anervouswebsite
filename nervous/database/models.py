@@ -215,7 +215,7 @@ class AccountRecord(models.Model):
 
 
 class Application(models.Model):
-    official_account = models.OneToOneField(OfficialAccount, primary_key=True)
+    official_account = models.OneToOneField(OfficialAccount)
     user_submit = models.CharField(max_length=32)
     operator_admin = models.CharField(max_length=32, blank=True)
     reject_reason = models.CharField(max_length=140, blank=True)
@@ -411,5 +411,5 @@ for attr in [
 ]:
     add_delegate(OfficialAccount, 'application', attr)
 
-for attr in ['id', 'name', 'description']:
+for attr in ['name', 'description']:
     add_delegate(Application, 'official_account', attr)

@@ -34,7 +34,7 @@ def get_applications_by_admin(username):
 
 
 def get_application_by_id(id):
-    return Application.objects.get(official_account__id__exact=id)
+    return Application.objects.get(pk=id)
 
 
 def application_from_dict(dic, base=None):
@@ -70,8 +70,7 @@ def add_application(dic):
 
 
 def student_modify_application(dic):
-    print dic
-    application_id = int(dic['application_id'])
+    application_id = int(dic['id'])
     application = get_application_by_id(application_id)
     old_account = application.official_account
     account = official_account_from_dict(dic)
@@ -87,8 +86,8 @@ def student_modify_application(dic):
 
 
 def modify_application(app):
-    account = OfficialAccount.objects.get(pk=app['account_id'])
-    application = Application.objects.get(pk=account)
+    id = app['id']
+    application = Application.objects.get(pk=id)
     for attr in ['status', 'operator_admin']:
         setattr(application, attr, app.get(attr, '__unknown__'))
     if app['status'] == 'rejected':

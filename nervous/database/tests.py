@@ -99,7 +99,7 @@ class ApplicationTestCase(TestCase):
         admin_name = 'admin'
         status = 'approved'
         backend.modify_application({
-            'account_id': self.default_app.id(),
+            'account_id': self.default_app.id,
             'operator_admin': admin_name,
             'status': status,
         })
@@ -110,7 +110,7 @@ class ApplicationTestCase(TestCase):
     def test_get_application_by_status(self):
         status = 'approved'
         backend.modify_application({
-            'account_id': self.default_app.id(),
+            'account_id': self.default_app.id,
             'status': status,
         })
         app_dic = {
@@ -121,13 +121,13 @@ class ApplicationTestCase(TestCase):
             'status': 'pending',
         }
         backend.add_application(app_dic)
-        id = self.default_app.id()
+        id = self.default_app.id
         res = backend.get_applications_by_status(status)
         self.assertEqual(res.count(), 1)
-        self.assertEqual(res[0].id(), id)
+        self.assertEqual(res[0].id, id)
 
     def test_del_application(self):
-        id = Application.objects.get().id()
+        id = Application.objects.get().id
         backend.del_application(id)
         self.assertEqual(Application.objects.all().count(), 0)
 

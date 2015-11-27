@@ -4,6 +4,7 @@ THE MODEL
 
    1. Original Fields
 
+      id (the primary key),
       official_account, user_submit, operator_admin, reject_reason,
       manager_name, manager_student_id, manager_dept, manager_tel,
       manager_email, association, status
@@ -21,7 +22,7 @@ THE MODEL
 
    3. Fake-Fields
 
-      id, name, description
+      name, description
 
       These fields are actually functions which returns the respective
       field of its official_account. Normally one only use them in
@@ -77,9 +78,8 @@ ACCESSING THE APPLICATIONS
          Students submit and modify applications through these two API. The
          POST request should contain a "method" value (either "submit" or
          "save") indicating if the user is submitting or saving the
-         application. When modifying, an "application_id" value containing
-         the id of the application to be modified should be included as
-         well.
+         application. When modifying, an "id" value containing the id of
+         the application to be modified should be included as well.
 
          POST requesting these two urls should get a JSON response. The
          response is in the form
@@ -101,7 +101,7 @@ ACCESSING THE APPLICATIONS
 
          Administrator approve or reject applications through this API.
          Values "operator_admin" and "status" are written to the
-         application with id "account_id". If the action is a rejection,
+         application with id "id". If the action is a rejection,
          "reject_reason" parameter is mandatory.
 
       2c.

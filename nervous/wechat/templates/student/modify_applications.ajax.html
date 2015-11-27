@@ -24,7 +24,7 @@
                 <form id="application-form" class="form form-vertical" data-toggle="validator" role="form">
                     {% csrf_token %}
                     {% if modify_app %}
-                        <input name="application_id" type="text" style="display: none;" value="{{ app.id }}">
+                        <input name="id" type="text" style="display: none;" value="{{ app.id }}">
                     {% endif %}
 
                     <div class="control-group row">
