@@ -114,6 +114,12 @@ class Admin(models.Model):
         verbose_name = u'管理员'
         verbose_name_plural = u'管理员'
 
+    def clean(self):
+        if self.username == settings.SUPERUSER_USERNAME:
+            raise ValidationError({
+                'username': u'用户名不能与超级管理员相同'
+            })
+
     def __unicode__(self):
         return "%s: %s" % (self.username, self.description)
 
