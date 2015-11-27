@@ -42,7 +42,7 @@ class AdminTestCase(TestCase):
         password = 'correct'
         email = 'test_email@nervous.com'
         description = 'test description'
-        self.assertTrue(backend.add_admin(username, password, email, description))
+        backend.add_admin(username, password, email, description)
         self.assertEqual(backend.get_admins().count(), 1)
         admin = Admin.objects.get()
         self.assertEqual(admin.username, username)
@@ -52,8 +52,9 @@ class AdminTestCase(TestCase):
     def test_admins_with_same_name(self):
         username = 'wyl'
         email = 'test_email@nervous.com'
-        self.assertTrue(backend.add_admin(username, 'xxx', email, 'des'))
-        self.assertFalse(backend.add_admin(username, 'another', email, '?'))
+        backend.add_admin(username, 'xxx', email, 'des')
+        with self.assertRaises(ValidationError):
+            backend.add_admin(username, 'another', email, '?')
 
     def test_check_admin_password(self):
         username = 'wyl8899'
@@ -69,7 +70,7 @@ class AdminTestCase(TestCase):
         password = 'correct'
         email = 'test_email@nervous.com'
         description = 'test description'
-        self.assertTrue(backend.add_admin(username, password, email, description))
+        backend.add_admin(username, password, email, description)
         self.assertEqual(backend.get_admins().count(), 1)
         admin = Admin.objects.get()
         self.assertEqual(admin.username, username)
@@ -83,6 +84,7 @@ class AdminTestCase(TestCase):
 
 
 @override_settings(ALLOW_INVALID_WX_NAME=True)
+@override_settings(UPDATE_UPON_APPROVING=False)
 class ApplicationTestCase(TestCase):
     def setUp(self):
         self.default_name = 'name'

@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
 from django.utils import timezone
+from django.conf import settings
 
 import datetime
 import time
@@ -114,7 +115,7 @@ def modify_application(app):
         application.reject_reason = app['reject_reason']
     application.full_clean()
     application.save()
-    if application.status == 'approved':
+    if application.status == 'approved' and settings.UPDATE_UPON_APPROVING:
         def worker():
             try:
                 api_update.update_all(application.official_account.wx_id)
@@ -165,16 +166,13 @@ def del_official_account(id):
 # Admins
 
 def add_admin(username, md5_password, email, description):
-    try:
-        Admin.objects.create(
-            username=username,
-            password=md5_password,
-            email=email,
-            description=description
-        )
-        return True
-    except IntegrityError:
-        return False
+    admin = Admin.objects.model()
+    admin.username = username
+    admin.password = md5_password
+    admin.email = email
+    admin.description = description
+    admin.full_clean()
+    admin.save()
 
 
 def del_admin(username):

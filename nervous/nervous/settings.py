@@ -28,6 +28,7 @@ SECRET_KEY = '!yukn2^_)4q(dsgw(+nuft=9m1%(&cz*)+5^992(!c5h(**l2d'
 DEBUG = True
 
 ALLOW_INVALID_WX_NAME = False
+UPDATE_UPON_APPROVING = True
 
 ALLOWED_HOSTS = []
 
