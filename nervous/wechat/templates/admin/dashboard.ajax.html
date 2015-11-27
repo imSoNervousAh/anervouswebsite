@@ -34,7 +34,7 @@
                                     <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
                                     <td>
                                         <a class="fake-link"
-                                           href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.official_account_id %}', 'application-modal')">
+                                           href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.id %}', 'application-modal')">
                                             <span class="fa fa-check-square-o fa-fw"></span> 审批
                                         </a>
                                     </td>

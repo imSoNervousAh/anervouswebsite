@@ -296,9 +296,12 @@ function handleFormPost(form_selector, post_url, params) {
 
         var native_success_msg = function (data) {
             if (data.status === "ok") return "#no_message#";
-
-            if (data.hasOwnProperty("error_message"))
-                return data.error_message;
+            if (data.status === "error") {
+                if (data.hasOwnProperty("error_messages"))
+                    return "#no_message#";
+                if (data.hasOwnProperty("error_message"))
+                    return data.error_message;
+            }
             return "提交出错，请再次检查您填写的信息。"
         };
 
@@ -334,7 +337,7 @@ function handleFormPost(form_selector, post_url, params) {
                     if (data.status === "ok") msg.addClass("alert-success");
                     else msg.addClass("alert-danger");
                     var message = success_msg(data);
-                    if (message === "") message = native_success_msg;
+                    if (message === "") message = native_success_msg(data);
                     if (message !== "" && message !== "#no_message#") {
                         msg_text.html(message);
                         msg.fadeIn();

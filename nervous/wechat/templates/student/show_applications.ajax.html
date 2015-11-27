@@ -20,11 +20,8 @@
                             <th>公众号简介</th>
                             <th>审批状态</th>
                             <th>处理人</th>
-                            <th>
-                                <div style="width: 55px"></div>
-                            </th>
-                            <th>
-                                <div style="width: 55px"></div>
+                            <th align="right">
+                                <div style="width: 135px"></div>
                             </th>
                         </tr>
                         </thead>
@@ -51,21 +48,15 @@
                                 </td>
                                 <td>{{ app.operator_admin }}</td>
                                 <td>
-                                    {{ app.id  }}
-                                </td>
-                                <td>
-                                    {% if app.status == 'not_submitted' %}
-                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
-                                            <span class="fa fa-edit fa-fw"></span> 修改
-                                        </a>
-                                    {% endif %}
-                                </td>
-                                <td>
                                     {% if app.status == 'pending' %}
                                         <a data-id="{{ app.id }}" class="fake-link recall-link">
                                             <span class="fa fa-share-square-o fa-fw"></span> 撤回
                                         </a>
                                     {% elif app.status == 'not_submitted' %}
+                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                            <span class="fa fa-edit fa-fw"></span> 修改
+                                        </a>
+                                        <span>&nbsp;&nbsp;</span>
                                         <a href="javascript:void(0)" tabindex="-1" class="fake-link delete-link"
                                            data-toggle="popover" data-content="
                                             <div id='delete-app-{{ app.id }}-popover'>
