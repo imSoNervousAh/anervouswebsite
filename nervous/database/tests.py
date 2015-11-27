@@ -182,9 +182,9 @@ class ApplicationTestCase(TestCase):
         }
         backend.add_application(app_dic)
         res = backend.get_applications_by_status('pending')
-        backend.recall_application(res[0].id())
+        backend.recall_application(res[0].id)
         #res = backend.get_applications_by_status('not_submitted')
-        app_dic['application_id'] = res[0].id()
+        app_dic['id'] = res[0].id
         app_dic['status'] = 'not_submitted'
         backend.student_modify_application(app_dic)
 
