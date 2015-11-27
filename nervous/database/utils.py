@@ -12,7 +12,7 @@ from django.db import connection
 import backend
 import gsdata_utils
 from models import *
-
+import api.bind_domain
 
 # Utils
 
@@ -209,3 +209,6 @@ def build_large_test_db():
 
         if i % 1000 == 999:
             print 'done article', i + 1
+
+def bind_domain():
+    api.bind_domain.bind()
