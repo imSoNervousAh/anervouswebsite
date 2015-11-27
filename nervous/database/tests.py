@@ -99,7 +99,7 @@ class ApplicationTestCase(TestCase):
         admin_name = 'admin'
         status = 'approved'
         backend.modify_application({
-            'account_id': self.default_app.id,
+            'id': self.default_app.id,
             'operator_admin': admin_name,
             'status': status,
         })
@@ -110,7 +110,7 @@ class ApplicationTestCase(TestCase):
     def test_get_application_by_status(self):
         status = 'approved'
         backend.modify_application({
-            'account_id': self.default_app.id,
+            'id': self.default_app.id,
             'status': status,
         })
         app_dic = {
