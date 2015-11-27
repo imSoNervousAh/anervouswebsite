@@ -406,6 +406,7 @@ def admin_show_official_account_detail(request, id):
 @check_identity('admin')
 def admin_show_official_account_statistics(request, id):
     official_account = backend.get_official_account_by_id(id)
+    article_count = backend.get_articles_by_official_account_id(id).count()
     chart_raw = backend.get_records(id,
                                     timezone.now().date() - timedelta(days=8),
                                     timezone.now().date() - timedelta(days=2))
@@ -446,6 +447,7 @@ def admin_show_official_account_statistics(request, id):
 
     return render(request, 'admin/detail/detail_statistics.html', {
         'account': official_account,
+        'article_count': article_count,
         'chart_json': chart_json
     })
 

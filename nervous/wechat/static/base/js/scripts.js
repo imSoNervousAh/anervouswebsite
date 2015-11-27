@@ -127,20 +127,17 @@ function loadContent(url, params, item_selector, load_params, callback) {
         data: params,
         success: function (data) {
             __manualStateChange = true;
+            var state = {
+                data: data,
+                params: load_params,
+                item: item_selector,
+                rand: Math.random(),
+                callback: callback
+            };
             if (replace) {
-                History.replaceState({
-                    data: data,
-                    params: load_params,
-                    item: item_selector,
-                    callback: callback
-                }, document.title, url);
+                History.replaceState(state, document.title, url);
             } else {
-                History.pushState({
-                    data: data,
-                    params: load_params,
-                    item: item_selector,
-                    callback: callback
-                }, document.title, url);
+                History.pushState(state, document.title, url);
             }
             initAjaxPage("#main-page");
             loadComplete();
