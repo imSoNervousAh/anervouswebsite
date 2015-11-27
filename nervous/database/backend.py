@@ -82,6 +82,8 @@ def add_application(dic):
 def student_modify_application(dic):
     application_id = int(dic['id'])
     application = get_application_by_id(application_id)
+    status = application.status
+    assert(status == 'not_submitted' or status == 'rejected')
     old_account = application.official_account
     account = official_account_from_dict(dic)
     application = application_from_dict(dic, base=application)
@@ -98,6 +100,7 @@ def student_modify_application(dic):
 def modify_application(app):
     id = app['id']
     application = Application.objects.get(pk=id)
+    assert(application.status == 'pending')
     for attr in ['status', 'operator_admin']:
         setattr(application, attr, app.get(attr, '__unknown__'))
     if app['status'] == 'rejected':
@@ -107,17 +110,15 @@ def modify_application(app):
 
 
 def del_application(id):
-    try:
-        oa = OfficialAccount.objects.get(pk=id)
-        oa.delete()
-        return True
-    except ObjectDoesNotExist:
-        return False
+    application = Application.objects.get(pk=id)
+    assert(application.status == 'not_submitted')
+    application.official_account.delete()
 
 
 def recall_application(id):
     account = OfficialAccount.objects.get(pk=id)
     application = account.application
+    assert(application.status == 'pending')
     application.status = 'not_submitted'
     application.save()
 
@@ -141,13 +142,9 @@ def get_official_accounts_with_unprocessed_messages(category):
 
 
 def del_official_account(id):
-    try:
-        account = OfficialAccount.objects.get(pk=id)
-        account.delete()
-        get_articles_by_official_account_id(id).delete()
-        return True
-    except ObjectDoesNotExist:
-        return False
+    account = OfficialAccount.objects.get(pk=id)
+    account.delete()
+    get_articles_by_official_account_id(id).delete()
 
 
 # Admins
