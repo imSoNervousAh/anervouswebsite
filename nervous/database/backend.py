@@ -57,15 +57,16 @@ def official_account_from_dict(dic):
     for attr in ['name', 'description', 'wx_id']:
         setattr(account, attr, dic.get(attr, '__placeholder__'))
     account.full_clean(validate_unique=False)
-    res = api.backend_utils.verify_wx_name(account.wx_id)
-    if res == None:
-        raise ValidationError({
-            'wx_id': u'无法验证ID合法性，请稍后再试',
-        })
-    if res == False:
-        raise ValidationError({
-            'wx_id': u'请输入一个合法的公众号ID',
-        })
+    if not settings.ALLOW_INVALID_WX_NAME:
+        res = api.backend_utils.verify_wx_name(account.wx_id)
+        if res == None:
+            raise ValidationError({
+                'wx_id': u'无法验证ID合法性，请稍后再试',
+            })
+        if res == False:
+            raise ValidationError({
+                'wx_id': u'请输入一个合法的公众号ID',
+            })
     return account
 
 

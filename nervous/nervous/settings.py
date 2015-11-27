@@ -27,6 +27,8 @@ SECRET_KEY = '!yukn2^_)4q(dsgw(+nuft=9m1%(&cz*)+5^992(!c5h(**l2d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOW_INVALID_WX_NAME = False
+
 ALLOWED_HOSTS = []
 
 # Application definition

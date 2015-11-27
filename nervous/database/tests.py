@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.test import override_settings
 
 from database import backend
 from models import *
@@ -81,6 +82,7 @@ class AdminTestCase(TestCase):
         backend.get_admin_emails()
 
 
+@override_settings(ALLOW_INVALID_WX_NAME=True)
 class ApplicationTestCase(TestCase):
     def setUp(self):
         self.default_name = 'name'
@@ -157,12 +159,11 @@ class ApplicationTestCase(TestCase):
 
     def test_del_application(self):
         id = Application.objects.get().id
+        backend.recall_application(id)
         backend.del_application(id)
         self.assertEqual(Application.objects.all().count(), 0)
-        self.assertFalse(backend.del_application(id))
-
-    def test_recall_application(self):
-        pass
+        with self.assertRaises(Exception):
+            backend.del_application(id)
 
     def test_get_applications(self):
         backend.get_applications()
@@ -171,21 +172,12 @@ class ApplicationTestCase(TestCase):
         backend.get_pending_applications()
 
     def test_student_modify_application(self):
-        acc_name = 'acc_name_no2'
-        user_submit = 'hdd_2'
+        id = self.default_app.id
+        backend.recall_application(id)
         app_dic = {
-            'name': acc_name,
-            'wx_id': 'jiujiujiuwewewew',
-            'description': 'by another user',
-            'user_submit': user_submit,
-            'status': 'pending'
+            'id': id,
+            'status': 'not_submitted',
         }
-        backend.add_application(app_dic)
-        res = backend.get_applications_by_status('pending')
-        backend.recall_application(res[0].id)
-        #res = backend.get_applications_by_status('not_submitted')
-        app_dic['id'] = res[0].id
-        app_dic['status'] = 'not_submitted'
         backend.student_modify_application(app_dic)
 
     def test_get_applications_by_admin(self):
@@ -201,10 +193,10 @@ class ArticleTest(TestCase):
 class MessageTest(TestCase):
     def test_get_messages(self):
         backend.get_messages()
-    
+
     def test_process_all_messages(self):
         self.assertTrue(backend.process_all_messages(0, 0))
-    
+
     def test_add_messages(self):
         username = 'rsents'
         password = '1231231'
@@ -223,8 +215,9 @@ class NervousTest(TestCase):
     def test_del_official_account(self):
         test_account = OfficialAccount.objects.create(wx_id='jiujingzixun')
         test_id = test_account.id
-        self.assertTrue(backend.del_official_account(test_id))
-        self.assertFalse(backend.del_official_account(test_id))
+        backend.del_official_account(test_id)
+        with self.assertRaises(Exception):
+            backend.del_official_account(test_id)
 
     def test_check_forewarn_rule_on_account(self):
         test_account = OfficialAccount.objects.create(wx_id='jiujingzixun')
