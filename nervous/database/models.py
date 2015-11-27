@@ -105,10 +105,14 @@ class NotificationOption:
 # Models
 
 class Admin(models.Model):
-    username = models.CharField(max_length=20, primary_key=True)
+    username = models.CharField(u'该用户名', max_length=20, primary_key=True)
     description = models.CharField(max_length=100, null=True)
     password = models.CharField(max_length=32)
     email = models.CharField(max_length=254)
+
+    class Meta:
+        verbose_name = u'管理员'
+        verbose_name_plural = u'管理员'
 
     def __unicode__(self):
         return "%s: %s" % (self.username, self.description)

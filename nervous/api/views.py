@@ -209,11 +209,9 @@ def delete_official_account(request):
 
 
 @json_response_general_exception_decorator
+@json_response_validation_error_decorator
 def add_admin(request):
     dic = request.POST.dict()
-    print 'add admin...'
-    print '[account] ', dic['username']
-    print '[password]', dic['password']
     backend.add_admin(
         dic['username'],
         dic['password'],
