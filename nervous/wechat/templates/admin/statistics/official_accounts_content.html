@@ -14,7 +14,7 @@
             <td>{{ account.wx_id }}</td>
             <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
             <td>{{ account|wci}}</td>
-            <td>
+            <td align="right">
                 <a style="cursor: pointer;" class="add-to-list-link" data-item='
                     <tr id="chosen-item-{{ account.id }}">
                         <td><a class="ajax-link" data-url="{% url 'admin/detail' account.id %}">
@@ -23,7 +23,7 @@
                         <td>{{ account.wx_id }}</td>
                         <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
                         <td>{{ account|wci }}</td>
-                        <td>
+                        <td align="right">
                             <a style="cursor:pointer;" data-id="{{ account.wx_id }}"
                                 data-item-id="chosen-item-{{ account.id }}" class="remove-from-list-link">
                                 <span class="fa fa-minus-square fa-fw"></span> 删除</a>

@@ -42,15 +42,15 @@
 <script>
     var chosen_list = $("#chosen-list");
     var chosen_names = [];
-/*
-    function chosen_names() {
-        var ret = [];
-        chosen_list.find("tr").find("td:nth-child(2)").each(function () {
-            ret.push($(this).html());
-        });
-        return ret;
-    }
-*/
+    /*
+        function chosen_names() {
+            var ret = [];
+            chosen_list.find("tr").find("td:nth-child(2)").each(function () {
+                ret.push($(this).html());
+            });
+            return ret;
+        }
+    */
     function toggleChosenListDisplay() {
         if (chosen_names == "") {
             chosen_list.fadeOut(200, function () {
@@ -70,12 +70,16 @@
             button_field = chosen_list.append('\
             <tr id="chosen-list-ok-button-column" style="background-color: white;">\
                 <td colspan="10000" style="text-align: right">\
-                    <button class="btn btn-primary">对比信息</button>\
+                    <button class="btn btn-primary" onclick="loadComparison()">对比信息</button>\
                 </td>\
             </tr>').find("#chosen-list-ok-button-column");
             if (first_item)
                 button_field.css("display", "none").fadeIn(200);
         }
+    }
+
+    function loadComparison() {
+        showConfirmModal("尚未实现", "对不起，对比图表显示暂未实现。", true);
     }
 
     chosen_list.ready(function () {

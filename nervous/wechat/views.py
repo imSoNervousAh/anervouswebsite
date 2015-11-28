@@ -526,7 +526,20 @@ def admin_show_official_account_statistics(request, id):
                 'xAxisName': '日期',
                 'yAxisName': 'WCI'
             },
-            'data': []
+            'data': [],
+            'trendlines': [
+                {
+                    'line': [
+                        {
+                            'startValue': official_account.wci,
+                            'displayValue': '当前抓取WCI{br}' + str(round(official_account.wci, 2)),
+                            'color': '#1aaf5d',
+                            'valueOnRight': '1',
+                            'thickness': '2'
+                        }
+                    ]
+                }
+            ]
         }
 
         for x in records:
