@@ -5,8 +5,8 @@ from django.db.models.fields import FieldDoesNotExist
 from django.core.validators import *
 from django.core.exceptions import ValidationError, ObjectDoesNotExist, MultipleObjectsReturned
 from django.conf import settings
-
 import traceback
+
 
 # Utils
 
@@ -66,10 +66,10 @@ class NervousModel(models.Model):
                     raw_val = rel_manager.get(**query_args)
                 setattr(model, field_name, raw_val)
                 exclude.remove(field_name)
-            except (FieldDoesNotExist,          # invalid field name
-                    AttributeError,             # not a ForeignKey
-                    ObjectDoesNotExist,         # `get` fails
-                    MultipleObjectsReturned):   # `get` fails
+            except (FieldDoesNotExist,  # invalid field name
+                    AttributeError,  # not a ForeignKey
+                    ObjectDoesNotExist,  # `get` fails
+                    MultipleObjectsReturned):  # `get` fails
                 if settings.DEBUG:
                     traceback.print_exc()
         # let caller function handle ValidationErrors
@@ -251,7 +251,7 @@ class Application(models.Model):
             })
         if self.status == 'rejected' and len(self.reject_reason) == 0:
             raise ValidationError({
-                'reject_reason': '请填写拒绝理由'#'Rejected application should have a reason'
+                'reject_reason': '请填写拒绝理由'  # 'Rejected application should have a reason'
             })
 
     def status_display(self):
@@ -355,14 +355,14 @@ class ForewarnRule(NervousModel):
 
     def clean(self):
         if not self.notification in [
-                NotificationOption.Email,
-                NotificationOption.Message]:
+            NotificationOption.Email,
+            NotificationOption.Message]:
             raise ValidationError({
                 'notification': 'Invalid notification option',
             })
         if not self.target in [
-                ForewarnTarget.LikesTotal,
-                ForewarnTarget.ViewsTotal]:
+            ForewarnTarget.LikesTotal,
+            ForewarnTarget.ViewsTotal]:
             raise ValidationError({
                 'target': 'Invalid forewarn target',
             })

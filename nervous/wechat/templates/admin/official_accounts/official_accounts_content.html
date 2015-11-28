@@ -1,4 +1,5 @@
 {% extends 'common/sortable_content.html' %}
+{% load model_extras %}
 
 {% block no-data-info %}
     暂无公众号
@@ -12,7 +13,7 @@
             </a></td>
             <td>{{ account.wx_id }}</td>
             <td>{{ account.description|linebreaksbr|truncatechars:100 }}</td>
-            <td>{{ account.wci }}</td>
+            <td>{{ account|wci }}</td>
         </tr>
     {% endfor %}
 {% endblock content %}

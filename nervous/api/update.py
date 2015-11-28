@@ -4,22 +4,20 @@ import requests
 import socket
 import time
 import math
-
 import database.gsdata_utils
 import database.models
-
 from api import getdata
 
 
 def calculate_wci(r, r_max, z, z_max, n):
     r_index = 0.4 * math.log(r + 1) + \
-            0.45 * math.log(float(r) / n + 1) + \
-            0.15 * math.log(r_max + 1)
+              0.45 * math.log(float(r) / n + 1) + \
+              0.15 * math.log(r_max + 1)
     z_index = 0.4 * math.log(10 * z + 1) + \
-            0.45 * math.log(10 * float(z) / n + 1) + \
-            0.15 * math.log(10 * z_max + 1)
+              0.45 * math.log(10 * float(z) / n + 1) + \
+              0.15 * math.log(10 * z_max + 1)
     total_index = 0.8 * r_index + 0.2 * z_index
-    wci = total_index**2 * 10
+    wci = total_index ** 2 * 10
     print 'calculate_wci:', r, r_max, z, z_max, n, '=>', wci
     return wci
 
@@ -124,11 +122,13 @@ def update_official_account_daily_nums(account):
             continue
         record = database.models.AccountRecord.objects \
             .get(account=account_instance, date=date)
+
         def tz_time_before_n_days(i):
             date = get_date_object_before_n_days(i)
             return database.gsdata_utils.tz_time_from_naive_time(
                 datetime.datetime(date.year, date.month, date.day)
             )
+
         end_time = tz_time_before_n_days(i - 1)
         start_time = tz_time_before_n_days(i)
         articles = database.models.Article.objects \

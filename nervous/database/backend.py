@@ -1,18 +1,15 @@
 # coding=utf-8
 
 from models import *
-
 import api.update as api_update
 import api.backend_utils
 from api import sendemail
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Q
 from django.utils import timezone
 from django.conf import settings
-
 import datetime
 import time
 from multiprocessing import Process
@@ -91,7 +88,7 @@ def student_modify_application(dic):
     application_id = int(dic['id'])
     application = get_application_by_id(application_id)
     status = application.status
-    assert(status == 'not_submitted' or status == 'rejected')
+    assert (status == 'not_submitted' or status == 'rejected')
     old_account = application.official_account
     account = official_account_from_dict(dic)
     application = application_from_dict(dic, base=application)
@@ -108,7 +105,7 @@ def student_modify_application(dic):
 def modify_application(app):
     id = app['id']
     application = Application.objects.get(pk=id)
-    assert(application.status == 'pending')
+    assert (application.status == 'pending')
     for attr in ['status', 'operator_admin']:
         setattr(application, attr, app.get(attr, '__unknown__'))
     if app['status'] == 'rejected':
@@ -121,20 +118,21 @@ def modify_application(app):
                 api_update.update_all(application.official_account.wx_id)
             except Exception as e:
                 traceback.print_exc()
+
         p = Process(target=worker)
         p.start()
 
 
 def del_application(id):
     application = Application.objects.get(pk=id)
-    assert(application.status == 'not_submitted')
+    assert (application.status == 'not_submitted')
     application.official_account.delete()
 
 
 def recall_application(id):
     account = OfficialAccount.objects.get(pk=id)
     application = account.application
-    assert(application.status == 'pending')
+    assert (application.status == 'pending')
     application.status = 'not_submitted'
     application.save()
 

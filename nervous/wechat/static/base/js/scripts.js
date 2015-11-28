@@ -627,11 +627,13 @@ function resizeComponents() {
     }
 }
 
-function drawCharts(callback) {
+function drawCharts(selected_charts) {
     var load_status = $(".tab-content").data("loading");
-    var charts = $(".tab-pane > object");
+    var charts = $(".tab-pane object");
+    if (typeof selected_charts !== "undefined")
+        charts = selected_charts;
     if (typeof charts !== "undefined") {
-        var active_container = $(".tab-pane.active > object");
+        var active_container = $(".tab-pane.active object");
         var chart_height = active_container.height(), chart_width = active_container.width();
         charts.each(function () {
             var $this = $(this);

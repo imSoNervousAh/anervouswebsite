@@ -409,49 +409,151 @@ def admin_show_official_account_detail(request, id):
 @check_identity('admin')
 def admin_show_official_account_statistics(request, id):
     official_account = backend.get_official_account_by_id(id)
-    article_count = backend.get_articles_by_official_account_id(id).count()
-    chart_raw = backend.get_records(id,
-                                    timezone.now().date() - timedelta(days=8),
-                                    timezone.now().date() - timedelta(days=2))
-    chart_raw = chart_raw.order_by('date')
-    chart_data = {
-        'chart': {
-            'caption': '公众号一周信息',
-            'subCaption': official_account.name,
-            'xAxisName': '日期',
-            'pYAxisName': '阅读数',
-            'sYAxisName': '点赞数',
-            'sYAxisMaxValue': int(reduce(lambda x, y: max(x, y.likes),
-                                         chart_raw, 0) * 0.18) * 10
-        },
-        'categories': [
-            {'category': []}
-        ],
-        'dataset': [
-            {
-                'seriesName': '阅读数',
-                'data': []
+    articles = backend.get_articles_by_official_account_id(id)
+
+    records = backend.get_records(id,
+                                  timezone.now().date() - timedelta(days=8),
+                                  timezone.now().date())
+    records = records.order_by('date')
+
+    def get_oa_chart_json():
+        chart_data = {
+            'chart': {
+                'caption': '公众号一周信息',
+                'subCaption': official_account.name,
+                'xAxisName': '日期',
+                'pYAxisName': '阅读数',
+                'sYAxisName': '点赞数',
+                'sYAxisMaxValue': int(reduce(lambda x, y: max(x, y.likes),
+                                             records, 0) * 0.18) * 10
             },
-            {
-                'seriesName': '点赞数',
-                'parentYAxis': 'S',
-                'renderAs': 'area',
-                'data': []
-            }
-        ]
-    }
+            'categories': [
+                {'category': []}
+            ],
+            'dataset': [
+                {
+                    'seriesName': '阅读数',
+                    'data': []
+                },
+                {
+                    'seriesName': '点赞数',
+                    'parentYAxis': 'S',
+                    'renderAs': 'area',
+                    'data': []
+                }
+            ]
+        }
 
-    for x in chart_raw:
-        chart_data['categories'][0]['category'].append({'label': str(x.date)})
-        chart_data['dataset'][0]['data'].append({'value': x.views})
-        chart_data['dataset'][1]['data'].append({'value': x.likes})
+        if len(records) == 1:
+            chart_data['dataset'][1]['renderAs'] = 'column'
 
-    chart_json = json.dumps(chart_data)
+        for x in records:
+            chart_data['categories'][0]['category'].append({'label': str(x.date)})
+            chart_data['dataset'][0]['data'].append({'value': x.views})
+            chart_data['dataset'][1]['data'].append({'value': x.likes})
+
+        chart_json = json.dumps(chart_data)
+        return chart_json
+
+    def get_article_views_chart_json():
+        chart_data = {
+            'chart': {
+                'caption': '公众号文章阅读量分类',
+                'subCaption': official_account.name,
+                'showLegend': '1',
+                'legendItemFontSize': '12',
+            },
+            'data': []
+        }
+
+        def add_data(dic):
+            if dic['value'] > 0:
+                chart_data['data'].append(dic)
+
+        add_data({
+            'label': '不超过 200 次',
+            'value': articles.filter(views__lte=200).count()
+        })
+        view_segments = [200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]
+        for i in xrange(1, len(view_segments)):
+            views_l = view_segments[i - 1] + 1
+            views_r = view_segments[i]
+            count = articles.filter(views__gte=views_l, views__lte=views_r).count()
+            add_data({
+                'label': '%d ~ %d 次' % (views_l, views_r),
+                'value': count
+            })
+        add_data({
+            'label': '100000 次以上',
+            'value': articles.filter(views__gt=100000).count()
+        })
+
+        chart_json = json.dumps(chart_data)
+        return chart_json
+
+    def get_article_likes_chart_json():
+        chart_data = {
+            'chart': {
+                'caption': '公众号文章点赞量分类',
+                'subCaption': official_account.name,
+                'showLegend': '1',
+                'legendItemFontSize': '12',
+            },
+            'data': []
+        }
+
+        def add_data(dic):
+            if dic['value'] > 0:
+                chart_data['data'].append(dic)
+
+        add_data({
+            'label': '不超过 2 次',
+            'value': articles.filter(likes__lte=2).count()
+        })
+        like_segments = [2, 5, 10, 20, 50, 100, 200]
+        for i in xrange(1, len(like_segments)):
+            likes_l = like_segments[i - 1] + 1
+            likes_r = like_segments[i]
+            count = articles.filter(likes__gte=likes_l, likes__lte=likes_r).count()
+            add_data({
+                'label': '%d ~ %d 次' % (likes_l, likes_r),
+                'value': count
+            })
+        add_data({
+            'label': '200 次以上',
+            'value': articles.filter(likes__gt=200).count()
+        })
+
+        chart_json = json.dumps(chart_data)
+        return chart_json
+
+    def get_history_chart_json():
+        chart_data = {
+            'chart': {
+                'caption': '公众号一周WCI变化',
+                'subCaption': official_account.name,
+                'xAxisName': '日期',
+                'yAxisName': 'WCI'
+            },
+            'data': []
+        }
+
+        for x in records:
+            chart_data['data'].append({
+                'label': str(x.date),
+                'value': round(x.wci, 2)
+            })
+
+        chart_json = json.dumps(chart_data)
+        return chart_json
 
     return render(request, 'admin/detail/detail_statistics.html', {
         'account': official_account,
-        'article_count': article_count,
-        'chart_json': chart_json
+        'article_count': articles.count(),
+        'oa_chart_json': get_oa_chart_json(),
+        'article_views_chart_json': get_article_views_chart_json(),
+        'article_likes_chart_json': get_article_likes_chart_json(),
+        'history_chart_json': get_history_chart_json()
     })
 
 
@@ -608,26 +710,27 @@ def superuser_modify_announcement(request):
         'announcement': announcement,
     }, 'modify-announcement-item')
 
+
 @check_identity('superuser')
 def superuser_manage_database(request):
     def all_count(model):
         return model.objects.all().count()
 
-    count={}
+    count = {}
 
-    themodals = [OfficialAccount,Article,Student,Application,Admin,Message,ForewarnRule,ForewarnRecord]
-    for i in range(0,len(themodals)):
-        count[themodals[i].__name__]=all_count(themodals[i])
+    themodals = [OfficialAccount, Article, Student, Application, Admin, Message, ForewarnRule, ForewarnRecord]
+    for i in range(0, len(themodals)):
+        count[themodals[i].__name__] = all_count(themodals[i])
 
-    thestatus=['approved','rejected','pending','not_submitted']
+    thestatus = ['approved', 'rejected', 'pending', 'not_submitted']
     for status in thestatus:
-        count['application_'+status]=len(backend.get_applications_by_status(status))
+        count['application_' + status] = len(backend.get_applications_by_status(status))
 
-    root_name='root'
+    root_name = 'root'
 
     return render_ajax(request, 'superuser/manage_database.html', {
-        'count':count,
-        'root_name':root_name,
+        'count': count,
+        'root_name': root_name,
     }, 'database-info-item')
 
 

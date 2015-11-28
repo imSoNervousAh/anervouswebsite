@@ -38,28 +38,29 @@
                                 });
                             });
                         </script>
-                        {% for app in applications %}
-                            <tr>
-                                <td>{{ app.name }}</td>
-                                <td>{{ app.description|linebreaksbr|safe }}</td>
-                                <td>
+                        {% if applications %}
+                            {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.description|linebreaksbr|safe }}</td>
+                                    <td>
                                     <span class="label label-{{ app.status_display.colorclass }}">
                                         <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
                                     </span>
-                                </td>
-                                <td>{{ app.operator_admin }}</td>
-                                <td style="text-align: right">
-                                    {% if app.status == 'pending' %}
-                                        <a data-id="{{ app.id }}" class="fake-link recall-link">
-                                            <span class="fa fa-share-square-o fa-fw"></span> 撤回
-                                        </a>
-                                    {% elif app.status == 'not_submitted' %}
-                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
-                                            <span class="fa fa-edit fa-fw"></span> 修改
-                                        </a>
-                                        <span>&nbsp;&nbsp;</span>
-                                        <a href="javascript:void(0)" tabindex="-1" class="fake-link delete-link"
-                                           data-toggle="popover" data-content="
+                                    </td>
+                                    <td>{{ app.operator_admin }}</td>
+                                    <td style="text-align: right">
+                                        {% if app.status == 'pending' %}
+                                            <a data-id="{{ app.id }}" class="fake-link recall-link">
+                                                <span class="fa fa-share-square-o fa-fw"></span> 撤回
+                                            </a>
+                                        {% elif app.status == 'not_submitted' %}
+                                            <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                                <span class="fa fa-edit fa-fw"></span> 修改
+                                            </a>
+                                            <span>&nbsp;&nbsp;</span>
+                                            <a href="javascript:void(0)" tabindex="-1" class="fake-link delete-link"
+                                               data-toggle="popover" data-content="
                                             <div id='delete-app-{{ app.id }}-popover'>
                                                 {% csrf_token %}
                                                 <button class='btn btn-default'>取消</button>
@@ -71,16 +72,21 @@
                                                 $('#delete-app-{{ app.id }}-popover').find('button.form-btn')
                                                     .click(delete_app_callback);
                                             </script>">
-                                            <span class="fa fa-minus-square-o fa-fw"></span> 删除
-                                        </a>
-                                    {% elif app.status == 'rejected' %}
-                                        <a data-id="{{ app.id }}" class="fake-link modify-link">
-                                            <span class="fa fa-edit fa-fw"></span> 修改
-                                        </a>
-                                    {% endif %}
-                                </td>
+                                                <span class="fa fa-minus-square-o fa-fw"></span> 删除
+                                            </a>
+                                        {% elif app.status == 'rejected' %}
+                                            <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                                <span class="fa fa-edit fa-fw"></span> 修改
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10000" style="text-align: center">尚未申请备案</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                         <script>
                             $(function () {
                                 var msg = $("#error-msg");
