@@ -109,12 +109,14 @@ def render_ajax(request, url, params, item_id=''):
     if request.is_ajax():
         url = '.'.join(url.split('.')[:-1]) + '.ajax.html'
     else:
-        params['username'] = get_realname(request)
+        identity = session.get_identity(request)
+        name = get_realname(request)
+        params['username'] = name
         if item_id != '':
             params['active_item'] = item_id
-        if session.get_identity(request) == 'admin':
+        if identity == 'admin':
             params['pending_applications_count'] = len(backend.get_pending_applications())
-        elif session.get_identity(request) == 'student':
+        elif identity == 'student':
             username = session.get_username(request)
             applications = backend.get_applications_by_user(username)
             official_accounts = applications.filter(status__exact='approved')
@@ -190,11 +192,7 @@ def change_info(request):
 @check_identity('student')
 @check_have_student_info
 def student(request):
-    realname = get_realname(request)
-
-    return render(request, 'student/index.html', {
-        'username': realname
-    })
+    return student_show_applications(request)
 
 
 @check_identity('student')
@@ -204,7 +202,6 @@ def student_show_applications(request):
     applications = backend.get_applications_by_user(username)
 
     return render_ajax(request, 'student/show_applications.html', {
-        'username': get_realname(request),
         'applications': applications,
     }, 'my-applications-item')
 
@@ -281,13 +278,7 @@ def student_badge_account_unprocessed_message_count(request, id):
 def admin(request):
     print 'show admin'
 
-    pending_applications_count = len(backend.get_pending_applications())
-    username = session.get_username(request)
-
-    return render(request, 'admin/index.html', {
-        'username': username,
-        'pending_applications_count': pending_applications_count
-    })
+    return admin_dashboard(request)
 
 
 @check_identity('admin')
@@ -690,7 +681,7 @@ def message_detail_student(request, id):
 
 @check_identity('superuser')
 def superuser(request):
-    return render(request, 'superuser/index.html', {'username': get_realname(request)})
+    return superuser_show_admins(request)
 
 
 @check_identity('superuser')
