@@ -24,7 +24,7 @@
                 <script>
                     handleFormPost("#modify-announcement-form", "{% url 'api/modify_announcement' %}", {
                         success_callback: function (data) {
-                            showConfirmModal("修改管理员公告","已更新",true);
+                            showConfirmModal("修改管理员公告", "公告已更新", true);
                             loadContent("{% url 'superuser/admins' %}");
                         }
                     });

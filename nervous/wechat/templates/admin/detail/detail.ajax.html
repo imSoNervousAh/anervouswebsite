@@ -60,7 +60,8 @@
                                     },
                                     error: function (xhr, textStatus, errorThrown) {
                                         //alert("删除公众号遇到错误：" + textStatus + ": " + errorThrown);
-                                        showConfirmModal("删除公众号遇到错误：" + textStatus + ": " + errorThrown,true);
+                                        showConfirmModal("未能成功删除",
+                                                "删除公众号遇到错误：" + textStatus + ": " + errorThrown, true);
                                         console.log(xhr.responseText);
                                     }
                                 });

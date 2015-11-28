@@ -269,16 +269,16 @@ function removePx(str) {
 function handleFormPost(form_selector, post_url, params) {
     /*
      params = {
-     success_callback(data):
-     Function to call when ajax POST returns success.
-     error_callback(xhr, textStatus, errorThrown):
-     Function to call when ajax POST returns error.
-     success_msg(data):
-     Function that returns message to display for success POST.
-     Note that though POST is successful, returned status maybe "error".
-     If returned message is empty, then the acutal message displayed
-     would be generated using "native_success_msg'. To override this
-     behavior, return "#no_message#" instead of empty string.
+        success_callback(data):
+            Function to call when ajax POST returns success.
+        error_callback(xhr, textStatus, errorThrown):
+            Function to call when ajax POST returns error.
+        success_msg(data):
+            Function that returns message to display for success POST.
+            Note that though POST is successful, returned status maybe "error".
+            If returned message is empty, then the acutal message displayed
+                would be generated using "native_success_msg'. To override this
+                behavior, return "#no_message#" instead of empty string.
      }
      */
     var form = $(form_selector);

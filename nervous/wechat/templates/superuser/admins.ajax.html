@@ -18,7 +18,7 @@
                             <th>用户名</th>
                             <th>备注</th>
                             <th>邮箱</th>
-                            <th style="width:220px">操作</th>
+                            <th style="width: 70px">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -27,6 +27,7 @@
                                 $("body").popover({
                                     html: true,
                                     container: "body",
+                                    placement: "auto right",
                                     selector: ".delete-link",
                                     title: "确认删除账号？",
                                     trigger: "focus"
@@ -38,7 +39,7 @@
                                 <td>{{ admin.username }}</td>
                                 <td>{{ admin.description }}</td>
                                 <td>{{ admin.email }}</td>
-                                <td>
+                                <td align="right">
                                     <a href="javascript:void(0)" class="fake-link delete-link"
                                        data-toggle="popover" tabindex="-1" data-content="
                                         <form id='delete-admin-{{ forloop.counter }}-popover'>
@@ -46,12 +47,13 @@
                                             <button class='btn btn-default'>取消</button>
                                             <input style='display: none;' name='username' value='{{ admin.username }}'>
                                             <span>　</span>
-                                            <button type='button' class='btn btn-danger form-btn'>删除</button>
+                                            <button type='submit' class='btn btn-danger form-btn'>删除</button>
                                         </form>
                                         <script>
                                             handleFormPost('#delete-admin-{{ forloop.counter }}-popover', '{% url 'api/del_admin' %}', {
                                                 success_callback: function (data) {
                                                     if (data.status === 'ok') {
+                                                        showConfirmModal('删除管理员', '管理员 <b>{{ admin.username }}</b> 已删除', true);
                                                         loadContentOfItem('#admins-list-item', {
                                                             replace: true,
                                                             anim: false,

@@ -31,6 +31,7 @@
                                 $("body").popover({
                                     html: true,
                                     container: "body",
+                                    placement: "auto right",
                                     selector: ".delete-link",
                                     title: "确认删除申请？",
                                     trigger: "focus"
@@ -102,7 +103,7 @@
                                         data: "",
                                         success: function (data) {
                                             if (data.status === "ok") {
-                                                showConfirmModal("删除申请", "删除成功!", true);
+                                                showConfirmModal("撤回申请", "删除成功！", true);
                                                 loadContentOfItem("#my-applications-item", {
                                                     replace: true,
                                                     anim: false,
@@ -128,7 +129,7 @@
                                         data: "",
                                         success: function (data) {
                                             if (data.status === "ok") {
-                                                showConfirmModal("撤回已提交申请", "撤回成功!", true);
+                                                showConfirmModal("撤回已提交申请", "撤回成功！", true);
                                                 loadContentOfItem("#my-applications-item", {
                                                     replace: true,
                                                     anim: false,
