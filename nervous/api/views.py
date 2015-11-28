@@ -5,7 +5,8 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render
-from api.info_login import auth_by_info as tsinghua_login
+# from api.info_login import auth_by_info as tsinghua_login
+from api.usereg_login import check as tsinghua_login
 from database import backend
 from wechat import session
 from multiprocessing import Process
