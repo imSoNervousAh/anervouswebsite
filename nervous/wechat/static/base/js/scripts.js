@@ -426,7 +426,7 @@ function showConfirmModal(title, message, one_button, callback) {
     var no_button = '<button id="modal-no-button" class="btn btn-danger" data-dismiss="modal">取消</button>'
     var yes_button = '<button id="modal-yes-button" class="btn btn-success" data-dismiss="modal">确认</button>'
 
-    if (one_button === undefined) raw_html_begin += no_button;
+    if (one_button === undefined || one_button === false) raw_html_begin += no_button;
     raw_html_begin += yes_button;
     $("body").append(raw_html_begin + raw_html_end);
     var modal = $("#confirm-modal");
