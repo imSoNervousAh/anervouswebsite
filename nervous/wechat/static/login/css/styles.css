@@ -231,7 +231,7 @@ input.form-error {
 }
 
 .banner h1 {
-    font-family: 'Open Sans', arial, sans-serif;
+    font-family: 'Open Sans', 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #555;
     font-size: 42px;
@@ -241,7 +241,7 @@ input.form-error {
 }
 
 .banner h2 {
-    font-family: 'Open Sans', arial, sans-serif;
+    font-family: 'Open Sans', 'Source Sans Pro', 'Tahoma', 'Helvetica Neue', 'Helvetica', "PingFangSC", "苹方-简", "SourceHanSansCN", "思源黑体 CN", "Hiragino Sans GB", "冬青黑体", "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", "STXihei", "华文细黑", sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #555;
     font-size: 18px;
@@ -268,9 +268,6 @@ input.form-error {
     }
 
     .banner h1 {
-        font-family: 'Open Sans', arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        color: #555;
         font-size: 25px;
         font-weight: 300;
         margin-top: 0;

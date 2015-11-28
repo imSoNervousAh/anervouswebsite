@@ -45,6 +45,7 @@
                                     <input id="duration-field" name="duration" type="text" class="form-control"
                                            data-error="请填写合法天数(1-365)" pattern="^[1-9]\d{0,2}$" required
                                            value="{{ rule.duration }}">
+
                                     <div class="input-group-addon">天</div>
                                 </div>
                                 <span class="help-block with-errors">1-365</span>
@@ -73,14 +74,15 @@
                                     <option value="小于" disabled>小于</option>
                                 </select>
                             </div>
-                            <div class="col-sm-3 form-group">
-                                <input id="value-field" name="value" type="text" class="form-control"
-                                       data-error="请填写合法数字" pattern="^[1-9]\d*$" required
-                                       value="{{ rule.value }}">
+                            <div class="col-sm-4 form-group">
+                                <div class="input-group">
+                                    <input id="value-field" name="value" type="text" class="form-control"
+                                           data-error="请填写合法数字" pattern="^[1-9]\d*$" required
+                                           value="{{ rule.value }}">
+
+                                    <div class="input-group-addon">条</div>
+                                </div>
                                 <span class="help-block with-errors">1-999</span>
-                            </div>
-                            <div class="col-sm-1">
-                                <p class="form-control-static">条</p>
                             </div>
                         </div>
                     </div>
