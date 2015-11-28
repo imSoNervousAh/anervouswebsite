@@ -389,15 +389,17 @@ def get_lastest_record_date(account):
         return datetime.date.fromtimestamp(0)
 
 
-def email_to_admins(subject, content):
-    sendemail.send_mail(get_admin_emails(), subject, content)
+def email_to_admins(id):
+    admins = get_admins()
+    for admin in admins:
+        sendemail.email_rule_id(admin.email, admin.description, id)
 
 
 def report_forewarn_record(record):
     subject = u'report_forewarn_record'
     content = record.__unicode__()
     print '%s: %s' % (subject, content)
-    # email_to_admins(get_admin_emails(), subject, content)
+    email_to_admins(record.id)
 
 
 def forewarn_record_from_rule(rule, account):
