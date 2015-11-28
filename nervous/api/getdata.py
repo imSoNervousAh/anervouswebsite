@@ -7,8 +7,10 @@ import urllib2
 basicURL = 'http://open.gsdata.cn/api/'
 # APP_ID = 'PycD3O1YpDHA1pU0yG7t'
 # APP_KEY = 'HLmQEmffw90JoN0wxYzd4QSaJ'
-APP_ID = 'Tr6Pln2S9j2i4j2JzF5X'
-APP_KEY = 's98cDx6im5KXNG1qt54ngov5z'
+# APP_ID = 'Tr6Pln2S9j2i4j2JzF5X'
+# APP_KEY = 's98cDx6im5KXNG1qt54ngov5z'
+APP_ID = 'gtgy4dzfo00LU3aHNWjn'
+APP_KEY = '2mJneVzM8VxEHOIQK510KvnYU'
 
 
 def json_encode(input):
