@@ -29,7 +29,7 @@
                                         {% if rule.notification == NotificationOption.Email %}selected{% endif %}>
                                     邮件
                                 </option>
-                                <option value="{{ NotificationOption.Message }}"
+                                <option value="{{ NotificationOption.Message }}" disabled
                                         {% if rule.notification == NotificationOption.Message %}selected{% endif %}>
                                     站内通知
                                 </option>

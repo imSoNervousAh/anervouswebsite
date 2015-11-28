@@ -99,7 +99,7 @@ class ForewarnTarget:
 
 
 class NotificationOption:
-    Message, Email = xrange(2)
+    Email, Message = xrange(2)
 
 
 # Models
