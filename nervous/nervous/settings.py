@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!yukn2^_)4q(dsgw(+nuft=9m1%(&cz*)+5^992(!c5h(**l2d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # site specific settings
 ALLOW_INVALID_WX_NAME = False
@@ -119,8 +119,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "wechat.templates"),
-    '/path/to/others/static/',
 )
 
 STATICFILES_FINDERS = (

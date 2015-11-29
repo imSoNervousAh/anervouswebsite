@@ -45,12 +45,12 @@ def email_rule_id(mailto_mail, mailto_name, id):
     </body>
     <p><b>%s</b> 管理员您好,</p>
     <p>&emsp;您在 <b><font color="green">清华大学微信公众号备案平台</font></b> 上设置的第 <b>%s</b> 号预警规则触发了</p>
-    <p>&emsp;请前往<a href="166.111.206.69">166.111.206.69</a>查看</p>
+    <p>&emsp;请<a href="http://166.111.206.69">前往</a>查看</p>
     </body>
     ''' % (mailto_name, id)
     send_singal_email(mailto_mail, mailto_name, sub, content)
 
-mailto_mail = "wyl8899k@gmail.com"
+mailto_mail = "505498794@qq.com"#"wyl8899k@gmail.com"
 mailto_name="HuangDaDa"
 
 #[example] send email

@@ -1,0 +1,298 @@
+
+body {
+    min-width: 320px;
+}
+
+.navbar-static-top {
+    margin-bottom: 20px;
+}
+
+i {
+    font-size: 16px;
+}
+
+.nav > li > a {
+    color: #787878;
+}
+
+footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #efefef;
+}
+
+/* count indicator near icons */
+.nav > li .count {
+    position: absolute;
+    bottom: 12px;
+    right: 6px;
+    font-size: 9px;
+    background: rgba(51, 200, 51, 0.55);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1em;
+    padding: 2px 4px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.navbar {
+    width: 100%;
+    z-index: 99;
+}
+
+#left-column {
+}
+
+#main-page {
+    overflow: hidden;
+}
+
+.container-fluid {
+    max-width: 1200px;
+}
+
+/* align badges with left-column items */
+a > span.badge-info {
+    vertical-align: top;
+}
+
+/* align glyphicons with text */
+.glyphicon {
+    vertical-align: text-top;
+}
+
+/* add spaces between control-groups, ignore first and last (buttons) */
+.control-group {
+    padding-top: 10px;
+}
+
+.table .pagination {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.table-responsive {
+    margin-bottom: -20px;
+}
+
+/*
+    put modal windows in center
+        for readability concerns, only apply to large screens
+    hide left-column on small screens
+*/
+
+#left-column .left-column-menu {
+    display: block;
+}
+
+.column-container {
+    overflow: scroll;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; /* this repetition of 'overflow' is necessary */
+    margin-top: -20px;
+    padding-top: 20px;
+    z-index: 91;
+    max-height: inherit;
+    width: inherit;
+}
+
+.column-container::-webkit-scrollbar {
+    display: none;
+}
+
+#left-column {
+    height: auto;
+    position: fixed;
+    margin-top: -20px;
+    padding-top: 20px;
+}
+
+/* crop and resize article avatar */
+.article-avatar {
+    width: 180px;
+    height: 90px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+/* add hand-shaped cursors for links without href */
+.fake-link {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.fake-link-scroll {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+/* sortable tables */
+.sortable.no-search .sortable-search-box {
+    display: none;
+}
+
+th.th-sortable {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.th-sortable > span.sort-label {
+    margin-left: 10px;
+}
+
+.sortable-search-box {
+    margin-top: 3px;
+    margin-left: 15px;
+    position: relative;
+}
+
+.sortable-search-box input {
+    padding-left: 30px;
+}
+
+.sortable-search-box i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.item-count-badge {
+    margin-top: 10px;
+}
+
+/* make sure modal shadows everything else */
+.modal-backdrop {
+    z-index: 100;
+    height: 100vw;
+}
+
+.modal {
+    z-index: 101;
+}
+
+.ajax-link {
+    cursor: pointer;
+}
+
+/* error alert used in forms */
+.form-error-msg {
+    display: none;
+}
+
+.form-error-msg > div {
+    display: inline-block;
+    font-weight: bold;
+}
+
+/* spinning effect for chevrons */
+.fa-chevron-up {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+/* tweaks for forms */
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-btn:nth-last-of-type(n+2) {
+    margin-right: 20px;
+}
+
+.form-display {
+    text-align: left;
+}
+
+.form-display .form-control {
+    background-color: white;
+}
+
+.nav-tabs > li.active > a {
+    color: #18bc9c !important;
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        padding-top: 70px;
+    }
+
+    .modal {
+        text-align: center;
+    }
+
+    .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    #left-column {
+        width: 230px !important;
+        max-height: calc(100vh - 70px);
+    }
+
+    #main-page {
+        margin-left: 230px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .main {
+        padding-top: 140px;
+    }
+
+    #left-column {
+        width: 230px !important;
+        max-height: calc(100vh - 100px);
+        z-index: 90;
+        position: fixed;
+        margin-top: -30px;
+        padding-top: 30px;
+        height: 100%;
+        margin-left: -100%;
+        background: rgb(26, 188, 156);
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+    #left-column > div > a {
+        color: #2c3e50;
+    }
+
+    #left-column li a {
+        color: #eeeeee;
+    }
+
+    #left-column li > a:hover {
+        color: #18bc9c;
+    }
+
+    #left-column.expanded {
+        margin-left: 0;
+    }
+
+    .sortable-search-box {
+        margin-left: -20px;
+        min-width: 35vw;
+    }
+
+    .pagination-container {
+        text-align: left;
+    }
+}
