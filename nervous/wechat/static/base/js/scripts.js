@@ -146,6 +146,8 @@ function loadContent(url, params, item_selector, load_params, callback) {
             </div>');
     }, 1000);
 
+//    console.log("load", url);
+
     $.ajax({
         type: "GET",
         url: url,
@@ -653,8 +655,16 @@ function drawCharts(selected_charts) {
 
 // on document ready
 $(function () {
-    // bind History.js
+    // first unbind and then bind History.js
     $(window).unbind('statechange');
+
+    var state = {
+        data: $("#main-page").html(),
+        item: "#dashboard-item",
+        rand: Math.random()
+    };
+    History.pushState(state, document.title, document.documentURI);
+
     History.Adapter.bind(window, 'statechange', function () {
         var state = History.getState();
 //        console.log('statechange: ' + state.url);
