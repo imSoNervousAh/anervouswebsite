@@ -673,6 +673,11 @@ def message_detail_admin(request, id):
 
 @check_identity('student')
 def message_detail_student(request, id):
+    account = backend.get_official_account_by_id(id)
+    owner = account.application.manager_student_id
+    username = session.get_username(request)
+    if owner != username:
+        return HttpResponseForbidden()
     category = MessageCategory.ToAdmin
     messages = backend.get_messages(official_account_id=id)
     try:
