@@ -130,8 +130,7 @@ def del_application(id):
 
 
 def recall_application(id):
-    account = OfficialAccount.objects.get(pk=id)
-    application = account.application
+    application = get_application_by_id(id)
     assert (application.status == 'pending')
     application.status = 'not_submitted'
     application.save()
