@@ -663,6 +663,10 @@ $(function () {
         item: "#dashboard-item",
         rand: Math.random()
     };
+    var activeItem = $(".left-column-item.active");
+    if (activeItem) {
+        state.item = activeItem.attr('id');
+    }
     History.pushState(state, document.title, document.documentURI);
 
     History.Adapter.bind(window, 'statechange', function () {

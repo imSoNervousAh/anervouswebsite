@@ -119,8 +119,7 @@ def render_ajax(request, url, params, item_id=''):
         elif identity == 'student':
             username = session.get_username(request)
             applications = backend.get_applications_by_user(username)
-            approved_apps = applications.filter(status__exact='approved')
-            official_accounts = [app.official_account for app in approved_apps]
+            official_accounts = applications.filter(status__exact='approved')
             params['official_accounts'] = official_accounts
 
     return render(request, url, params)
