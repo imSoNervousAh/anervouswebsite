@@ -1,0 +1,35 @@
+1.
+在服务器上安装Linux 14+ 操作系统
+
+2.
+安装必要软件
+
+#git
+sudo apt-get install git
+
+#python 2.7.11 (Linux系统默认有安装)
+请到官网下载安装
+
+#pip 
+sudo apt-get install python-pip
+
+#django Web框架
+sudo pip install django
+
+#django-nose
+sudo pip install django_nose
+
+#django-coverage
+sudo pip install coverage
+
+3.
+从stash上clone下代码到服务器,如果没有stash账号请联系管理员
+git clone ssh://git@stash.secoder.net:7999/~ytl/anervouswebsite.git
+
+4.
+向数据库中添加必要的数据
+cd nervous
+./shell.sh
+utils.build_test_db()
+# Ctrl+D 退出
+
