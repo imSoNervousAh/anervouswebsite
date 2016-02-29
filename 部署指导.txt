@@ -22,6 +22,9 @@ sudo pip install django_nose
 #django-coverage
 sudo pip install coverage
 
+#安装ipyhton
+sudo pip install ipython
+
 3.
 从stash上clone下代码到服务器,如果没有stash账号请联系管理员
 git clone ssh://git@stash.secoder.net:7999/~ytl/anervouswebsite.git
@@ -32,4 +35,44 @@ cd nervous
 ./shell.sh
 utils.build_test_db()
 # Ctrl+D 退出
+
+5.运行Djando Web服务器
+python manage.py runserver 127.0.0.1:8000
+# 运行成功后在查看网页
+sudo apt-get install curl
+curl 127.0.0.1:8000
+# 若返回一html文字页面说明Web服务器运行正常
+
+
+6.配置Nginx服务器
+#安装 nginx
+sudo apt-get install nginx
+#检查 nginx 是否启动
+sudo netstat –ntlp 
+#如果没有启动,则手动启动
+sudo /etc/init.d/nginx start 
+
+7.nginx的配置文件
+为了让用户不再麻烦地配置nginx文件，我们提供了一份已经配置好地nginx配置文件，直接将其复制到/etc/nginx/sites-enables/下即可
+cp ../nginx.conf /etc/nginx/sites-enabled/nervous   #将源代码目录下的 nginx.conf 复制到 nginx 配置目录下
+sudo vim /etc/nginx/sites-enabled/nervous
+您需要将第32行中/home/nervous改成您自己的用户目录
+sudo service restart   #重启服务器
+curl 127.0.0.1  #检查结果
+
+8.
+以上你已经完成服务器地全部配置，如正确安装以上指导完成操作，用户已经可以通过你的服务器IP访问“清华大学微信公众号备案平台”
+接着只需要申请一个域名就可以正式上线了
+如果你不想申请域名我们也提供了一个简单地花生壳域名，只需要按照以下操作就可以和你的服务器绑定
+ifconfig  #查看服务器的ip地址，并记住它
+vim nervous/api/bind_domain.py
+将第10行和第32行中的ip地址修改为服务器的ip地址
+python nervous/api/bind_domain.py
+./shell.sh
+utils.bind_domain()
+
+
+
+以上便是代码地详细部署指导，祝您顺利部署
+
 
