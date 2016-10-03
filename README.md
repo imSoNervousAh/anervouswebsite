@@ -18,8 +18,12 @@ Team members:
 
 Python 2.7.10
 
-Django 1.8.4
-
-(Note: Due to changes and updates, our system may ~~definitely does~~ not work under the newest version of Django. You can switch to debug mode if Django cannot load static static files well.)
+Django 1.8.4 (now migrated to 1.10.2)
 
 ![image](imgs/logo.png)
+
+
+**A word of notice:** `DEBUG` is set to `False`, so in order to correctly load the static files when running the server on a local machine, use the following command:
+```bash
+python manage.py runserver --insecure
+```
