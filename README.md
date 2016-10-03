@@ -20,6 +20,6 @@ Python 2.7.10
 
 Django 1.8.4
 
-(Note: Due to changes and updates, our system may ~~definitely does~~ not work under the newest version of Django.)
+(Note: Due to changes and updates, our system may ~~definitely does~~ not work under the newest version of Django. You can switch to debug mode if Django cannot load static static files well.)
 
 ![image](imgs/logo.png)
